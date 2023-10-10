@@ -15,8 +15,7 @@ public class GameState {
 
     public void getNextFrame() {
         System.out.println("Next frame");
-        if (points.size() > 0) {
-            var p = points.get(0).getPosition();
+        if (!points.isEmpty()) {
             int x = (int) (Math.random() * 1000);
             int y = (int) (Math.random() * 1000);
             int idx = (int) (Math.random() * points.size());
@@ -25,7 +24,6 @@ public class GameState {
                 System.out.println(points.get(idx).getPosition().getX() + " " + points.get(idx).getPosition().getY());
             }
         }
-//        TODO: implement
     }
 
     public List<Point> getPoints() {
