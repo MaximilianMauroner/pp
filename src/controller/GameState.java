@@ -5,7 +5,6 @@ import src.model.Point;
 import src.model.Position;
 import src.model.Status;
 
-import javax.swing.text.html.HTMLDocument;
 import java.util.List;
 
 public class GameState {
@@ -20,7 +19,7 @@ public class GameState {
     }
 
     public void getNextFrame() {
-        System.out.println("Next frame");
+        System.out.println("Next frame update random Point");
         if (!points.isEmpty()) {
             int x = (int) (Math.random() * 1000);
             int y = (int) (Math.random() * 1000);

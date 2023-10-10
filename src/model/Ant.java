@@ -1,9 +1,6 @@
 package src.model;
 
 import src.controller.GameState;
-import src.controller.GameplayLoop;
-
-import java.util.HashMap;
 
 public class Ant implements Entity {
     private AntState currentState = AntState.EXPLORE;

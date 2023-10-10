@@ -5,7 +5,6 @@ import src.controller.GameplayLoop;
 import src.model.*;
 import src.view.View;
 
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -36,7 +35,7 @@ public class StartProgramm {
         ), s);
 
         GameplayLoop gameplayLoop = new GameplayLoop(view, gs);
-        gameplayLoop.run();
+        gameplayLoop.start();
     }
 }
 
