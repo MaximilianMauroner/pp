@@ -1,5 +1,7 @@
 package src;
 
+import src.controller.GameState;
+import src.controller.GameplayLoop;
 import src.model.Ant;
 import src.model.Entity;
 import src.model.Point;
@@ -25,14 +27,15 @@ public class StartProgramm {
         Position position4 = new Position(4, 4);
 
 
-        List<Point> points = List.of(
+        GameState gs = new GameState(List.of(
                 new Point(position1, new Entity[]{ant1}),
                 new Point(position2, new Entity[]{ant2}),
                 new Point(position3, new Entity[]{ant3}),
                 new Point(position4, new Entity[]{ant4})
-        );
+        ));
 
-        view.draw(points);
+        GameplayLoop gameplayLoop = new GameplayLoop(view, gs);
+        gameplayLoop.run();
     }
 }
 
