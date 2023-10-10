@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Food implements Entity {
 
     @Override
-    public void run(GameState gameState, HashMap<String, Double>[] parameters) {
+    public void run(GameState gameState, Status status) {
 
     }
 }
