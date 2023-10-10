@@ -13,7 +13,7 @@ import java.util.List;
 public class StartProgramm {
     public static void main(String[] args) {
         System.out.println("Hello World!");
-        View view = new View();
+        View view = new View(1000,1000);
 
 
         Entity ant1 = new Ant();
