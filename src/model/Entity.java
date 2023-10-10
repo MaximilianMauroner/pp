@@ -1,4 +1,9 @@
 package src.model;
 
-public abstract class Entity {
+import src.controller.GameState;
+
+import java.util.HashMap;
+
+public interface Entity {
+    public void run(GameState gameState, HashMap<String, Double>[] parameters);
 }

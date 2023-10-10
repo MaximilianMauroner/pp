@@ -2,19 +2,25 @@ package src;
 
 import src.controller.GameState;
 import src.controller.GameplayLoop;
-import src.model.Ant;
-import src.model.Entity;
-import src.model.Point;
-import src.model.Position;
+import src.model.*;
 import src.view.View;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class StartProgramm {
     public static void main(String[] args) {
         System.out.println("Hello World!");
-        View view = new View(1000,1000);
+        HashMap<String, Double>[] parameters = new HashMap[1];
+        parameters[0] = new HashMap<>();
+        parameters[0].put("width", 1000.0);
+        parameters[0].put("height", 1000.0);
+        parameters[0].put("antCount", 100.0);
+        parameters[0].put("antViewDistance", 10.0);
+        parameters[0].put("foodCount", 100.0);
+        parameters[0].put("traildecay", 0.1);
 
+        View view = new View(parameters[0].get("width").intValue(),parameters[0].get("height").intValue());
 
         Entity ant1 = new Ant();
         Entity ant2 = new Ant();
