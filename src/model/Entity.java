@@ -1,4 +1,7 @@
 package src.model;
 
-public abstract class Entity {
+import java.util.HashMap;
+
+public interface Entity {
+    public void run();
 }
