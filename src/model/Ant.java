@@ -2,7 +2,7 @@ package src.model;
 
 import src.controller.GameplayLoop;
 
-public class Ant extends Entity {
+public class Ant implements Entity {
     private AntState currentState = AntState.EXPLORE;
 
     public void setState(AntState state) {
@@ -13,4 +13,8 @@ public class Ant extends Entity {
         return this.currentState;
     }
 
+    @Override
+    public void run() {
+
+    }
 }
