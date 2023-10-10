@@ -13,6 +13,10 @@ public class Point {
         return position;
     }
 
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
     public Entity[] getEntities() {
         return entities;
     }
