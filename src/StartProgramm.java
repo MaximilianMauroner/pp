@@ -4,7 +4,6 @@ import src.controller.GameState;
 import src.controller.GameplayLoop;
 import src.model.*;
 import src.model.Point;
-import src.view.Colony;
 import src.view.View;
 
 import java.awt.*;
@@ -40,7 +39,7 @@ public class StartProgramm {
 
         Entity food = new Food();
         Entity obstacle = new Obstacle();
-        Entity colony = new Colony();
+        Entity colony = new Hive();
 
         Entity trail1 = new Trail();
 
