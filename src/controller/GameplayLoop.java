@@ -25,8 +25,9 @@ public class GameplayLoop extends Thread {
 
         while (isRunning) {
             now = System.nanoTime();
+            GameState oldGameState = gameState.clone();
             gameState.getNextFrame();
-            view.draw(gameState);
+            view.draw(oldGameState, gameState);
 
             updateTime = System.nanoTime() - now;
             wait = (OPTIMAL_TIME - updateTime) / 1000000;

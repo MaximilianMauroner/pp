@@ -16,5 +16,7 @@ public class Position {
         return y;
     }
 
-
+    public Position clone() {
+        return new Position(x, y);
+    }
 }
