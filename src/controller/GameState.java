@@ -20,22 +20,24 @@ public class GameState {
     }
 
     public void getNextFrame() {
-        System.out.println("Next frame update random Point");
-        if (!points.isEmpty()) {
-            int x = (int) (Math.random() * 1000);
-            int y = (int) (Math.random() * 1000);
-            int idx = (int) (Math.random() * points.size());
-            if (idx < points.size()) {
-                points.get(idx).setPosition(new Position(x, y));
-                System.out.println(points.get(idx).getPosition().getX() + " " + points.get(idx).getPosition().getY());
-            }
-        }
+//        System.out.println("Next frame update random Point");
+
 //        TODO:fix, temp workaround so i can do it
         if (status.getAntCount() == 10) {
             for (Point p : points) {
                 Entity[] entities = p.getEntities();
                 for (Entity e : entities) {
-                    e.run(this, status);
+                    e.run(this, status, p);
+                }
+            }
+        } else {
+            if (!points.isEmpty()) {
+                int x = (int) (Math.random() * 1000);
+                int y = (int) (Math.random() * 1000);
+                int idx = (int) (Math.random() * points.size());
+                if (idx < points.size()) {
+                    points.get(idx).setPosition(new Position(x, y, status));
+                    System.out.println(points.get(idx).getPosition().getX() + " " + points.get(idx).getPosition().getY());
                 }
             }
         }
@@ -45,6 +47,7 @@ public class GameState {
         return points;
     }
 
+    @Override
     public GameState clone() {
         List<Point> newpoints = new ArrayList<>();
         for (Point p : points) {

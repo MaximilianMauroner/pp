@@ -29,8 +29,7 @@ public class StartProgramm {
 
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        Status s = new Status(1000, 1000, 100, 10, 100, 0.1);
+        Status s = new Status(1000, 1000, 10, 10, 100, 0.1);
         View view = new View(s.getWidth(), s.getHeight());
 
 
@@ -39,10 +38,10 @@ public class StartProgramm {
         Entity ant3 = new Ant();
         Entity ant4 = new Ant();
 
-        Position position1 = new Position(10, 10);
-        Position position2 = new Position(20, 20);
-        Position position3 = new Position(300, 30);
-        Position position4 = new Position(400, 400);
+        Position position1 = new Position(10, 10, s);
+        Position position2 = new Position(20, 20, s);
+        Position position3 = new Position(300, 30, s);
+        Position position4 = new Position(400, 400, s);
 
 
         GameState gs = new GameState(List.of(
