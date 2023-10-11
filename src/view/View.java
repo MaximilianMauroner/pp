@@ -30,6 +30,7 @@ public class View {
         resetCanvas();
         drawElements(gameState);
 
+
         cd.show();
     }
 
