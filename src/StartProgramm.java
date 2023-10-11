@@ -31,8 +31,6 @@ public class StartProgramm {
     public static void main(String[] args) {
         System.out.println("Hello World!");
         Status s = new Status(1000, 1000, 100, 10, 100, 0.1);
-        View view = new View(s.getWidth(), s.getHeight());
-
 
 
         Entity ant1 = new Ant();
@@ -52,6 +50,7 @@ public class StartProgramm {
                 new Point(position3, new Entity[]{ant3}),
                 new Point(position4, new Entity[]{ant4})
         ), s);
+        View view = new View(s.getWidth(), s.getHeight(), gs);
 
         GameplayLoop gameplayLoop = new GameplayLoop(view, gs);
         gameplayLoop.start();

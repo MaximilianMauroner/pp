@@ -15,13 +15,13 @@ public class View {
     private final CodeDraw cd;
     private GameState previousGameState;
 
-    public View(int width, int height) {
+    public View(int width, int height, GameState gameState) {
         this.width = width;
         this.height = height;
         cd = new CodeDraw(width, height);
+        this.previousGameState = gameState;
         cd.setTitle("Ants colony simulation");
 
-        previousGameState = new GameState(List.of());
 
         //TODO: Besser machen
         for (int i = 0; i < width; i++) {
