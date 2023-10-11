@@ -67,7 +67,7 @@ public class Ant implements Entity {
         }
         this.direction = oldPoint.getPosition().getRelativeChange(endPosition);
         if (newPoint == null) {
-            newPoint = new Point(endPosition, List.of(this));
+            newPoint = new Point(endPosition, null);
             points.add(newPoint);
         }
         oldPoint.addTrail(new Trail(1));

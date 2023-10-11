@@ -6,6 +6,7 @@ import src.model.Position;
 import src.model.Status;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GameState {
@@ -24,8 +25,9 @@ public class GameState {
 
 //        TODO:fix, temp workaround so i can do it
         if (status.getAntCount() == 10) {
-            for (Point p : points) {
-                List<Entity> entities = p.getEntities();
+            for (Point p : new ArrayList<>(points)) {
+                ArrayList<Entity> entities = new ArrayList<>(p.getEntities());
+
                 for (Entity e : entities) {
                     e.run(this, status, p);
                 }

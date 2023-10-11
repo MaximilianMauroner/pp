@@ -8,6 +8,7 @@ import src.view.View;
 
 import java.awt.*;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,11 +48,13 @@ public class StartProgramm {
         Position position4 = new Position(400, 400, s);
 
 
-        GameState gs = new GameState(List.of(
-                new Point(position1, List.of(ant1)),
-                new Point(position2, List.of(ant2)),
-                new Point(position3, List.of(ant3)),
-                new Point(position4, List.of(ant4))), s);
+        GameState gs = new GameState(new ArrayList<>(List.of(
+                new Point(position1, new ArrayList<>(List.of(ant1))),
+                new Point(position2, new ArrayList<>(List.of(ant2))),
+                new Point(position3, new ArrayList<>(List.of(ant3))),
+                new Point(position4, new ArrayList<>(List.of(ant4))))), s);
+
+
 
         GameplayLoop gameplayLoop = new GameplayLoop(view, gs);
         gameplayLoop.start();
