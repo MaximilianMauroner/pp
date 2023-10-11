@@ -5,6 +5,7 @@ import src.model.Point;
 import src.model.Position;
 import src.model.Status;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameState {
@@ -29,7 +30,7 @@ public class GameState {
                 System.out.println(points.get(idx).getPosition().getX() + " " + points.get(idx).getPosition().getY());
             }
         }
-//        temp
+//        TODO:fix, temp workaround so i can do it
         if (status.getAntCount() == 10) {
             for (Point p : points) {
                 Entity[] entities = p.getEntities();
@@ -37,12 +38,19 @@ public class GameState {
                     e.run(this, status);
                 }
             }
-
-
         }
     }
 
     public List<Point> getPoints() {
         return points;
+    }
+
+    public GameState clone() {
+        List<Point> newpoints = new ArrayList<>();
+        for (Point p : points) {
+            newpoints.add(p.clone());
+        }
+
+        return new GameState(newpoints, status);
     }
 }

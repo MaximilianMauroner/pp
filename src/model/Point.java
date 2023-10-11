@@ -20,4 +20,8 @@ public class Point {
     public Entity[] getEntities() {
         return entities;
     }
+
+    public Point clone(){
+        return new Point(position.clone(), entities.clone());
+    }
 }
