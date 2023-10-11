@@ -50,7 +50,7 @@ public class View {
             for (Entity entity : point.getEntities()) {
                 if (entity instanceof Ant) setPixels(x, y, StartProgramm.ANT_SIZE, StartProgramm.ANT_COLOR);
                 else if (entity instanceof Food) setPixels(x, y, StartProgramm.FOOD_SOURCE_SIZE, StartProgramm.FOOD_SOURCE_COLOR);
-                else if (entity instanceof Colony) setPixels(x, y, StartProgramm.COLONY_HOME_SIZE, StartProgramm.COLONY_HOME_COLOR);
+                else if (entity instanceof Hive) setPixels(x, y, StartProgramm.COLONY_HOME_SIZE, StartProgramm.COLONY_HOME_COLOR);
                 else if (entity instanceof Obstacle) setPixels(x, y, StartProgramm.OBSTACLE_SIZE, StartProgramm.OBSTACLE_COLOR);
                 else if (entity instanceof Trail e) setPixels(x, y, StartProgramm.TRAIL_SIZE,
                         //The RBG values must be converted into floats between 0 and 1. This only applies, if there is an Alpha channel in use
