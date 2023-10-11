@@ -6,6 +6,7 @@ import src.controller.GameState;
 import src.model.Ant;
 import src.model.Entity;
 import src.model.Point;
+import src.model.Trail;
 
 import java.awt.*;
 import java.util.List;
@@ -59,6 +60,11 @@ public class View {
                 else if (entity instanceof Entity)
                     setPixels(x, y, StartProgramm.SMELL_SIZE,//insert food class instead of Entity here
                             clear ? Color.BLACK : new Color(169, 0, 255, 100)); //replace the 100 with the intensity of the "smell"
+                else if (entity instanceof Trail) {
+                    System.out.println("here");
+                    Color c = new Color(StartProgramm.TRAIL_COLOR.getRGB(), true);
+                    setPixels(x, y, StartProgramm.SMELL_SIZE, clear ? Color.BLACK : new Color(c.getRed(), c.getGreen(), c.getBlue(), (int) point.getTrail() * 255)); //replace the 100 with the intensity of the "smell"
+                }
             }
         }
     }

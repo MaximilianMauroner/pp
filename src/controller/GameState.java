@@ -25,7 +25,7 @@ public class GameState {
 //        TODO:fix, temp workaround so i can do it
         if (status.getAntCount() == 10) {
             for (Point p : points) {
-                Entity[] entities = p.getEntities();
+                List<Entity> entities = p.getEntities();
                 for (Entity e : entities) {
                     e.run(this, status, p);
                 }

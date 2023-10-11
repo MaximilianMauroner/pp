@@ -7,6 +7,8 @@ import src.model.Point;
 import src.view.View;
 
 import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 public class StartProgramm {
@@ -26,6 +28,7 @@ public class StartProgramm {
     public static final Color FOOD_SOURCE_COLOR = Color.GREEN;
     public static final Color COLONY_HOME_COLOR = new Color(184, 156, 80);
     public static final Color OBSTACLE_COLOR = Color.WHITE;
+    public static final Color TRAIL_COLOR = Color.PINK;
 
 
     public static void main(String[] args) {
@@ -45,11 +48,10 @@ public class StartProgramm {
 
 
         GameState gs = new GameState(List.of(
-                new Point(position1, new Entity[]{ant1}),
-                new Point(position2, new Entity[]{ant2}),
-                new Point(position3, new Entity[]{ant3}),
-                new Point(position4, new Entity[]{ant4})
-        ), s);
+                new Point(position1, List.of(ant1)),
+                new Point(position2, List.of(ant2)),
+                new Point(position3, List.of(ant3)),
+                new Point(position4, List.of(ant4))), s);
 
         GameplayLoop gameplayLoop = new GameplayLoop(view, gs);
         gameplayLoop.start();

@@ -18,12 +18,22 @@ public class Trail implements Entity {
         return this.strength;
     }
 
-    public void addStrength(double strength) {
+    public void changeStrength(double strength) {
         this.strength += strength;
+        if (strength > 1) {
+            this.strength = 1;
+        } else if (this.strength < 0) {
+            this.strength = 0;
+        }
     }
 
     @Override
     public void run(GameState gameState, Status status, Point point) {
         this.strength *= status.getTrailDecay();
+    }
+
+    @Override
+    public Entity clone() {
+        return new Trail(this.strength);
     }
 }
