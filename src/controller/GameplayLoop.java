@@ -20,7 +20,7 @@ public class GameplayLoop extends Thread {
         long updateTime;
         long wait;
 
-        final int TARGET_FPS = 6;
+        final int TARGET_FPS = 30;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
 
         while (isRunning) {
@@ -33,7 +33,9 @@ public class GameplayLoop extends Thread {
             wait = (OPTIMAL_TIME - updateTime) / 1000000;
 
             try {
-                Thread.sleep(wait);
+                if (wait > 0) {
+                    Thread.sleep(wait);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
