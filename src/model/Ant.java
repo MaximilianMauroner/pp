@@ -9,7 +9,7 @@ import java.util.List;
 public class Ant implements Entity {
     private AntState currentState = AntState.EXPLORE;
 
-    private AntDirection direction = AntDirection.values()[(int) (Math.random() * 4)];
+    private AntDirection direction = AntDirection.values()[(int) (Math.random() * AntDirection.values().length)];
     private GameState gameState;
     private Status status;
 
@@ -50,12 +50,10 @@ public class Ant implements Entity {
 
     public void explore(Point oldPoint) {
         List<Point> points = gameState.getPoints();
-        Position p = oldPoint.getPosition();
-        Position[] nearestPositions;
-        nearestPositions = oldPoint.getPosition().getPossibleNextPosition(this.direction);
-        double highestTrail = 0;
+        Position[] nearestPositions = oldPoint.getPosition().getPossibleNextPosition(this.direction);
         Position endPosition = nearestPositions[(int) (Math.random() * nearestPositions.length)];
         Point newPoint = null;
+        double highestTrail = 0;
         for (Position pos : nearestPositions) {
             for (Point point : points) {
                 if (point.getPosition().equals(pos) && point.getTrail() > highestTrail) {
@@ -84,11 +82,6 @@ public class Ant implements Entity {
 
     public void foodRetrieve() {
 
-    }
-
-    @Override
-    public Entity clone() {
-        return new Ant(this.currentState, this.direction, this.gameState, this.status);
     }
 
 }

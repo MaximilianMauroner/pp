@@ -48,14 +48,4 @@ public class GameState {
     public List<Point> getPoints() {
         return points;
     }
-
-    @Override
-    public GameState clone() {
-        List<Point> newpoints = new ArrayList<>();
-        for (Point p : points) {
-            newpoints.add(p.clone());
-        }
-
-        return new GameState(newpoints, status);
-    }
 }

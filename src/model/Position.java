@@ -53,16 +53,33 @@ public class Position {
     }
 
     public Position[] getPossibleNextPosition(AntDirection direction) {
+        //Geradeaus, Links, Rechts, Halblinks, Halbrechts
         switch (direction) {
+            case NORTH:
+                return new Position[]{
+                        new Position(x, y - 1, status),
+                        new Position(x - 1, y, status),
+                        new Position(x + 1, y, status),
+                        new Position(x - 1, y - 1, status),
+                        new Position(x + 1, y - 1, status),
+                };
+            case NORTHEAST:
+                return new Position[]{
+                        new Position(x - 1, y + 1, status),
+                        new Position(x - 1, y - 1, status),
+                        new Position(x + 1, y + 1, status),
+                        new Position(x, y - 1, status),
+                        new Position(x + 1, y, status),
+                };
             case EAST:
                 return new Position[]{
                         new Position(x + 1, y, status),
-                        new Position(x + 1, y + 1, status),
-                        new Position(x + 1, y - 1, status),
-                        new Position(x, y + 1, status),
                         new Position(x, y - 1, status),
+                        new Position(x, y + 1, status),
+                        new Position(x - 1, y + 1, status),
+                        new Position(x + 1, y + 1, status),
                 };
-            case SOUTH:
+            case SOUTHEAST:
                 return new Position[]{
                         new Position(x, y + 1, status),
                         new Position(x + 1, y + 1, status),
@@ -70,7 +87,7 @@ public class Position {
                         new Position(x + 1, y, status),
                         new Position(x - 1, y, status),
                 };
-            case WEST:
+            case SOUTH:
                 return new Position[]{
                         new Position(x - 1, y, status),
                         new Position(x - 1, y + 1, status),
@@ -85,20 +102,23 @@ public class Position {
                         new Position(x, y + 1, status),
                         new Position(x, y + 1, status),
                 };
-            default:
+            case WEST:
                 return new Position[]{
-                        new Position(x, y - 1, status),
-                        new Position(x + 1, y - 1, status),
-                        new Position(x - 1, y - 1, status),
-                        new Position(x + 1, y, status),
-                        new Position(x - 1, y, status),
+                        new Position(x - 1, y + 1, status),
+                        new Position(x + 1, y + 1, status),
+                        new Position(x, y + 1, status),
+                        new Position(x, y + 1, status),
                 };
+            case NORTHWEST:
+                return new Position[]{
+                        new Position(x - 1, y + 1, status),
+                        new Position(x + 1, y + 1, status),
+                        new Position(x, y + 1, status),
+                        new Position(x, y + 1, status),
+                };
+            default:
+                return null;
         }
     }
 
-
-    @Override
-    public Position clone() {
-        return new Position(x, y, status);
-    }
 }

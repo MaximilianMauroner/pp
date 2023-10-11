@@ -35,14 +35,6 @@ public class Point {
         entities.add(trail);
     }
 
-    @Override
-    public Point clone() {
-        List<Entity> e = new ArrayList<>();
-        for (Entity entity : entities) {
-            e.add(entity.clone());
-        }
-        return new Point(position.clone(), e);
-    }
 
     public double getTrail() {
         for (Entity e : entities) {

@@ -61,18 +61,12 @@ public class StartProgramm {
                         new Point(position1, new ArrayList<>(List.of(ant1))),
                         new Point(position2, new ArrayList<>(List.of(ant2))),
                         new Point(position3, new ArrayList<>(List.of(ant3))),
-                        new Point(position4, new ArrayList<>(List.of(ant4))))),
+                        new Point(position4, new ArrayList<>(List.of(food))),
+                        new Point(position5, new ArrayList<>(List.of(obstacle))),
+                        new Point(position6, new ArrayList<>(List.of(trail1))),
+                        new Point(position7, new ArrayList<>(List.of(colony)))
+                )),
                 s);
-
-//        GameState gs = new GameState(List.of(
-//                new Point(position1, new Entity[]{ant1}),
-//                new Point(position2, new Entity[]{ant2}),
-//                new Point(position3, new Entity[]{ant3}),
-//                new Point(position4, new Entity[]{food}),
-//                new Point(position5, new Entity[]{obstacle}),
-//                new Point(position6, new Entity[]{trail1}),
-//                new Point(position7, new Entity[]{colony})
-//        ), s);
 
         GameplayLoop gameplayLoop = new GameplayLoop(view, gs);
         gameplayLoop.start();

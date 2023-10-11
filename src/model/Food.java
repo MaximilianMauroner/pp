@@ -9,8 +9,4 @@ public class Food implements Entity {
 
     }
 
-    @Override
-    public Entity clone() {
-        return new Food();
-    }
 }
