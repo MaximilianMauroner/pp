@@ -4,8 +4,8 @@ import src.view.View;
 
 public class GameplayLoop extends Thread {
 
-    private View view;
-    private GameState gameState;
+    private final View view;
+    private final GameState gameState;
 
     public GameplayLoop(View view, GameState gameState) {
         this.view = view;
@@ -20,12 +20,11 @@ public class GameplayLoop extends Thread {
         long updateTime;
         long wait;
 
-        final int TARGET_FPS = 1000;
+        final int TARGET_FPS = 30;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
 
         while (isRunning) {
             now = System.nanoTime();
-//            GameState oldGameState = gameState.clone();
             gameState.getNextFrame();
             view.draw(gameState);
 
@@ -34,7 +33,7 @@ public class GameplayLoop extends Thread {
 
             try {
                 if (wait > 0) {
-//                    Thread.sleep(wait);
+                    Thread.sleep(wait);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
