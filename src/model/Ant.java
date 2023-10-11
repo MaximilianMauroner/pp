@@ -65,12 +65,16 @@ public class Ant implements Entity {
                 }
             }
         }
+//        System.out.println("Ant-" + this.hashCode() + " moved from " + p.getX() + " " + p.getY() + " to " + endPosition.getX() + " " + endPosition.getY() + " " + this.direction);
         this.direction = oldPoint.getPosition().getRelativeChange(endPosition);
+//        System.out.println("Ant is now facing " + this.direction);
         if (newPoint == null) {
-            newPoint = new Point(endPosition, null);
+            newPoint = new Point(endPosition, new ArrayList<>());
             points.add(newPoint);
         }
-        oldPoint.addTrail(new Trail(1));
+        oldPoint.addTrail(new Trail(1, this.hashCode()));
+        newPoint.getEntities().add(this);
+        oldPoint.getEntities().remove(this);
 
     }
 

@@ -20,21 +20,21 @@ public class GameplayLoop extends Thread {
         long updateTime;
         long wait;
 
-        final int TARGET_FPS = 30;
+        final int TARGET_FPS = 1000;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
 
         while (isRunning) {
             now = System.nanoTime();
-            GameState oldGameState = gameState.clone();
+//            GameState oldGameState = gameState.clone();
             gameState.getNextFrame();
-            view.draw(oldGameState, gameState);
+            view.draw(gameState);
 
             updateTime = System.nanoTime() - now;
             wait = (OPTIMAL_TIME - updateTime) / 1000000;
 
             try {
                 if (wait > 0) {
-                    Thread.sleep(wait);
+//                    Thread.sleep(wait);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

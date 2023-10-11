@@ -4,10 +4,11 @@ import src.controller.GameState;
 
 public class Trail implements Entity {
     private double strength;
+    private int origin;
 
-    public Trail(double strength) {
-
+    public Trail(double strength, int origin) {
         this.strength = strength;
+        this.origin = origin;
     }
 
     public Trail() {
@@ -34,6 +35,6 @@ public class Trail implements Entity {
 
     @Override
     public Entity clone() {
-        return new Trail(this.strength);
+        return new Trail(this.strength, this.origin);
     }
 }

@@ -29,11 +29,11 @@ public class StartProgramm {
     public static final Color FOOD_SOURCE_COLOR = Color.GREEN;
     public static final Color COLONY_HOME_COLOR = new Color(184, 156, 80);
     public static final Color OBSTACLE_COLOR = Color.WHITE;
-    public static final Color TRAIL_COLOR = Color.PINK;
+    public static final Color TRAIL_COLOR = Color.BLUE;
 
 
     public static void main(String[] args) {
-        Status s = new Status(1000, 1000, 10, 10, 100, 0.1);
+        Status s = new Status(1000, 1000, 10, 10, 100, 0.99);
         View view = new View(s.getWidth(), s.getHeight());
 
 
@@ -48,12 +48,13 @@ public class StartProgramm {
         Position position4 = new Position(400, 400, s);
 
 
-        GameState gs = new GameState(new ArrayList<>(List.of(
-                new Point(position1, new ArrayList<>(List.of(ant1))),
-                new Point(position2, new ArrayList<>(List.of(ant2))),
-                new Point(position3, new ArrayList<>(List.of(ant3))),
-                new Point(position4, new ArrayList<>(List.of(ant4))))), s);
-
+        GameState gs = new GameState(
+                new ArrayList<>(List.of(
+                        new Point(position1, new ArrayList<>(List.of(ant1))),
+                        new Point(position2, new ArrayList<>(List.of(ant2))),
+                        new Point(position3, new ArrayList<>(List.of(ant3))),
+                        new Point(position4, new ArrayList<>(List.of(ant4))))),
+                s);
 
 
         GameplayLoop gameplayLoop = new GameplayLoop(view, gs);
