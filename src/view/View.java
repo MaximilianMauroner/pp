@@ -48,11 +48,11 @@ public class View {
             int y = point.getPosition().getY();
 
             for (Entity entity : point.getEntities()) {
+                if (entity instanceof Trail e) setPixels(x, y, StartProgramm.TRAIL_SIZE, new Color((int) (169 * e.getStrength()), 0, (int) (255 * e.getStrength())));
+                if (entity instanceof Food) setPixels(x, y, StartProgramm.FOOD_SOURCE_SIZE, StartProgramm.FOOD_SOURCE_COLOR);
+                if (entity instanceof Hive) setPixels(x, y, StartProgramm.COLONY_HOME_SIZE, StartProgramm.COLONY_HOME_COLOR);
+                if (entity instanceof Obstacle) setPixels(x, y, StartProgramm.OBSTACLE_SIZE, StartProgramm.OBSTACLE_COLOR);
                 if (entity instanceof Ant) setPixels(x, y, StartProgramm.ANT_SIZE, StartProgramm.ANT_COLOR);
-                else if (entity instanceof Food) setPixels(x, y, StartProgramm.FOOD_SOURCE_SIZE, StartProgramm.FOOD_SOURCE_COLOR);
-                else if (entity instanceof Hive) setPixels(x, y, StartProgramm.COLONY_HOME_SIZE, StartProgramm.COLONY_HOME_COLOR);
-                else if (entity instanceof Obstacle) setPixels(x, y, StartProgramm.OBSTACLE_SIZE, StartProgramm.OBSTACLE_COLOR);
-                else if (entity instanceof Trail e) setPixels(x, y, StartProgramm.TRAIL_SIZE, new Color((int) (169 * e.getStrength()), 0, (int) (255 * e.getStrength())));
 
             }
         }
