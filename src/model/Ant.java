@@ -45,7 +45,7 @@ public class Ant implements Entity {
                 foodSearch(point);
                 break;
             case FOODRETRIEVE:
-                foodRetrieve();
+                foodRetrieve(point);
                 break;
         }
     }
@@ -117,15 +117,6 @@ public class Ant implements Entity {
     public void foodSearch(Point oldPoint) {
         Position[] nearestPositions = oldPoint.getPosition().getPossibleNextPosition(this.direction);
 
-        // ant prefers positions with food or trails in food search mode
-        ArrayList<Position> emptyPositions = new ArrayList<>();
-        for (Position pos : nearestPositions) {
-            Point point = gameState.getPoint(pos);
-            if (point == null) {
-                emptyPositions.add(pos);
-            }
-        }
-
         Position endPosition = nearestPositions[(int) (Math.random() * nearestPositions.length)];
         Point newPoint = null;
         double highestTrail = 0;
@@ -173,8 +164,44 @@ public class Ant implements Entity {
         oldPoint.getEntities().remove(this);
     }
 
-    public void foodRetrieve() {
+    public void foodRetrieve(Point oldPoint) {
+        Position[] nearestPositions = oldPoint.getPosition().getPossibleNextPosition(this.direction);
 
+        Position endPosition = nearestPositions[(int) (Math.random() * nearestPositions.length)];
+        Point newPoint = null;
+        double highestTrail = 0;
+        for (Position pos : nearestPositions) {
+            Point point = gameState.getPoint(pos);
+
+            if (point != null) {
+                for (Entity e : point.getEntities()) {
+                    if (e instanceof Hive) {
+                        endPosition = pos;
+                        newPoint = point;
+                        this.currentState = AntState.FOODSEARCH;
+                        System.out.println("Ant-" + this.hashCode() + ": Switching to foodsearch mode");
+                    } else if (e instanceof Trail && ((Trail) e).getOrigin() != this.hashCode()) { // origin so ant doesn't follow own trail
+                        double strength = ((Trail) e).getStrength();
+                        if (strength > highestTrail) {
+                            highestTrail = strength;
+                            endPosition = pos;
+                            newPoint = point;
+                        }
+                    }
+                }
+            }
+        }
+
+        this.direction = oldPoint.getPosition().getRelativeChange(endPosition);
+
+        if (newPoint == null) {
+            newPoint = new Point(endPosition, new ArrayList<>());
+            gameState.setPoint(newPoint);
+        }
+
+        oldPoint.addTrail(new Trail(1, this.hashCode()));
+        newPoint.getEntities().add(this);
+        oldPoint.getEntities().remove(this);
     }
 
 //    private double[] getTrailIntensities(Point oldPoint) {
