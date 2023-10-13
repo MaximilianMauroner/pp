@@ -49,21 +49,37 @@ public class Ant implements Entity {
     }
 
     public void explore(Point oldPoint) {
-        List<Point> points = gameState.getPoints();
-
-        //double[] weights = getTrailIntensities(oldPoint);
-
+        // List<Point> points = gameState.getPoints();
 
         Position[] nearestPositions = oldPoint.getPosition().getPossibleNextPosition(this.direction);
         Position endPosition = nearestPositions[(int) (Math.random() * nearestPositions.length)];
         Point newPoint = null;
-        double highestTrail = 0;
+        double lowestTrail = Double.MAX_VALUE;
         for (Position pos : nearestPositions) {
             Point point = gameState.getPoint(pos);
-            if (point != null && point.getTrail() > highestTrail) {
-                highestTrail = point.getTrail();
-                endPosition = pos;
-                newPoint = point;
+
+            if (point != null) {
+                for (Entity e : point.getEntities()) {
+                    if (e instanceof Food) {
+                        endPosition = pos;
+                        newPoint = point;
+                        this.currentState = AntState.FOODRETRIEVE;
+                    } else if (e instanceof Ant && ((Ant) e).getState() == AntState.FOODSEARCH) {
+                        endPosition = pos;
+                        newPoint = point;
+                        this.currentState = AntState.FOODSEARCH;
+                    }
+                }
+
+                if (point.getTrail() > status.getHighTrail()) {
+                    endPosition = pos;
+                    newPoint = point;
+                    this.currentState = AntState.FOODSEARCH;
+                } else if (point.getTrail() < lowestTrail) {
+                    lowestTrail = point.getTrail();
+                    endPosition = pos;
+                    newPoint = point;
+                }
             }
         }
 //        System.out.println("Ant-" + this.hashCode() + " moved from " + p.getX() + " " + p.getY() + " to " + endPosition.getX() + " " + endPosition.getY() + " " + this.direction);
@@ -87,25 +103,43 @@ public class Ant implements Entity {
 
     }
 
-    private double[] getTrailIntensities(Point oldPoint) {
-        double[] weights = new double[8];
-
-        int weightIdx = 0;
-        for (AntDirection direction : AntDirection.values()) {
-            Position currentPosition = oldPoint.getPosition();
-            for (int i = 0; i < status.getAntViewDistance(); i++) {
-                Position nextPosition = currentPosition.getPossibleNextPosition(direction)[0];
-                Point nextPoint = gameState.getPoint(nextPosition);
-                if (nextPoint != null && (weights[weightIdx] == 0 || weights[weightIdx] < nextPoint.getTrail()))
-                    weights[weightIdx] = nextPoint.getTrail();
-
-                currentPosition = nextPosition;
-            }
-            weightIdx++;
-        }
-
-
-        return weights;
-    }
+//    private double[] getTrailIntensities(Point oldPoint) {
+//        double[] weights = new double[4];
+//
+////        int weightIdx = 0;
+////        for (AntDirection direction : AntDirection.values()) {
+////            Position currentPosition = oldPoint.getPosition();
+////            for (int i = 0; i < status.getAntViewDistance(); i++) {
+////                Position nextPosition = currentPosition.getPossibleNextPosition(direction)[0];
+////                Point nextPoint = gameState.getPoint(nextPosition);
+////                if (nextPoint != null && (weights[weightIdx] == 0 || weights[weightIdx] < nextPoint.getTrail()))
+////                    weights[weightIdx] = nextPoint.getTrail();
+////
+////                currentPosition = nextPosition;
+////            }
+////            weightIdx++;
+////        }
+//
+//        int weightIdx = 0;
+//        Position currentPosition = oldPoint.getPosition();
+//        for (Position sourround : currentPosition.getPossibleNextPosition(direction)) {
+//            AntDirection viewDirection = currentPosition.getRelativeChange(sourround);
+//            // get sourrounding points in view distance radius
+//            for (int i = 0; i < status.getAntViewDistance(); i++) {
+//                // get next point in direction
+//                Position nextPosition = currentPosition.getPossibleNextPosition(viewDirection)[0];
+//                Point nextPoint = gameState.getPoint(nextPosition);
+//                if (nextPoint != null && (weights[weightIdx] == 0 || weights[weightIdx] < nextPoint.getTrail()))
+//                    weights[weightIdx] = nextPoint.getTrail();
+//
+//                currentPosition = nextPosition;
+//            }
+//            currentPosition = oldPoint.getPosition();
+//            weightIdx++;
+//        }
+//
+//
+//        return weights;
+//    }
 
 }
