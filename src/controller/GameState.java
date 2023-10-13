@@ -60,4 +60,8 @@ public class GameState {
     public void setPoint(Point point) {
         points.put(point.getPosition(), point);
     }
+
+    public Status getStatus(){
+        return status;
+    }
 }

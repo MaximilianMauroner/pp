@@ -48,11 +48,11 @@ public class View {
             int y = point.getPosition().getY();
 
             for (Entity entity : point.getEntities()) {
-                if (entity instanceof Ant) setPixels(x, y, StartProgramm.ANT_SIZE, StartProgramm.ANT_COLOR);
-                else if (entity instanceof Food) setPixels(x, y, StartProgramm.FOOD_SOURCE_SIZE, StartProgramm.FOOD_SOURCE_COLOR);
-                else if (entity instanceof Hive) setPixels(x, y, StartProgramm.COLONY_HOME_SIZE, StartProgramm.COLONY_HOME_COLOR);
-                else if (entity instanceof Obstacle) setPixels(x, y, StartProgramm.OBSTACLE_SIZE, StartProgramm.OBSTACLE_COLOR);
-                else if (entity instanceof Trail e) setPixels(x, y, StartProgramm.TRAIL_SIZE,
+                if (entity instanceof Ant) setPixels(x, y, StartProgramm.SCALE_BY, StartProgramm.ANT_COLOR);
+                else if (entity instanceof Food) setPixels(x, y, StartProgramm.SCALE_BY, StartProgramm.FOOD_SOURCE_COLOR);
+                else if (entity instanceof Hive) setPixels(x, y, StartProgramm.SCALE_BY, StartProgramm.COLONY_HOME_COLOR);
+                else if (entity instanceof Obstacle) setPixels(x, y, StartProgramm.SCALE_BY, StartProgramm.OBSTACLE_COLOR);
+                else if (entity instanceof Trail e) setPixels(x, y,StartProgramm.SCALE_BY,
                         //The RBG values must be converted into floats between 0 and 1. This only applies, if there is an Alpha channel in use
                         new Color((float) 169 / 255, (float) 0 / 255, (float) 255 / 255, (float) e.getStrength()));
 

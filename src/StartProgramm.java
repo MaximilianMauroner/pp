@@ -14,16 +14,19 @@ import java.util.List;
 
 public class StartProgramm {
 
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 1000;
 
     //The following settings are graphical ONLY, so that the individual entities are easier to see.
     //They do not affect the simulation.
-    public static final int ANT_SIZE = 7;
-    public static final int FOOD_SOURCE_SIZE = 20;
-    public static final int COLONY_HOME_SIZE = 50;
-    public static final int OBSTACLE_SIZE = 5;
-    public static final int TRAIL_SIZE = 5;
+    public static final int ANT_SIZE = 1;
+    public static final int FOOD_SOURCE_SIZE = 1;
+    public static final int COLONY_HOME_SIZE = 1;
+    public static final int OBSTACLE_SIZE = 1;
+    public static final int TRAIL_SIZE = 1;
+    public static final int SCALE_BY = 1;
+
+    public static final int WIDTH = 225 * SCALE_BY;
+    public static final int HEIGHT = 225 * SCALE_BY;
+
 
     //Set color for entities
     public static final Color ANT_COLOR = Color.RED;

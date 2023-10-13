@@ -69,10 +69,11 @@ public class Ant implements Entity {
 
         // overwrite endPosition if there is a trail, food or another ant
         Point newPoint = null;
-        double lowestTrail = status.getLowTrail();
+        double lowFactor = status.getLowTrail() - Math.random();
+        double highFactor = status.getHighTrail() - Math.random();
+        outerloop:
         for (Position pos : nearestPositions) {
             Point point = gameState.getPoint(pos);
-
             if (point != null) {
                 for (Entity e : point.getEntities()) {
                     if (e instanceof Food) {
@@ -87,16 +88,18 @@ public class Ant implements Entity {
                         System.out.println("Ant-" + this.hashCode() + ": Switching to foodsearch mode");
                     } else if (e instanceof Trail && ((Trail) e).getOrigin() != this.hashCode()) { // origin so ant doesn't follow own trail
                         double strength = ((Trail) e).getStrength();
-                        if (strength < lowestTrail) {
-                            lowestTrail = strength;
+                        if (strength < lowFactor) {
                             endPosition = pos;
                             newPoint = point;
-                        } else if (strength > status.getHighTrail()) {
+                        } else if (strength > highFactor) {
                             endPosition = pos;
                             newPoint = point;
                             this.currentState = AntState.FOODSEARCH;
                             System.out.println("Ant-" + this.hashCode() + ": Switching to foodsearch mode");
+                        }else{
+                            continue;
                         }
+                        break outerloop;
                     }
                 }
             }
@@ -120,6 +123,7 @@ public class Ant implements Entity {
         Position endPosition = nearestPositions[(int) (Math.random() * nearestPositions.length)];
         Point newPoint = null;
         double highestTrail = 0;
+        double highFactor = status.getHighTrail() - Math.random();
         for (Position pos : nearestPositions) {
             Point point = gameState.getPoint(pos);
 
@@ -132,7 +136,7 @@ public class Ant implements Entity {
                         System.out.println("Ant-" + this.hashCode() + ": Switching to foodretrieve mode");
                     } else if (e instanceof Trail && ((Trail) e).getOrigin() != this.hashCode()) { // origin so ant doesn't follow own trail
                         double strength = ((Trail) e).getStrength();
-                        if (strength > highestTrail) {
+                        if (strength > highFactor) {
                             highestTrail = strength;
                             endPosition = pos;
                             newPoint = point;
@@ -144,7 +148,7 @@ public class Ant implements Entity {
 
         this.direction = oldPoint.getPosition().getRelativeChange(endPosition);
 
-        if (newPoint == null || highestTrail < status.getLowTrail()) {
+        if (newPoint == null || highestTrail < highFactor) {
             this.emptySteps++;
 
             if (this.emptySteps > status.getAntEmptySteps()) {
@@ -169,7 +173,7 @@ public class Ant implements Entity {
 
         Position endPosition = nearestPositions[(int) (Math.random() * nearestPositions.length)];
         Point newPoint = null;
-        double highestTrail = 0;
+        double highFactor = status.getHighTrail() - Math.random();
         for (Position pos : nearestPositions) {
             Point point = gameState.getPoint(pos);
 
@@ -182,8 +186,7 @@ public class Ant implements Entity {
                         System.out.println("Ant-" + this.hashCode() + ": Switching to foodsearch mode");
                     } else if (e instanceof Trail && ((Trail) e).getOrigin() != this.hashCode()) { // origin so ant doesn't follow own trail
                         double strength = ((Trail) e).getStrength();
-                        if (strength > highestTrail) {
-                            highestTrail = strength;
+                        if (strength > highFactor) {
                             endPosition = pos;
                             newPoint = point;
                         }
