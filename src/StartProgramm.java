@@ -71,6 +71,8 @@ public class StartProgramm {
                 )), s
         );
 
+        Point test = gs.getPoint(new Position(400, 400, s));
+
         GameplayLoop gameplayLoop = new GameplayLoop(view, gs);
         gameplayLoop.start();
     }

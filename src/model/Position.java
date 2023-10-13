@@ -130,4 +130,9 @@ public class Position {
         }
         return false;
     }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(x) + Integer.hashCode(y);
+    }
 }
