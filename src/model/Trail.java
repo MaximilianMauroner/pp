@@ -28,6 +28,10 @@ public class Trail implements Entity {
         }
     }
 
+    public int getOrigin() {
+        return this.origin;
+    }
+
     @Override
     public void run(GameState gameState, Status status, Point point) {
         this.strength *= status.getTrailDecay();

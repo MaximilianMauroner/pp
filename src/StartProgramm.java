@@ -33,7 +33,7 @@ public class StartProgramm {
     public static final Color TRAIL_COLOR = Color.BLUE;
 
     public static void main(String[] args) {
-        Status s = new Status(WIDTH, HEIGHT, 10, 10, 100, 0.99, 0.2, 1);
+        Status s = new Status(WIDTH, HEIGHT, 10, 10,10, 100, 0.99, 0.2, 0.7);
         View view = new View(s.getWidth(), s.getHeight());
 
 
