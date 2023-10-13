@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class StartProgramm {
+
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 1000;
 
@@ -31,9 +32,8 @@ public class StartProgramm {
     public static final Color OBSTACLE_COLOR = Color.WHITE;
     public static final Color TRAIL_COLOR = Color.BLUE;
 
-
     public static void main(String[] args) {
-        Status s = new Status(WIDTH, HEIGHT, 10, 10, 100, 0.99, 0.9);
+        Status s = new Status(WIDTH, HEIGHT, 10, 10, 100, 0.99, 0.2, 0.5);
         View view = new View(s.getWidth(), s.getHeight());
 
 
@@ -55,7 +55,7 @@ public class StartProgramm {
         Position position5 = new Position(300, 300, s);
         Position position6 = new Position(295, 30, s);
         Position position7 = new Position(800, 800, s);
-        Position position8 = new Position(401, 401, s);
+        Position position8 = new Position(401, 399, s);
 
 
         GameState gs = new GameState(

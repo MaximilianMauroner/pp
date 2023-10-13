@@ -49,12 +49,21 @@ public class Ant implements Entity {
     }
 
     public void explore(Point oldPoint) {
-        // List<Point> points = gameState.getPoints();
-
         Position[] nearestPositions = oldPoint.getPosition().getPossibleNextPosition(this.direction);
-        Position endPosition = nearestPositions[(int) (Math.random() * nearestPositions.length)];
+
+        // ant prefers empty positions in exploration mode
+        ArrayList<Position> emptyPositions = new ArrayList<>();
+        for (Position pos : nearestPositions) {
+            Point point = gameState.getPoint(pos);
+            if (point == null) {
+                emptyPositions.add(pos);
+            }
+        }
+        Position endPosition = emptyPositions.get((int) (Math.random() * emptyPositions.size()));
+
+        // overwrite endPosition if there is a trail, food or another ant
         Point newPoint = null;
-        double lowestTrail = Double.MAX_VALUE;
+        double lowestTrail = status.getLowTrail();
         for (Position pos : nearestPositions) {
             Point point = gameState.getPoint(pos);
 
@@ -68,17 +77,18 @@ public class Ant implements Entity {
                         endPosition = pos;
                         newPoint = point;
                         this.currentState = AntState.FOODSEARCH;
+                    } else if (e instanceof Trail) {
+                        double strength = ((Trail) e).getStrength();
+                        if (strength < lowestTrail) {
+                            lowestTrail = strength;
+                            endPosition = pos;
+                            newPoint = point;
+                        } else if (strength > status.getHighTrail()) {
+                            endPosition = pos;
+                            newPoint = point;
+                            this.currentState = AntState.FOODSEARCH;
+                        }
                     }
-                }
-
-                if (point.getTrail() > status.getHighTrail()) {
-                    endPosition = pos;
-                    newPoint = point;
-                    this.currentState = AntState.FOODSEARCH;
-                } else if (point.getTrail() < lowestTrail) {
-                    lowestTrail = point.getTrail();
-                    endPosition = pos;
-                    newPoint = point;
                 }
             }
         }
