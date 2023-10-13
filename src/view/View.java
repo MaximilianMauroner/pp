@@ -44,15 +44,16 @@ public class View {
 
         List<Point> points = gameState.getPoints();
         for (Point point : points) {
-            int x = point.getPosition().getX();
-            int y = point.getPosition().getY();
+            int x = point.getPosition().getX() * StartProgramm.SCALE_BY;
+            int y = point.getPosition().getY() * StartProgramm.SCALE_BY;
 
             for (Entity entity : point.getEntities()) {
-                if (entity instanceof Trail e) setPixels(x, y, StartProgramm.TRAIL_SIZE, new Color((int) (169 * e.getStrength()), 0, (int) (255 * e.getStrength())));
-                if (entity instanceof Food) setPixels(x, y, StartProgramm.FOOD_SOURCE_SIZE, StartProgramm.FOOD_SOURCE_COLOR);
-                if (entity instanceof Hive) setPixels(x, y, StartProgramm.COLONY_HOME_SIZE, StartProgramm.COLONY_HOME_COLOR);
-                if (entity instanceof Obstacle) setPixels(x, y, StartProgramm.OBSTACLE_SIZE, StartProgramm.OBSTACLE_COLOR);
-                if (entity instanceof Ant) setPixels(x, y, StartProgramm.ANT_SIZE, StartProgramm.ANT_COLOR);
+                if (entity instanceof Trail e) setPixels(x, y, StartProgramm.SCALE_BY,
+                        new Color((int) (169 * e.getStrength()), 0, (int) (255 * e.getStrength())));
+                if (entity instanceof Food) setPixels(x, y, StartProgramm.SCALE_BY, StartProgramm.FOOD_SOURCE_COLOR);
+                if (entity instanceof Hive) setPixels(x, y, StartProgramm.SCALE_BY, StartProgramm.COLONY_HOME_COLOR);
+                if (entity instanceof Obstacle) setPixels(x, y, StartProgramm.SCALE_BY, StartProgramm.OBSTACLE_COLOR);
+                if (entity instanceof Ant) setPixels(x, y, StartProgramm.SCALE_BY, StartProgramm.ANT_COLOR);
 
             }
         }
@@ -79,8 +80,8 @@ public class View {
         if (y < 0) y = 0;
         if (y > height) y = height;
 
-        for (int i = x - size / 2; i < x + size / 2; i++) {
-            for (int j = y - size / 2; j < y + size / 2; j++) {
+        for (int i = x - size / 2; i <= x + size / 2; i++) {
+            for (int j = y - size / 2; j <= y + size / 2; j++) {
                 cd.setPixel(i, j, color);
             }
         }

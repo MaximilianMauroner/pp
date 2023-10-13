@@ -10,16 +10,17 @@ import java.awt.*;
 import java.util.List;
 
 public class StartProgramm {
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 1000;
+    public static final int SCALE_BY = 5;
+    public static final int WIDTH = 225 * SCALE_BY;
+    public static final int HEIGHT = 225 * SCALE_BY;
 
     //The following settings are graphical ONLY, so that the individual entities are easier to see.
     //They do not affect the simulation.
-    public static final int ANT_SIZE = 7;
-    public static final int FOOD_SOURCE_SIZE = 20;
-    public static final int COLONY_HOME_SIZE = 50;
-    public static final int OBSTACLE_SIZE = 5;
-    public static final int TRAIL_SIZE = 5;
+//    public static final int ANT_SIZE = 7;
+//    public static final int FOOD_SOURCE_SIZE = 20;
+//    public static final int COLONY_HOME_SIZE = 50;
+//    public static final int OBSTACLE_SIZE = 5;
+//    public static final int TRAIL_SIZE = 5;
 
     //Set color for entities
     public static final Color ANT_COLOR = Color.RED;
@@ -45,11 +46,11 @@ public class StartProgramm {
 
         Position position1 = new Position(10, 10, s);
         Position position2 = new Position(20, 20, s);
-        Position position3 = new Position(300, 30, s);
-        Position position4 = new Position(400, 400, s);
-        Position position5 = new Position(300, 300, s);
-        Position position6 = new Position(295, 30, s);
-        Position position7 = new Position(800, 800, s);
+        Position position3 = new Position(30, 30, s);
+        Position position4 = new Position(40, 40, s);
+        Position position5 = new Position(30, 30, s);
+        Position position6 = new Position(25, 30, s);
+        Position position7 = new Position(100, 100, s);
 
 
         GameState gs = new GameState(List.of(
