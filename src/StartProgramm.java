@@ -65,8 +65,8 @@ public class StartProgramm {
                         new Point(position5, new ArrayList<>(List.of(obstacle))),
                         new Point(position6, new ArrayList<>(List.of(trail1))),
                         new Point(position7, new ArrayList<>(List.of(colony)))
-                )),
-                s);
+                )), s
+        );
 
         GameplayLoop gameplayLoop = new GameplayLoop(view, gs);
         gameplayLoop.start();

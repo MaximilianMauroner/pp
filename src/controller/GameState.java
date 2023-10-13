@@ -7,16 +7,23 @@ import src.model.Status;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameState {
 
-    List<Point> points;
+    // List<Point> points;
+    HashMap<Position, Point> points;
 
     Status status;
 
     public GameState(List<Point> points, Status status) {
-        this.points = points;
+        this.points = new HashMap<>();
+        for (Point p:
+             points) {
+            this.points.put(p.getPosition(), p);
+        }
+
         this.status = status;
     }
 
@@ -25,7 +32,7 @@ public class GameState {
 
 //        TODO:fix, temp workaround so i can do it
         if (status.getAntCount() == 10) {
-            for (Point p : new ArrayList<>(points)) {
+            for (Point p : new ArrayList<>(points.values())) {
                 ArrayList<Entity> entities = new ArrayList<>(p.getEntities());
 
                 for (Entity e : entities) {
@@ -46,6 +53,14 @@ public class GameState {
     }
 
     public List<Point> getPoints() {
-        return points;
+        return new ArrayList<>(points.values());
+    }
+
+    public Point getPoint(Position position) {
+        return points.get(position);
+    }
+
+    public void setPoint(Point point) {
+        points.put(point.getPosition(), point);
     }
 }

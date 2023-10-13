@@ -121,4 +121,13 @@ public class Position {
         }
     }
 
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Position) {
+            Position p = (Position) obj;
+            return p.getX() == x && p.getY() == y;
+        }
+        return false;
+    }
 }
