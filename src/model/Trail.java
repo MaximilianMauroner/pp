@@ -21,11 +21,15 @@ public class Trail implements Entity {
 
     public void changeStrength(double strength) {
         this.strength += strength;
-        if (strength > 1) {
+        if (this.strength > 1) {
             this.strength = 1;
         } else if (this.strength < 0) {
             this.strength = 0;
         }
+    }
+
+    public int getOrigin() {
+        return this.origin;
     }
 
     @Override

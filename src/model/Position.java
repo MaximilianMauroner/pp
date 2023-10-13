@@ -89,36 +89,61 @@ public class Position {
                 };
             case SOUTH:
                 return new Position[]{
+                        new Position(x , y + 1, status),
                         new Position(x - 1, y, status),
+                        new Position(x + 1, y , status),
+                        new Position(x + 1, y + 1, status),
                         new Position(x - 1, y + 1, status),
-                        new Position(x - 1, y - 1, status),
-                        new Position(x, y + 1, status),
-                        new Position(x, y - 1, status),
                 };
             case SOUTHWEST:
                 return new Position[]{
-                        new Position(x - 1, y + 1, status),
+                        new Position(x + 1, y - 1, status),
+                        new Position(x - 1, y - 1, status),
                         new Position(x + 1, y + 1, status),
-                        new Position(x, y + 1, status),
-                        new Position(x, y + 1, status),
+                        new Position(x - 1, y, status),
+                        new Position(x , y + 1, status),
                 };
             case WEST:
                 return new Position[]{
-                        new Position(x - 1, y + 1, status),
-                        new Position(x + 1, y + 1, status),
-                        new Position(x, y + 1, status),
-                        new Position(x, y + 1, status),
+                        new Position(x - 1, y, status),
+                        new Position(x , y - 1, status),
+                        new Position(x , y + 1, status),
+                        new Position(x - 1, y - 1, status),
+                        new Position(x + 1, y - 1, status),
                 };
             case NORTHWEST:
                 return new Position[]{
+                        new Position(x - 1, y - 1, status),
                         new Position(x - 1, y + 1, status),
-                        new Position(x + 1, y + 1, status),
-                        new Position(x, y + 1, status),
-                        new Position(x, y + 1, status),
+                        new Position(x + 1, y - 1, status),
+                        new Position(x - 1, y, status),
+                        new Position(x, y - 1 , status),
                 };
             default:
                 return null;
         }
     }
 
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Position) {
+            Position p = (Position) obj;
+            return p.getX() == x && p.getY() == y;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(x) + Integer.hashCode(y);
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
