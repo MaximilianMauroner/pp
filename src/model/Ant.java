@@ -59,7 +59,11 @@ public class Ant implements Entity {
                 emptyPositions.add(pos);
             }
         }
-        Position endPosition = emptyPositions.get((int) (Math.random() * emptyPositions.size()));
+        Position endPosition;
+        if (emptyPositions.isEmpty())
+            endPosition = nearestPositions[(int) (Math.random() * nearestPositions.length)];
+        else
+            endPosition = emptyPositions.get((int) (Math.random() * emptyPositions.size()));
 
         // overwrite endPosition if there is a trail, food or another ant
         Point newPoint = null;
@@ -67,7 +71,7 @@ public class Ant implements Entity {
         for (Position pos : nearestPositions) {
             Point point = gameState.getPoint(pos);
 
-            if (point != null) {
+            if (point != null && newPoint == null) {
                 for (Entity e : point.getEntities()) {
                     if (e instanceof Food) {
                         endPosition = pos;
