@@ -75,10 +75,11 @@ public class Ant implements Entity {
         for (Position pos : nearestPositions) {
             Point point = gameState.getPoint(pos);
             if (point != null) {
-                for (Entity e : point.getEntities()) {
+                for (Entity e : new ArrayList<>(point.getEntities())) {
                     if (e instanceof Food) {
                         endPosition = pos;
                         newPoint = point;
+                        point.getEntities().remove(e);
                         this.currentState = AntState.FOODRETRIEVE;
                         System.out.println("Ant-" + endPosition + ": Switching to foodretrieve mode");
                     } else if (e instanceof Ant && ((Ant) e).getState() == AntState.FOODSEARCH) {
@@ -96,7 +97,7 @@ public class Ant implements Entity {
                             newPoint = point;
                             this.currentState = AntState.FOODSEARCH;
                             System.out.println("Ant-" + endPosition + ": Switching to foodsearch mode");
-                        }else{
+                        } else {
                             continue;
                         }
                         break outerloop;
