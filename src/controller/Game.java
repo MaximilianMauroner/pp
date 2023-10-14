@@ -65,7 +65,17 @@ public class Game {
     }
 
     public void start(int duration) {
+        GameplayLoop gameplayLoop = new GameplayLoop(view, gameState);
+        gameplayLoop.start();
 
+        // wait for duration
+        try {
+            Thread.sleep(duration);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        gameplayLoop.setRunning(false);
     }
 
     private int calculatePosition(int pos, int radius) {

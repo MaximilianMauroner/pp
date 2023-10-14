@@ -52,7 +52,7 @@ public class StartProgramm {
 
         Game game = new Game(s);
         game.generate();
-        game.start();
+        game.start(1000);
     }
 }
 

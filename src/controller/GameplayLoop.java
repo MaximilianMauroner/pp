@@ -40,4 +40,8 @@ public class GameplayLoop extends Thread {
             }
         }
     }
+
+    public void setRunning(boolean running) {
+        isRunning = running;
+    }
 }
