@@ -37,4 +37,9 @@ public class Trail implements Entity {
         this.strength *= status.getTrailDecay();
     }
 
+    @Override
+    public Entity clone() {
+        return new Trail(this.strength,this.origin);
+    }
+
 }

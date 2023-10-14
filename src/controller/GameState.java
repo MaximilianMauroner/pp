@@ -14,43 +14,24 @@ public class GameState {
 
     Status status;
 
-    public GameState(List<Point> points, Status status) {
-        this.points = new HashMap<>();
-        for (Point p:
-             points) {
-            this.points.put(p.getPosition(), p);
-        }
+    public GameState(HashMap<Position, Point> points, Status status) {
+        this.points = points;
 
         this.status = status;
     }
 
     public void getNextFrame() {
-//        System.out.println("Next frame update random Point");
+        for (Point p : new ArrayList<>(points.values())) {
+            ArrayList<Entity> entities = new ArrayList<>(p.getEntities());
 
-//        TODO:fix, temp workaround so i can do it
-        if (status.getAntCount() == 10) {
-            for (Point p : new ArrayList<>(points.values())) {
-                ArrayList<Entity> entities = new ArrayList<>(p.getEntities());
-
-                for (Entity e : entities) {
-                    e.run(this, status, p);
-                }
-            }
-        } else {
-            if (!points.isEmpty()) {
-                int x = (int) (Math.random() * 1000);
-                int y = (int) (Math.random() * 1000);
-                int idx = (int) (Math.random() * points.size());
-                if (idx < points.size()) {
-                    points.get(idx).setPosition(new Position(x, y, status));
-                    System.out.println(points.get(idx).getPosition().getX() + " " + points.get(idx).getPosition().getY());
-                }
+            for (Entity e : entities) {
+                e.run(this, status, p);
             }
         }
     }
 
-    public List<Point> getPoints() {
-        return new ArrayList<>(points.values());
+    public HashMap<Position,Point> getPoints() {
+        return this.points;
     }
 
     public Point getPoint(Position position) {
@@ -61,7 +42,7 @@ public class GameState {
         points.put(point.getPosition(), point);
     }
 
-    public Status getStatus(){
+    public Status getStatus() {
         return status;
     }
 }
