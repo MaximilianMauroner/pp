@@ -31,6 +31,7 @@ public class Ant implements Entity {
     }
 
     public Ant() {
+        System.out.println("Ant created");
     }
 
     @Override
