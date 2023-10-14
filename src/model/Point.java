@@ -1,12 +1,20 @@
 package src.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Point {
-    private Entity[] entities;
+    private List<Entity> entities;
     private Position position;
 
-    public Point(Position position, Entity[] entities) {
+    public Point(Position position, List<Entity> entities) {
         this.position = position;
         this.entities = entities;
+    }
+    public Point(Position position, Entity entity) {
+        this.position = position;
+        this.entities = new ArrayList<>();
+        this.entities.add(entity);
     }
 
     public Position getPosition() {
@@ -17,22 +25,22 @@ public class Point {
         this.position = position;
     }
 
-    public Entity[] getEntities() {
+    public List<Entity> getEntities() {
         return entities;
     }
 
     public void addTrail(Trail trail) {
         for (Entity e : entities) {
             if (e instanceof Trail) {
-                ((Trail) e).addStrength(trail.getStrength());
+                ((Trail) e).changeStrength(trail.getStrength());
+                ((Trail) e).updateOrigin(trail.getOrigin());
+                return;
             }
         }
+
+        entities.add(trail);
     }
 
-    @Override
-    public Point clone() {
-        return new Point(position.clone(), entities.clone());
-    }
 
     public double getTrail() {
         for (Entity e : entities) {

@@ -5,55 +5,44 @@ import src.model.Point;
 import src.model.Position;
 import src.model.Status;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class GameState {
 
-    List<Point> points;
+    // List<Point> points;
+    HashMap<Position, Point> points;
 
     Status status;
 
-    public GameState(List<Point> points, Status status) {
+    public GameState(HashMap<Position, Point> points, Status status) {
         this.points = points;
+
         this.status = status;
     }
 
     public void getNextFrame() {
-//        System.out.println("Next frame update random Point");
+        for (Point p : new ArrayList<>(points.values())) {
+            ArrayList<Entity> entities = new ArrayList<>(p.getEntities());
 
-//        TODO:fix, temp workaround so i can do it
-        if (status.getAntCount() == 10) {
-            for (Point p : points) {
-                Entity[] entities = p.getEntities();
-                for (Entity e : entities) {
-                    e.run(this, status, p);
-                }
-            }
-        } else {
-            if (!points.isEmpty()) {
-                int x = (int) (Math.random() * 1000);
-                int y = (int) (Math.random() * 1000);
-                int idx = (int) (Math.random() * points.size());
-                if (idx < points.size()) {
-                    points.get(idx).setPosition(new Position(x, y, status));
-                    System.out.println(points.get(idx).getPosition().getX() + " " + points.get(idx).getPosition().getY());
-                }
+            for (Entity e : entities) {
+                e.run(this, status, p);
             }
         }
     }
 
-    public List<Point> getPoints() {
-        return points;
+    public HashMap<Position,Point> getPoints() {
+        return this.points;
     }
 
-    @Override
-    public GameState clone() {
-        List<Point> newpoints = new ArrayList<>();
-        for (Point p : points) {
-            newpoints.add(p.clone());
-        }
+    public Point getPoint(Position position) {
+        return points.get(position);
+    }
 
-        return new GameState(newpoints, status);
+    public void setPoint(Point point) {
+        points.put(point.getPosition(), point);
+    }
+
+    public Status getStatus() {
+        return status;
     }
 }

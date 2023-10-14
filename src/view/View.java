@@ -2,11 +2,13 @@ package src.view;
 
 import codedraw.CodeDraw;
 import src.StartProgramm;
+import src.Test;
 import src.controller.GameState;
 import src.model.*;
 import src.model.Point;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
 
 public class View {
