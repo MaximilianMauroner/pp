@@ -79,10 +79,13 @@ public class View {
         if (y < 0) y = 0;
         if (y > height) y = height;
 
-        for (int i = x - size / 2; i < x + size / 2; i++) {
-            for (int j = y - size / 2; j < y + size / 2; j++) {
-                cd.setPixel(i, j, color);
-            }
-        }
+// ToDo: temp fix
+        cd.setPixel(x, y, color);
+
+//        for (int i = x - size / 2; i < x + size / 2; i++) {4
+//            for (int j = y - size / 2; j < y + size / 2; j++) {
+//                cd.setPixel(i, j, color);
+//            }
+//        }
     }
 }

@@ -53,12 +53,12 @@ public class StartProgramm {
 
         Position position1 = new Position(10, 10, s);
         Position position2 = new Position(20, 20, s);
-        Position position3 = new Position(300, 30, s);
-        Position position4 = new Position(400, 400, s);
-        Position position5 = new Position(300, 300, s);
-        Position position6 = new Position(295, 30, s);
-        Position position7 = new Position(800, 800, s);
-        Position position8 = new Position(401, 399, s);
+        Position position3 = new Position(30, 30, s);
+        Position position4 = new Position(140, 140, s);
+        Position position5 = new Position(100, 200, s);
+        Position position6 = new Position(195, 30, s);
+        Position position7 = new Position(220, 220, s);
+        Position position8 = new Position(141, 139, s);
 
 
         GameState gs = new GameState(
@@ -73,8 +73,6 @@ public class StartProgramm {
                         new Point(position7, new ArrayList<>(List.of(colony)))
                 )), s
         );
-
-        Point test = gs.getPoint(new Position(400, 400, s));
 
         GameplayLoop gameplayLoop = new GameplayLoop(view, gs);
         gameplayLoop.start();
