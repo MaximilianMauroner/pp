@@ -1,7 +1,6 @@
 package src.view;
 
 import codedraw.CodeDraw;
-import src.StartProgramm;
 import src.Test;
 import src.controller.GameState;
 import src.model.*;
@@ -9,21 +8,20 @@ import src.model.Point;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.List;
 
 public class View {
     private final int width, height;
     private final CodeDraw cd;
 
     public View(int width, int height) {
-        this.width = width;
-        this.height = height;
-        cd = new CodeDraw(width, height);
+        this.width = width * Test.SCALE_BY;
+        this.height = height * Test.SCALE_BY;
+        cd = new CodeDraw(this.width, this.height);
         cd.setTitle("Ants colony simulation");
     }
 
     /**
-     * Draw the given gameState on the canvas. The settings can be found in the StartProgramm class.
+     * Draw the given gameState on the canvas. The settings can be found in the Test class.
      * The canvas will be cleared automatically.
      *
      * @param gameState gameState to draw on the canvas. The gameState must include a Point[] with all Entities. If the array is empty, then nothing will be drawn.
@@ -37,25 +35,27 @@ public class View {
     }
 
     /**
-     * drawElements is the actual methode to draw the given gameState on the canvas. The settings can be found in the StartProgramm class.
+     * drawElements is the actual methode to draw the given gameState on the canvas. The settings can be found in the Test class.
      * The canvas should be cleared before drawing again. Otherwise, the old elements will still be visible.
      *
      * @param gameState gameState to draw on the canvas
      */
     private void drawElements(GameState gameState) {
 
-        List<Point> points = gameState.getPoints();
-        for (Point point : points) {
-            int x = point.getPosition().getX() * StartProgramm.SCALE_BY;
-            int y = point.getPosition().getY() * StartProgramm.SCALE_BY;
+        HashMap<Position, Point> points = gameState.getPoints();
+        for (Point point : points.values()) {
+            int x = point.getPosition().getX() * Test.SCALE_BY;
+            int y = point.getPosition().getY() * Test.SCALE_BY;
 
             for (Entity entity : point.getEntities()) {
-                if (entity instanceof Trail e) setPixels(x, y, StartProgramm.SCALE_BY,
-                        new Color((int) (169 * e.getStrength()), 0, (int) (255 * e.getStrength())));
-                if (entity instanceof Food) setPixels(x, y, StartProgramm.SCALE_BY, StartProgramm.FOOD_SOURCE_COLOR);
-                if (entity instanceof Hive) setPixels(x, y, StartProgramm.SCALE_BY, StartProgramm.COLONY_HOME_COLOR);
-                if (entity instanceof Obstacle) setPixels(x, y, StartProgramm.SCALE_BY, StartProgramm.OBSTACLE_COLOR);
-                if (entity instanceof Ant) setPixels(x, y, StartProgramm.SCALE_BY, StartProgramm.ANT_COLOR);
+                if (entity instanceof Trail e) setPixels(x, y, Test.SCALE_BY, new Color(
+                        (int) (Test.TRAIL_COLOR.getRed() * e.getStrength()),
+                        (int) (Test.TRAIL_COLOR.getGreen() * e.getStrength()),
+                        (int) (Test.TRAIL_COLOR.getBlue() * e.getStrength())));
+                if (entity instanceof Food) setPixels(x, y, Test.SCALE_BY, Test.FOOD_SOURCE_COLOR);
+                if (entity instanceof Hive) setPixels(x, y, Test.SCALE_BY, Test.COLONY_HOME_COLOR);
+                if (entity instanceof Obstacle) setPixels(x, y, Test.SCALE_BY, Test.OBSTACLE_COLOR);
+                if (entity instanceof Ant) setPixels(x, y, Test.SCALE_BY, Test.ANT_COLOR);
 
             }
         }

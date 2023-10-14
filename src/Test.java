@@ -10,15 +10,15 @@ public class Test {
 
     //The following settings are graphical ONLY, so that the individual entities are easier to see.
     //They do not affect the simulation.
-    public static final int ANT_SIZE = 5;
-    public static final int FOOD_SOURCE_SIZE = 9;
-    public static final int COLONY_HOME_SIZE = 15;
-    public static final int OBSTACLE_SIZE = 9;
-    public static final int TRAIL_SIZE = 1;
+//    public static final int ANT_SIZE = 5;
+//    public static final int FOOD_SOURCE_SIZE = 9;
+//    public static final int COLONY_HOME_SIZE = 15;
+//    public static final int OBSTACLE_SIZE = 9;
+//    public static final int TRAIL_SIZE = 1;
     public static final int SCALE_BY = 1;
 
-    public static final int WIDTH = 225 * SCALE_BY;
-    public static final int HEIGHT = 225 * SCALE_BY;
+    public static final int WIDTH = 225;
+    public static final int HEIGHT = 225;
 
 
     //Set color for entities
@@ -27,6 +27,7 @@ public class Test {
     public static final Color COLONY_HOME_COLOR = new Color(184, 156, 80);
     public static final Color OBSTACLE_COLOR = Color.GRAY;
     public static final Color TRAIL_COLOR = Color.BLUE;
+//    public static final Color TRAIL_COLOR = new Color(169, 0, 255);
 
     public static void main(String[] args) {
         Status s = new Status(WIDTH, HEIGHT, SCALE_BY, 60000,
