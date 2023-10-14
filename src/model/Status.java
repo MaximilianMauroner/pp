@@ -1,17 +1,18 @@
 package src.model;
 
 public class Status {
-    private final int width, height, scale, antCount, antEmptySteps,
+    private final int width, height, scale, simulationTime, antCount, antEmptySteps,
             foodCount, obstacleCount, antSpawnRadius, foodHiveDistance, foodSize, hiveSize, obstacleSize;
 
     private final double traildecay, lowTrail, highTrail;
 
-    public Status(int width, int height, int scale, int antCount, int antEmptySteps, int foodCount,
+    public Status(int width, int height, int scale, int simulationTime, int antCount, int antEmptySteps, int foodCount,
                   int obstacleCount, int antSpawnRadius, int foodHiveDistance, int foodSize, int hiveSize, int obstacleSize,
                   double traildecay, double lowTrail, double highTrail) {
         this.width = width;
         this.height = height;
         this.scale = scale;
+        this.simulationTime = simulationTime;
         this.antCount = antCount;
         this.antEmptySteps = antEmptySteps;
         this.foodCount = foodCount;
@@ -36,6 +37,10 @@ public class Status {
 
     public int getScale() {
         return scale;
+    }
+
+    public int getSimulationTime() {
+        return simulationTime;
     }
 
     public int getAntCount() {

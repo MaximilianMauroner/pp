@@ -29,8 +29,8 @@ public class StartProgramm {
     public static final Color TRAIL_COLOR = Color.BLUE;
 
     public static void main(String[] args) {
-        Status s = new Status(WIDTH, HEIGHT, SCALE_BY,
-                9, 20,10, 10,
+        Status s = new Status(WIDTH, HEIGHT, SCALE_BY, 60000,
+                9, 20, 10,
                 5, 50, 100,
                 20, 30, 10, 0.99, 0.2, 0.7);
 //        View view = new View(s.getWidth(), s.getHeight());
@@ -51,8 +51,12 @@ public class StartProgramm {
 //        gameplayLoop.start();
 
         Game game = new Game(s);
-        game.generate();
-        game.start(1000);
+
+        for (int i = 0; i < 3; i++) {
+            System.out.println("Game " + i + " starting");
+            game.generate();
+            game.start(s.getSimulationTime());
+        }
     }
 }
 
