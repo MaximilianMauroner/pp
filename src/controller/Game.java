@@ -43,8 +43,13 @@ public class Game {
         int hiveDistance = status.getFoodHiveDistance();  // minimum distance between hive and food
 
         for (int i = 0; i < status.getFoodCount(); i++) {
-            int foodX = (int) (Math.random() * status.getWidth());
-            int foodY = (int) (Math.random() * status.getHeight());
+            int foodX;
+            int foodY;
+            do {
+                foodX = (int) (Math.random() * status.getWidth());
+                foodY = (int) (Math.random() * status.getHeight());
+            } while (Math.abs(foodX - hiveX) < hiveDistance && Math.abs(foodY - hiveY) < hiveDistance);
+
             Position foodPosition = new Position(foodX, foodY, status);
             ClusterGenerator.generate(food, foodPosition, status.getFoodSize(), gameState);
         }

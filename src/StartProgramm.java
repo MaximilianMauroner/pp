@@ -56,6 +56,7 @@ public class StartProgramm {
             System.out.println("Game " + i + " starting");
             game.generate();
             game.start(s.getSimulationTime());
+            s.randomize(0.2);
         }
     }
 }
