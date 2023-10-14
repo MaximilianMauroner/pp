@@ -1,7 +1,7 @@
 package src.view;
 
 import codedraw.CodeDraw;
-import src.StartProgramm;
+import src.Test;
 import src.controller.GameState;
 import src.model.*;
 import src.model.Point;
@@ -49,11 +49,11 @@ public class View {
             int y = point.getPosition().getY();
 
             for (Entity entity : point.getEntities()) {
-                if (entity instanceof Trail e) setPixels(x, y, StartProgramm.TRAIL_SIZE, new Color((int) (169 * e.getStrength()), 0, (int) (255 * e.getStrength())));
-                if (entity instanceof Food) setPixels(x, y, StartProgramm.FOOD_SOURCE_SIZE, StartProgramm.FOOD_SOURCE_COLOR);
-                if (entity instanceof Hive) setPixels(x, y, StartProgramm.COLONY_HOME_SIZE, StartProgramm.COLONY_HOME_COLOR);
-                if (entity instanceof Obstacle) setPixels(x, y, StartProgramm.OBSTACLE_SIZE, StartProgramm.OBSTACLE_COLOR);
-                if (entity instanceof Ant) setPixels(x, y, StartProgramm.ANT_SIZE, StartProgramm.ANT_COLOR);
+                if (entity instanceof Trail e) setPixels(x, y, Test.TRAIL_SIZE, new Color((int) (169 * e.getStrength()), 0, (int) (255 * e.getStrength())));
+                if (entity instanceof Food) setPixels(x, y, Test.FOOD_SOURCE_SIZE, Test.FOOD_SOURCE_COLOR);
+                if (entity instanceof Hive) setPixels(x, y, Test.COLONY_HOME_SIZE, Test.COLONY_HOME_COLOR);
+                if (entity instanceof Obstacle) setPixels(x, y, Test.OBSTACLE_SIZE, Test.OBSTACLE_COLOR);
+                if (entity instanceof Ant) setPixels(x, y, Test.ANT_SIZE, Test.ANT_COLOR);
 
             }
         }
