@@ -32,6 +32,10 @@ public class Trail implements Entity {
         return this.origin;
     }
 
+    public void updateOrigin(int origin) {
+        this.origin = origin;
+    }
+
     @Override
     public void run(GameState gameState, Status status, Point point) {
         this.strength *= status.getTrailDecay();

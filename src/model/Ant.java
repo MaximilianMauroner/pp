@@ -75,17 +75,18 @@ public class Ant implements Entity {
         for (Position pos : nearestPositions) {
             Point point = gameState.getPoint(pos);
             if (point != null) {
-                for (Entity e : point.getEntities()) {
+                for (Entity e : new ArrayList<>(point.getEntities())) {
                     if (e instanceof Food) {
                         endPosition = pos;
                         newPoint = point;
+                        point.getEntities().remove(e);
                         this.currentState = AntState.FOODRETRIEVE;
-                        System.out.println("Ant-" + this.hashCode() + ": Switching to foodretrieve mode");
+                        System.out.println("Ant-" + endPosition + ": Switching to foodretrieve mode");
                     } else if (e instanceof Ant && ((Ant) e).getState() == AntState.FOODSEARCH) {
                         endPosition = pos;
                         newPoint = point;
                         this.currentState = AntState.FOODSEARCH;
-                        System.out.println("Ant-" + this.hashCode() + ": Switching to foodsearch mode");
+                        System.out.println("Ant-" + endPosition + ": Switching to foodsearch mode");
                     } else if (e instanceof Trail && ((Trail) e).getOrigin() != this.hashCode()) { // origin so ant doesn't follow own trail
                         double strength = ((Trail) e).getStrength();
                         if (strength < lowFactor) {
@@ -95,8 +96,8 @@ public class Ant implements Entity {
                             endPosition = pos;
                             newPoint = point;
                             this.currentState = AntState.FOODSEARCH;
-                            System.out.println("Ant-" + this.hashCode() + ": Switching to foodsearch mode");
-                        }else{
+                            System.out.println("Ant-" + endPosition + ": Switching to foodsearch mode");
+                        } else {
                             continue;
                         }
                         break outerloop;
@@ -133,7 +134,7 @@ public class Ant implements Entity {
                         endPosition = pos;
                         newPoint = point;
                         this.currentState = AntState.FOODRETRIEVE;
-                        System.out.println("Ant-" + this.hashCode() + ": Switching to foodretrieve mode");
+                        System.out.println("Ant-" + endPosition + ": Switching to foodretrieve mode");
                     } else if (e instanceof Trail && ((Trail) e).getOrigin() != this.hashCode()) { // origin so ant doesn't follow own trail
                         double strength = ((Trail) e).getStrength();
                         if (strength > highFactor) {
@@ -152,7 +153,7 @@ public class Ant implements Entity {
             this.emptySteps++;
 
             if (this.emptySteps > status.getAntEmptySteps()) {
-                System.out.println("Ant-" + this.hashCode() + ": Switching to explore mode");
+                System.out.println("Ant-" + endPosition + ": Switching to explore mode");
                 this.currentState = AntState.EXPLORE;
                 this.emptySteps = 0;
             }
@@ -183,7 +184,7 @@ public class Ant implements Entity {
                         endPosition = pos;
                         newPoint = point;
                         this.currentState = AntState.FOODSEARCH;
-                        System.out.println("Ant-" + this.hashCode() + ": Switching to foodsearch mode");
+                        System.out.println("Ant-" + endPosition + ": Switching to foodsearch mode");
                     } else if (e instanceof Trail && ((Trail) e).getOrigin() != this.hashCode()) { // origin so ant doesn't follow own trail
                         double strength = ((Trail) e).getStrength();
                         if (strength > highFactor) {
