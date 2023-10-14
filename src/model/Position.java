@@ -30,9 +30,120 @@ public class Position {
         return y;
     }
 
+    public AntDirection getRelativeChange(Position p) {
+        if (x == p.getX() && y > p.getY()) {
+            return AntDirection.NORTH;
+        } else if (x == p.getX() && y < p.getY()) {
+            return AntDirection.SOUTH;
+        } else if (x > p.getX() && y == p.getY()) {
+            return AntDirection.WEST;
+        } else if (x < p.getX() && y == p.getY()) {
+            return AntDirection.EAST;
+        } else if (x > p.getX() && y > p.getY()) {
+            return AntDirection.NORTHWEST;
+        } else if (x < p.getX() && y > p.getY()) {
+            return AntDirection.NORTHEAST;
+        } else if (x > p.getX() && y < p.getY()) {
+            return AntDirection.SOUTHWEST;
+        } else if (x < p.getX() && y < p.getY()) {
+            return AntDirection.SOUTHEAST;
+        } else {
+            return AntDirection.NORTH;
+        }
+    }
+
+    public Position[] getPossibleNextPosition(AntDirection direction) {
+        //Geradeaus, Links, Rechts, Halblinks, Halbrechts
+        switch (direction) {
+            case NORTH:
+                return new Position[]{
+                        new Position(x, y - 1, status),
+                        new Position(x - 1, y, status),
+                        new Position(x + 1, y, status),
+                        new Position(x - 1, y - 1, status),
+                        new Position(x + 1, y - 1, status),
+                };
+            case NORTHEAST:
+                return new Position[]{
+                        new Position(x - 1, y + 1, status),
+                        new Position(x - 1, y - 1, status),
+                        new Position(x + 1, y + 1, status),
+                        new Position(x, y - 1, status),
+                        new Position(x + 1, y, status),
+                };
+            case EAST:
+                return new Position[]{
+                        new Position(x + 1, y, status),
+                        new Position(x, y - 1, status),
+                        new Position(x, y + 1, status),
+                        new Position(x - 1, y + 1, status),
+                        new Position(x + 1, y + 1, status),
+                };
+            case SOUTHEAST:
+                return new Position[]{
+                        new Position(x, y + 1, status),
+                        new Position(x + 1, y + 1, status),
+                        new Position(x - 1, y + 1, status),
+                        new Position(x + 1, y, status),
+                        new Position(x - 1, y, status),
+                };
+            case SOUTH:
+                return new Position[]{
+                        new Position(x , y + 1, status),
+                        new Position(x - 1, y, status),
+                        new Position(x + 1, y , status),
+                        new Position(x + 1, y + 1, status),
+                        new Position(x - 1, y + 1, status),
+                };
+            case SOUTHWEST:
+                return new Position[]{
+                        new Position(x + 1, y - 1, status),
+                        new Position(x - 1, y - 1, status),
+                        new Position(x + 1, y + 1, status),
+                        new Position(x - 1, y, status),
+                        new Position(x , y + 1, status),
+                };
+            case WEST:
+                return new Position[]{
+                        new Position(x - 1, y, status),
+                        new Position(x , y - 1, status),
+                        new Position(x , y + 1, status),
+                        new Position(x - 1, y - 1, status),
+                        new Position(x + 1, y - 1, status),
+                };
+            case NORTHWEST:
+                return new Position[]{
+                        new Position(x - 1, y - 1, status),
+                        new Position(x - 1, y + 1, status),
+                        new Position(x + 1, y - 1, status),
+                        new Position(x - 1, y, status),
+                        new Position(x, y - 1 , status),
+                };
+            default:
+                return null;
+        }
+    }
+
 
     @Override
-    public Position clone() {
-        return new Position(x, y, status);
+    public boolean equals(Object obj) {
+        if (obj instanceof Position) {
+            Position p = (Position) obj;
+            return p.getX() == x && p.getY() == y;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(x) + Integer.hashCode(y);
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }

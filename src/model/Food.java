@@ -8,4 +8,5 @@ public class Food implements Entity {
     public void run(GameState gameState, Status status, Point point) {
 
     }
+
 }
