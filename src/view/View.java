@@ -62,7 +62,7 @@ public class View {
      * Reset the canvas to black
      */
     private void resetCanvas() {
-        setPixels(width / 2, height / 2, width, Color.BLACK);
+        setPixels(width / 2, height / 2, width, Color.WHITE);
     }
 
     /**
@@ -79,13 +79,10 @@ public class View {
         if (y < 0) y = 0;
         if (y > height) y = height;
 
-// ToDo: temp fix
-        cd.setPixel(x, y, color);
-
-//        for (int i = x - size / 2; i < x + size / 2; i++) {4
-//            for (int j = y - size / 2; j < y + size / 2; j++) {
-//                cd.setPixel(i, j, color);
-//            }
-//        }
+        for (int i = x - size / 2; i <= x + size / 2; i++) {
+            for (int j = y - size / 2; j <= y + size / 2; j++) {
+                cd.setPixel(i, j, color);
+            }
+        }
     }
 }

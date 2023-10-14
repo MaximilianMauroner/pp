@@ -17,12 +17,12 @@ public class StartProgramm {
 
     //The following settings are graphical ONLY, so that the individual entities are easier to see.
     //They do not affect the simulation.
-    public static final int ANT_SIZE = 1;
-    public static final int FOOD_SOURCE_SIZE = 1;
-    public static final int COLONY_HOME_SIZE = 1;
-    public static final int OBSTACLE_SIZE = 1;
-    public static final int TRAIL_SIZE = 1;
-    public static final int SCALE_BY = 1;
+    public static final int ANT_SIZE = 5;
+    public static final int FOOD_SOURCE_SIZE = 30;
+    public static final int COLONY_HOME_SIZE = 40;
+    public static final int OBSTACLE_SIZE = 10;
+    public static final int TRAIL_SIZE = 2;
+    public static final int SCALE_BY = 4;
 
     public static final int WIDTH = 225 * SCALE_BY;
     public static final int HEIGHT = 225 * SCALE_BY;
@@ -53,12 +53,12 @@ public class StartProgramm {
 
         Position position1 = new Position(10, 10, s);
         Position position2 = new Position(20, 20, s);
-        Position position3 = new Position(30, 30, s);
-        Position position4 = new Position(140, 140, s);
-        Position position5 = new Position(100, 200, s);
-        Position position6 = new Position(195, 30, s);
-        Position position7 = new Position(220, 220, s);
-        Position position8 = new Position(141, 139, s);
+        Position position3 = new Position(300, 30, s);
+        Position position4 = new Position(400, 400, s);
+        Position position5 = new Position(300, 300, s);
+        Position position6 = new Position(295, 30, s);
+        Position position7 = new Position(800, 800, s);
+        Position position8 = new Position(401, 399, s);
 
 
         GameState gs = new GameState(

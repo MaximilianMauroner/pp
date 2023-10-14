@@ -28,6 +28,7 @@ public class Point {
         for (Entity e : entities) {
             if (e instanceof Trail) {
                 ((Trail) e).changeStrength(trail.getStrength());
+                ((Trail) e).updateOrigin(trail.getOrigin());
                 return;
             }
         }
