@@ -10,6 +10,7 @@ import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class StartProgramm {
@@ -38,42 +39,19 @@ public class StartProgramm {
     public static void main(String[] args) {
         Status s = new Status(WIDTH, HEIGHT, 10, 20,10, 100, 0.999, 0.2, 0.7);
         View view = new View(s.getWidth(), s.getHeight());
-
-
         Entity ant1 = new Ant();
-        Entity ant2 = new Ant();
-        Entity ant3 = new Ant();
-        Entity ant4 = new Ant();
-
         Entity food = new Food();
         Entity obstacle = new Obstacle();
         Entity colony = new Hive();
-
-        Entity trail1 = new Trail();
-
-        Position position1 = new Position(10, 10, s);
-        Position position2 = new Position(20, 20, s);
-        Position position3 = new Position(300, 30, s);
-        Position position4 = new Position(400, 400, s);
-        Position position5 = new Position(300, 300, s);
-        Position position6 = new Position(295, 30, s);
-        Position position7 = new Position(800, 800, s);
-        Position position8 = new Position(401, 399, s);
-
-
-        GameState gs = new GameState(
-                new ArrayList<>(List.of(
-                        new Point(position1, new ArrayList<>(List.of(ant1))),
-                        new Point(position2, new ArrayList<>(List.of(ant2))),
-                        new Point(position3, new ArrayList<>(List.of(ant3))),
-                        new Point(position8, new ArrayList<>(List.of(ant4))),
-                        new Point(position4, new ArrayList<>(List.of(food))),
-                        new Point(position5, new ArrayList<>(List.of(obstacle))),
-                        new Point(position6, new ArrayList<>(List.of(trail1))),
-                        new Point(position7, new ArrayList<>(List.of(colony)))
-                )), s
-        );
-
+      
+        GameState gs =  new GameState(new HashMap<>(), s);
+        ClusterGenerator.generate(ant1, new Position(100, 100, s), 5, gs);
+        ClusterGenerator.generate(food, new Position(150, 150, s), 3, gs);
+        ClusterGenerator.generate(obstacle, new Position(10, 10, s), 5, gs);
+        ClusterGenerator.generate(colony, new Position(50, 50, s), 10, gs);
+        System.out.println(gs.getPoints().size());
+      
+      
         GameplayLoop gameplayLoop = new GameplayLoop(view, gs);
         gameplayLoop.start();
     }

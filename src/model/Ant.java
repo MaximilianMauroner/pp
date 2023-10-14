@@ -208,7 +208,12 @@ public class Ant implements Entity {
         oldPoint.getEntities().remove(this);
     }
 
-//    private double[] getTrailIntensities(Point oldPoint) {
+    @Override
+    public Entity clone() {
+        return new Ant(this.currentState,this.direction,this.gameState,this.status);
+    }
+
+    //    private double[] getTrailIntensities(Point oldPoint) {
 //        double[] weights = new double[4];
 //
 ////        int weightIdx = 0;

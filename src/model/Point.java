@@ -11,6 +11,11 @@ public class Point {
         this.position = position;
         this.entities = entities;
     }
+    public Point(Position position, Entity entity) {
+        this.position = position;
+        this.entities = new ArrayList<>();
+        this.entities.add(entity);
+    }
 
     public Position getPosition() {
         return position;

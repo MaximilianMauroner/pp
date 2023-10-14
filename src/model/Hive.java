@@ -8,4 +8,9 @@ public class Hive implements Entity {
     public void run(GameState gameState, Status status, Point point) {
 
     }
+
+    @Override
+    public Entity clone() {
+        return new Hive();
+    }
 }

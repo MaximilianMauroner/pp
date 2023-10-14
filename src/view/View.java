@@ -7,6 +7,7 @@ import src.model.*;
 import src.model.Point;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
 
 public class View {
@@ -42,8 +43,8 @@ public class View {
      */
     private void drawElements(GameState gameState) {
 
-        List<Point> points = gameState.getPoints();
-        for (Point point : points) {
+        HashMap<Position,Point> points = gameState.getPoints();
+        for (Point point : points.values()) {
             int x = point.getPosition().getX();
             int y = point.getPosition().getY();
 
