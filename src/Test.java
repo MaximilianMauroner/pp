@@ -5,7 +5,7 @@ import src.model.*;
 
 import java.awt.*;
 
-public class StartProgramm {
+public class Test {
 
 
     //The following settings are graphical ONLY, so that the individual entities are easier to see.
