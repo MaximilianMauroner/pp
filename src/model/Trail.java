@@ -4,6 +4,12 @@ import src.controller.GameState;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Class for the trail entity
+ * Trail objects have no other utility than to be on a position on the grid with a given strength and origin (e.g. ant that created it)
+ * Trail objects can be read and written to but do not affect the game themselves
+ * The only logic they have is to decay over time
+ */
 public class Trail implements Entity {
     private ConcurrentHashMap<Integer, Double> value = new ConcurrentHashMap<Integer, Double>();
 
@@ -15,6 +21,9 @@ public class Trail implements Entity {
     }
 
 
+    /**
+     * Returns the strength of the trail
+     */
     public double getStrength() {
         double total = 0;
         if (!this.value.isEmpty()) {
@@ -25,6 +34,11 @@ public class Trail implements Entity {
         return total / this.value.size();
     }
 
+    /**
+     * Changes the strength of the trail and updates the origin to the most recent ant that created it
+     * @param strength strength to be added
+     * @param origin ant that created the trail (using ant objects hashcode)
+     */
     public void changeStrength(double strength, int origin) {
         double value = this.value.containsKey(origin) ? this.value.get(origin):0;
         value += strength;
@@ -36,10 +50,19 @@ public class Trail implements Entity {
         this.value.put(origin, value);
     }
 
+    /**
+     * Checks if the trail is new
+     * @param origin origin of the trail
+     * @return true if the trail is new
+     */
     public boolean isNewPath(int origin) {
         return !(this.value.containsKey(origin) && this.value.get(origin) > 0.1);
     }
 
+    /**
+     * Combines two trails
+     * @param trail trail to be combined with
+     */
     public void combineTrails(Trail trail) {
         trail.value.forEach((k,v) -> {
             if (this.value.containsKey(k)) {

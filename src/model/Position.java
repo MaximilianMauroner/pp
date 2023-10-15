@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Class for the position of the entities
+ * The position is defined by the x and y coordinates
+ */
 public class Position {
     private int x, y;
     private Status status;
@@ -34,6 +38,11 @@ public class Position {
         return y;
     }
 
+
+    /**
+     * Calculates the direction to the given position (e.g. position the ant object moves to)
+     * @param p the position to which the direction is calculated
+     */
     public AntDirection getRelativeChange(Position p) {
         if (x == p.getX() && y > p.getY()) {
             return AntDirection.NORTH;
@@ -56,6 +65,10 @@ public class Position {
         }
     }
 
+    /**
+     * Calculates possible next positions given direction (e.g. position the ant object can move to)
+     * @param direction direction the ant came from
+     */
     public List<Position> getPossibleNextPosition(AntDirection direction) {
         //Geradeaus, Links, Rechts, Halblinks, Halbrechts
         switch (direction) {

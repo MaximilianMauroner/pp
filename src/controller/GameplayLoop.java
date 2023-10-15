@@ -6,14 +6,15 @@ public class GameplayLoop extends Thread {
 
     private final View view;
     private final GameState gameState;
-
+    private boolean isRunning = false;
     public GameplayLoop(View view, GameState gameState) {
         this.view = view;
         this.gameState = gameState;
     }
 
-    private boolean isRunning = false;
-
+    /**
+     * Starts the game loop. The game loop will run until isRunning is set to false.
+     */
     public void run() {
         isRunning = true;
         long now;
@@ -41,6 +42,11 @@ public class GameplayLoop extends Thread {
         }
     }
 
+
+    /**
+     * Sets the running state of the game loop.
+     * @param running true if the game loop should run, false if the game loop should stop
+     */
     public void setRunning(boolean running) {
         isRunning = running;
     }

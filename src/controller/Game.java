@@ -15,6 +15,9 @@ public class Game {
         this.view = new View(status.getWidth(), status.getHeight());
     }
 
+    /**
+     * Generates the game state with randomized parameters
+     */
     public void generate() {
         Entity ant = new Ant();
         Entity food = new Food();
@@ -22,6 +25,15 @@ public class Game {
         Entity hive = new Hive();
 
         this.gameState = new GameState(new ConcurrentHashMap<>(), status);
+
+        // randomly spawn obstacles
+        int obstacleCount = (int) (Math.random() * status.getObstacleCount());
+        for (int i = 0; i < obstacleCount; i++) {
+            int obstacleX = (int) (Math.random() * status.getWidth());
+            int obstacleY = (int) (Math.random() * status.getHeight());
+            Position obstaclePosition = new Position(obstacleX, obstacleY, status);
+            ClusterGenerator.generate(obstacle, obstaclePosition, status.getObstacleSize(), gameState);
+        }
 
         // generate hive position
         int hiveX = (int) (Math.random() * status.getWidth());
@@ -53,22 +65,21 @@ public class Game {
             Position foodPosition = new Position(foodX, foodY, status);
             ClusterGenerator.generate(food, foodPosition, status.getFoodSize(), gameState);
         }
-
-        // randomly spawn obstacles
-        int obstacleCount = (int) (Math.random() * status.getObstacleCount());
-        for (int i = 0; i < obstacleCount; i++) {
-            int obstacleX = (int) (Math.random() * status.getWidth());
-            int obstacleY = (int) (Math.random() * status.getHeight());
-            Position obstaclePosition = new Position(obstacleX, obstacleY, status);
-            ClusterGenerator.generate(obstacle, obstaclePosition, status.getObstacleSize(), gameState);
-        }
     }
 
+    /**
+     * Starts the game without duration limit
+     */
     public void start() {
         GameplayLoop gameplayLoop = new GameplayLoop(view, gameState);
         gameplayLoop.start();
     }
 
+
+    /**
+     * Starts the game with duration limit
+     * @param duration duration of the game in milliseconds
+     */
     public void start(int duration) {
         GameplayLoop gameplayLoop = new GameplayLoop(view, gameState);
         gameplayLoop.start();
@@ -83,8 +94,14 @@ public class Game {
         gameplayLoop.setRunning(false);
     }
 
-    private int calculatePosition(int pos, int radius) {
-        return (int) (Math.random() * radius * 2) - radius + pos;
+
+    /**
+     * Calculates a random position within a radius around a given position
+     * @param pos position around which the random position is calculated
+     * @param dist distance to the given position (only distance along one axis, not euclidean distance)
+     */
+    private int calculatePosition(int pos, int dist) {
+        return (int) (Math.random() * dist * 2) - dist + pos;
     }
 
 }

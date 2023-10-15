@@ -5,6 +5,9 @@ import src.controller.GameState;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for generating clusters of entities
+ */
 public class ClusterGenerator {
 
     public static void generate(Entity entity, Position position, int size, GameState gs) {
@@ -16,6 +19,7 @@ public class ClusterGenerator {
                     p = new Point(pos, entity.clone());
                     gs.setPoint(p);
                 } else {
+                    p.getEntities().clear();
                     p.getEntities().add(entity.clone());
                 }
             }

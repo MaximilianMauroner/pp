@@ -3,8 +3,16 @@ package src;
 import src.controller.Game;
 import src.controller.GameState;
 import src.model.*;
+import src.model.Point;
 
 import java.awt.*;
+
+/*
+Distribution of work:
+- Maximilian: Model(Position, Point, Status, Cluster Generator), Controller(GameState, GameLoop)
+- Lukas: Model(Entities), Controller(Ant State Machine, Game generation)
+- Christopher: View
+ */
 
 public class Test {
     public static final int SCALE_BY = 4;
@@ -23,9 +31,9 @@ public class Test {
     public static final Color TRAIL_COLOR = Color.BLUE;
 
     public static void main(String[] args) {
-        Status s = new Status(WIDTH, HEIGHT, SCALE_BY, Integer.MAX_VALUE,
-                20, 20, 10,
-                100, 50, 100,
+        Status s = new Status(WIDTH, HEIGHT, SCALE_BY, 60000,
+                100, 20, 7,
+                30, 50, 100,
                 10, 20, 8, 0.9, 0.2, 0.7);
         Game game = new Game(s);
 
@@ -33,7 +41,9 @@ public class Test {
             System.out.println("Game " + i + " starting");
             game.generate();
             game.start(s.getSimulationTime());
-            s.randomize(0.2);
+
+            System.out.println("Game " + i + " finished");
+            s.randomize(0.3);
         }
     }
 }

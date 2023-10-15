@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Class for the ant entity and its logic
+ */
 public class Ant implements Entity {
     private AntState currentState = AntState.EXPLORE;
     private int emptySteps = 0;
@@ -29,26 +32,57 @@ public class Ant implements Entity {
         System.out.println("Ant created");
     }
 
+
+    /**
+     * Starts the State Logic of the Ant. The Ant will move to the next Point.
+     * @param gameState the current game state
+     * @param status the current parameters of the game
+     * @param oldPoint the point the ant is currently on
+     */
     @Override
-    public void run(GameState gameState, Status status, Point point) {
+    public void run(GameState gameState, Status status, Point oldPoint) {
         this.gameState = gameState;
         this.status = status;
+
+        // filter out positions with obstacles
+        List<Position> nearestPositions = oldPoint.getPosition().getPossibleNextPosition(this.direction);
+        for (Iterator<Position> iter = nearestPositions.iterator(); iter.hasNext(); ) {
+            Position pos = iter.next();
+            Point point = gameState.getPoint(pos);
+            if (point != null && point.hasObstacle()) {
+                iter.remove();
+            }
+        }
+
+        // ant runs into a dead end and has to turn around
+        if (nearestPositions.isEmpty()) {
+            this.direction = AntDirection.values()[(int) (Math.random() * AntDirection.values().length)];
+            return; // ant doesn't move for one step
+        }
+
+        Position endPosition = nearestPositions.get((int) (Math.random() * nearestPositions.size()));
+
         switch (currentState) {
             case EXPLORE:
-                explore(point);
+                explore(oldPoint, nearestPositions, endPosition);
                 break;
             case FOODSEARCH:
-                foodSearch(point);
+                foodSearch(oldPoint, nearestPositions, endPosition);
                 break;
             case FOODRETRIEVE:
-                foodRetrieve(point);
+                foodRetrieve(oldPoint, nearestPositions, endPosition);
                 break;
         }
     }
 
 
-    public void explore(Point oldPoint) {
-        List<Position> nearestPositions = oldPoint.getPosition().getPossibleNextPosition(this.direction);
+    /**
+     * The ant will explore the environment and leave a trail.
+     * @param oldPoint the point the ant is currently on
+     * @param nearestPositions the possible next positions of the ant
+     * @param endPosition the position the ant will move to (if no other position is chosen)
+     */
+    public void explore(Point oldPoint, List<Position> nearestPositions, Position endPosition) {
         // ant prefers empty positions in exploration mode
         ArrayList<Position> emptyPositions = new ArrayList<>();
         for (Iterator<Position> iter = nearestPositions.iterator(); iter.hasNext(); ) {
@@ -56,15 +90,12 @@ public class Ant implements Entity {
             Point point = gameState.getPoint(pos);
             if (point == null) {
                 emptyPositions.add(pos);
-            } else if (point.hasObstacle()) {
-                iter.remove();
             }
         }
-        Position endPosition;
-        if (emptyPositions.isEmpty())
-            endPosition = nearestPositions.get((int) (Math.random() * nearestPositions.size()));
-        else
+
+        if (!emptyPositions.isEmpty())
             endPosition = emptyPositions.get((int) (Math.random() * emptyPositions.size()));
+
         // overwrite endPosition if there is a trail, food or another ant
         Point newPoint = null;
         double lowFactor = status.getLowTrail() - Math.random();
@@ -103,27 +134,18 @@ public class Ant implements Entity {
                 }
             }
         }
-        this.direction = oldPoint.getPosition().getRelativeChange(endPosition);
-        if (newPoint == null) {
-            newPoint = new Point(endPosition, new ArrayList<>());
-            gameState.setPoint(newPoint);
-        }
-        oldPoint.addTrail(new Trail(1, this.hashCode()));
-        newPoint.getEntities().add(this);
-        oldPoint.getEntities().remove(this);
 
+        move(oldPoint, newPoint, endPosition);
     }
 
-    public void foodSearch(Point oldPoint) {
-        List<Position> nearestPositions = oldPoint.getPosition().getPossibleNextPosition(this.direction);
-        for (Iterator<Position> iter = nearestPositions.iterator(); iter.hasNext(); ) {
-            Position pos = iter.next();
-            Point point = gameState.getPoint(pos);
-            if (point != null && point.hasObstacle()) {
-                iter.remove();
-            }
-        }
-        Position endPosition = nearestPositions.get((int) (Math.random() * nearestPositions.size()));
+
+    /**
+     * The ant will search for food and follow trails.
+     * @param oldPoint the point the ant is currently on
+     * @param nearestPositions the possible next positions of the ant
+     * @param endPosition the position the ant will move to (if no other position is chosen)
+     */
+    public void foodSearch(Point oldPoint, List<Position> nearestPositions, Position endPosition) {
         Point newPoint = null;
         double highestTrail = 0;
         double highFactor = status.getHighTrail() - Math.random();
@@ -148,8 +170,7 @@ public class Ant implements Entity {
             }
         }
 
-        this.direction = oldPoint.getPosition().getRelativeChange(endPosition);
-
+        // if no trail is found, ant will continue to explore
         if (newPoint == null || highestTrail < highFactor) {
             this.emptySteps++;
 
@@ -160,26 +181,17 @@ public class Ant implements Entity {
             }
         }
 
-        if (newPoint == null) {
-            newPoint = new Point(endPosition, new ArrayList<>());
-            gameState.setPoint(newPoint);
-        }
-
-        oldPoint.addTrail(new Trail(1, this.hashCode()));
-        newPoint.getEntities().add(this);
-        oldPoint.getEntities().remove(this);
+        move(oldPoint, newPoint, endPosition);
     }
 
-    public void foodRetrieve(Point oldPoint) {
-        List<Position> nearestPositions = oldPoint.getPosition().getPossibleNextPosition(this.direction);
-        for (Iterator<Position> iter = nearestPositions.iterator(); iter.hasNext(); ) {
-            Position pos = iter.next();
-            Point point = gameState.getPoint(pos);
-            if (point != null && point.hasObstacle()) {
-                iter.remove();
-            }
-        }
-        Position endPosition = nearestPositions.get((int) (Math.random() * nearestPositions.size()));
+
+    /**
+     * The ant will retrieve food and follow trails
+     * @param oldPoint the point the ant is currently on
+     * @param nearestPositions the possible next positions of the ant
+     * @param endPosition the position the ant will move to (if no other position is chosen)
+     */
+    public void foodRetrieve(Point oldPoint, List<Position> nearestPositions, Position endPosition) {
         Point newPoint = null;
         double highFactor = status.getHighTrail() - Math.random();
         for (Position pos : nearestPositions) {
@@ -192,6 +204,7 @@ public class Ant implements Entity {
                         newPoint = point;
                         this.currentState = AntState.FOODSEARCH;
                         this.gameState.addFood();
+                        System.out.println("Ant-" + this.hashCode() + ": Reached hive, switching to foodsearch mode");
                     } else if (e instanceof Trail && ((Trail) e).isNewPath(this.hashCode())) { // origin so ant doesn't follow own trail
                         double strength = ((Trail) e).getStrength();
                         if (strength > highFactor) {
@@ -203,6 +216,17 @@ public class Ant implements Entity {
             }
         }
 
+        move(oldPoint, newPoint, endPosition);
+    }
+
+
+    /**
+     * Moves the ant to the new position and updates the trail.
+     * @param oldPoint the point the ant is currently on
+     * @param newPoint the point the ant will move to
+     * @param endPosition the position the ant will move to (if not overwritten previously by newPoint)
+     */
+    private void move(Point oldPoint, Point newPoint, Position endPosition) {
         this.direction = oldPoint.getPosition().getRelativeChange(endPosition);
 
         if (newPoint == null) {
@@ -219,44 +243,5 @@ public class Ant implements Entity {
     public Entity clone() {
         return new Ant(this.currentState,this.direction,this.gameState,this.status);
     }
-
-    //    private double[] getTrailIntensities(Point oldPoint) {
-//        double[] weights = new double[4];
-//
-////        int weightIdx = 0;
-////        for (AntDirection direction : AntDirection.values()) {
-////            Position currentPosition = oldPoint.getPosition();
-////            for (int i = 0; i < status.getAntViewDistance(); i++) {
-////                Position nextPosition = currentPosition.getPossibleNextPosition(direction)[0];
-////                Point nextPoint = gameState.getPoint(nextPosition);
-////                if (nextPoint != null && (weights[weightIdx] == 0 || weights[weightIdx] < nextPoint.getTrail()))
-////                    weights[weightIdx] = nextPoint.getTrail();
-////
-////                currentPosition = nextPosition;
-////            }
-////            weightIdx++;
-////        }
-//
-//        int weightIdx = 0;
-//        Position currentPosition = oldPoint.getPosition();
-//        for (Position sourround : currentPosition.getPossibleNextPosition(direction)) {
-//            AntDirection viewDirection = currentPosition.getRelativeChange(sourround);
-//            // get sourrounding points in view distance radius
-//            for (int i = 0; i < status.getAntViewDistance(); i++) {
-//                // get next point in direction
-//                Position nextPosition = currentPosition.getPossibleNextPosition(viewDirection)[0];
-//                Point nextPoint = gameState.getPoint(nextPosition);
-//                if (nextPoint != null && (weights[weightIdx] == 0 || weights[weightIdx] < nextPoint.getTrail()))
-//                    weights[weightIdx] = nextPoint.getTrail();
-//
-//                currentPosition = nextPosition;
-//            }
-//            currentPosition = oldPoint.getPosition();
-//            weightIdx++;
-//        }
-//
-//
-//        return weights;
-//    }
 
 }

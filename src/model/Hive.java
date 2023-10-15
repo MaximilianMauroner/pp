@@ -2,6 +2,12 @@ package src.model;
 
 import src.controller.GameState;
 
+
+/**
+ * Class for the hive entity
+ * Hive objects have no other utility than to be on a position on the grid
+ * Therefore it does not have any logic
+ */
 public class Hive implements Entity {
 
     public Hive() {

@@ -1,5 +1,10 @@
 package src.model;
 
+/**
+ * Class for the status of the simulation
+ * The status contains all the parameters that can be changed by the user
+ * The status is used to create the simulation
+ */
 public class Status {
     private final int width, height, scale, simulationTime, antCount, foodCount, obstacleCount, foodSize, hiveSize, obstacleSize;
     private int antEmptySteps,foodHiveDistance, antSpawnRadius;
@@ -91,9 +96,11 @@ public class Status {
     }
 
 
+    /**
+     * Randomizes the values of parameters that affect game behavior
+     * @param confidence randomize values within interval of confidence in percent (e.g. if confidence is 0.1, then the value will be randomized within 10% of the original value)
+     */
     public void randomize(double confidence) {
-        // randomize values within interval of confidence in percent
-        // e.g. if confidence is 0.1, then the value will be randomized within 10% of the original value
         this.antEmptySteps = (int) randomize(antEmptySteps, confidence,1,40);
         this.antSpawnRadius = (int) randomize(antSpawnRadius, confidence, 1,50);
         this.foodHiveDistance = (int) randomize(foodHiveDistance, confidence,1,200);
@@ -102,8 +109,16 @@ public class Status {
         this.highTrail = randomize(highTrail, confidence,0,1);
     }
 
+
+    /**
+     * Randomizes of a value with a given confidence within a given interval
+     * @param value value to be randomized
+     * @param confidence randomize values within interval of confidence in percent
+     * @param lowerLimit lower limit of the randomized value
+     * @param upperLimit upper limit of the randomized value
+     */
     private double randomize(double value, double confidence, int lowerLimit, int upperLimit) {
-        double result =value * (1 + (Math.random() * confidence * 2 - confidence));
+        double result = value * (1 + (Math.random() * confidence * 2 - confidence));
         if(result > upperLimit){
             this.randomize(value, confidence, lowerLimit, upperLimit);
         }else if(result < lowerLimit){
