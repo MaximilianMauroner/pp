@@ -1,5 +1,9 @@
 package src.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Position {
     private int x, y;
     private Status status;
@@ -52,73 +56,73 @@ public class Position {
         }
     }
 
-    public Position[] getPossibleNextPosition(AntDirection direction) {
+    public List<Position> getPossibleNextPosition(AntDirection direction) {
         //Geradeaus, Links, Rechts, Halblinks, Halbrechts
         switch (direction) {
             case NORTH:
-                return new Position[]{
+                return new ArrayList<>(Arrays.asList(
                         new Position(x, y - 1, status),
                         new Position(x - 1, y, status),
                         new Position(x + 1, y, status),
                         new Position(x - 1, y - 1, status),
-                        new Position(x + 1, y - 1, status),
-                };
+                        new Position(x + 1, y - 1, status)
+                        ));
             case NORTHEAST:
-                return new Position[]{
+                return new ArrayList<>(Arrays.asList(
                         new Position(x - 1, y + 1, status),
                         new Position(x - 1, y - 1, status),
                         new Position(x + 1, y + 1, status),
                         new Position(x, y - 1, status),
-                        new Position(x + 1, y, status),
-                };
+                        new Position(x + 1, y, status)
+                        ));
             case EAST:
-                return new Position[]{
+                return new ArrayList<>(Arrays.asList(
                         new Position(x + 1, y, status),
                         new Position(x, y - 1, status),
                         new Position(x, y + 1, status),
                         new Position(x - 1, y + 1, status),
-                        new Position(x + 1, y + 1, status),
-                };
+                        new Position(x + 1, y + 1, status)
+                        ));
             case SOUTHEAST:
-                return new Position[]{
+                return new ArrayList<>(Arrays.asList(
                         new Position(x, y + 1, status),
                         new Position(x + 1, y + 1, status),
                         new Position(x - 1, y + 1, status),
                         new Position(x + 1, y, status),
-                        new Position(x - 1, y, status),
-                };
+                        new Position(x - 1, y, status)
+                        ));
             case SOUTH:
-                return new Position[]{
+                return new ArrayList<>(Arrays.asList(
                         new Position(x , y + 1, status),
                         new Position(x - 1, y, status),
                         new Position(x + 1, y , status),
                         new Position(x + 1, y + 1, status),
-                        new Position(x - 1, y + 1, status),
-                };
+                        new Position(x - 1, y + 1, status)
+                        ));
             case SOUTHWEST:
-                return new Position[]{
+                return new ArrayList<>(Arrays.asList(
                         new Position(x + 1, y - 1, status),
                         new Position(x - 1, y - 1, status),
                         new Position(x + 1, y + 1, status),
                         new Position(x - 1, y, status),
-                        new Position(x , y + 1, status),
-                };
+                        new Position(x , y + 1, status)
+                        ));
             case WEST:
-                return new Position[]{
+                return new ArrayList<>(Arrays.asList(
                         new Position(x - 1, y, status),
                         new Position(x , y - 1, status),
                         new Position(x , y + 1, status),
                         new Position(x - 1, y - 1, status),
-                        new Position(x + 1, y - 1, status),
-                };
+                        new Position(x + 1, y - 1, status)
+                        ));
             case NORTHWEST:
-                return new Position[]{
+                return new ArrayList<>(Arrays.asList(
                         new Position(x - 1, y - 1, status),
                         new Position(x - 1, y + 1, status),
                         new Position(x + 1, y - 1, status),
                         new Position(x - 1, y, status),
-                        new Position(x, y - 1 , status),
-                };
+                        new Position(x, y - 1 , status)
+                        ));
             default:
                 return null;
         }
@@ -127,8 +131,7 @@ public class Position {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Position) {
-            Position p = (Position) obj;
+        if (obj instanceof Position p) {
             return p.getX() == x && p.getY() == y;
         }
         return false;

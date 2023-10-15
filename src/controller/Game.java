@@ -3,7 +3,7 @@ package src.controller;
 import src.model.*;
 import src.view.View;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Game {
     private GameState gameState;
@@ -21,7 +21,7 @@ public class Game {
         Entity obstacle = new Obstacle();
         Entity hive = new Hive();
 
-        this.gameState = new GameState(new HashMap<>(), status);
+        this.gameState = new GameState(new ConcurrentHashMap<>(), status);
 
         // generate hive position
         int hiveX = (int) (Math.random() * status.getWidth());

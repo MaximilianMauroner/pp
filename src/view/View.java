@@ -7,7 +7,7 @@ import src.model.*;
 import src.model.Point;
 
 import java.awt.*;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class View {
     private final int width, height;
@@ -34,6 +34,7 @@ public class View {
         cd.show();
     }
 
+
     /**
      * drawElements is the actual methode to draw the given gameState on the canvas. The settings can be found in the Test class.
      * The canvas should be cleared before drawing again. Otherwise, the old elements will still be visible.
@@ -42,20 +43,40 @@ public class View {
      */
     private void drawElements(GameState gameState) {
 
-        HashMap<Position, Point> points = gameState.getPoints();
+        ConcurrentHashMap<Position, Point> points = gameState.getPoints();
         for (Point point : points.values()) {
             int x = point.getPosition().getX() * Test.SCALE_BY;
             int y = point.getPosition().getY() * Test.SCALE_BY;
 
             for (Entity entity : point.getEntities()) {
-                if (entity instanceof Trail e) setPixels(x, y, Test.SCALE_BY, new Color(
-                        (int) (Test.TRAIL_COLOR.getRed() * e.getStrength()),
-                        (int) (Test.TRAIL_COLOR.getGreen() * e.getStrength()),
-                        (int) (Test.TRAIL_COLOR.getBlue() * e.getStrength())));
+                if (entity instanceof Trail e) {
+                    double strength = e.getStrength();
+                    if(e.getStrength() > 1){
+                        strength = 1;
+                    }
+                    setPixels(x, y, Test.SCALE_BY, new Color(
+                            (int) (Test.TRAIL_COLOR.getRed() * strength),
+                            (int) (Test.TRAIL_COLOR.getGreen() * strength),
+                            (int) (Test.TRAIL_COLOR.getBlue() *strength)));
+                }
                 if (entity instanceof Food) setPixels(x, y, Test.SCALE_BY, Test.FOOD_SOURCE_COLOR);
                 if (entity instanceof Hive) setPixels(x, y, Test.SCALE_BY, Test.COLONY_HOME_COLOR);
                 if (entity instanceof Obstacle) setPixels(x, y, Test.SCALE_BY, Test.OBSTACLE_COLOR);
-                if (entity instanceof Ant) setPixels(x, y, Test.SCALE_BY, Test.ANT_COLOR);
+                if (entity instanceof Ant) {
+                    switch (((Ant) entity).getState()) {
+                        case EXPLORE:
+                            setPixels(x, y, Test.SCALE_BY, Test.ANT_DEFAULT_COLOR);
+                            break;
+                        case FOODSEARCH:
+                            setPixels(x, y, Test.SCALE_BY, Test.ANT_SEARCH_COLOR);
+
+                            break;
+                        case FOODRETRIEVE:
+                            setPixels(x, y, Test.SCALE_BY, Test.ANT_RETRIVE_COLOR);
+
+                            break;
+                    }
+                };
 
             }
         }

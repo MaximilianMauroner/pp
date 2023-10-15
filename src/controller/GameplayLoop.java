@@ -20,7 +20,7 @@ public class GameplayLoop extends Thread {
         long updateTime;
         long wait;
 
-        final int TARGET_FPS = 30;
+        final int TARGET_FPS = 60;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
 
         while (isRunning) {
@@ -44,4 +44,6 @@ public class GameplayLoop extends Thread {
     public void setRunning(boolean running) {
         isRunning = running;
     }
+
+
 }

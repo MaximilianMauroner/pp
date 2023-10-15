@@ -1,14 +1,13 @@
 package src.model;
 
 public class Status {
-    private int width, height, scale, simulationTime, antCount, antEmptySteps,
-            foodCount, obstacleCount, antSpawnRadius, foodHiveDistance, foodSize, hiveSize, obstacleSize;
-
-    private double traildecay, lowTrail, highTrail;
+    private final int width, height, scale, simulationTime, antCount, foodCount, obstacleCount, foodSize, hiveSize, obstacleSize;
+    private int antEmptySteps,foodHiveDistance, antSpawnRadius;
+    private double trailDecay, lowTrail, highTrail;
 
     public Status(int width, int height, int scale, int simulationTime, int antCount, int antEmptySteps, int foodCount,
                   int obstacleCount, int antSpawnRadius, int foodHiveDistance, int foodSize, int hiveSize, int obstacleSize,
-                  double traildecay, double lowTrail, double highTrail) {
+                  double trailDecay, double lowTrail, double highTrail) {
         this.width = width;
         this.height = height;
         this.scale = scale;
@@ -22,7 +21,7 @@ public class Status {
         this.foodSize = foodSize;
         this.hiveSize = hiveSize;
         this.obstacleSize = obstacleSize;
-        this.traildecay = traildecay;
+        this.trailDecay = trailDecay;
         this.lowTrail = lowTrail;
         this.highTrail = highTrail;
     }
@@ -80,7 +79,7 @@ public class Status {
     }
 
     public double getTrailDecay() {
-        return traildecay;
+        return trailDecay;
     }
 
     public double getLowTrail() {
@@ -95,15 +94,21 @@ public class Status {
     public void randomize(double confidence) {
         // randomize values within interval of confidence in percent
         // e.g. if confidence is 0.1, then the value will be randomized within 10% of the original value
-        this.antEmptySteps = (int) randomize(antEmptySteps, confidence);
-        this.antSpawnRadius = (int) randomize(antSpawnRadius, confidence);
-        this.foodHiveDistance = (int) randomize(foodHiveDistance, confidence);
-        this.traildecay = randomize(traildecay, confidence);
-        this.lowTrail = randomize(lowTrail, confidence);
-        this.highTrail = randomize(highTrail, confidence);
+        this.antEmptySteps = (int) randomize(antEmptySteps, confidence,1,40);
+        this.antSpawnRadius = (int) randomize(antSpawnRadius, confidence, 1,50);
+        this.foodHiveDistance = (int) randomize(foodHiveDistance, confidence,1,200);
+        this.trailDecay = randomize(trailDecay, confidence, 0,1);
+        this.lowTrail = randomize(lowTrail, confidence,0,1);
+        this.highTrail = randomize(highTrail, confidence,0,1);
     }
 
-    private double randomize(double value, double confidence) {
-        return value * (1 + (Math.random() * confidence * 2 - confidence));
+    private double randomize(double value, double confidence, int lowerLimit, int upperLimit) {
+        double result =value * (1 + (Math.random() * confidence * 2 - confidence));
+        if(result > upperLimit){
+            this.randomize(value, confidence, lowerLimit, upperLimit);
+        }else if(result < lowerLimit){
+            result = lowerLimit;
+        }
+        return result;
     }
 }

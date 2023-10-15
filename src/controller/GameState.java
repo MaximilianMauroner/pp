@@ -6,31 +6,32 @@ import src.model.Position;
 import src.model.Status;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GameState {
 
-    // List<Point> points;
-    HashMap<Position, Point> points;
+    ConcurrentHashMap<Position, Point> points;
+
+    int foodCount = 0;
 
     Status status;
 
-    public GameState(HashMap<Position, Point> points, Status status) {
+    public GameState(ConcurrentHashMap<Position, Point> points, Status status) {
         this.points = points;
 
         this.status = status;
     }
 
     public void getNextFrame() {
-        for (Point p : new ArrayList<>(points.values())) {
+        for (Point p : points.values()) {
             ArrayList<Entity> entities = new ArrayList<>(p.getEntities());
-
             for (Entity e : entities) {
                 e.run(this, status, p);
             }
         }
     }
 
-    public HashMap<Position,Point> getPoints() {
+    public ConcurrentHashMap<Position,Point> getPoints() {
         return this.points;
     }
 
@@ -44,5 +45,10 @@ public class GameState {
 
     public Status getStatus() {
         return status;
+    }
+
+    public void addFood() {
+        this.foodCount++;
+        System.out.println("Food added to hive" + this.foodCount);
     }
 }

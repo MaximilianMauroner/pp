@@ -3,6 +3,7 @@ package src.model;
 import src.controller.GameState;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClusterGenerator {
 
@@ -12,7 +13,7 @@ public class ClusterGenerator {
                 Position pos = new Position(position.getX() + i, position.getY() + j, gs.getStatus());
                 Point p = gs.getPoint(pos);
                 if (p == null) {
-                    p = new Point(position, entity.clone());
+                    p = new Point(pos, entity.clone());
                     gs.setPoint(p);
                 } else {
                     p.getEntities().add(entity.clone());
