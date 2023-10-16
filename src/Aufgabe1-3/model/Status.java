@@ -1,4 +1,4 @@
-package src.model;
+package model;
 
 /**
  * Class for the status of the simulation

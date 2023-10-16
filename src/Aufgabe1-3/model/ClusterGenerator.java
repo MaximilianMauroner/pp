@@ -1,9 +1,6 @@
-package src.model;
+package model;
 
-import src.controller.GameState;
-
-import java.util.ArrayList;
-import java.util.List;
+import controller.GameState;
 
 /**
  * Class for generating clusters of entities

@@ -1,4 +1,4 @@
-package src.model;
+package model;
 
 /**
  * Enum for the state of the ant

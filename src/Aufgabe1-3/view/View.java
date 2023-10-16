@@ -1,12 +1,10 @@
-package src.view;
+package view;
 
 import codedraw.CodeDraw;
-import src.Test;
-import src.controller.GameState;
-import src.model.*;
-import src.model.Point;
+import controller.GameState;
+import model.*;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class View {
@@ -14,8 +12,8 @@ public class View {
     private final CodeDraw cd;
 
     public View(int width, int height) {
-        this.width = width * Test.SCALE_BY;
-        this.height = height * Test.SCALE_BY;
+        this.width = width * Parameters.SCALE_BY;
+        this.height = height * Parameters.SCALE_BY;
         cd = new CodeDraw(this.width, this.height);
         cd.setTitle("Ants colony simulation");
     }
@@ -45,8 +43,8 @@ public class View {
 
         ConcurrentHashMap<Position, Point> points = gameState.getPoints();
         for (Point point : points.values()) {
-            int x = point.getPosition().getX() * Test.SCALE_BY;
-            int y = point.getPosition().getY() * Test.SCALE_BY;
+            int x = point.getPosition().getX() * Parameters.SCALE_BY;
+            int y = point.getPosition().getY() * Parameters.SCALE_BY;
 
             for (Entity entity : point.getEntities()) {
                 if (entity instanceof Trail e) {
@@ -54,25 +52,25 @@ public class View {
                     if(e.getStrength() > 1){
                         strength = 1;
                     }
-                    setPixels(x, y, Test.SCALE_BY, new Color(
-                            (int) (Test.TRAIL_COLOR.getRed() * strength),
-                            (int) (Test.TRAIL_COLOR.getGreen() * strength),
-                            (int) (Test.TRAIL_COLOR.getBlue() *strength)));
+                    setPixels(x, y, Parameters.SCALE_BY, new Color(
+                            (int) (Parameters.TRAIL_COLOR.getRed() * strength),
+                            (int) (Parameters.TRAIL_COLOR.getGreen() * strength),
+                            (int) (Parameters.TRAIL_COLOR.getBlue() *strength)));
                 }
-                if (entity instanceof Food) setPixels(x, y, Test.SCALE_BY, Test.FOOD_SOURCE_COLOR);
-                if (entity instanceof Hive) setPixels(x, y, Test.SCALE_BY, Test.COLONY_HOME_COLOR);
-                if (entity instanceof Obstacle) setPixels(x, y, Test.SCALE_BY, Test.OBSTACLE_COLOR);
+                if (entity instanceof Food) setPixels(x, y, Parameters.SCALE_BY, Parameters.FOOD_SOURCE_COLOR);
+                if (entity instanceof Hive) setPixels(x, y, Parameters.SCALE_BY, Parameters.COLONY_HOME_COLOR);
+                if (entity instanceof Obstacle) setPixels(x, y, Parameters.SCALE_BY, Parameters.OBSTACLE_COLOR);
                 if (entity instanceof Ant) {
                     switch (((Ant) entity).getState()) {
                         case EXPLORE:
-                            setPixels(x, y, Test.SCALE_BY, Test.ANT_DEFAULT_COLOR);
+                            setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_DEFAULT_COLOR);
                             break;
                         case FOODSEARCH:
-                            setPixels(x, y, Test.SCALE_BY, Test.ANT_SEARCH_COLOR);
+                            setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_SEARCH_COLOR);
 
                             break;
                         case FOODRETRIEVE:
-                            setPixels(x, y, Test.SCALE_BY, Test.ANT_RETRIVE_COLOR);
+                            setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_RETRIVE_COLOR);
 
                             break;
                     }

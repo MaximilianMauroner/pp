@@ -1,8 +1,7 @@
-package src.model;
+package model;
 
-import src.controller.GameState;
+import controller.GameState;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

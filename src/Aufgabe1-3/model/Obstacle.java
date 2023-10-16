@@ -1,6 +1,6 @@
-package src.model;
+package model;
 
-import src.controller.GameState;
+import controller.GameState;
 
 /**
  * Class for the obstacle entity

@@ -1,11 +1,11 @@
-package src.controller;
+package controller;
 
-import src.model.Entity;
-import src.model.Point;
-import src.model.Position;
-import src.model.Status;
+import model.Entity;
+import model.Point;
+import model.Position;
+import model.Status;
 
-import java.util.*;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**

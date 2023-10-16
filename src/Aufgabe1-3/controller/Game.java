@@ -1,7 +1,8 @@
-package src.controller;
+package controller;
 
-import src.model.*;
-import src.view.View;
+import model.Status;
+import model.*;
+import view.View;
 
 import java.util.concurrent.ConcurrentHashMap;
 

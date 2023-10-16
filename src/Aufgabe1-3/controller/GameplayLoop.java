@@ -1,6 +1,6 @@
-package src.controller;
+package controller;
 
-import src.view.View;
+import view.View;
 
 public class GameplayLoop extends Thread {
 
