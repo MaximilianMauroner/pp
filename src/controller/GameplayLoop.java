@@ -4,6 +4,9 @@ import src.view.View;
 
 public class GameplayLoop extends Thread {
 
+    /**
+     * The view and game state objects
+     */
     private final View view;
     private final GameState gameState;
     private boolean isRunning = false;

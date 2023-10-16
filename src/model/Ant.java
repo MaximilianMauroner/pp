@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Class for the ant entity and its logic
+ * contains reference objects to the game and status (for parameter access)
  */
 public class Ant implements Entity {
     private AntState currentState = AntState.EXPLORE;

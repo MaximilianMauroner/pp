@@ -8,6 +8,10 @@ import src.model.Status;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Class for the game state
+ * Contains point objects and the parameters of the game
+ */
 public class GameState {
 
     ConcurrentHashMap<Position, Point> points;

@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Class for generating clusters of entities
+ * generate function is accessed like a module
  */
 public class ClusterGenerator {
 

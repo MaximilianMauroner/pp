@@ -5,9 +5,22 @@ import src.view.View;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+
+/**
+ * Class for the game
+ * It generates the game state and starts the game loop
+ */
 public class Game {
+
+    /**
+     * Objects of the game
+     */
     private GameState gameState;
     private View view;
+
+    /**
+     * Status of the simulation. Actually accessed like a module containing variables
+     */
     private Status status;
 
     public Game(Status status) {

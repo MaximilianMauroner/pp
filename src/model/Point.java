@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Class for the points of the game
- * Points have a specified position on the grid and a list of entities
+ * Points have a specified position on the grid and a list of entity objects
  * Not every position has a point object
  */
 public class Point {
