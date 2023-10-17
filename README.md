@@ -64,3 +64,62 @@ java -cp out:lib/CodeDraw.jar src.Test
 - Paradigmen erläutern (min 5x)
 - comment explaining the entire process
 - 
+## Implementierungsplan
+
+### Maxi
+- Infinite Positions
+	- Beschränkung im Point entfernen
+- Hive decay
+	- nach bestimmter Anzahl an Ameisen
+	- wenn Ameisen Futter bringen wird neues Hive Objekt generiert
+- new Trails Logic
+  - trail for colony and stuff 
+  - handle multiple colonies for trail
+- Fix bau nicht essen
+- Ants vereinigen fix Maxi
+	- wenn 2 Ameisen aufeinander treffen, werden sie zu einer
+- Event Loop (prio? )
+  	- Event subscriber
+  	- event publisher
+ 		- Event name
+
+### Lukas
+- Simulation Metrik
+	- Optimale Pfade berechnen RRT*
+	- Abweichung von Pfaden berechnen
+	- Speichern von Daten
+- Ant movement
+  - Ants move for a few steps
+  - then check for odour
+  - then move again
+  - needs view of ant 
+- add entity priorities
+  - maybe needs compareTo() function
+- Ants fight each other (maybe); call antDies() in View
+	- wenn zwei von unterschiedlichen Kolonien aufeinander treffen, kämpfen sie
+    - Ant Objekt entfernen Corpse spawnen 
+
+### Chris
+- Tageszeit simulation
+	- (Chris) Gamestate Clock abfragen "gameState.getTime();"
+	- (Chris) Hintergrund auf Basis der Zeit verändern
+- (Chris) Statistik End Screen (low Priority)
+- (Chris) Effiziente Darstellung in View
+- (Chris) Entity View Priorities
+	- Verschiedene Entities haben verschiedene Priorities
+	- Mit höherer Priority werden vor niedriger Priority dargestellt
+- (Chris) Explosion when ant dies >_<
+  	- (Chris) Class Corpse implements Entity
+### Shared
+- Food Objekte despawnen (Lukas/Maxi)
+	- neue werden random generiert
+	- (Chris) generation organisch
+		- Generate Function ändern
+
+### Unassigned
+- Trail Einfluss (eher schwierig, low priority)
+	- Wind trägt randomly den trail weg
+	- in run Funktion wird random ein Störfaktor aufgerufen
+- Test Cases (meh)
+- Paradigmen erläutern (min 5x)
+- comment explaining the entire process
