@@ -69,6 +69,10 @@ public class GameState {
         points.put(point.getPosition(), point);
     }
 
+    public boolean hasPosition(Position position){
+        return points.containsKey(position);
+    }
+
 
     /**
      * Returns the parameters of the game

@@ -100,22 +100,22 @@ java -cp out:lib/CodeDraw.jar src.Test
     - Ant Objekt entfernen Corpse spawnen 
 
 ### Chris
-- Tageszeit simulation
-	- (Chris) Gamestate Clock abfragen "gameState.getTime();"
-	- (Chris) Hintergrund auf Basis der Zeit verändern
+- ~~Tageszeit simulation~~
+	- ~~(Chris) Gamestate Clock abfragen "gameState.getTime();"~~
+	- ~~(Chris) Hintergrund auf Basis der Zeit verändern~~
 - (Chris) Statistik End Screen (low Priority)
 - (Chris) Effiziente Darstellung in View
 - (Chris) Entity View Priorities
-	- Verschiedene Entities haben verschiedene Priorities
+	- ~~Verschiedene Entities haben verschiedene Priorities~~
 	- Mit höherer Priority werden vor niedriger Priority dargestellt
 - (Chris) Explosion when ant dies >_<
-  	- (Chris) Class Corpse implements Entity
+  	- ~~(Chris) Class Corpse implements Entity~~
 
 ### Shared
 - Food Objekte despawnen (Lukas/Maxi)
 	- neue werden random generiert
-	- (Chris) generation organisch
-		- Generate Function ändern
+	- ~~(Chris) generation organisch~~
+		- ~~Generate Function ändern~~
 
 ### Unassigned
 - Trail Einfluss (eher schwierig, low priority)

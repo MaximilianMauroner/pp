@@ -6,8 +6,8 @@ package model;
  * The status is used to create the simulation
  */
 public class Status {
-    private final int width, height, scale, simulationTime, antCount, foodCount, obstacleCount, foodSize, hiveSize, obstacleSize;
-    private int antEmptySteps,foodHiveDistance, antSpawnRadius;
+    private final int width, height, scale, simulationTimeLimit, antCount, foodCount, obstacleCount, foodSize, hiveSize, obstacleSize;
+    private int antEmptySteps,foodHiveDistance, antSpawnRadius, simulationTime;
     private double trailDecay, lowTrail, highTrail;
 
     public Status(int width, int height, int scale, int simulationTime, int antCount, int antEmptySteps, int foodCount,
@@ -16,7 +16,7 @@ public class Status {
         this.width = width;
         this.height = height;
         this.scale = scale;
-        this.simulationTime = simulationTime;
+        this.simulationTimeLimit = simulationTime;
         this.antCount = antCount;
         this.antEmptySteps = antEmptySteps;
         this.foodCount = foodCount;
@@ -43,8 +43,8 @@ public class Status {
         return scale;
     }
 
-    public int getSimulationTime() {
-        return simulationTime;
+    public int getSimulationTimeLimit() {
+        return simulationTimeLimit;
     }
 
     public int getAntCount() {
@@ -95,6 +95,10 @@ public class Status {
         return highTrail;
     }
 
+    public int getSimulationTime(){
+        return this.simulationTime;
+    }
+
 
     /**
      * Randomizes the values of parameters that affect game behavior
@@ -125,5 +129,10 @@ public class Status {
             result = lowerLimit;
         }
         return result;
+    }
+    public void nextTime(){
+        System.out.println(this.simulationTime);
+        this.simulationTime = this.simulationTime +1 % 24;
+        System.out.println(this.simulationTime + " after");
     }
 }
