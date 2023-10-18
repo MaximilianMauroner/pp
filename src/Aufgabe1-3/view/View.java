@@ -46,8 +46,6 @@ public class View {
             int x = point.getPosition().getX() * Parameters.SCALE_BY;
             int y = point.getPosition().getY() * Parameters.SCALE_BY;
 
-            System.out.println(points);
-
             for (Entity entity : point.getEntities()) {
                 if (entity instanceof Trail e) {
                     double strength = e.getStrength();
