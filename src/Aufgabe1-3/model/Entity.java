@@ -7,7 +7,7 @@ import controller.GameState;
  * Entities are the objects that are placed on the grid
  * They can be ants, food, trails, etc.
  */
-public interface Entity extends  Comparable<Entity>{
+public interface Entity extends Comparable<Entity>{
 
     /**
      * Runs the entity's logic

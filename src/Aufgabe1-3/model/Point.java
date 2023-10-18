@@ -46,13 +46,7 @@ public class Point {
 
     public void addEntity(Entity entity) {
         entities.add(entity);
-        if(entities.size() > 1){
-            System.out.println(entities);
-        }
         Collections.sort(entities);
-        if(entities.size() > 1){
-            System.out.println(entities);
-        }
     }
     public void removeEntity(Entity entity) {
         entities.remove(entity);
