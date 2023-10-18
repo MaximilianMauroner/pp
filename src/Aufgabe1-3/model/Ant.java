@@ -236,11 +236,12 @@ public class Ant implements Entity {
     private void move(Point oldPoint, Point newPoint, Position endPosition) {
         this.direction = oldPoint.getPosition().getRelativeChange(endPosition);
 
-        if (newPoint == null) {
+        if (newPoint == null && !gameState.hasPosition(endPosition)) {
             newPoint = new Point(endPosition, new ArrayList<>());
             gameState.setPoint(newPoint);
+        }else if(newPoint == null) {
+            newPoint = gameState.getPoint(endPosition);
         }
-
         oldPoint.addTrail(new Trail(1, this.hashCode()));
         newPoint.addEntity(this);
         oldPoint.removeEntity(this);

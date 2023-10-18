@@ -9,7 +9,7 @@ import java.util.List;
  * Points have a specified position on the grid and a list of entity objects
  * Not every position has a point object
  */
-public class Point {
+public class Point  {
     private final List<Entity> entities;
     private Position position;
 
