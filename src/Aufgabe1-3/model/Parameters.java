@@ -17,4 +17,7 @@ public class Parameters {
     public static final Color COLONY_HOME_COLOR = new Color(184, 156, 80);
     public static final Color OBSTACLE_COLOR = Color.GRAY;
     public static final Color TRAIL_COLOR = Color.BLUE;
+    public static final Color CORPSE_COLOR = Color.RED;
+
+    public static final int CORPSE_PRIORITY = 10;
 }

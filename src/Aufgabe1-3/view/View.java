@@ -5,6 +5,7 @@ import controller.GameState;
 import model.*;
 
 import java.awt.Color;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class View {
@@ -49,35 +50,29 @@ public class View {
             for (Entity entity : point.getEntities()) {
                 if (entity instanceof Trail e) {
                     double strength = e.getStrength();
-                    if(e.getStrength() > 1){
+                    if (e.getStrength() > 1) {
                         strength = 1;
                     }
                     setPixels(x, y, Parameters.SCALE_BY, new Color(
                             (int) (Parameters.TRAIL_COLOR.getRed() * strength),
                             (int) (Parameters.TRAIL_COLOR.getGreen() * strength),
-                            (int) (Parameters.TRAIL_COLOR.getBlue() *strength)));
+                            (int) (Parameters.TRAIL_COLOR.getBlue() * strength)));
                 }
                 if (entity instanceof Food) setPixels(x, y, Parameters.SCALE_BY, Parameters.FOOD_SOURCE_COLOR);
                 if (entity instanceof Hive) setPixels(x, y, Parameters.SCALE_BY, Parameters.COLONY_HOME_COLOR);
                 if (entity instanceof Obstacle) setPixels(x, y, Parameters.SCALE_BY, Parameters.OBSTACLE_COLOR);
+                if (entity instanceof Corpse c) drawCorpse(x, y, Parameters.SCALE_BY, Parameters.CORPSE_COLOR, c.getSeed());
                 if (entity instanceof Ant) {
                     switch (((Ant) entity).getState()) {
-                        case EXPLORE:
-                            setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_DEFAULT_COLOR);
-                            break;
-                        case FOODSEARCH:
-                            setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_SEARCH_COLOR);
-
-                            break;
-                        case FOODRETRIEVE:
-                            setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_RETRIVE_COLOR);
-
-                            break;
+                        case EXPLORE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_DEFAULT_COLOR);
+                        case FOODSEARCH -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_SEARCH_COLOR);
+                        case FOODRETRIEVE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_RETRIVE_COLOR);
                     }
-                };
-
+                }
             }
         }
+
+
     }
 
     /**
@@ -105,6 +100,22 @@ public class View {
             for (int j = y - size / 2; j <= y + size / 2; j++) {
                 cd.setPixel(i, j, color);
             }
+        }
+    }
+
+    private void drawCorpse(int x, int y, int size, Color color, int seed) {
+        Random r = new Random(seed);
+        setPixels(x, y, size, color);
+        setPixels(x - size, y, size, color);
+        setPixels(x + size, y, size, color);
+        setPixels(x, y - size, size, color);
+        setPixels(x, y + size, size, color);
+
+        for (int i = 0; i < r.nextInt(10, 30); i++) {
+            x = x + r.nextInt(10) - 5;
+            y = y + r.nextInt(10) - 5;
+
+            setPixels(x + size, y + size, size, color);
         }
     }
 }
