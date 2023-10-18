@@ -95,4 +95,9 @@ public class Trail implements Entity {
         return new Trail(t);
     }
 
+    @Override
+    public int getPriority() {
+        return Parameters.TRAIL_PRIORITY;
+    }
+
 }

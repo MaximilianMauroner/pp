@@ -16,6 +16,7 @@ public class Ant implements Entity {
     private AntDirection direction = AntDirection.values()[(int) (Math.random() * AntDirection.values().length)];
     private GameState gameState;
     private Status status;
+
     public AntState getState() {
         return this.currentState;
     }
@@ -35,9 +36,10 @@ public class Ant implements Entity {
 
     /**
      * Starts the State Logic of the Ant. The Ant will move to the next Point.
+     *
      * @param gameState the current game state
-     * @param status the current parameters of the game
-     * @param oldPoint the point the ant is currently on
+     * @param status    the current parameters of the game
+     * @param oldPoint  the point the ant is currently on
      */
     @Override
     public void run(GameState gameState, Status status, Point oldPoint) {
@@ -78,9 +80,10 @@ public class Ant implements Entity {
 
     /**
      * The ant will explore the environment and leave a trail.
-     * @param oldPoint the point the ant is currently on
+     *
+     * @param oldPoint         the point the ant is currently on
      * @param nearestPositions the possible next positions of the ant
-     * @param endPosition the position the ant will move to (if no other position is chosen)
+     * @param endPosition      the position the ant will move to (if no other position is chosen)
      */
     public void explore(Point oldPoint, List<Position> nearestPositions, Position endPosition) {
         // ant prefers empty positions in exploration mode
@@ -141,9 +144,10 @@ public class Ant implements Entity {
 
     /**
      * The ant will search for food and follow trails.
-     * @param oldPoint the point the ant is currently on
+     *
+     * @param oldPoint         the point the ant is currently on
      * @param nearestPositions the possible next positions of the ant
-     * @param endPosition the position the ant will move to (if no other position is chosen)
+     * @param endPosition      the position the ant will move to (if no other position is chosen)
      */
     public void foodSearch(Point oldPoint, List<Position> nearestPositions, Position endPosition) {
         Point newPoint = null;
@@ -187,9 +191,10 @@ public class Ant implements Entity {
 
     /**
      * The ant will retrieve food and follow trails
-     * @param oldPoint the point the ant is currently on
+     *
+     * @param oldPoint         the point the ant is currently on
      * @param nearestPositions the possible next positions of the ant
-     * @param endPosition the position the ant will move to (if no other position is chosen)
+     * @param endPosition      the position the ant will move to (if no other position is chosen)
      */
     public void foodRetrieve(Point oldPoint, List<Position> nearestPositions, Position endPosition) {
         Point newPoint = null;
@@ -222,8 +227,9 @@ public class Ant implements Entity {
 
     /**
      * Moves the ant to the new position and updates the trail.
-     * @param oldPoint the point the ant is currently on
-     * @param newPoint the point the ant will move to
+     *
+     * @param oldPoint    the point the ant is currently on
+     * @param newPoint    the point the ant will move to
      * @param endPosition the position the ant will move to (if not overwritten previously by newPoint)
      */
     private void move(Point oldPoint, Point newPoint, Position endPosition) {
@@ -241,7 +247,12 @@ public class Ant implements Entity {
 
     @Override
     public Entity clone() {
-        return new Ant(this.currentState,this.direction,this.gameState,this.status);
+        return new Ant(this.currentState, this.direction, this.gameState, this.status);
+    }
+
+    @Override
+    public int getPriority() {
+        return Parameters.ANT_PRIORITY;
     }
 
 }

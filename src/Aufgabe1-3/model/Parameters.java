@@ -17,4 +17,11 @@ public class Parameters {
     public static final Color COLONY_HOME_COLOR = new Color(184, 156, 80);
     public static final Color OBSTACLE_COLOR = Color.GRAY;
     public static final Color TRAIL_COLOR = Color.BLUE;
+
+    //set priority for entities
+    public static final int ANT_PRIORITY = 100;
+    public static final int HIVE_PRIORITY = 90;
+    public static final int FOOD_PRIORITY = 80;
+    public static final int OBSTACLE_PRIORITY = 70;
+    public static final int TRAIL_PRIORITY = 60;
 }

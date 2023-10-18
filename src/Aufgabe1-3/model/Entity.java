@@ -11,13 +11,15 @@ public interface Entity {
 
     /**
      * Runs the entity's logic
+     *
      * @param gameState the game state of the game
-     * @param status the status of the game
-     * @param point the point where the entity is located
+     * @param status    the status of the game
+     * @param point     the point where the entity is located
      */
     void run(GameState gameState, Status status, Point point);
 
 
     Entity clone();
 
+    int getPriority();
 }
