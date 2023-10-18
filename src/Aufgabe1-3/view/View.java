@@ -128,15 +128,12 @@ public class View {
      * @param color color of the square
      */
     private void setPixels(int x, int y, int size, Color color) {
-        if (x < 0) x = 0;
-        if (x > width) x = width;
-        if (y < 0) y = 0;
-        if (y > height) y = height;
+        if (x + size < 0 || x - size > width || y + size < 0 || y - size > height) return;
 
         //go size/2 times to the left, right, up and down from the center and fill every pixel with the given color
         for (int i = x - size / 2; i <= x + size / 2; i++) {
             for (int j = y - size / 2; j <= y + size / 2; j++) {
-                cd.setPixel(i, j, color);
+                if (i >= 0 && i <= width && j >= 0 && j <= height) cd.setPixel(i, j, color);
             }
         }
     }
