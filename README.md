@@ -109,13 +109,13 @@ java -cp out:lib/CodeDraw.jar src.Test
 	- Verschiedene Entities haben verschiedene Priorities
 	- Mit höherer Priority werden vor niedriger Priority dargestellt
 - (Chris) Explosion when ant dies >_<
-  	- (Chris) Class Corpse implements Entity
+  	- ~~(Chris) Class Corpse implements Entity~~
 
 ### Shared
 - Food Objekte despawnen (Lukas/Maxi)
 	- neue werden random generiert
-	- (Chris) generation organisch
-		- Generate Function ändern
+	- ~~(Chris) generation organisch~~
+		- ~~Generate Function ändern~~
 
 ### Unassigned
 - Trail Einfluss (eher schwierig, low priority)
