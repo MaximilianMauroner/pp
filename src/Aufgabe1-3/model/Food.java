@@ -14,5 +14,10 @@ public class Food implements Entity {
         return new Food();
     }
 
+    @Override
+    public int getPriority() {
+        return model.Parameters.FOOD_PRIORITY;
+    }
+
 
 }

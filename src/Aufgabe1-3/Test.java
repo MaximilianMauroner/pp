@@ -1,8 +1,6 @@
 import controller.Game;
 import model.*;
 
-import java.awt.*;
-
 /*
 Distribution of work:
 - Maximilian: Model(Position, Point, Status, Cluster Generator), Controller(GameState, GameLoop)
@@ -22,7 +20,7 @@ public class Test {
         for (int i = 0; i < 3; i++) {
             System.out.println("Game " + i + " starting");
             game.generate();
-            game.start(s.getSimulationTime());
+            game.start(s.getSimulationTimeLimit());
 
             System.out.println("Game " + i + " finished");
             s.randomize(0.3);

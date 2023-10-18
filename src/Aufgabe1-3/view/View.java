@@ -46,36 +46,29 @@ public class View {
             int x = point.getPosition().getX() * Parameters.SCALE_BY;
             int y = point.getPosition().getY() * Parameters.SCALE_BY;
 
+            System.out.println(points);
+
             for (Entity entity : point.getEntities()) {
                 if (entity instanceof Trail e) {
                     double strength = e.getStrength();
-                    if(e.getStrength() > 1){
+                    if (e.getStrength() > 1) {
                         strength = 1;
                     }
                     setPixels(x, y, Parameters.SCALE_BY, new Color(
                             (int) (Parameters.TRAIL_COLOR.getRed() * strength),
                             (int) (Parameters.TRAIL_COLOR.getGreen() * strength),
-                            (int) (Parameters.TRAIL_COLOR.getBlue() *strength)));
+                            (int) (Parameters.TRAIL_COLOR.getBlue() * strength)));
                 }
                 if (entity instanceof Food) setPixels(x, y, Parameters.SCALE_BY, Parameters.FOOD_SOURCE_COLOR);
                 if (entity instanceof Hive) setPixels(x, y, Parameters.SCALE_BY, Parameters.COLONY_HOME_COLOR);
                 if (entity instanceof Obstacle) setPixels(x, y, Parameters.SCALE_BY, Parameters.OBSTACLE_COLOR);
                 if (entity instanceof Ant) {
                     switch (((Ant) entity).getState()) {
-                        case EXPLORE:
-                            setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_DEFAULT_COLOR);
-                            break;
-                        case FOODSEARCH:
-                            setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_SEARCH_COLOR);
-
-                            break;
-                        case FOODRETRIEVE:
-                            setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_RETRIVE_COLOR);
-
-                            break;
+                        case EXPLORE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_DEFAULT_COLOR);
+                        case FOODSEARCH -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_SEARCH_COLOR);
+                        case FOODRETRIEVE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_RETRIVE_COLOR);
                     }
-                };
-
+                }
             }
         }
     }

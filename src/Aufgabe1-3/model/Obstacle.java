@@ -16,4 +16,9 @@ public class Obstacle implements Entity {
     public Entity clone() {
         return new Obstacle();
     }
+
+    @Override
+    public int getPriority() {
+        return model.Parameters.OBSTACLE_PRIORITY;
+    }
 }

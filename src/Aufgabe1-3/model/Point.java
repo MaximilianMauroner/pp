@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -8,17 +9,18 @@ import java.util.List;
  * Points have a specified position on the grid and a list of entity objects
  * Not every position has a point object
  */
-public class Point {
-    private List<Entity> entities;
+public class Point  {
+    private final List<Entity> entities;
     private Position position;
 
-    private  boolean hasObstacle = false;
+    private boolean hasObstacle = false;
 
     public Point(Position position, List<Entity> entities) {
         this.position = position;
         this.entities = entities;
         this.hasObstacle = this.updateObstacle();
     }
+
     public Point(Position position, Entity entity) {
         this.position = position;
         this.entities = new ArrayList<>();
@@ -42,9 +44,18 @@ public class Point {
         return entities;
     }
 
+    public void addEntity(Entity entity) {
+        entities.add(entity);
+        Collections.sort(entities);
+    }
+    public void removeEntity(Entity entity) {
+        entities.remove(entity);
+    }
+
 
     /**
      * Adds a trail to the point
+     *
      * @param trail trail to be added
      */
     public void addTrail(Trail trail) {
@@ -54,7 +65,7 @@ public class Point {
                 return;
             }
         }
-        entities.add(trail);
+        this.addEntity(trail);
     }
 
 
@@ -88,6 +99,15 @@ public class Point {
      */
     public boolean hasObstacle() {
         return this.hasObstacle;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Point{" +
+                "entities=" + entities.toString() +
+                ", position=" + position.toString() +
+                '}';
     }
 
 }
