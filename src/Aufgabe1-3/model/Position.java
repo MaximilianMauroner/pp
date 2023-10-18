@@ -141,6 +141,23 @@ public class Position {
         }
     }
 
+    public double euclideanDistance(Position p) {
+        return Math.sqrt(Math.pow(x - p.getX(), 2) + Math.pow(y - p.getY(), 2));
+    }
+
+    public List<Position> getNeighbours() {
+        List<Position> neighbours = new ArrayList<>();
+        neighbours.add(new Position(x - 1, y - 1, status));
+        neighbours.add(new Position(x, y - 1, status));
+        neighbours.add(new Position(x + 1, y - 1, status));
+        neighbours.add(new Position(x - 1, y, status));
+        neighbours.add(new Position(x + 1, y, status));
+        neighbours.add(new Position(x - 1, y + 1, status));
+        neighbours.add(new Position(x, y + 1, status));
+        neighbours.add(new Position(x + 1, y + 1, status));
+        return neighbours;
+    }
+
 
     @Override
     public boolean equals(Object obj) {
