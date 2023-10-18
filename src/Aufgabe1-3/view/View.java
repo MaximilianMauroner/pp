@@ -146,11 +146,11 @@ public class View {
     private void drawCorpse(int x, int y, int size, Color color, int seed) {
         Random r = new Random(seed);
 
-        double std_dev = 5; // Standard deviation of the distribution
+        double std_dev = 7; // Standard deviation of the distribution
 
-        for (int i = 0; i < 8; i++) {
-            int x2 = (int) Math.round(x + r.nextGaussian() * std_dev);
-            int y2 = (int) Math.round(y + r.nextGaussian() * std_dev);
+        for (int i = 0; i < 20; i++) {
+            int x2 = (int) Math.round(x + r.nextInt(-1, 1) * r.nextGaussian() * std_dev);
+            int y2 = (int) Math.round(y + r.nextInt(-1, 1) * r.nextGaussian() * std_dev);
 
             setPixels(x2 + size, y2 + size, size, color);
         }
