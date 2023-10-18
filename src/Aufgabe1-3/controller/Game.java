@@ -46,14 +46,14 @@ public class Game {
             int obstacleX = (int) (Math.random() * status.getWidth());
             int obstacleY = (int) (Math.random() * status.getHeight());
             Position obstaclePosition = new Position(obstacleX, obstacleY, status);
-            ClusterGenerator.generate(obstacle, obstaclePosition, status.getObstacleSize(), gameState);
+            ClusterGenerator.advancedObstacleGeneration(obstacle, obstaclePosition, status.getObstacleSize(), gameState);
         }
 
         // generate hive position
         int hiveX = (int) (Math.random() * status.getWidth());
         int hiveY = (int) (Math.random() * status.getHeight());
         Position hivePosition = new Position(hiveX, hiveY, status);
-        ClusterGenerator.generate(hive, hivePosition, status.getHiveSize(), gameState);
+        ClusterGenerator.advancedHiveGeneration(hive, hivePosition, status.getHiveSize(), gameState);
 
         // randomly spawn ants around hive
         int spawnRadius = status.getAntSpawnRadius();
@@ -77,7 +77,7 @@ public class Game {
             } while (Math.abs(foodX - hiveX) < hiveDistance && Math.abs(foodY - hiveY) < hiveDistance);
 
             Position foodPosition = new Position(foodX, foodY, status);
-            ClusterGenerator.generate(food, foodPosition, status.getFoodSize(), gameState);
+            ClusterGenerator.advancedFoodSourceGeneration(food, foodPosition, status.getFoodSize(), gameState);
         }
     }
 
