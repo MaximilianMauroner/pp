@@ -11,13 +11,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * The only logic they have is to decay over time
  */
 public class Trail implements Entity {
-    private ConcurrentHashMap<Integer, Double> value = new ConcurrentHashMap<Integer, Double>();
+    private ConcurrentHashMap<Integer, Double> trailStrengths = new ConcurrentHashMap<Integer, Double>();
 
     public Trail(double strength, int origin) {
         this.changeStrength(strength, origin);
     }
     public Trail(ConcurrentHashMap<Integer,Double> value){
-        this.value = value;
+        this.trailStrengths = value;
     }
 
 
@@ -26,12 +26,12 @@ public class Trail implements Entity {
      */
     public double getStrength() {
         double total = 0;
-        if (!this.value.isEmpty()) {
-            for (double value : this.value.values()) {
+        if (!this.trailStrengths.isEmpty()) {
+            for (double value : this.trailStrengths.values()) {
                 total += value;
             }
         }
-        return total / this.value.size();
+        return total / this.trailStrengths.size();
     }
 
     /**
@@ -40,14 +40,14 @@ public class Trail implements Entity {
      * @param origin ant that created the trail (using ant objects hashcode)
      */
     public void changeStrength(double strength, int origin) {
-        double value = this.value.containsKey(origin) ? this.value.get(origin):0;
+        double value = this.trailStrengths.containsKey(origin) ? this.trailStrengths.get(origin):0;
         value += strength;
         if (value > 1) {
             value = 1;
         } else if (value < 0) {
             value = 0;
         }
-        this.value.put(origin, value);
+        this.trailStrengths.put(origin, value);
     }
 
     /**
@@ -56,7 +56,7 @@ public class Trail implements Entity {
      * @return true if the trail is new
      */
     public boolean isNewPath(int origin) {
-        return !(this.value.containsKey(origin) && this.value.get(origin) > 0.1);
+        return !(this.trailStrengths.containsKey(origin) && this.trailStrengths.get(origin) > 0.1);
     }
 
     /**
@@ -64,25 +64,25 @@ public class Trail implements Entity {
      * @param trail trail to be combined with
      */
     public void combineTrails(Trail trail) {
-        trail.value.forEach((k,v) -> {
-            if (this.value.containsKey(k)) {
-                this.value.put(k, (this.value.get(k) + v) / 2);
+        trail.trailStrengths.forEach((k, v) -> {
+            if (this.trailStrengths.containsKey(k)) {
+                this.trailStrengths.put(k, (this.trailStrengths.get(k) + v) / 2);
             } else {
-                this.value.put(k, v);
+                this.trailStrengths.put(k, v);
             }
         });
     }
 
     @Override
     public void run(GameState gameState, Status status, Point point) {
-        value.forEach((k,v) -> {
+        trailStrengths.forEach((k, v) -> {
             v *= status.getTrailDecay();
-            value.put(k,v);
+            trailStrengths.put(k,v);
             if (v < status.getLowTrail() / 2) {
-                value.remove(k);
+                trailStrengths.remove(k);
             }
-            if(value.isEmpty()){
-                point.getEntities().remove(this);
+            if(trailStrengths.isEmpty()){
+                point.removeEntity(this);
             }
         });
 
@@ -91,7 +91,7 @@ public class Trail implements Entity {
 
     @Override
     public Entity clone() {
-        ConcurrentHashMap<Integer, Double> t = new ConcurrentHashMap<Integer, Double>(this.value);
+        ConcurrentHashMap<Integer, Double> t = new ConcurrentHashMap<Integer, Double>(this.trailStrengths);
         return new Trail(t);
     }
 

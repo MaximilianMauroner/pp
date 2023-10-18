@@ -7,7 +7,7 @@ import controller.GameState;
  * Entities are the objects that are placed on the grid
  * They can be ants, food, trails, etc.
  */
-public interface Entity {
+public interface Entity extends  Comparable<Entity>{
 
     /**
      * Runs the entity's logic
@@ -22,4 +22,11 @@ public interface Entity {
     Entity clone();
 
     int getPriority();
+
+    @Override
+    default int compareTo(Entity o) {
+        if(o.getPriority() == this.getPriority())
+            return 0;
+        return o.getPriority() > this.getPriority() ? 1 : -1;
+    }
 }

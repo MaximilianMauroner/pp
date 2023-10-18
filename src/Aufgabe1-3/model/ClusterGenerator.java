@@ -18,7 +18,7 @@ public class ClusterGenerator {
                     gs.setPoint(p);
                 } else {
                     p.getEntities().clear();
-                    p.getEntities().add(entity.clone());
+                    p.addEntity(entity.clone());
                 }
             }
         }

@@ -17,6 +17,7 @@ public class Ant implements Entity {
     private GameState gameState;
     private Status status;
 
+
     public AntState getState() {
         return this.currentState;
     }
@@ -111,7 +112,7 @@ public class Ant implements Entity {
                     if (e instanceof Food) {
                         endPosition = pos;
                         newPoint = point;
-                        point.getEntities().remove(e);
+                        point.removeEntity(e);
                         this.currentState = AntState.FOODRETRIEVE;
                         System.out.println("Ant-" + this.hashCode() + ": Found food, switching to foodretrieve mode:" + this.currentState);
                     } else if (e instanceof Ant && ((Ant) e).getState() == AntState.FOODSEARCH) {
@@ -241,8 +242,8 @@ public class Ant implements Entity {
         }
 
         oldPoint.addTrail(new Trail(1, this.hashCode()));
-        newPoint.getEntities().add(this);
-        oldPoint.getEntities().remove(this);
+        newPoint.addEntity(this);
+        oldPoint.removeEntity(this);
     }
 
     @Override
@@ -254,5 +255,7 @@ public class Ant implements Entity {
     public int getPriority() {
         return Parameters.ANT_PRIORITY;
     }
+
+
 
 }

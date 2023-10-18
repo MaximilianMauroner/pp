@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,29 +28,6 @@ public class Point {
         this.hasObstacle = this.updateObstacle();
     }
 
-    private void sortedAdd(Entity entity) {
-        if (entities == null || entities.size() == 0) entities.add(entity);
-        else {
-            if (entities.get(entities.size() / 2).getPriority() < entity.getPriority()) {
-
-            }
-        }
-    }
-
-    //credits go to: https://www.geeksforgeeks.org/binary-search/
-    private int binarySearch(int arr[], int l, int r, int x) {
-        while (l <= r) {
-            int m = l + (r - l) / 2;
-            if (arr[m] == x)
-                return m;
-            if (arr[m] < x)
-                l = m + 1;
-            else
-                r = m - 1;
-        }
-        return -1;
-    }
-
 
     /**
      * Returns the position of the point
@@ -66,6 +44,20 @@ public class Point {
         return entities;
     }
 
+    public void addEntity(Entity entity) {
+        entities.add(entity);
+        if(entities.size() > 1){
+            System.out.println(entities);
+        }
+        Collections.sort(entities);
+        if(entities.size() > 1){
+            System.out.println(entities);
+        }
+    }
+    public void removeEntity(Entity entity) {
+        entities.remove(entity);
+    }
+
 
     /**
      * Adds a trail to the point
@@ -79,7 +71,7 @@ public class Point {
                 return;
             }
         }
-        entities.add(trail);
+        this.addEntity(trail);
     }
 
 
