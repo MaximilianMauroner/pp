@@ -61,7 +61,10 @@ public class View {
                 if (entity instanceof Food) setPixels(x, y, Parameters.SCALE_BY, Parameters.FOOD_SOURCE_COLOR);
                 if (entity instanceof Hive) setPixels(x, y, Parameters.SCALE_BY, Parameters.COLONY_HOME_COLOR);
                 if (entity instanceof Obstacle) setPixels(x, y, Parameters.SCALE_BY, Parameters.OBSTACLE_COLOR);
-                if (entity instanceof Corpse c) drawCorpse(x, y, Parameters.SCALE_BY, Parameters.CORPSE_COLOR, c.getSeed());
+                if (entity instanceof Corpse c) drawCorpse(x, y, Parameters.SCALE_BY, new Color(
+                        (int) (Parameters.CORPSE_COLOR.getRed() * c.getStrength()),
+                        (int) (Parameters.CORPSE_COLOR.getGreen() * c.getStrength()),
+                        (int) (Parameters.CORPSE_COLOR.getBlue() * c.getStrength())), c.getSeed());
                 if (entity instanceof Ant) {
                     switch (((Ant) entity).getState()) {
                         case EXPLORE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_DEFAULT_COLOR);
@@ -71,8 +74,6 @@ public class View {
                 }
             }
         }
-
-
     }
 
     /**
@@ -105,17 +106,15 @@ public class View {
 
     private void drawCorpse(int x, int y, int size, Color color, int seed) {
         Random r = new Random(seed);
-        setPixels(x, y, size, color);
-        setPixels(x - size, y, size, color);
-        setPixels(x + size, y, size, color);
-        setPixels(x, y - size, size, color);
-        setPixels(x, y + size, size, color);
 
-        for (int i = 0; i < r.nextInt(10, 30); i++) {
-            x = x + r.nextInt(10) - 5;
-            y = y + r.nextInt(10) - 5;
+        double std_dev = 5; // Standard deviation of the distribution
 
-            setPixels(x + size, y + size, size, color);
+        for (int i = 0; i < 8; i++) {
+            int x2 = (int) Math.round(x + r.nextGaussian() * std_dev);
+            int y2 = (int) Math.round(y + r.nextGaussian() * std_dev);
+
+            setPixels(x2 + size, y2 + size, size, color);
         }
+
     }
 }
