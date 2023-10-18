@@ -11,8 +11,6 @@ public class View {
     private final int width, height;
     private final CodeDraw cd;
     private Color BACKGROUND_COLOR = Color.BLACK;
-    private int time = 0;
-    private int hourOfTheDay = 0;
 
     public View(int width, int height) {
         this.width = width * Parameters.SCALE_BY;
@@ -40,9 +38,7 @@ public class View {
      * @param gameState gameState to draw on the canvas
      */
     private void drawElements(GameState gameState) {
-        time++;
-        System.out.println(time);
-        if (time % 20 == 0) changeTime();
+        changeTime(gameState);
 
         ConcurrentHashMap<Position, Point> points = gameState.getPoints();
         for (Point point : points.values()) {
@@ -50,7 +46,8 @@ public class View {
             int y = point.getPosition().getY() * Parameters.SCALE_BY;
 
             for (Entity entity : point.getEntities()) {
-                if (entity instanceof Trail e) setPixels(x, y, Parameters.SCALE_BY, mixColors(Parameters.TRAIL_COLOR, BACKGROUND_COLOR, (float) e.getStrength()));
+                if (entity instanceof Trail e)
+                    setPixels(x, y, Parameters.SCALE_BY, mixColors(Parameters.TRAIL_COLOR, BACKGROUND_COLOR, e.getStrength() <= 0.15 ? 0 : (float) e.getStrength()));
                 if (entity instanceof Food) setPixels(x, y, Parameters.SCALE_BY, Parameters.FOOD_SOURCE_COLOR);
                 if (entity instanceof Hive) setPixels(x, y, Parameters.SCALE_BY, Parameters.COLONY_HOME_COLOR);
                 if (entity instanceof Obstacle) setPixels(x, y, Parameters.SCALE_BY, Parameters.OBSTACLE_COLOR);
@@ -102,15 +99,16 @@ public class View {
      * Starts with Daytime by default.
      * If it is desired to start with NightTime, then replace the < with >=
      */
-    private void changeTime() {
-        hourOfTheDay++;
+    private void changeTime(GameState gameState) {
+        int hourOfTheDay = gameState.getStatus().getSimulationTime();
+        Color oldBackgroundColor = BACKGROUND_COLOR;
+
         if (hourOfTheDay % 24 < 12) {
             BACKGROUND_COLOR = mixColors(Color.BLACK, Color.WHITE, (float) (hourOfTheDay % 12) / 12);
         } else {
             BACKGROUND_COLOR = mixColors(Color.WHITE, Color.BLACK, (float) (hourOfTheDay % 12) / 12);
         }
-
-        changeBackgroundColor();
+        if (!oldBackgroundColor.equals(BACKGROUND_COLOR)) changeBackgroundColor();
     }
 
     /**
