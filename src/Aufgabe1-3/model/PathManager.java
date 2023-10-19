@@ -3,6 +3,7 @@ package model;
 
 import controller.Game;
 import controller.GameState;
+import view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class PathManager {
         if (instance == null) {
             instance = new PathManager(gameState);
         }
+        instance.gameState = gameState;
         return instance;
     }
 
@@ -42,15 +44,23 @@ public class PathManager {
         endPositions.add(position);
     }
 
+    public void registerNewPaths(Position position) {
+        endPositions.add(position);
+        for (Position start : startPositions) {
+            paths.add(a_star(start, position));
+        }
+    }
+
+    public void deregisterPaths(Position position) {
+        endPositions.remove(position);
+        paths.removeIf(path -> path.contains(position));
+    }
+
     public void removePosition(Position position) {
         startPositions.remove(position);
         endPositions.remove(position);
 
-        for (Path path : paths) {
-            if (path.contains(position)) {
-                this.paths.remove(path);
-            }
-        }
+        paths.removeIf(path -> path.contains(position));
     }
 
     public void calculatePaths() {
@@ -61,9 +71,15 @@ public class PathManager {
         }
     }
 
+    public void clear() {
+        startPositions.clear();
+        endPositions.clear();
+        paths.clear();
+    }
+
 
     // STYLE: Berechnung vom Pfad ist prozedural
-    // (Node hat nur public Variablen, Kommunikation im weiteren Sinne über die PriorityQueue, ...)
+    // (Node hat nur public Variablen, static utility functions, Kommunikation im weiteren Sinne über die PriorityQueue, ...)
 
     /**
      * Calculates the optimal path from the start position to the end position
@@ -74,7 +90,7 @@ public class PathManager {
     private Path a_star(Position start, Position end) {
         Path path = new Path();
         Node target = new Node(end, null);
-        PriorityQueue<Node> openList = new PriorityQueue<Node>();
+        PriorityQueue<Node> openList = new PriorityQueue<>();
         List<Node> closedList = new ArrayList<>();
 
         openList.add(new Node(start, null));
@@ -83,7 +99,8 @@ public class PathManager {
             Node current = openList.poll();
             closedList.add(current);
 
-            if (current.equals(target)) {
+            // added relaxation to reduce time
+            if (current.equals(target) || current.position.withinRadius(target.position, Parameters.FOOD_SIZE)) {
                 target = current;
                 break;
             }
@@ -107,12 +124,19 @@ public class PathManager {
                         openList.add(neighbor);
                     }
                 }
-
             }
         }
 
         // backtracking
         while (target.parent != null) {
+            Point point = this.gameState.getPoint(target.position);
+            if (point == null) {
+                point = new Point(target.position, new OptimalPath());
+                this.gameState.setPoint(point);
+            } else {
+                point.addEntity(new OptimalPath());
+            }
+
             path.addPosition(target.position);
             target = target.parent;
         }

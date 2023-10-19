@@ -147,15 +147,29 @@ public class Position {
 
     public List<Position> getNeighbours() {
         List<Position> neighbours = new ArrayList<>();
+
+//        for (int i = -1; i <= 1; i++) {
+//            for (int j = -1; j <=1; j++) {
+//                if (i == 0 && j == 0 || x + i < 0 || x + i >= status.getWidth() || y + j < 0 || y + j >= status.getHeight()) continue;
+//                neighbours.add(new Position(x + i, y + j, status));
+//            }
+//        }
+
         neighbours.add(new Position(x - 1, y - 1, status));
-        neighbours.add(new Position(x, y - 1, status));
-        neighbours.add(new Position(x + 1, y - 1, status));
         neighbours.add(new Position(x - 1, y, status));
-        neighbours.add(new Position(x + 1, y, status));
         neighbours.add(new Position(x - 1, y + 1, status));
+        neighbours.add(new Position(x, y - 1, status));
+        neighbours.add(new Position(x, y, status));
         neighbours.add(new Position(x, y + 1, status));
+        neighbours.add(new Position(x + 1, y - 1, status));
+        neighbours.add(new Position(x + 1, y, status));
         neighbours.add(new Position(x + 1, y + 1, status));
+
         return neighbours;
+    }
+
+    public boolean withinRadius(Position p, int radius) {
+        return Math.abs(x - p.getX()) <= radius && Math.abs(y - p.getY()) <= radius;
     }
 
 

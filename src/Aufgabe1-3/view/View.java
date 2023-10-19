@@ -26,6 +26,9 @@ public class View {
      * @param gameState gameState to draw on the canvas. The gameState must include a Point[] with all Entities. If the array is empty, then nothing will be drawn.
      */
     public void draw(GameState gameState) {
+        // ToDo: remove this is just a fix to stop overlaps between simulations
+        cd.clear(BACKGROUND_COLOR);
+
         drawElements(gameState);
         cd.show();
     }
@@ -46,6 +49,7 @@ public class View {
             int y = point.getPosition().getY() * Parameters.SCALE_BY;
 
             for (Entity entity : point.getEntities()) {
+                if (entity instanceof OptimalPath) setPixels(x, y, Parameters.SCALE_BY, Parameters.OPTIMAL_PATH_COLOR);
                 if (entity instanceof Trail e)
                     setPixels(x, y, Parameters.SCALE_BY, mixColors(Parameters.TRAIL_COLOR, BACKGROUND_COLOR, e.getStrength() <= 0.15 ? 0 : (float) e.getStrength()));
                 if (entity instanceof Food) setPixels(x, y, Parameters.SCALE_BY, Parameters.FOOD_SOURCE_COLOR);

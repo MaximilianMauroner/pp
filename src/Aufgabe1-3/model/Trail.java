@@ -47,6 +47,7 @@ public class Trail implements Entity {
         } else if (value < 0) {
             value = 0;
         }
+
         this.trailStrengths.put(origin, value);
     }
 
