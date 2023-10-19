@@ -169,7 +169,7 @@ public class Position {
     }
 
     public boolean withinRadius(Position p, int radius) {
-        return Math.abs(x - p.getX()) <= radius && Math.abs(y - p.getY()) <= radius;
+        return this.euclideanDistance(p) <= radius;
     }
 
 

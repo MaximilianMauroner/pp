@@ -36,4 +36,9 @@ public class Parameters {
     public static final int HIVE_SIZE = 20;
     public static final int OBSTACLE_SIZE = 8;
 
+
+    // Evaluation Parameters
+    public static final int EVALUATION_TIME = 1000;
+    public static final int OPTIMAL_PATH_SURVEY_RADIUS = 10;
+
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Path {
     private List<Position> positionList = new ArrayList<>();
+    private double metric = 0; // ToDo: think of a statistically more sound metric
 
     public List<Position> getPositionList() {
         return positionList;
@@ -12,6 +13,14 @@ public class Path {
 
     public void addPosition(Position position) {
         positionList.add(position);
+    }
+
+    public void addPointMetric(double metric) {
+        this.metric += metric;
+    }
+
+    public double getPathMetric() {
+        return metric / positionList.size();
     }
 
     @Override

@@ -1,9 +1,7 @@
 package model;
 
 
-import controller.Game;
 import controller.GameState;
-import view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,10 +129,10 @@ public class PathManager {
         while (target.parent != null) {
             Point point = this.gameState.getPoint(target.position);
             if (point == null) {
-                point = new Point(target.position, new OptimalPath());
+                point = new Point(target.position, new OptimalPathPoint(path));
                 this.gameState.setPoint(point);
             } else {
-                point.addEntity(new OptimalPath());
+                point.addEntity(new OptimalPathPoint(path));
             }
 
             path.addPosition(target.position);

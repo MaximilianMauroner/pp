@@ -4,7 +4,7 @@ import model.*;
 /*
 Distribution of work:
 - Maximilian: Model(Position, Point, Status, Cluster Generator), Controller(GameState, GameLoop)
-- Lukas: Model(Entities), Controller(Ant State Machine, Game generation)
+- Lukas: Model(Entities), Controller(Ant State Machine, Game generation), Optimal Path
 - Christopher: View
  */
 
