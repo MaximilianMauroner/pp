@@ -6,12 +6,12 @@ package model;
  * The status is used to create the simulation
  */
 public class Status {
-    private final int width, height, scale, simulationTimeLimit, antCount, foodCount, obstacleCount, foodSize, hiveSize, obstacleSize;
+    private final int width, height, scale, simulationTimeLimit, antCount, foodCount, obstacleCount;
     private int antEmptySteps,foodHiveDistance, antSpawnRadius, simulationTime;
     private double trailDecay, lowTrail, highTrail;
 
     public Status(int width, int height, int scale, int simulationTime, int antCount, int antEmptySteps, int foodCount,
-                  int obstacleCount, int antSpawnRadius, int foodHiveDistance, int foodSize, int hiveSize, int obstacleSize,
+                  int obstacleCount, int antSpawnRadius, int foodHiveDistance,
                   double trailDecay, double lowTrail, double highTrail) {
         this.width = width;
         this.height = height;
@@ -23,9 +23,6 @@ public class Status {
         this.obstacleCount = obstacleCount;
         this.antSpawnRadius = antSpawnRadius;
         this.foodHiveDistance = foodHiveDistance;
-        this.foodSize = foodSize;
-        this.hiveSize = hiveSize;
-        this.obstacleSize = obstacleSize;
         this.trailDecay = trailDecay;
         this.lowTrail = lowTrail;
         this.highTrail = highTrail;
@@ -71,18 +68,6 @@ public class Status {
         return foodHiveDistance;
     }
 
-    public int getFoodSize() {
-        return foodSize;
-    }
-
-    public int getHiveSize() {
-        return hiveSize;
-    }
-
-    public int getObstacleSize() {
-        return obstacleSize;
-    }
-
     public double getTrailDecay() {
         return trailDecay;
     }
@@ -123,16 +108,16 @@ public class Status {
      */
     private double randomize(double value, double confidence, int lowerLimit, int upperLimit) {
         double result = value * (1 + (Math.random() * confidence * 2 - confidence));
-        if(result > upperLimit){
-            this.randomize(value, confidence, lowerLimit, upperLimit);
-        }else if(result < lowerLimit){
-            result = lowerLimit;
+        if (result > upperLimit) {
+            return this.randomize(value, confidence, lowerLimit, upperLimit);
+        } else if (result < lowerLimit) {
+            return lowerLimit;
         }
         return result;
     }
     public void nextTime(){
         System.out.println(this.simulationTime);
-        this.simulationTime = this.simulationTime +1 % 24;
+        this.simulationTime = this.simulationTime + 1 % 24;
         System.out.println(this.simulationTime + " after");
     }
 }

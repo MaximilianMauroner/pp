@@ -20,7 +20,7 @@ javac -cp lib/CodeDraw.jar -d out  model/*.java view/*.java controller/*.java Te
 ```
 
 ## Run
-Since we included a external library we also need to specify classpath
+Since we included an external library we also need to specify classpath
 ```
 java -cp out:lib/CodeDraw.jar src.Test
 ```

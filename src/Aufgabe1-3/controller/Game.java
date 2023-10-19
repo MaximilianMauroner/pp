@@ -18,6 +18,7 @@ public class Game {
      */
     private GameState gameState;
     private View view;
+    private PathManager pathManager;
 
     /**
      * Status of the simulation. Actually accessed like a module containing variables
@@ -39,21 +40,24 @@ public class Game {
         Entity hive = new Hive();
 
         this.gameState = new GameState(new ConcurrentHashMap<>(), status);
+        this.pathManager = PathManager.getInstance(this.gameState);
+        this.pathManager.clear();
 
         // randomly spawn obstacles
         int obstacleCount = (int) (Math.random() * status.getObstacleCount());
         for (int i = 0; i < obstacleCount; i++) {
             int obstacleX = (int) (Math.random() * status.getWidth());
             int obstacleY = (int) (Math.random() * status.getHeight());
-            Position obstaclePosition = new Position(obstacleX, obstacleY, status);
-            ClusterGenerator.advancedObstacleGeneration(obstacle, obstaclePosition, status.getObstacleSize(), gameState);
+            Position obstaclePosition = new Position(obstacleX, obstacleY);
+            ClusterGenerator.advancedObstacleGeneration(obstacle, obstaclePosition, Parameters.OBSTACLE_SIZE, gameState);
         }
 
         // generate hive position
         int hiveX = (int) (Math.random() * status.getWidth());
         int hiveY = (int) (Math.random() * status.getHeight());
-        Position hivePosition = new Position(hiveX, hiveY, status);
-        ClusterGenerator.advancedHiveGeneration(hive, hivePosition, status.getHiveSize(), gameState);
+        Position hivePosition = new Position(hiveX, hiveY);
+        ClusterGenerator.advancedHiveGeneration(hive, hivePosition, Parameters.HIVE_SIZE, gameState);
+        pathManager.addStart(hivePosition);
 
         // randomly spawn ants around hive
         int spawnRadius = status.getAntSpawnRadius();
@@ -61,9 +65,10 @@ public class Game {
         for (int i = 0; i < status.getAntCount(); i++) {
             int antX = calculatePosition(hiveX, spawnRadius);
             int antY = calculatePosition(hiveY, spawnRadius);
-            Position antPosition = new Position(antX, antY, status);
+            Position antPosition = new Position(antX, antY);
             ClusterGenerator.generate(ant, antPosition, 1, gameState);
         }
+
 
         // randomly spawn food
         int hiveDistance = status.getFoodHiveDistance();  // minimum distance between hive and food
@@ -76,8 +81,10 @@ public class Game {
                 foodY = (int) (Math.random() * status.getHeight());
             } while (Math.abs(foodX - hiveX) < hiveDistance && Math.abs(foodY - hiveY) < hiveDistance);
 
-            Position foodPosition = new Position(foodX, foodY, status);
-            ClusterGenerator.advancedFoodSourceGeneration(food, foodPosition, status.getFoodSize(), gameState);
+            Position foodPosition = new Position(foodX, foodY);
+            ClusterGenerator.advancedFoodSourceGeneration(food, foodPosition, Parameters.FOOD_SIZE, gameState);
+
+            pathManager.registerNewPaths(foodPosition);
         }
     }
 
