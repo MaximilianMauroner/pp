@@ -95,7 +95,7 @@ public class ClusterGenerator {
     }
 
     private static void setPosition(int x, int y, Entity entity, GameState gs) {
-        Position pos = new Position(x, y, gs.getStatus());
+        Position pos = new Position(x, y);
         Point p = gs.getPoint(pos);
         if (p == null) {
             p = new Point(pos, entity.clone());

@@ -48,14 +48,14 @@ public class Game {
         for (int i = 0; i < obstacleCount; i++) {
             int obstacleX = (int) (Math.random() * status.getWidth());
             int obstacleY = (int) (Math.random() * status.getHeight());
-            Position obstaclePosition = new Position(obstacleX, obstacleY, status);
+            Position obstaclePosition = new Position(obstacleX, obstacleY);
             ClusterGenerator.advancedObstacleGeneration(obstacle, obstaclePosition, Parameters.OBSTACLE_SIZE, gameState);
         }
 
         // generate hive position
         int hiveX = (int) (Math.random() * status.getWidth());
         int hiveY = (int) (Math.random() * status.getHeight());
-        Position hivePosition = new Position(hiveX, hiveY, status);
+        Position hivePosition = new Position(hiveX, hiveY);
         ClusterGenerator.advancedHiveGeneration(hive, hivePosition, Parameters.HIVE_SIZE, gameState);
         pathManager.addStart(hivePosition);
 
@@ -65,7 +65,7 @@ public class Game {
         for (int i = 0; i < status.getAntCount(); i++) {
             int antX = calculatePosition(hiveX, spawnRadius);
             int antY = calculatePosition(hiveY, spawnRadius);
-            Position antPosition = new Position(antX, antY, status);
+            Position antPosition = new Position(antX, antY);
             ClusterGenerator.generate(ant, antPosition, 1, gameState);
         }
 
@@ -81,7 +81,7 @@ public class Game {
                 foodY = (int) (Math.random() * status.getHeight());
             } while (Math.abs(foodX - hiveX) < hiveDistance && Math.abs(foodY - hiveY) < hiveDistance);
 
-            Position foodPosition = new Position(foodX, foodY, status);
+            Position foodPosition = new Position(foodX, foodY);
             ClusterGenerator.advancedFoodSourceGeneration(food, foodPosition, Parameters.FOOD_SIZE, gameState);
 
             pathManager.registerNewPaths(foodPosition);

@@ -10,22 +10,20 @@ import java.util.List;
  */
 public class Position {
     private int x, y;
-    private Status status;
 
-    public Position(int x, int y, Status status) {
-        if (x > status.getWidth()) {
+    public Position(int x, int y) {
+        if (x > Parameters.WIDTH) {
             x = 0;
         }
-        if (y > status.getHeight()) {
+        if (y > Parameters.HEIGHT) {
             y = 0;
         }
         if (x < 0) {
-            x = status.getWidth();
+            x = Parameters.WIDTH;
         }
         if (y < 0) {
-            y = status.getHeight();
+            y = Parameters.HEIGHT;
         }
-        this.status = status;
         this.x = x;
         this.y = y;
     }
@@ -74,67 +72,67 @@ public class Position {
         switch (direction) {
             case NORTH:
                 return new ArrayList<>(Arrays.asList(
-                        new Position(x, y - 1, status),
-                        new Position(x - 1, y, status),
-                        new Position(x + 1, y, status),
-                        new Position(x - 1, y - 1, status),
-                        new Position(x + 1, y - 1, status)
+                        new Position(x, y - 1),
+                        new Position(x - 1, y),
+                        new Position(x + 1, y),
+                        new Position(x - 1, y - 1),
+                        new Position(x + 1, y - 1)
                         ));
             case NORTHEAST:
                 return new ArrayList<>(Arrays.asList(
-                        new Position(x - 1, y + 1, status),
-                        new Position(x - 1, y - 1, status),
-                        new Position(x + 1, y + 1, status),
-                        new Position(x, y - 1, status),
-                        new Position(x + 1, y, status)
+                        new Position(x - 1, y + 1),
+                        new Position(x - 1, y - 1),
+                        new Position(x + 1, y + 1),
+                        new Position(x, y - 1),
+                        new Position(x + 1, y)
                         ));
             case EAST:
                 return new ArrayList<>(Arrays.asList(
-                        new Position(x + 1, y, status),
-                        new Position(x, y - 1, status),
-                        new Position(x, y + 1, status),
-                        new Position(x - 1, y + 1, status),
-                        new Position(x + 1, y + 1, status)
+                        new Position(x + 1, y),
+                        new Position(x, y - 1),
+                        new Position(x, y + 1),
+                        new Position(x - 1, y + 1),
+                        new Position(x + 1, y + 1)
                         ));
             case SOUTHEAST:
                 return new ArrayList<>(Arrays.asList(
-                        new Position(x, y + 1, status),
-                        new Position(x + 1, y + 1, status),
-                        new Position(x - 1, y + 1, status),
-                        new Position(x + 1, y, status),
-                        new Position(x - 1, y, status)
+                        new Position(x, y + 1),
+                        new Position(x + 1, y + 1),
+                        new Position(x - 1, y + 1),
+                        new Position(x + 1, y),
+                        new Position(x - 1, y)
                         ));
             case SOUTH:
                 return new ArrayList<>(Arrays.asList(
-                        new Position(x , y + 1, status),
-                        new Position(x - 1, y, status),
-                        new Position(x + 1, y , status),
-                        new Position(x + 1, y + 1, status),
-                        new Position(x - 1, y + 1, status)
+                        new Position(x , y + 1),
+                        new Position(x - 1, y),
+                        new Position(x + 1, y),
+                        new Position(x + 1, y + 1),
+                        new Position(x - 1, y + 1)
                         ));
             case SOUTHWEST:
                 return new ArrayList<>(Arrays.asList(
-                        new Position(x + 1, y - 1, status),
-                        new Position(x - 1, y - 1, status),
-                        new Position(x + 1, y + 1, status),
-                        new Position(x - 1, y, status),
-                        new Position(x , y + 1, status)
+                        new Position(x + 1, y - 1),
+                        new Position(x - 1, y - 1),
+                        new Position(x + 1, y + 1),
+                        new Position(x - 1, y),
+                        new Position(x , y + 1)
                         ));
             case WEST:
                 return new ArrayList<>(Arrays.asList(
-                        new Position(x - 1, y, status),
-                        new Position(x , y - 1, status),
-                        new Position(x , y + 1, status),
-                        new Position(x - 1, y - 1, status),
-                        new Position(x + 1, y - 1, status)
+                        new Position(x - 1, y),
+                        new Position(x , y - 1),
+                        new Position(x , y + 1),
+                        new Position(x - 1, y - 1),
+                        new Position(x + 1, y - 1)
                         ));
             case NORTHWEST:
                 return new ArrayList<>(Arrays.asList(
-                        new Position(x - 1, y - 1, status),
-                        new Position(x - 1, y + 1, status),
-                        new Position(x + 1, y - 1, status),
-                        new Position(x - 1, y, status),
-                        new Position(x, y - 1 , status)
+                        new Position(x - 1, y - 1),
+                        new Position(x - 1, y + 1),
+                        new Position(x + 1, y - 1),
+                        new Position(x - 1, y),
+                        new Position(x, y - 1)
                         ));
             default:
                 return null;
@@ -155,15 +153,15 @@ public class Position {
 //            }
 //        }
 
-        neighbours.add(new Position(x - 1, y - 1, status));
-        neighbours.add(new Position(x - 1, y, status));
-        neighbours.add(new Position(x - 1, y + 1, status));
-        neighbours.add(new Position(x, y - 1, status));
-        neighbours.add(new Position(x, y, status));
-        neighbours.add(new Position(x, y + 1, status));
-        neighbours.add(new Position(x + 1, y - 1, status));
-        neighbours.add(new Position(x + 1, y, status));
-        neighbours.add(new Position(x + 1, y + 1, status));
+        neighbours.add(new Position(x - 1, y - 1));
+        neighbours.add(new Position(x - 1, y));
+        neighbours.add(new Position(x - 1, y + 1));
+        neighbours.add(new Position(x, y - 1));
+        neighbours.add(new Position(x, y));
+        neighbours.add(new Position(x, y + 1));
+        neighbours.add(new Position(x + 1, y - 1));
+        neighbours.add(new Position(x + 1, y));
+        neighbours.add(new Position(x + 1, y + 1));
 
         return neighbours;
     }
