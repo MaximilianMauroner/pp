@@ -86,7 +86,7 @@ java -cp out:lib/CodeDraw.jar src.Test
 ### Lukas
 - Simulation Metrik
 	- ~~Optimale Pfade berechnen A*~~
-	- Abweichung von Pfaden berechnen
+	- ~~Abweichung von Pfaden berechnen~~
 	- Speichern von Daten
 - Ant movement
   - Ants move for a few steps 
