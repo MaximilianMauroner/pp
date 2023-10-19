@@ -85,19 +85,20 @@ java -cp out:lib/CodeDraw.jar src.Test
 
 ### Lukas
 - Simulation Metrik
-	- Optimale Pfade berechnen RRT*
+	- ~~Optimale Pfade berechnen A*~~
 	- Abweichung von Pfaden berechnen
 	- Speichern von Daten
 - Ant movement
-  - Ants move for a few steps
+  - Ants move for a few steps 
   - then check for odour
   - then move again
-  - needs view of ant 
+  - needs view of ant (kinda hard meh)
 - add entity priorities
   - maybe needs compareTo() function
 - Ants fight each other (maybe); call antDies() in View
 	- wenn zwei von unterschiedlichen Kolonien aufeinander treffen, kämpfen sie
-    - Ant Objekt entfernen Corpse spawnen 
+    - Ant Objekt entfernen Corpse spawnen
+    - View hat Observer
 
 ### Chris
 - ~~Tageszeit simulation~~
