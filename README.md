@@ -106,9 +106,9 @@ java -cp out:lib/CodeDraw.jar src.Test
 	- ~~(Chris) Hintergrund auf Basis der Zeit verändern~~
 - (Chris) Statistik End Screen (low Priority)
 - (Chris) Effiziente Darstellung in View
-- (Chris) Entity View Priorities
+- ~~(Chris) Entity View Priorities~~
 	- ~~Verschiedene Entities haben verschiedene Priorities~~
-	- Mit höherer Priority werden vor niedriger Priority dargestellt
+	- ~~Mit höherer Priority werden vor niedriger Priority dargestellt~~
 - (Chris) Explosion when ant dies >_<
   	- ~~(Chris) Class Corpse implements Entity~~
 
