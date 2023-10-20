@@ -20,7 +20,7 @@ public class Parameters {
     public static final Color OBSTACLE_COLOR = new Color(114, 110, 110);
     public static final Color TRAIL_COLOR = new Color(28, 63, 255);
     public static final Color OPTIMAL_PATH_COLOR = new Color(255, 255, 0);
-
+    public static final Color CORPSE_COLOR = Color.RED;
 
     //set priority for entities
     public static final int ANT_PRIORITY = 100;
@@ -28,7 +28,8 @@ public class Parameters {
     public static final int FOOD_PRIORITY = 80;
     public static final int OBSTACLE_PRIORITY = 70;
     public static final int TRAIL_PRIORITY = 60;
-    public static final int OPTIMAL_PATH_PRIORITY = 50;
+    public static final int CORPSE_PRIORITY = 50;
+    public static final int OPTIMAL_PATH_PRIORITY = 40;
 
 
     // Set size for entities

@@ -85,19 +85,20 @@ java -cp out:lib/CodeDraw.jar src.Test
 
 ### Lukas
 - Simulation Metrik
-	- Optimale Pfade berechnen RRT*
-	- Abweichung von Pfaden berechnen
+	- ~~Optimale Pfade berechnen A*~~
+	- ~~Abweichung von Pfaden berechnen~~
 	- Speichern von Daten
 - Ant movement
-  - Ants move for a few steps
+  - Ants move for a few steps 
   - then check for odour
   - then move again
-  - needs view of ant 
+  - needs view of ant (kinda hard meh)
 - add entity priorities
   - maybe needs compareTo() function
 - Ants fight each other (maybe); call antDies() in View
 	- wenn zwei von unterschiedlichen Kolonien aufeinander treffen, kämpfen sie
-    - Ant Objekt entfernen Corpse spawnen 
+    - Ant Objekt entfernen Corpse spawnen
+    - View hat Observer
 
 ### Chris
 - ~~Tageszeit simulation~~
@@ -105,9 +106,9 @@ java -cp out:lib/CodeDraw.jar src.Test
 	- ~~(Chris) Hintergrund auf Basis der Zeit verändern~~
 - (Chris) Statistik End Screen (low Priority)
 - (Chris) Effiziente Darstellung in View
-- (Chris) Entity View Priorities
+- ~~(Chris) Entity View Priorities~~
 	- ~~Verschiedene Entities haben verschiedene Priorities~~
-	- Mit höherer Priority werden vor niedriger Priority dargestellt
+	- ~~Mit höherer Priority werden vor niedriger Priority dargestellt~~
 - (Chris) Explosion when ant dies >_<
   	- ~~(Chris) Class Corpse implements Entity~~
 
