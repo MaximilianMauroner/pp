@@ -52,10 +52,8 @@ public class View {
                 if (entity instanceof Food) setPixels(x, y, Parameters.SCALE_BY, Parameters.FOOD_SOURCE_COLOR);
                 if (entity instanceof Hive) setPixels(x, y, Parameters.SCALE_BY, Parameters.COLONY_HOME_COLOR);
                 if (entity instanceof Obstacle) setPixels(x, y, Parameters.SCALE_BY, Parameters.OBSTACLE_COLOR);
-                if (entity instanceof Corpse c) drawCorpse(x, y, Parameters.SCALE_BY, new Color(
-                        (int) (Parameters.CORPSE_COLOR.getRed() * c.getStrength()),
-                        (int) (Parameters.CORPSE_COLOR.getGreen() * c.getStrength()),
-                        (int) (Parameters.CORPSE_COLOR.getBlue() * c.getStrength())), c.getSeed());
+                if (entity instanceof Corpse c)
+                    drawCorpse(x, y, mixColors(Parameters.CORPSE_COLOR, BACKGROUND_COLOR, c.getStrength() <= 0.15 ? 0 : c.getStrength()), c.getSeed());
                 if (entity instanceof Ant) {
                     switch (((Ant) entity).getState()) {
                         case EXPLORE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_DEFAULT_COLOR);
@@ -143,7 +141,7 @@ public class View {
         }
     }
 
-    private void drawCorpse(int x, int y, int size, Color color, int seed) {
+    private void drawCorpse(int x, int y, Color color, int seed) {
         Random r = new Random(seed);
 
         double std_dev = 7; // Standard deviation of the distribution
@@ -152,7 +150,7 @@ public class View {
             int x2 = (int) Math.round(x + r.nextInt(-1, 1) * r.nextGaussian() * std_dev);
             int y2 = (int) Math.round(y + r.nextInt(-1, 1) * r.nextGaussian() * std_dev);
 
-            setPixels(x2 + size, y2 + size, size, color);
+            setPixels(x2 + Parameters.SCALE_BY, y2 + Parameters.SCALE_BY, Parameters.SCALE_BY, color);
         }
 
     }
