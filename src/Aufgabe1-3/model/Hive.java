@@ -1,7 +1,7 @@
 package model;
 
+import datastore.DataManager;
 import controller.GameState;
-
 
 
 /**
@@ -14,11 +14,19 @@ public class Hive implements Entity {
     public Hive() {
     }
 
+    /**
+     * Increments the food count (e.g. when ant reaches hive)
+     */
+    public void addFood() {
+        DataManager dataManager = DataManager.getInstance();
+        dataManager.incrementSimpleField("foodCount");
+
+        System.out.println("Food added to hive" + dataManager.getSimpleField("foodCount"));
+    }
+
     @Override
     public void run(GameState gameState, Status status, Point point) {
     }
-
-
 
     @Override
     public Entity clone() {

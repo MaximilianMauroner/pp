@@ -8,7 +8,7 @@ public class Parameters {
     public static final int WIDTH = 225;
     public static final int HEIGHT = 225;
 
-    public static final int SIMULATION_RUNS = 3;
+    public static final int SIMULATION_RUNS = 5;
 
 
     //Set color for entities
@@ -39,7 +39,7 @@ public class Parameters {
 
 
     // Evaluation Parameters
-    public static final int EVALUATION_TIME = 1000;
+    public static final int EVALUATION_TIME = 60000;
     public static final int OPTIMAL_PATH_SURVEY_RADIUS = 10;
 
 }

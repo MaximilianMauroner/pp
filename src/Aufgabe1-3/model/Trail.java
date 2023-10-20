@@ -65,6 +65,7 @@ public class Trail implements Entity {
      * @param trail trail to be combined with
      */
     public void combineTrails(Trail trail) {
+        // STYLE: this uses a lambda expression so kind of functional programming :)
         trail.trailStrengths.forEach((k, v) -> {
             if (this.trailStrengths.containsKey(k)) {
                 this.trailStrengths.put(k, (this.trailStrengths.get(k) + v) / 2);
@@ -76,6 +77,7 @@ public class Trail implements Entity {
 
     @Override
     public void run(GameState gameState, Status status, Point point) {
+        // here as well
         trailStrengths.forEach((k, v) -> {
             v *= status.getTrailDecay();
             trailStrengths.put(k,v);
@@ -86,8 +88,6 @@ public class Trail implements Entity {
                 point.removeEntity(this);
             }
         });
-
-
     }
 
     @Override

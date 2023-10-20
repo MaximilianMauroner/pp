@@ -113,6 +113,7 @@ public class Game {
         }
 
         gameplayLoop.setRunning(false);
+        pathManager.calculatePaths();
     }
 
 

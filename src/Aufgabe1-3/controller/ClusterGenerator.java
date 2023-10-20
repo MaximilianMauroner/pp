@@ -1,6 +1,9 @@
-package model;
+package controller;
 
 import controller.GameState;
+import model.Entity;
+import model.Point;
+import model.Position;
 
 import java.util.Random;
 
