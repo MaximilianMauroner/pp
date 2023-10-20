@@ -84,10 +84,10 @@ java -cp out:lib/CodeDraw.jar src.Test
  		- Event name
 
 ### Lukas
-- Simulation Metrik
+- ~~Simulation Metrik~~
 	- ~~Optimale Pfade berechnen A*~~
 	- ~~Abweichung von Pfaden berechnen~~
-	- Speichern von Daten
+	- ~~Speichern von Daten~~
 - Ant movement
   - Ants move for a few steps 
   - then check for odour
