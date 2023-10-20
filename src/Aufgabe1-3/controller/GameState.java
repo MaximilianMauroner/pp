@@ -16,8 +16,6 @@ public class GameState {
 
     ConcurrentHashMap<Position, Point> points;
 
-    int foodCount = 0;
-
     Status status;
 
     /**
@@ -79,14 +77,5 @@ public class GameState {
      */
     public Status getStatus() {
         return status;
-    }
-
-
-    /**
-     * Increments the food count (e.g. when ant reaches hive)
-     */
-    public void addFood() {
-        this.foodCount++;
-        System.out.println("Food added to hive" + this.foodCount);
     }
 }

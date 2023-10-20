@@ -1,7 +1,9 @@
-package model;
+package controller;
 
 
-import controller.GameState;
+import datastore.DataManager;
+import datastore.Operation;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,11 +64,10 @@ public class PathManager {
     }
 
     public void calculatePaths() {
-        for (Position start : startPositions) {
-            for (Position end : endPositions) {
-                paths.add(a_star(start, end));
-            }
+        for (Path path : paths) {
+            DataManager.getInstance().updateComplexField("pathMetric", path.getPathMetric());
         }
+        DataManager.getInstance().summarizeComplexField("pathMetric", new Operation.Mean());
     }
 
     public void clear() {

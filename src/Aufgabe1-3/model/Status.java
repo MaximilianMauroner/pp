@@ -1,5 +1,7 @@
 package model;
 
+import datastore.Simulation;
+
 /**
  * Class for the status of the simulation
  * The status contains all the parameters that can be changed by the user
@@ -98,6 +100,14 @@ public class Status {
         this.highTrail = randomize(highTrail, confidence,0,1);
     }
 
+    public void exportRandomParameters(Simulation simulation) {
+        simulation.addData("antEmptySteps", this.antEmptySteps);
+        simulation.addData("antSpawnRadius", this.antSpawnRadius);
+        simulation.addData("foodHiveDistance", this.foodHiveDistance);
+        simulation.addData("trailDecay", this.trailDecay);
+        simulation.addData("lowTrail", this.lowTrail);
+        simulation.addData("highTrail", this.highTrail);
+    }
 
     /**
      * Randomizes of a value with a given confidence within a given interval

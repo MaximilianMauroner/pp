@@ -209,7 +209,7 @@ public class Ant implements Entity {
                         endPosition = pos;
                         newPoint = point;
                         this.currentState = AntState.FOODSEARCH;
-                        this.gameState.addFood();
+                        ((Hive) e).addFood();
                         System.out.println("Ant-" + this.hashCode() + ": Reached hive, switching to foodsearch mode");
                     } else if (e instanceof Trail && ((Trail) e).isNewPath(this.hashCode())) { // origin so ant doesn't follow own trail
                         double strength = ((Trail) e).getStrength();
