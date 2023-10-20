@@ -5,6 +5,7 @@ import controller.GameState;
 import model.*;
 
 import java.awt.Color;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class View {
@@ -55,6 +56,8 @@ public class View {
                 if (entity instanceof Food) setPixels(x, y, Parameters.SCALE_BY, Parameters.FOOD_SOURCE_COLOR);
                 if (entity instanceof Hive) setPixels(x, y, Parameters.SCALE_BY, Parameters.COLONY_HOME_COLOR);
                 if (entity instanceof Obstacle) setPixels(x, y, Parameters.SCALE_BY, Parameters.OBSTACLE_COLOR);
+                if (entity instanceof Corpse c)
+                    drawCorpse(x, y, mixColors(Parameters.CORPSE_COLOR, BACKGROUND_COLOR, c.getStrength() <= 0.15 ? 0 : c.getStrength()), c.getSeed());
                 if (entity instanceof Ant) {
                     switch (((Ant) entity).getState()) {
                         case EXPLORE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_DEFAULT_COLOR);
@@ -140,5 +143,19 @@ public class View {
                 if (i >= 0 && i <= width && j >= 0 && j <= height) cd.setPixel(i, j, color);
             }
         }
+    }
+
+    private void drawCorpse(int x, int y, Color color, int seed) {
+        Random r = new Random(seed);
+
+        double std_dev = 7; // Standard deviation of the distribution
+
+        for (int i = 0; i < 20; i++) {
+            int x2 = (int) Math.round(x + r.nextInt(-1, 1) * r.nextGaussian() * std_dev);
+            int y2 = (int) Math.round(y + r.nextInt(-1, 1) * r.nextGaussian() * std_dev);
+
+            setPixels(x2 + Parameters.SCALE_BY, y2 + Parameters.SCALE_BY, Parameters.SCALE_BY, color);
+        }
+
     }
 }
