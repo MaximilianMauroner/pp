@@ -42,7 +42,7 @@ public class Parameters {
     // Initial amount of entities
     public static final int INITIAL_FOOD_COUNT = 7;
 //    public static final int INITIAL_ANT_COUNT = 100;
-    public static final int INITIAL_ANT_COUNT = 1; // ToDo: change back to 100
+    public static final int INITIAL_ANT_COUNT = 100; // ToDo: change back to 100
     public static final int INITIAL_OBSTACLE_COUNT = 30;
 
 
