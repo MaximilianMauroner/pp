@@ -40,8 +40,7 @@ public class Game {
         Entity hive = new Hive();
 
         this.gameState = new GameState(new ConcurrentHashMap<>(), status);
-        this.pathManager = PathManager.getInstance(this.gameState);
-        this.pathManager.clear();
+        this.pathManager = new PathManager(gameState);
 
         // randomly spawn obstacles
         int obstacleCount = (int) (Math.random() * status.getObstacleCount());

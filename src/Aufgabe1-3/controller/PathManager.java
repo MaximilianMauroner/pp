@@ -15,25 +15,16 @@ import java.util.PriorityQueue;
  */
 public class PathManager {
 
-    private static PathManager instance = null;
     private List<Path> paths;
     private List<Position> startPositions;
     private List<Position> endPositions;
     private GameState gameState;
 
-    private PathManager(GameState gameState) {
+    public PathManager(GameState gameState) {
         paths = new ArrayList<>();
         startPositions = new ArrayList<>();
         endPositions = new ArrayList<>();
         this.gameState = gameState;
-    }
-
-    public static PathManager getInstance(GameState gameState) {
-        if (instance == null) {
-            instance = new PathManager(gameState);
-        }
-        instance.gameState = gameState;
-        return instance;
     }
 
     public void addStart(Position position) {

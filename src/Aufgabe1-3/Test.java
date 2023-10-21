@@ -16,8 +16,8 @@ public class Test {
 
     public static void main(String[] args) {
         Status s = new Status(Parameters.WIDTH, Parameters.HEIGHT, Parameters.SCALE_BY, Parameters.EVALUATION_TIME,
-                100, 20, 7,
-                30, 50, 100, 0.97, 0.2, 0.7);
+                Parameters.INITIAL_ANT_COUNT, 20, Parameters.INITIAL_FOOD_COUNT,
+                Parameters.INITIAL_OBSTACLE_COUNT, 50, 100, 0.97, 0.2, 0.7);
         Game game = new Game(s);
         DataManager dataManager;
 

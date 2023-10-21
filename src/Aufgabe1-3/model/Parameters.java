@@ -8,7 +8,12 @@ public class Parameters {
     public static final int WIDTH = 225;
     public static final int HEIGHT = 225;
 
-    public static final int SIMULATION_RUNS = 5;
+//    public static final int SIMULATION_RUNS = 5;
+    public static final int SIMULATION_RUNS = 1; // ToDo: change back to 5
+
+
+    // control params
+    public static final boolean ENABLE_TRAIL_WAVES = true;
 
 
     //Set color for entities
@@ -19,7 +24,7 @@ public class Parameters {
     public static final Color COLONY_HOME_COLOR = new Color(184, 156, 80);
     public static final Color OBSTACLE_COLOR = new Color(114, 110, 110);
     public static final Color TRAIL_COLOR = new Color(28, 63, 255);
-    public static final Color OPTIMAL_PATH_COLOR = new Color(255, 255, 0);
+    public static final Color OPTIMAL_PATH_COLOR = new Color(255, 255, 100);
     public static final Color CORPSE_COLOR = Color.RED;
 
     //set priority for entities
@@ -36,6 +41,14 @@ public class Parameters {
     public static final int FOOD_SIZE = 10;
     public static final int HIVE_SIZE = 20;
     public static final int OBSTACLE_SIZE = 8;
+
+    public static final int TRAIL_SIZE = 3; // aka how much do you want to kill your pc
+
+    // Initial amount of entities
+    public static final int INITIAL_FOOD_COUNT = 7;
+//    public static final int INITIAL_ANT_COUNT = 100;
+    public static final int INITIAL_ANT_COUNT = 1; // ToDo: change back to 100
+    public static final int INITIAL_OBSTACLE_COUNT = 30;
 
 
     // Evaluation Parameters

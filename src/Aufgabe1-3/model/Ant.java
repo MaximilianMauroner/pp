@@ -242,7 +242,8 @@ public class Ant implements Entity {
         }else if(newPoint == null) {
             newPoint = gameState.getPoint(endPosition);
         }
-        oldPoint.addTrail(new Trail(1, this.hashCode()));
+        //oldPoint.addTrail(new Trail(1, this.hashCode()));
+        oldPoint.addTrail(gameState, this.hashCode());
         newPoint.addEntity(this);
         oldPoint.removeEntity(this);
     }

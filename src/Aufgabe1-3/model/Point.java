@@ -1,5 +1,7 @@
 package model;
 
+import controller.GameState;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -66,6 +68,28 @@ public class Point  {
             }
         }
         this.addEntity(trail);
+    }
+
+    public void addTrail(GameState gameState, int origin) {
+        int radius = Math.ceilDiv(Parameters.TRAIL_SIZE, 2);
+        int x = this.position.getX();
+        int y = this.position.getY();
+
+        for (int i = x - radius; i <= x + radius; i++) {
+            for (int j = y - radius; j <= y + radius; j++) {
+                Position p = new Position(i, j);
+                if (this.position.withinRadius(p, radius)) {
+                    double strength = (radius - this.position.euclideanDistance(p) / radius);
+
+                    if (gameState.hasPosition(p)) {
+                        Point point = gameState.getPoint(p);
+                        point.addTrail(new Trail(strength, origin));
+                    } else {
+                        gameState.setPoint(new Point(p, new Trail(strength, origin)));
+                    }
+                }
+            }
+        }
     }
 
 
