@@ -17,16 +17,21 @@ public class Ant implements Entity {
     private GameState gameState;
     private Status status;
 
+    private int moveSteps;
+
+    private int waitSteps;
+
 
     public AntState getState() {
         return this.currentState;
     }
 
-    public Ant(AntState currentState, AntDirection direction, GameState gameState, Status status) {
+    public Ant(AntState currentState, GameState gameState, Status status) {
         this.currentState = currentState;
-        this.direction = direction;
         this.gameState = gameState;
         this.status = status;
+        this.moveSteps = status.getAntMoveSteps();
+        this.waitSteps = status.getAntWaitSteps();
         System.out.println("Ant created");
     }
 
@@ -65,19 +70,62 @@ public class Ant implements Entity {
 
         Position endPosition = nearestPositions.get((int) (Math.random() * nearestPositions.size()));
 
-        switch (currentState) {
-            case EXPLORE:
-                explore(oldPoint, nearestPositions, endPosition);
-                break;
-            case FOODSEARCH:
-                foodSearch(oldPoint, nearestPositions, endPosition);
-                break;
-            case FOODRETRIEVE:
-                foodRetrieve(oldPoint, nearestPositions, endPosition);
-                break;
+        if (this.moveSteps > 0) {
+        	this.moveSteps--;
+
+            switch (currentState) {
+                case EXPLORE:
+                    explore(oldPoint, nearestPositions, endPosition);
+                    break;
+                case FOODSEARCH:
+                    foodSearch(oldPoint, nearestPositions, endPosition);
+                    break;
+                case FOODRETRIEVE:
+                    foodRetrieve(oldPoint, nearestPositions, endPosition);
+                    break;
+            }
+        } else if (this.waitSteps > 0) {
+        	this.waitSteps--;
+        } else {
+        	this.moveSteps = 50;
+        	this.waitSteps = 10;
+
+            changeDirection(oldPoint.getPosition());
         }
+
     }
 
+    public void changeDirection(Position position) {
+        AntDirection[] directions = search(position);
+        AntDirection foodDirection = directions[0];
+        AntDirection hiveDirection = directions[1];
+        AntDirection highTrailDirection = directions[2];
+        AntDirection lowTrailDirection = directions[3];
+
+        // disable directions depending on the current state
+        if (currentState == AntState.EXPLORE) {
+            hiveDirection = null;
+        } else if (currentState == AntState.FOODSEARCH) {
+            hiveDirection = null;
+            lowTrailDirection = null;
+        } else if (currentState == AntState.FOODRETRIEVE) {
+            lowTrailDirection = null;
+            foodDirection = null;
+        }
+
+        // choose direction based on priority
+        if (foodDirection != null) {
+            this.direction = foodDirection;
+        } else if (hiveDirection != null) {
+            this.direction = hiveDirection;
+        } else if (highTrailDirection != null) {
+            this.direction = highTrailDirection;
+        } else if (lowTrailDirection != null) {
+            this.direction = lowTrailDirection;
+        } else {
+            this.direction = AntDirection.values()[(int) (Math.random() * AntDirection.values().length)];
+        }
+    }
 
     /**
      * The ant will explore the environment and leave a trail.
@@ -104,7 +152,6 @@ public class Ant implements Entity {
         Point newPoint = null;
         double lowFactor = status.getLowTrail() - Math.random();
         double highFactor = status.getHighTrail() - Math.random();
-        outerloop:
         for (Position pos : nearestPositions) {
             Point point = gameState.getPoint(pos);
             if (point != null) {
@@ -120,20 +167,6 @@ public class Ant implements Entity {
                         newPoint = point;
                         this.currentState = AntState.FOODSEARCH;
                         System.out.println("Ant-" + this.hashCode() + ": Met another ant, switching to foodsearch mode");
-                    } else if (e instanceof Trail && ((Trail) e).isNewPath(this.hashCode())) { // origin so ant doesn't follow own trail
-                        double strength = ((Trail) e).getStrength();
-                        if (strength < lowFactor) {
-                            endPosition = pos;
-                            newPoint = point;
-                        } else if (strength > highFactor) {
-                            endPosition = pos;
-                            newPoint = point;
-                            this.currentState = AntState.FOODSEARCH;
-                            System.out.println("Ant-" + this.hashCode() + ": Found strong trail, switching to foodsearch mode");
-                        } else {
-                            continue;
-                        }
-                        break outerloop;
                     }
                 }
             }
@@ -211,12 +244,6 @@ public class Ant implements Entity {
                         this.currentState = AntState.FOODSEARCH;
                         ((Hive) e).addFood();
                         System.out.println("Ant-" + this.hashCode() + ": Reached hive, switching to foodsearch mode");
-                    } else if (e instanceof Trail && ((Trail) e).isNewPath(this.hashCode())) { // origin so ant doesn't follow own trail
-                        double strength = ((Trail) e).getStrength();
-                        if (strength > highFactor) {
-                            endPosition = pos;
-                            newPoint = point;
-                        }
                     }
                 }
             }
@@ -226,30 +253,50 @@ public class Ant implements Entity {
     }
 
 
-    /**
-     * The ant will look for a specific amount of steps in all directions and return the direction with the highest trail.
-     * @return new bearing of the ant
-     */
-    private AntDirection scoutTrails(Position position) {
-        AntDirection maxDirection = this.direction;
-        double maxTrail = 0;
+    private AntDirection[] search(Position currentPosition) {
+        AntDirection food = null;
+        AntDirection hive = null;
+        AntDirection highTrail = null;
+        AntDirection lowTrail = null;
 
-        for (AntDirection direction : AntDirection.values()) {
-            Position current = position;
-            for (int i = 0; i < Parameters.ANT_VIEW_DISTANCE; i++) {
-                if (gameState.hasPosition(current)) {
-                    Point point = gameState.getPoint(current);
+        double highFactor = status.getHighTrail() - Math.random();
+        double highest = 0;
+        double lowFactor = status.getLowTrail() - Math.random();
+        double low = 1;
+        double foodDistance = Parameters.ANT_VIEW_DISTANCE;
 
-                    if (point.getTrail() > maxTrail) {
-                        maxTrail = point.getTrail();
-                        maxDirection = direction;
+        int x = currentPosition.getX();
+        int y = currentPosition.getY();
+
+        for (int i = x - Parameters.ANT_VIEW_DISTANCE; i <= x + Parameters.ANT_VIEW_DISTANCE; i++) {
+            for (int j = y - Parameters.ANT_VIEW_DISTANCE; j <= y + Parameters.ANT_VIEW_DISTANCE; j++) {
+                Position p = new Position(i, j);
+                if (currentPosition.withinRadius(p, Parameters.ANT_VIEW_DISTANCE)) {
+                    if (gameState.hasPosition(p)) {
+                        Point point = gameState.getPoint(p);
+                        for (Entity e : point.getEntities()) {
+                            if (e instanceof Food && currentPosition.euclideanDistance(p) < foodDistance) {
+                                foodDistance = currentPosition.euclideanDistance(p);
+                                food = currentPosition.getRelativeChange(p);
+                            } else if (e instanceof Hive) {
+                                hive = currentPosition.getRelativeChange(p);
+                            } else if (e instanceof Trail && ((Trail) e).isNewPath(this.hashCode())) { // origin so ant doesn't follow own trail
+                                double strength = ((Trail) e).getStrength();
+                                if (strength > highFactor && strength > highest) {
+                                    highTrail = currentPosition.getRelativeChange(p);
+                                    highest = strength;
+                                } else if (strength < lowFactor && strength < low) {
+                                    lowTrail = currentPosition.getRelativeChange(p);
+                                    low = strength;
+                                }
+                            }
+                        }
                     }
                 }
-                current = current.getPossibleNextPosition(direction).get(0);
             }
         }
 
-        return maxDirection;
+        return new AntDirection[]{food, hive, highTrail, lowTrail};
     }
 
 
@@ -261,8 +308,6 @@ public class Ant implements Entity {
      * @param endPosition the position the ant will move to (if not overwritten previously by newPoint)
      */
     private void move(Point oldPoint, Point newPoint, Position endPosition) {
-        this.direction = oldPoint.getPosition().getRelativeChange(endPosition);
-
         if (newPoint == null && !gameState.hasPosition(endPosition)) {
             newPoint = new Point(endPosition, new ArrayList<>());
             gameState.setPoint(newPoint);
@@ -277,7 +322,7 @@ public class Ant implements Entity {
 
     @Override
     public Entity clone() {
-        return new Ant(this.currentState, this.direction, this.gameState, this.status);
+        return new Ant(this.currentState, this.gameState, this.status);
     }
 
     @Override

@@ -9,10 +9,10 @@ import datastore.Simulation;
  */
 public class Status {
     private final int width, height, scale, simulationTimeLimit, antCount, foodCount, obstacleCount;
-    private int antEmptySteps,foodHiveDistance, antSpawnRadius, simulationTime;
+    private int antEmptySteps, antMoveSteps, antWaitSteps, foodHiveDistance, antSpawnRadius, simulationTime;
     private double trailDecay, lowTrail, highTrail;
 
-    public Status(int width, int height, int scale, int simulationTime, int antCount, int antEmptySteps, int foodCount,
+    public Status(int width, int height, int scale, int simulationTime, int antCount, int antEmptySteps, int antMoveSteps, int antWaitSteps, int foodCount,
                   int obstacleCount, int antSpawnRadius, int foodHiveDistance,
                   double trailDecay, double lowTrail, double highTrail) {
         this.width = width;
@@ -21,6 +21,8 @@ public class Status {
         this.simulationTimeLimit = simulationTime;
         this.antCount = antCount;
         this.antEmptySteps = antEmptySteps;
+        this.antMoveSteps = antMoveSteps;
+        this.antWaitSteps = antWaitSteps;
         this.foodCount = foodCount;
         this.obstacleCount = obstacleCount;
         this.antSpawnRadius = antSpawnRadius;
@@ -52,6 +54,14 @@ public class Status {
 
     public int getAntEmptySteps() {
         return antEmptySteps;
+    }
+
+    public int getAntMoveSteps() {
+        return antMoveSteps;
+    }
+
+    public int getAntWaitSteps() {
+        return antWaitSteps;
     }
 
     public int getFoodCount() {
@@ -93,6 +103,8 @@ public class Status {
      */
     public void randomize(double confidence) {
         this.antEmptySteps = (int) randomize(antEmptySteps, confidence,1,40);
+        this.antMoveSteps = (int) randomize(antMoveSteps, confidence,30,80);
+        this.antWaitSteps = (int) randomize(antWaitSteps, confidence,10,30);
         this.antSpawnRadius = (int) randomize(antSpawnRadius, confidence, 1,50);
         this.foodHiveDistance = (int) randomize(foodHiveDistance, confidence,1,200);
         this.trailDecay = randomize(trailDecay, confidence, 0,1);
@@ -102,6 +114,8 @@ public class Status {
 
     public void exportRandomParameters(Simulation simulation) {
         simulation.addData("antEmptySteps", this.antEmptySteps);
+        simulation.addData("antMoveSteps", this.antMoveSteps);
+        simulation.addData("antWaitSteps", this.antWaitSteps);
         simulation.addData("antSpawnRadius", this.antSpawnRadius);
         simulation.addData("foodHiveDistance", this.foodHiveDistance);
         simulation.addData("trailDecay", this.trailDecay);
