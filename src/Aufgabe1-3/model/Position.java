@@ -65,7 +65,7 @@ public class Position {
 
     /**
      * Calculates possible next positions given direction (e.g. position the ant object can move to)
-     * @param direction direction the ant came from
+     * @param direction direction the ant is looking
      */
     public List<Position> getPossibleNextPosition(AntDirection direction) {
         //Geradeaus, Links, Rechts, Halblinks, Halbrechts
@@ -157,7 +157,6 @@ public class Position {
         neighbours.add(new Position(x - 1, y));
         neighbours.add(new Position(x - 1, y + 1));
         neighbours.add(new Position(x, y - 1));
-        neighbours.add(new Position(x, y));
         neighbours.add(new Position(x, y + 1));
         neighbours.add(new Position(x + 1, y - 1));
         neighbours.add(new Position(x + 1, y));

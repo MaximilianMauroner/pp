@@ -11,11 +11,6 @@ public class Parameters {
 //    public static final int SIMULATION_RUNS = 5;
     public static final int SIMULATION_RUNS = 1; // ToDo: change back to 5
 
-
-    // control params
-    public static final boolean ENABLE_TRAIL_WAVES = true;
-
-
     //Set color for entities
     public static final Color ANT_DEFAULT_COLOR = Color.RED;
     public static final Color ANT_SEARCH_COLOR = Color.YELLOW;
@@ -42,7 +37,7 @@ public class Parameters {
     public static final int HIVE_SIZE = 20;
     public static final int OBSTACLE_SIZE = 8;
 
-    public static final int TRAIL_SIZE = 3; // aka how much do you want to kill your pc
+    public static final int TRAIL_SIZE = 2; // aka how much do you want to kill your pc
 
     // Initial amount of entities
     public static final int INITIAL_FOOD_COUNT = 7;
@@ -53,6 +48,7 @@ public class Parameters {
 
     // Evaluation Parameters
     public static final int EVALUATION_TIME = 60000;
-    public static final int OPTIMAL_PATH_SURVEY_RADIUS = 10;
 
+    // Ant Parameters
+    public static final int ANT_VIEW_DISTANCE = 10;
 }

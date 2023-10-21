@@ -227,6 +227,33 @@ public class Ant implements Entity {
 
 
     /**
+     * The ant will look for a specific amount of steps in all directions and return the direction with the highest trail.
+     * @return new bearing of the ant
+     */
+    private AntDirection scoutTrails(Position position) {
+        AntDirection maxDirection = this.direction;
+        double maxTrail = 0;
+
+        for (AntDirection direction : AntDirection.values()) {
+            Position current = position;
+            for (int i = 0; i < Parameters.ANT_VIEW_DISTANCE; i++) {
+                if (gameState.hasPosition(current)) {
+                    Point point = gameState.getPoint(current);
+
+                    if (point.getTrail() > maxTrail) {
+                        maxTrail = point.getTrail();
+                        maxDirection = direction;
+                    }
+                }
+                current = current.getPossibleNextPosition(direction).get(0);
+            }
+        }
+
+        return maxDirection;
+    }
+
+
+    /**
      * Moves the ant to the new position and updates the trail.
      *
      * @param oldPoint    the point the ant is currently on
