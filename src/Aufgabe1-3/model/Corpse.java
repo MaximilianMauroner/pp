@@ -10,8 +10,12 @@ public class Corpse implements Entity {
 
     @Override
     public void run(GameState gameState, Status status, Point point) {
-
+        this.strength*= (float) status.getTrailDecay();
+        if(this.strength < status.getLowTrail() / 2){
+            point.removeEntity(this);
+        }
     }
+
 
     @Override
     public Entity clone() {
