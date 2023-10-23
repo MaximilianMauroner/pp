@@ -10,8 +10,11 @@ import controller.GameState;
  * Therefore it does not have any logic
  */
 public class Hive implements Entity {
+    private int id;
 
-    public Hive() {
+
+    public Hive(int id) {
+        this.id = id;
     }
 
     /**
@@ -24,13 +27,17 @@ public class Hive implements Entity {
         System.out.println("Food added to hive" + dataManager.getSimpleField("foodCount"));
     }
 
+    public int getId() {
+        return id;
+    }
+
     @Override
     public void run(GameState gameState, Status status, Point point) {
     }
 
     @Override
     public Entity clone() {
-        return new Hive();
+        return new Hive(id);
     }
 
     @Override

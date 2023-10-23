@@ -4,6 +4,9 @@ import model.Status;
 import model.*;
 import view.View;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -37,7 +40,6 @@ public class Game {
         Entity ant = new Ant(AntState.EXPLORE, this.gameState, this.status);
         Entity food = new Food();
         Entity obstacle = new Obstacle();
-        Entity hive = new Hive();
 
         this.gameState = new GameState(new ConcurrentHashMap<>(), status);
         this.pathManager = new PathManager(gameState);
@@ -51,42 +53,77 @@ public class Game {
             ClusterGenerator.advancedObstacleGeneration(obstacle, obstaclePosition, Parameters.OBSTACLE_SIZE, gameState);
         }
 
+
+        // STYLE 1/2: this uses a bit of applicative programming in the condition of the while loop
         // generate hive position
-        int hiveX = (int) (Math.random() * status.getWidth());
-        int hiveY = (int) (Math.random() * status.getHeight());
-        Position hivePosition = new Position(hiveX, hiveY);
-        ClusterGenerator.advancedHiveGeneration(hive, hivePosition, Parameters.HIVE_SIZE, gameState);
-        pathManager.addStart(hivePosition);
+        List<Position> hivePositions = new ArrayList<>();
+
+        for (int i = 0; i < Parameters.HIVE_COUNT; i++) {
+            Hive hive = new Hive(i);
+            // loop over generated hive positions until there is no matching hive within distance
+            var ref = new Object() {
+                int hiveX;
+                int hiveY;
+            };
+
+            do {
+                ref.hiveX = (int) (Math.random() * status.getWidth());
+                ref.hiveY = (int) (Math.random() * status.getHeight());
+            } while (!hivePositions.isEmpty() &&
+                    hivePositions.stream().anyMatch(
+                            hivePosition -> Math.abs(hivePosition.getX() - ref.hiveX) < 2 * Parameters.HIVE_SIZE
+                                    && Math.abs(hivePosition.getY() - ref.hiveY) < 2 * Parameters.HIVE_SIZE
+
+                    )
+            );
+            Position hivePosition = new Position(ref.hiveX, ref.hiveY);
+            hivePositions.add(hivePosition);
+            ClusterGenerator.advancedHiveGeneration(hive, hivePosition, Parameters.HIVE_SIZE, gameState);
+            pathManager.addStart(hivePosition);
+        }
+
+
 
         // randomly spawn ants around hive
         int spawnRadius = status.getAntSpawnRadius();
 
-        for (int i = 0; i < status.getAntCount(); i++) {
-            int antX;
-            int antY;
-            Point point;
-            do {
-                antY = calculatePosition(hiveY, spawnRadius);
-                antX = calculatePosition(hiveX, spawnRadius);
-                point = this.gameState.getPoint(new Position(antX, antY));
-            } while (point != null && point.hasObstacle());
-            Position antPosition = new Position(antX, antY);
-            ClusterGenerator.generate(ant, antPosition, 1, gameState);
+        for (int i = 0; i < Parameters.HIVE_COUNT; i++) {
+            for (int j = 0; j < status.getAntCount() / Parameters.HIVE_COUNT; j++) {
+                int antX;
+                int antY;
+                Point point;
+                do {
+                    antY = calculatePosition(hivePositions.get(i).getX(), spawnRadius);
+                    antX = calculatePosition(hivePositions.get(i).getX(), spawnRadius);
+                    point = this.gameState.getPoint(new Position(antX, antY));
+                } while (point != null && point.hasObstacle());
+                Position antPosition = new Position(antX, antY);
+                ClusterGenerator.generate(ant, antPosition, 1, gameState);
+            }
         }
 
+
+        // STYLE 2/2: here too
 
         // randomly spawn food
         int hiveDistance = status.getFoodHiveDistance();  // minimum distance between hive and food
 
         for (int i = 0; i < status.getFoodCount(); i++) {
-            int foodX;
-            int foodY;
+            // loop over generated food positions until there is no matching hive within distance
+            var ref = new Object() {
+                int foodX;
+                int foodY;
+            };
             do {
-                foodX = (int) (Math.random() * status.getWidth());
-                foodY = (int) (Math.random() * status.getHeight());
-            } while (Math.abs(foodX - hiveX) < hiveDistance && Math.abs(foodY - hiveY) < hiveDistance);
+                ref.foodX = (int) (Math.random() * status.getWidth());
+                ref.foodY = (int) (Math.random() * status.getHeight());
+            } while (
+                    hivePositions.stream().anyMatch(
+                            hivePosition -> hivePosition.withinRadius(new Position(ref.foodX, ref.foodY), hiveDistance)
+                    )
+            );
 
-            Position foodPosition = new Position(foodX, foodY);
+            Position foodPosition = new Position(ref.foodX, ref.foodY);
             ClusterGenerator.advancedFoodSourceGeneration(food, foodPosition, Parameters.FOOD_SIZE, gameState);
 
             pathManager.registerNewPaths(foodPosition);
