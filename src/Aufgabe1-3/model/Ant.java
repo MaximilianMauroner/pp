@@ -87,8 +87,8 @@ public class Ant implements Entity {
         } else if (this.waitSteps > 0) {
         	this.waitSteps--;
         } else {
-        	this.moveSteps = 50;
-        	this.waitSteps = 10;
+        	this.moveSteps = status.getAntMoveSteps();
+        	this.waitSteps = status.getAntWaitSteps();
 
             changeDirection(oldPoint.getPosition());
         }
