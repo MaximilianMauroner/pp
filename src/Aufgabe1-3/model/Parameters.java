@@ -50,5 +50,5 @@ public class Parameters {
     public static final int EVALUATION_TIME = 60000;
 
     // Ant Parameters
-    public static final int ANT_VIEW_DISTANCE = 10;
+    public static final int ANT_VIEW_DISTANCE = 20;
 }

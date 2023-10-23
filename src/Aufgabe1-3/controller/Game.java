@@ -34,7 +34,7 @@ public class Game {
      * Generates the game state with randomized parameters
      */
     public void generate() {
-        Entity ant = new Ant();
+        Entity ant = new Ant(AntState.EXPLORE, this.gameState, this.status);
         Entity food = new Food();
         Entity obstacle = new Obstacle();
         Entity hive = new Hive();
@@ -62,8 +62,14 @@ public class Game {
         int spawnRadius = status.getAntSpawnRadius();
 
         for (int i = 0; i < status.getAntCount(); i++) {
-            int antX = calculatePosition(hiveX, spawnRadius);
-            int antY = calculatePosition(hiveY, spawnRadius);
+            int antX;
+            int antY;
+            Point point;
+            do {
+                antY = calculatePosition(hiveY, spawnRadius);
+                antX = calculatePosition(hiveX, spawnRadius);
+                point = this.gameState.getPoint(new Position(antX, antY));
+            } while (point != null && point.hasObstacle());
             Position antPosition = new Position(antX, antY);
             ClusterGenerator.generate(ant, antPosition, 1, gameState);
         }

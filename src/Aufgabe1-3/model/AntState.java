@@ -7,5 +7,6 @@ package model;
 public enum AntState {
     EXPLORE,
     FOODSEARCH,
-    FOODRETRIEVE
+    FOODRETRIEVE,
+    RETURN
 }
