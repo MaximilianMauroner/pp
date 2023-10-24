@@ -70,7 +70,7 @@ public class Point  {
         this.addEntity(trail);
     }
 
-    public void addTrail(GameState gameState, int origin) {
+    public void addTrail(GameState gameState, Ant ant) {
         int radius = Math.ceilDiv(Parameters.TRAIL_SIZE, 2);
         int x = this.position.getX();
         int y = this.position.getY();
@@ -83,9 +83,9 @@ public class Point  {
 
                     if (gameState.hasPosition(p)) {
                         Point point = gameState.getPoint(p);
-                        point.addTrail(new Trail(strength, origin));
+                        point.addTrail(new Trail(strength,ant));
                     } else {
-                        gameState.setPoint(new Point(p, new Trail(strength, origin)));
+                        gameState.setPoint(new Point(p, new Trail(strength, ant)));
                     }
                 }
             }

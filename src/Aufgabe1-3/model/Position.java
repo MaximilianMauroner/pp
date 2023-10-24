@@ -12,18 +12,6 @@ public class Position {
     private int x, y;
 
     public Position(int x, int y) {
-        if (x > Parameters.WIDTH) {
-            x = 0;
-        }
-        if (y > Parameters.HEIGHT) {
-            y = 0;
-        }
-        if (x < 0) {
-            x = Parameters.WIDTH;
-        }
-        if (y < 0) {
-            y = Parameters.HEIGHT;
-        }
         this.x = x;
         this.y = y;
     }

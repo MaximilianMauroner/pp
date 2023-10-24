@@ -34,10 +34,10 @@ public class Game {
      * Generates the game state with randomized parameters
      */
     public void generate() {
-        Entity ant = new Ant(AntState.EXPLORE, this.gameState, this.status);
-        Entity food = new Food();
-        Entity obstacle = new Obstacle();
-        Entity hive = new Hive();
+        Hive hive = new Hive();
+        Ant ant = new Ant(AntState.EXPLORE, this.gameState, this.status, hive.getColony());
+        Food food = new Food();
+        Obstacle obstacle = new Obstacle();
 
         this.gameState = new GameState(new ConcurrentHashMap<>(), status);
         this.pathManager = new PathManager(gameState);

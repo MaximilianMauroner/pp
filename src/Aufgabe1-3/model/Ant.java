@@ -17,6 +17,8 @@ public class Ant implements Entity {
     private GameState gameState;
     private Status status;
 
+    private int colony;
+
     private int moveSteps;
 
     private int waitSteps;
@@ -26,12 +28,13 @@ public class Ant implements Entity {
         return this.currentState;
     }
 
-    public Ant(AntState currentState, GameState gameState, Status status) {
+    public Ant(AntState currentState, GameState gameState, Status status, int colony) {
         this.currentState = currentState;
         this.gameState = gameState;
         this.status = status;
         this.moveSteps = status.getAntMoveSteps();
         this.waitSteps = status.getAntWaitSteps();
+        this.colony = colony;
         System.out.println("Ant created");
     }
 
@@ -39,6 +42,13 @@ public class Ant implements Entity {
         System.out.println("Ant created");
     }
 
+    public int getColony() {
+        return colony;
+    }
+
+    public int getOrigin() {
+        return this.hashCode();
+    }
 
     /**
      * Starts the State Logic of the Ant. The Ant will move to the next Point.
@@ -71,7 +81,7 @@ public class Ant implements Entity {
         Position endPosition = nearestPositions.get((int) (Math.random() * nearestPositions.size()));
 
         if (this.moveSteps > 0) {
-        	this.moveSteps--;
+            this.moveSteps--;
 
             switch (currentState) {
                 case EXPLORE:
@@ -85,10 +95,10 @@ public class Ant implements Entity {
                     break;
             }
         } else if (this.waitSteps > 0) {
-        	this.waitSteps--;
+            this.waitSteps--;
         } else {
-        	this.moveSteps = status.getAntMoveSteps();
-        	this.waitSteps = status.getAntWaitSteps();
+            this.moveSteps = status.getAntMoveSteps();
+            this.waitSteps = status.getAntWaitSteps();
 
             changeDirection(oldPoint.getPosition());
         }
@@ -196,7 +206,7 @@ public class Ant implements Entity {
                         newPoint = point;
                         this.currentState = AntState.FOODRETRIEVE;
                         System.out.println("Ant-" + this.hashCode() + ": Found food, switching to foodretrieve mode");
-                    } else if (e instanceof Trail && ((Trail) e).isNewPath(this.hashCode())) { // origin so ant doesn't follow own trail
+                    } else if (e instanceof Trail && ((Trail) e).isNewPath(this)) { // origin so ant doesn't follow own trail
                         double strength = ((Trail) e).getStrength();
                         if (strength > highFactor) {
                             highestTrail = strength;
@@ -280,7 +290,7 @@ public class Ant implements Entity {
                                 food = currentPosition.getRelativeChange(p);
                             } else if (e instanceof Hive) {
                                 hive = currentPosition.getRelativeChange(p);
-                            } else if (e instanceof Trail && ((Trail) e).isNewPath(this.hashCode())) { // origin so ant doesn't follow own trail
+                            } else if (e instanceof Trail && ((Trail) e).isNewPath(this)) { // origin so ant doesn't follow own trail
                                 double strength = ((Trail) e).getStrength();
                                 if (strength > highFactor && strength > highest) {
                                     highTrail = currentPosition.getRelativeChange(p);
@@ -311,25 +321,27 @@ public class Ant implements Entity {
         if (newPoint == null && !gameState.hasPosition(endPosition)) {
             newPoint = new Point(endPosition, new ArrayList<>());
             gameState.setPoint(newPoint);
-        }else if(newPoint == null) {
+        } else if (newPoint == null) {
             newPoint = gameState.getPoint(endPosition);
         }
-        //oldPoint.addTrail(new Trail(1, this.hashCode()));
-        oldPoint.addTrail(gameState, this.hashCode());
+        oldPoint.addTrail(gameState, this);
         newPoint.addEntity(this);
         oldPoint.removeEntity(this);
     }
 
     @Override
     public Entity clone() {
-        return new Ant(this.currentState, this.gameState, this.status);
+        return new Ant(this.currentState, this.gameState, this.status, this.colony);
+    }
+
+    public Entity cloneWithDifferentColony(int newColony) {
+        return new Ant(this.currentState, this.gameState, this.status, newColony);
     }
 
     @Override
     public int getPriority() {
         return Parameters.ANT_PRIORITY;
     }
-
 
 
 }
