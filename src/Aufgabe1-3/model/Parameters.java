@@ -36,10 +36,10 @@ public class Parameters {
     public static final int FOOD_SIZE = 10;
     public static final int HIVE_SIZE = 20;
     public static final int OBSTACLE_SIZE = 8;
-
     public static final int TRAIL_SIZE = 2; // aka how much do you want to kill your pc
 
-    // Initial amount of entities
+    // amount of entities
+    public static final int HIVE_COUNT = 2;
     public static final int INITIAL_FOOD_COUNT = 7;
 //    public static final int INITIAL_ANT_COUNT = 100;
     public static final int INITIAL_ANT_COUNT = 100; // ToDo: change back to 100
