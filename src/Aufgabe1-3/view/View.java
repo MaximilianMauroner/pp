@@ -5,8 +5,7 @@ import controller.GameState;
 import model.*;
 
 import java.awt.Color;
-import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 public class View {
     private final int width, height;
@@ -21,49 +20,58 @@ public class View {
     }
 
     /**
-     * Draw the given gameState on the canvas. The settings can be found in the Test class.
-     * The canvas will be cleared automatically.
+     * Draw the given gameState on the canvas. The settings can be found in the Parameters class.
+     * The function draw() will save every entity and the position of the entity in a CanvasElement Record.
+     * It will then call drawElements() to draw on the CanvasElements by their priority.
      *
      * @param gameState gameState to draw on the canvas. The gameState must include a Point[] with all Entities. If the array is empty, then nothing will be drawn.
      */
     public void draw(GameState gameState) {
         // ToDo: remove this is just a fix to stop overlaps between simulations
         cd.clear(BACKGROUND_COLOR);
+        changeTime(gameState);
 
-        drawElements(gameState);
+        List<CanvasElement> elementsToDraw = new ArrayList<>();
+
+        for (Point point : gameState.getPoints().values())
+            for (Entity entity : point.getEntities())
+                elementsToDraw.add(new CanvasElement(entity, point.getPosition()));
+
+
+        drawElements(elementsToDraw);
         cd.show();
     }
 
 
     /**
-     * drawElements is the actual methode to draw the given gameState on the canvas. The settings can be found in the Test class.
-     * The canvas should be cleared before drawing again. Otherwise, the old elements will still be visible.
+     * drawElements is the actual methode to draw the given gameState on the canvas. The settings can be found in the Parameters class.
+     * The function drawElements() will sort the CanvasElements by their priority and then draw them on the canvas.
      *
-     * @param gameState gameState to draw on the canvas
+     * @param elementsToDraw List of CanvasElements to draw on the canvas.
      */
-    private void drawElements(GameState gameState) {
-        changeTime(gameState);
+    private void drawElements(List<CanvasElement> elementsToDraw) {
+        Collections.sort(elementsToDraw);
+        Collections.reverse(elementsToDraw);
 
-        ConcurrentHashMap<Position, Point> points = gameState.getPoints();
-        for (Point point : points.values()) {
-            int x = point.getPosition().getX() * Parameters.SCALE_BY;
-            int y = point.getPosition().getY() * Parameters.SCALE_BY;
 
-            for (Entity entity : point.getEntities()) {
-                if (entity instanceof OptimalPathPoint) setPixels(x, y, Parameters.SCALE_BY, Parameters.OPTIMAL_PATH_COLOR);
-                if (entity instanceof Trail e)
-                    setPixels(x, y, Parameters.SCALE_BY, mixColors(Parameters.TRAIL_COLOR, BACKGROUND_COLOR, e.getStrength() <= 0.15 ? 0 : (float) e.getStrength()));
-                if (entity instanceof Food) setPixels(x, y, Parameters.SCALE_BY, Parameters.FOOD_SOURCE_COLOR);
-                if (entity instanceof Hive) setPixels(x, y, Parameters.SCALE_BY, Parameters.COLONY_HOME_COLOR);
-                if (entity instanceof Obstacle) setPixels(x, y, Parameters.SCALE_BY, Parameters.OBSTACLE_COLOR);
-                if (entity instanceof Corpse c)
-                    drawCorpse(x, y, mixColors(Parameters.CORPSE_COLOR, BACKGROUND_COLOR, c.getStrength() <= 0.15 ? 0 : c.getStrength()), c.getSeed());
-                if (entity instanceof Ant) {
-                    switch (((Ant) entity).getState()) {
-                        case EXPLORE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_DEFAULT_COLOR);
-                        case FOODSEARCH -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_SEARCH_COLOR);
-                        case FOODRETRIEVE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_RETRIVE_COLOR);
-                    }
+        for (CanvasElement element : elementsToDraw) {
+            Entity entity = element.entity();
+            int x = element.position().getX() * Parameters.SCALE_BY;
+            int y = element.position().getY() * Parameters.SCALE_BY;
+
+            if (entity instanceof OptimalPathPoint) setPixels(x, y, Parameters.SCALE_BY, Parameters.OPTIMAL_PATH_COLOR);
+            if (entity instanceof Trail e)
+                setPixels(x, y, Parameters.SCALE_BY, mixColors(Parameters.TRAIL_COLOR, BACKGROUND_COLOR, e.getStrength() <= 0.15 ? 0 : (float) e.getStrength()));
+            if (entity instanceof Food) setPixels(x, y, Parameters.SCALE_BY, Parameters.FOOD_SOURCE_COLOR);
+            if (entity instanceof Hive) setPixels(x, y, Parameters.SCALE_BY, Parameters.COLONY_HOME_COLOR);
+            if (entity instanceof Obstacle) setPixels(x, y, Parameters.SCALE_BY, Parameters.OBSTACLE_COLOR);
+            if (entity instanceof Corpse c)
+                drawCorpse(x, y, mixColors(Parameters.CORPSE_COLOR, BACKGROUND_COLOR, c.getStrength() <= 0.15 ? 0 : c.getStrength()), c.getSeed());
+            if (entity instanceof Ant) {
+                switch (((Ant) entity).getState()) {
+                    case EXPLORE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_DEFAULT_COLOR);
+                    case FOODSEARCH -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_SEARCH_COLOR);
+                    case FOODRETRIEVE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_RETRIVE_COLOR);
                 }
             }
         }
@@ -145,6 +153,14 @@ public class View {
         }
     }
 
+    /**
+     * Draw a corpse on the canvas. The corpse will be drawn in a gaussian distribution with a random radius around the given coordinates.
+     *
+     * @param x     x coordinate of the corpse center
+     * @param y     y coordinate of the corpse center
+     * @param color color of the corpse
+     * @param seed  seed for the random generator so that it will always draw the same corpse for the same entity
+     */
     private void drawCorpse(int x, int y, Color color, int seed) {
         Random r = new Random(seed);
 
