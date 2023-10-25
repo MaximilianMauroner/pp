@@ -37,9 +37,9 @@ public class Game {
      * Generates the game state with randomized parameters
      */
     public void generate() {
-        Entity ant = new Ant(AntState.EXPLORE, this.gameState, this.status);
         Entity food = new Food();
         Entity obstacle = new Obstacle();
+        List<Entity> hives = new ArrayList<>();
 
         this.gameState = new GameState(new ConcurrentHashMap<>(), status);
         this.pathManager = new PathManager(gameState);
@@ -60,6 +60,7 @@ public class Game {
 
         for (int i = 0; i < Parameters.HIVE_COUNT; i++) {
             Hive hive = new Hive(i);
+            hives.add(hive);
             // loop over generated hive positions until there is no matching hive within distance
             var ref = new Object() {
                 int hiveX;
@@ -73,7 +74,6 @@ public class Game {
                     hivePositions.stream().anyMatch(
                             hivePosition -> Math.abs(hivePosition.getX() - ref.hiveX) < 2 * Parameters.HIVE_SIZE
                                     && Math.abs(hivePosition.getY() - ref.hiveY) < 2 * Parameters.HIVE_SIZE
-
                     )
             );
             Position hivePosition = new Position(ref.hiveX, ref.hiveY);
@@ -98,6 +98,7 @@ public class Game {
                     point = this.gameState.getPoint(new Position(antX, antY));
                 } while (point != null && point.hasObstacle());
                 Position antPosition = new Position(antX, antY);
+                Entity ant = new Ant(AntState.EXPLORE, (Hive) hives.get(i), this.gameState, this.status);
                 ClusterGenerator.generate(ant, antPosition, 1, gameState);
             }
         }

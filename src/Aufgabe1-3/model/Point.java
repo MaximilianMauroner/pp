@@ -125,7 +125,6 @@ public class Point  {
         return this.hasObstacle;
     }
 
-
     @Override
     public String toString() {
         return "Point{" +

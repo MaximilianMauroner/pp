@@ -11,6 +11,7 @@ import java.util.List;
  * contains reference objects to the game and status (for parameter access)
  */
 public class Ant implements Entity {
+    private Hive home;
     private AntState currentState = AntState.EXPLORE;
     private int emptySteps = 0;
     private AntDirection direction = AntDirection.values()[(int) (Math.random() * AntDirection.values().length)];
@@ -26,7 +27,8 @@ public class Ant implements Entity {
         return this.currentState;
     }
 
-    public Ant(AntState currentState, GameState gameState, Status status) {
+    public Ant(AntState currentState, Hive home, GameState gameState, Status status) {
+        this.home = home;
         this.currentState = currentState;
         this.gameState = gameState;
         this.status = status;
@@ -162,11 +164,26 @@ public class Ant implements Entity {
                         point.removeEntity(e);
                         this.currentState = AntState.FOODRETRIEVE;
                         System.out.println("Ant-" + this.hashCode() + ": Found food, switching to foodretrieve mode:" + this.currentState);
-                    } else if (e instanceof Ant && ((Ant) e).getState() == AntState.FOODSEARCH) {
-                        endPosition = pos;
-                        newPoint = point;
-                        this.currentState = AntState.FOODSEARCH;
-                        System.out.println("Ant-" + this.hashCode() + ": Met another ant, switching to foodsearch mode");
+                    } else if (e instanceof Ant otherAnt) {
+                        if (otherAnt.currentState == AntState.FOODRETRIEVE) {
+                            if (otherAnt.home.equals(this.home)) {
+                                endPosition = pos;
+                                newPoint = point;
+                                this.currentState = AntState.FOODSEARCH;
+                                System.out.println("Ant-" + this.hashCode() + ": Met another ant, switching to foodsearch mode");
+                            } else {
+                                // kill ant
+                                if (Math.random() < 0.5) {
+                                    System.out.println("Ant-" + this.hashCode() + ": Met another ant, killing it");
+                                    point.removeEntity(e);
+                                    point.addEntity(new Corpse());
+                                } else {
+                                    System.out.println("Ant-" + this.hashCode() + ": Met another ant, killing itself");
+                                    oldPoint.removeEntity(this);
+                                    oldPoint.addEntity(new Corpse());
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -322,7 +339,7 @@ public class Ant implements Entity {
 
     @Override
     public Entity clone() {
-        return new Ant(this.currentState, this.gameState, this.status);
+        return new Ant(this.currentState, this.home, this.gameState, this.status);
     }
 
     @Override
