@@ -45,4 +45,11 @@ public class Hive implements Entity {
         return model.Parameters.HIVE_PRIORITY;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Hive) {
+            return ((Hive) obj).getId() == this.id;
+        }
+        return false;
+    }
 }
