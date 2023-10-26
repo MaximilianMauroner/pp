@@ -103,10 +103,15 @@ public class Ant implements Entity {
         	this.moveSteps = status.getAntMoveSteps();
         	this.waitSteps = status.getAntWaitSteps();
 
+            boolean timeLimit = gameState.getStatus().getSimulationTime() % 24 > 9;
             if (this.currentState != AntState.RETURN && this.currentState != AntState.FOODRETRIEVE
-                    && oldPoint.getPosition().euclideanDistance(hivePos) > searchRadius) {
+                    && (timeLimit || oldPoint.getPosition().euclideanDistance(hivePos) > searchRadius)) {
+                if (timeLimit)
+                    System.out.println("Ant-" + this.hashCode() + ": Simulation time reached, switching to return mode");
+                else
+                    System.out.println("Ant-" + this.hashCode() + ": Reached search radius, switching to return mode");
+
                 this.currentState = AntState.RETURN;
-                System.out.println("Ant-" + this.hashCode() + ": Reached search radius, switching to return mode");
             } else if (this.currentState == AntState.RETURN) {
                 this.direction = oldPoint.getPosition().getRelativeChange(hivePos);
             } else {
@@ -305,7 +310,7 @@ public class Ant implements Entity {
                         newPoint = point;
                         this.currentState = AntState.FOODSEARCH;
                         if (this.foodCount == this.oldFoodCount) {
-                            this.searchRadius = (int) (this.searchRadius * this.status.getSearchRadiusGrowthFactor());
+                            this.searchRadius += (int) (Parameters.INITIAL_ANT_SEARCH_RADIUS * this.status.getSearchRadiusGrowthFactor());
                             System.out.println("Ant-" + this.hashCode() + ": new search radius: " + this.searchRadius);
                         }
                         this.oldFoodCount = this.foodCount;
@@ -345,7 +350,7 @@ public class Ant implements Entity {
                             if (e instanceof Food && currentPosition.euclideanDistance(p) < foodDistance) {
                                 foodDistance = currentPosition.euclideanDistance(p);
                                 food = currentPosition.getRelativeChange(p);
-                            } else if (e instanceof Hive) {
+                            } else if (e instanceof Hive && ((Hive) e).equals(this.home)) {
                                 hive = currentPosition.getRelativeChange(p);
                             } else if (e instanceof Trail && ((Trail) e).isNewPath(this.hashCode())) { // origin so ant doesn't follow own trail
                                 double strength = ((Trail) e).getStrength();

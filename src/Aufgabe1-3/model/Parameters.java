@@ -42,12 +42,12 @@ public class Parameters {
     public static final int HIVE_COUNT = 2;
     public static final int INITIAL_FOOD_COUNT = 7;
 //    public static final int INITIAL_ANT_COUNT = 100;
-    public static final int INITIAL_ANT_COUNT = 2; // ToDo: change back to 100
+    public static final int INITIAL_ANT_COUNT = 100; // ToDo: change back to 100
     public static final int INITIAL_OBSTACLE_COUNT = 30;
 
 
     // Evaluation Parameters
-    public static final int EVALUATION_TIME = 60000;
+    public static final int EVALUATION_TIME = 600000;
 
     // Ant Parameters
     public static final int ANT_VIEW_DISTANCE = 20;
