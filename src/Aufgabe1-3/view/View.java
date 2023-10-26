@@ -69,7 +69,7 @@ public class View {
                 drawCorpse(x, y, mixColors(Parameters.CORPSE_COLOR, BACKGROUND_COLOR, c.getStrength() <= 0.15 ? 0 : c.getStrength()), c.getSeed());
             if (entity instanceof Ant) {
                 switch (((Ant) entity).getState()) {
-                    case EXPLORE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_DEFAULT_COLOR);
+                    case EXPLORE, RETURN -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_DEFAULT_COLOR);
                     case FOODSEARCH -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_SEARCH_COLOR);
                     case FOODRETRIEVE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_RETRIVE_COLOR);
                 }

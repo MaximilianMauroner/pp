@@ -25,7 +25,7 @@ public class GameplayLoop extends Thread {
         long wait;
 
         final int TARGET_FPS = 60;
-        final int FRAMES_TIL_NEXT_TIME = 1000;
+        final int FRAMES_TIL_NEXT_TIME = 100;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
         int frames = 0;
 

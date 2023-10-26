@@ -47,8 +47,9 @@ public class Parameters {
 
 
     // Evaluation Parameters
-    public static final int EVALUATION_TIME = 60000;
+    public static final int EVALUATION_TIME = 600000;
 
     // Ant Parameters
     public static final int ANT_VIEW_DISTANCE = 20;
+    public static final int INITIAL_ANT_SEARCH_RADIUS = 100;
 }

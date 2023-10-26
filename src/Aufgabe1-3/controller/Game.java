@@ -98,7 +98,7 @@ public class Game {
                     point = this.gameState.getPoint(new Position(antX, antY));
                 } while (point != null && point.hasObstacle());
                 Position antPosition = new Position(antX, antY);
-                Entity ant = new Ant(AntState.EXPLORE, (Hive) hives.get(i), this.gameState, this.status);
+                Entity ant = new Ant(AntState.EXPLORE, (Hive) hives.get(i), hivePositions.get(i), this.gameState, this.status);
                 ClusterGenerator.generate(ant, antPosition, 1, gameState);
             }
         }

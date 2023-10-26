@@ -10,11 +10,11 @@ import datastore.Simulation;
 public class Status {
     private final int width, height, scale, simulationTimeLimit, antCount, foodCount, obstacleCount;
     private int antEmptySteps, antMoveSteps, antWaitSteps, foodHiveDistance, antSpawnRadius, simulationTime;
-    private double trailDecay, lowTrail, highTrail;
+    private double trailDecay, lowTrail, highTrail, searchRadiusGrowthFactor;
 
     public Status(int width, int height, int scale, int simulationTime, int antCount, int antEmptySteps, int antMoveSteps, int antWaitSteps, int foodCount,
                   int obstacleCount, int antSpawnRadius, int foodHiveDistance,
-                  double trailDecay, double lowTrail, double highTrail) {
+                  double trailDecay, double lowTrail, double highTrail, double searchRadiusFactor) {
         this.width = width;
         this.height = height;
         this.scale = scale;
@@ -30,6 +30,7 @@ public class Status {
         this.trailDecay = trailDecay;
         this.lowTrail = lowTrail;
         this.highTrail = highTrail;
+        this.searchRadiusGrowthFactor = searchRadiusFactor;
     }
 
     public int getWidth() {
@@ -92,6 +93,10 @@ public class Status {
         return highTrail;
     }
 
+    public double getSearchRadiusGrowthFactor() {
+        return searchRadiusGrowthFactor;
+    }
+
     public int getSimulationTime(){
         return this.simulationTime;
     }
@@ -110,6 +115,7 @@ public class Status {
         this.trailDecay = randomize(trailDecay, confidence, 0,1);
         this.lowTrail = randomize(lowTrail, confidence,0,1);
         this.highTrail = randomize(highTrail, confidence,0,1);
+        this.searchRadiusGrowthFactor = randomize(searchRadiusGrowthFactor, confidence,1,2);
     }
 
     public void exportRandomParameters(Simulation simulation) {
@@ -121,6 +127,7 @@ public class Status {
         simulation.addData("trailDecay", this.trailDecay);
         simulation.addData("lowTrail", this.lowTrail);
         simulation.addData("highTrail", this.highTrail);
+        simulation.addData("searchRadiusGrowthFactor", this.searchRadiusGrowthFactor);
     }
 
     /**
