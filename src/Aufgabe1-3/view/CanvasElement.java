@@ -1,6 +1,6 @@
 package view;
 
-import model.Entity;
+import model.Entity.*;
 import model.Position;
 
 /**

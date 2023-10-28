@@ -12,18 +12,6 @@ public class Position {
     private int x, y;
 
     public Position(int x, int y) {
-        if (x > Parameters.WIDTH) {
-            x = 0;
-        }
-        if (y > Parameters.HEIGHT) {
-            y = 0;
-        }
-        if (x < 0) {
-            x = Parameters.WIDTH;
-        }
-        if (y < 0) {
-            y = Parameters.HEIGHT;
-        }
         this.x = x;
         this.y = y;
     }
@@ -39,6 +27,7 @@ public class Position {
 
     /**
      * Calculates the direction to the given position (e.g. position the ant object moves to)
+     *
      * @param p the position to which the direction is calculated
      */
     public AntDirection getRelativeChange(Position p) {
@@ -65,6 +54,7 @@ public class Position {
 
     /**
      * Calculates possible next positions given direction (e.g. position the ant object can move to)
+     *
      * @param direction direction the ant is looking
      */
     public List<Position> getPossibleNextPosition(AntDirection direction) {
@@ -77,7 +67,7 @@ public class Position {
                         new Position(x + 1, y),
                         new Position(x - 1, y - 1),
                         new Position(x + 1, y - 1)
-                        ));
+                ));
             case NORTHEAST:
                 return new ArrayList<>(Arrays.asList(
                         new Position(x - 1, y + 1),
@@ -85,7 +75,7 @@ public class Position {
                         new Position(x + 1, y + 1),
                         new Position(x, y - 1),
                         new Position(x + 1, y)
-                        ));
+                ));
             case EAST:
                 return new ArrayList<>(Arrays.asList(
                         new Position(x + 1, y),
@@ -93,7 +83,7 @@ public class Position {
                         new Position(x, y + 1),
                         new Position(x - 1, y + 1),
                         new Position(x + 1, y + 1)
-                        ));
+                ));
             case SOUTHEAST:
                 return new ArrayList<>(Arrays.asList(
                         new Position(x, y + 1),
@@ -101,31 +91,31 @@ public class Position {
                         new Position(x - 1, y + 1),
                         new Position(x + 1, y),
                         new Position(x - 1, y)
-                        ));
+                ));
             case SOUTH:
                 return new ArrayList<>(Arrays.asList(
-                        new Position(x , y + 1),
+                        new Position(x, y + 1),
                         new Position(x - 1, y),
                         new Position(x + 1, y),
                         new Position(x + 1, y + 1),
                         new Position(x - 1, y + 1)
-                        ));
+                ));
             case SOUTHWEST:
                 return new ArrayList<>(Arrays.asList(
                         new Position(x + 1, y - 1),
                         new Position(x - 1, y - 1),
                         new Position(x + 1, y + 1),
                         new Position(x - 1, y),
-                        new Position(x , y + 1)
-                        ));
+                        new Position(x, y + 1)
+                ));
             case WEST:
                 return new ArrayList<>(Arrays.asList(
                         new Position(x - 1, y),
-                        new Position(x , y - 1),
-                        new Position(x , y + 1),
+                        new Position(x, y - 1),
+                        new Position(x, y + 1),
                         new Position(x - 1, y - 1),
                         new Position(x + 1, y - 1)
-                        ));
+                ));
             case NORTHWEST:
                 return new ArrayList<>(Arrays.asList(
                         new Position(x - 1, y - 1),
@@ -133,7 +123,7 @@ public class Position {
                         new Position(x + 1, y - 1),
                         new Position(x - 1, y),
                         new Position(x, y - 1)
-                        ));
+                ));
             default:
                 return null;
         }
@@ -189,5 +179,11 @@ public class Position {
                 "x=" + x +
                 ", y=" + y +
                 '}';
+    }
+
+    public Position getRandomPositionNearPos() {
+        int x = (int) (Math.random() * 5) - 3 + this.getX();
+        int y = (int) (Math.random() * 5) - 3 + this.getY();
+        return new Position(x, y);
     }
 }

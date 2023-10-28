@@ -10,11 +10,11 @@ import datastore.Simulation;
 public class Status {
     private final int width, height, scale, simulationTimeLimit, antCount, foodCount, obstacleCount;
     private int antEmptySteps, antMoveSteps, antWaitSteps, foodHiveDistance, antSpawnRadius, simulationTime;
-    private double trailDecay, lowTrail, highTrail, searchRadiusGrowthFactor;
+    private double trailDecay, lowTrail, highTrail, searchRadiusGrowthFactor, minHiveHealth;
 
     public Status(int width, int height, int scale, int simulationTime, int antCount, int antEmptySteps, int antMoveSteps, int antWaitSteps, int foodCount,
                   int obstacleCount, int antSpawnRadius, int foodHiveDistance,
-                  double trailDecay, double lowTrail, double highTrail, double searchRadiusFactor) {
+                  double trailDecay, double lowTrail, double highTrail, double searchRadiusFactor, double minHiveHealth) {
         this.width = width;
         this.height = height;
         this.scale = scale;
@@ -31,6 +31,7 @@ public class Status {
         this.lowTrail = lowTrail;
         this.highTrail = highTrail;
         this.searchRadiusGrowthFactor = searchRadiusFactor;
+        this.minHiveHealth = minHiveHealth;
     }
 
     public int getWidth() {
@@ -97,13 +98,18 @@ public class Status {
         return searchRadiusGrowthFactor;
     }
 
-    public int getSimulationTime(){
+    public int getSimulationTime() {
         return this.simulationTime;
+    }
+
+    public double getMinHiveHealth() {
+        return minHiveHealth;
     }
 
 
     /**
      * Randomizes the values of parameters that affect game behavior
+     *
      * @param confidence randomize values within interval of confidence in percent (e.g. if confidence is 0.1, then the value will be randomized within 10% of the original value)
      */
     public void randomize(double confidence) {
@@ -132,7 +138,8 @@ public class Status {
 
     /**
      * Randomizes of a value with a given confidence within a given interval
-     * @param value value to be randomized
+     *
+     * @param value      value to be randomized
      * @param confidence randomize values within interval of confidence in percent
      * @param lowerLimit lower limit of the randomized value
      * @param upperLimit upper limit of the randomized value
@@ -146,9 +153,10 @@ public class Status {
         }
         return result;
     }
-    public void nextTime(){
+
+    public void nextTime() {
         System.out.println(this.simulationTime);
-        this.simulationTime = this.simulationTime + 1 % 24;
+        this.simulationTime = (this.simulationTime + 1) % 24;
         System.out.println(this.simulationTime + " after");
     }
 }

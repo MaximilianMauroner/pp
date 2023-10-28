@@ -2,6 +2,7 @@ package datastore;
 
 import java.util.HashMap;
 
+@SuppressWarnings("unchecked")
 public class Simulation {
     private String simulationId;
     private String simulationName;

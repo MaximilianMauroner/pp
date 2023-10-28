@@ -1,9 +1,15 @@
-package model;
+package model.Entity;
 
 import controller.GameState;
+import model.Path;
+import model.Point;
+import model.Position;
+import model.Status;
 
 public class OptimalPathPoint implements Entity {
     private Path path;
+
+    private Position position;
 
     public OptimalPathPoint(Path path) {
         this.path = path;
@@ -22,5 +28,15 @@ public class OptimalPathPoint implements Entity {
     @Override
     public int getPriority() {
         return model.Parameters.OPTIMAL_PATH_PRIORITY;
+    }
+
+    @Override
+    public Position getPosition() {
+        return this.position;
+    }
+
+    @Override
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }

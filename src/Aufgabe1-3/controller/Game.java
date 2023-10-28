@@ -1,5 +1,6 @@
 package controller;
 
+import model.Entity.*;
 import model.Status;
 import model.*;
 import view.View;
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * It generates the game state and starts the game loop
  */
 public class Game {
+
 
     /**
      * Objects of the game
@@ -39,10 +41,11 @@ public class Game {
     public void generate() {
         Entity food = new Food();
         Entity obstacle = new Obstacle();
-        List<Entity> hives = new ArrayList<>();
+        List<Colony> colonies = new ArrayList<>();
 
         this.gameState = new GameState(new ConcurrentHashMap<>(), status);
         this.pathManager = new PathManager(gameState);
+        Colony c = new Colony(this.gameState);
 
         // randomly spawn obstacles
         int obstacleCount = (int) (Math.random() * status.getObstacleCount());
@@ -59,8 +62,6 @@ public class Game {
         List<Position> hivePositions = new ArrayList<>();
 
         for (int i = 0; i < Parameters.HIVE_COUNT; i++) {
-            Hive hive = new Hive(i);
-            hives.add(hive);
             // loop over generated hive positions until there is no matching hive within distance
             var ref = new Object() {
                 int hiveX;
@@ -77,6 +78,9 @@ public class Game {
                     )
             );
             Position hivePosition = new Position(ref.hiveX, ref.hiveY);
+            Colony colony = new Colony(this.gameState);
+            colonies.add(colony);
+            Hive hive = new Hive(colony, hivePosition);
             hivePositions.add(hivePosition);
             ClusterGenerator.advancedHiveGeneration(hive, hivePosition, Parameters.HIVE_SIZE, gameState);
             pathManager.addStart(hivePosition);
@@ -98,7 +102,7 @@ public class Game {
                     point = this.gameState.getPoint(new Position(antX, antY));
                 } while (point != null && point.hasObstacle());
                 Position antPosition = new Position(antX, antY);
-                Entity ant = new Ant(AntState.EXPLORE, (Hive) hives.get(i), hivePositions.get(i), this.gameState, this.status);
+                Entity ant = new Ant(AntState.EXPLORE, this.gameState, this.status, colonies.get(i), antPosition);
                 ClusterGenerator.generate(ant, antPosition, 1, gameState);
             }
         }
@@ -142,6 +146,7 @@ public class Game {
 
     /**
      * Starts the game with duration limit
+     *
      * @param duration duration of the game in milliseconds
      */
     public void start(int duration) {
@@ -162,7 +167,8 @@ public class Game {
 
     /**
      * Calculates a random position within a radius around a given position
-     * @param pos position around which the random position is calculated
+     *
+     * @param pos  position around which the random position is calculated
      * @param dist distance to the given position (only distance along one axis, not euclidean distance)
      */
     private int calculatePosition(int pos, int dist) {

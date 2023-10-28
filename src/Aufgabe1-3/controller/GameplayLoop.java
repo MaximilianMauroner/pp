@@ -10,6 +10,7 @@ public class GameplayLoop extends Thread {
     private final View view;
     private final GameState gameState;
     private boolean isRunning = false;
+
     public GameplayLoop(View view, GameState gameState) {
         this.view = view;
         this.gameState = gameState;
@@ -34,10 +35,15 @@ public class GameplayLoop extends Thread {
             gameState.getNextFrame();
             view.draw(gameState);
             frames++;
-            if (frames == FRAMES_TIL_NEXT_TIME){
+            if (frames == FRAMES_TIL_NEXT_TIME) {
                 frames = 0;
                 gameState.getStatus().nextTime();
             }
+//            AtomicInteger count = new AtomicInteger();
+//            gameState.getPoints().forEach((position, point) ->
+//                    count.addAndGet((int) point.getEntities().stream().filter(entity -> entity instanceof Ant).count())
+//            );
+//            System.out.println("Ants: " + count.get());
 
             updateTime = System.nanoTime() - now;
             wait = (OPTIMAL_TIME - updateTime) / 1000000;
@@ -55,6 +61,7 @@ public class GameplayLoop extends Thread {
 
     /**
      * Sets the running state of the game loop.
+     *
      * @param running true if the game loop should run, false if the game loop should stop
      */
     public void setRunning(boolean running) {

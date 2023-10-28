@@ -1,10 +1,13 @@
 package controller;
 
-import controller.GameState;
-import model.Entity;
+import model.Entity.Ant;
+import model.Entity.Entity;
+import model.Entity.Hive;
 import model.Point;
 import model.Position;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -25,7 +28,7 @@ public class ClusterGenerator {
         Random random = new Random();
         int numberOfPoints = 1200;
 
-        double stddev = (double) size / random.nextDouble(4,8); // Standard deviation of the distribution
+        double stddev = (double) size / random.nextDouble(4, 8); // Standard deviation of the distribution
 
         if (random.nextBoolean()) {
             for (int i = 0; i < numberOfPoints; i++) {
@@ -67,14 +70,18 @@ public class ClusterGenerator {
             int y;
 
             int r = random.nextInt(100);
-            if (r <= 30) x = (int) Math.round(position.getX() + random.nextGaussian() * stddev * random.nextDouble(1.5));
-            else if (r <= 60) x = (int) Math.round(position.getX() + random.nextGaussian() * stddev * random.nextDouble(0.8));
+            if (r <= 30)
+                x = (int) Math.round(position.getX() + random.nextGaussian() * stddev * random.nextDouble(1.5));
+            else if (r <= 60)
+                x = (int) Math.round(position.getX() + random.nextGaussian() * stddev * random.nextDouble(0.8));
             else x = (int) Math.round(position.getX() + random.nextGaussian() * stddev);
 
 
             r = random.nextInt(100);
-            if (r <= 30) y = (int) Math.round(position.getY() + random.nextGaussian() * stddev * random.nextDouble(0.8));
-            else if (r <= 60) y = (int) Math.round(position.getY() + random.nextGaussian() * stddev * random.nextDouble(1.5));
+            if (r <= 30)
+                y = (int) Math.round(position.getY() + random.nextGaussian() * stddev * random.nextDouble(0.8));
+            else if (r <= 60)
+                y = (int) Math.round(position.getY() + random.nextGaussian() * stddev * random.nextDouble(1.5));
             else y = (int) Math.round(position.getY() + random.nextGaussian() * stddev);
 
 
@@ -99,13 +106,23 @@ public class ClusterGenerator {
 
     private static void setPosition(int x, int y, Entity entity, GameState gs) {
         Position pos = new Position(x, y);
+        Entity newE = entity.clone();
         Point p = gs.getPoint(pos);
         if (p == null) {
-            p = new Point(pos, entity.clone());
+            p = new Point(pos, newE);
             gs.setPoint(p);
         } else {
-            p.getEntities().clear();
-            p.getEntities().add(entity.clone());
+            List<Entity> entityList = p.getEntities();
+            for (Entity e : entityList) {
+                if (e.getClass() == Ant.class) {
+                    ((Ant) e).getColony().getAnts().remove(((Ant) e).getId());
+                } else if (e.getClass() == Hive.class) {
+                    ((Hive) e).getColony().getHives().remove(((Hive) e).getId());
+                }
+            }
+            entityList.clear();
+            p.getEntities().add(newE);
         }
+        newE.setPosition(p.getPosition());
     }
 }

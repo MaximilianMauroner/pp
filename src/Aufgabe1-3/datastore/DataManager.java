@@ -7,6 +7,7 @@ import java.util.Vector;
  * Manages the data of the simulation
  * STYLE: Objektorientiertes Programmierung (es wird hier das Singleton Pattern verwendet was klar auf Objektorientierung hinweist)
  */
+@SuppressWarnings("unchecked")
 public class DataManager {
     private static DataManager instance;
     private DataStore dataStore;
