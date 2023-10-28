@@ -136,6 +136,12 @@ public class Status {
         simulation.addData("searchRadiusGrowthFactor", this.searchRadiusGrowthFactor);
     }
 
+    public void nextTime() {
+        System.out.println(this.simulationTime);
+        this.simulationTime = (this.simulationTime + 1) % 24;
+        System.out.println(this.simulationTime + " after");
+    }
+
     /**
      * Randomizes of a value with a given confidence within a given interval
      *
@@ -152,11 +158,5 @@ public class Status {
             return lowerLimit;
         }
         return result;
-    }
-
-    public void nextTime() {
-        System.out.println(this.simulationTime);
-        this.simulationTime = (this.simulationTime + 1) % 24;
-        System.out.println(this.simulationTime + " after");
     }
 }

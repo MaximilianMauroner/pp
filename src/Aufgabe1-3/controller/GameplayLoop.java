@@ -2,6 +2,8 @@ package controller;
 
 import view.View;
 
+// STYLE: this uses a bit of concurrent programming as the game loop runs in a separate thread.
+// This has implications on the way some data is accessed, e.g. Points in GameState or Entities in Points are accessed in a thread-safe way.
 public class GameplayLoop extends Thread {
 
     /**

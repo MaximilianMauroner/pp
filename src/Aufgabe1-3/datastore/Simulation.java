@@ -15,22 +15,48 @@ public class Simulation {
         this.data = new HashMap<>();
     }
 
+    /**
+     * Returns the id of the simulation
+     *
+     * @return the id of the simulation
+     */
     public String getSimulationId() {
         return simulationId;
     }
 
+    /**
+     * Returns the name of the simulation
+     *
+     * @return the name of the simulation
+     */
     public String getSimulationName() {
         return simulationName;
     }
 
+    /**
+     * Adds a value to the simulation
+     * @param key the identifier of the value
+     * @param value the value to be added
+     */
     public void addData(String key, Object value) {
         data.put(key, value);
     }
 
+    /**
+     * Returns the value of the given key
+     *
+     * @param key the identifier of the value
+     * @return the value of the given key
+     */
     public Object getData(String key) {
         return data.get(key);
     }
 
+    /**
+     * Export the simulation data
+     *
+     * @return clone of the simulation data hashmap
+     */
     public HashMap<String, Object> getData() {
         return (HashMap<String, Object>) this.data.clone();
     }

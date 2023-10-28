@@ -6,10 +6,24 @@ import java.util.Set;
 import java.util.Vector;
 
 public interface Operation {
+
+    /**
+     * Computes the given operation on a vector of data
+     *
+     * @param data the data to be computed
+     * @return the result of the computation
+     */
     Object compute(Vector<Object> data);
 
 
     class Median implements Operation {
+
+        /**
+         * Computes the median (value in the middle of an ordered list) of the given data
+         *
+         * @param data the data to be computed
+         * @return the median of the given data
+         */
         @Override
         public Object compute(Vector<Object> data) {
             ArrayList<Object> list = new ArrayList<>(data);
@@ -23,6 +37,13 @@ public interface Operation {
     }
 
     class Mean implements Operation {
+
+        /**
+         * Computes the mean (average) of the given data
+         *
+         * @param data the data to be computed
+         * @return the mean of the given data
+         */
         @Override
         public Object compute(Vector<Object> data) {
             double sum = 0;

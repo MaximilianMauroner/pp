@@ -8,8 +8,7 @@ public class Parameters {
     public static final int WIDTH = 225;
     public static final int HEIGHT = 225;
 
-//    public static final int SIMULATION_RUNS = 5;
-    public static final int SIMULATION_RUNS = 1; // ToDo: change back to 5
+    public static final int SIMULATION_RUNS = 5;
 
     //Set color for entities
     public static final Color ANT_DEFAULT_COLOR = Color.RED;
@@ -41,8 +40,7 @@ public class Parameters {
     // amount of entities
     public static final int HIVE_COUNT = 2;
     public static final int INITIAL_FOOD_COUNT = 7;
-//    public static final int INITIAL_ANT_COUNT = 100;
-    public static final int INITIAL_ANT_COUNT = 100; // ToDo: change back to 100
+    public static final int INITIAL_ANT_COUNT = 100;
     public static final int INITIAL_OBSTACLE_COUNT = 30;
 
 

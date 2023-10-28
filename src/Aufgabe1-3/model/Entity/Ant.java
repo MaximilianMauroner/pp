@@ -141,6 +141,11 @@ public class Ant implements Entity {
 
     }
 
+    /**
+     * Changes the direction of the ant based on the current state
+     *
+     * @param position the current position of the ant
+     */
     public void changeDirection(Position position) {
         AntDirection[] directions = search(position);
         AntDirection foodDirection = directions[0];
@@ -318,6 +323,13 @@ public class Ant implements Entity {
         move(oldPoint, newPoint, endPosition);
     }
 
+    /**
+     * The ant will return to the hive directly
+     *
+     * @param oldPoint         the point the ant is currently on
+     * @param nearestPositions the possible next positions of the ant
+     * @param endPosition      the position the ant will move to (if no other position is chosen)
+     */
     public void antReturn(Point oldPoint, List<Position> nearestPositions, Position endPosition) {
         Point newPoint = null;
 
@@ -345,7 +357,26 @@ public class Ant implements Entity {
         move(oldPoint, newPoint, endPosition);
     }
 
+    @Override
+    public Entity clone() {
+        return new Ant(this.currentState, this.gameState, this.status, this.colony, this.position);
+    }
 
+    public Entity cloneWithDifferentColony(Colony newColony) {
+        return new Ant(this.currentState, this.gameState, this.status, newColony, this.position);
+    }
+
+    @Override
+    public int getPriority() {
+        return Parameters.ANT_PRIORITY;
+    }
+
+    /**
+     * Searches the environment for all points of interest within a specified radius.
+     *
+     * @param currentPosition the current position of the ant
+     * @return an array of AntDirections containing the direction to the food, hive, high trail and low trail (in that order)
+     */
     private AntDirection[] search(Position currentPosition) {
         AntDirection food = null;
         AntDirection hive = null;
@@ -392,7 +423,6 @@ public class Ant implements Entity {
         return new AntDirection[]{food, hive, highTrail, lowTrail};
     }
 
-
     /**
      * Moves the ant to the new position and updates the trail.
      *
@@ -413,19 +443,5 @@ public class Ant implements Entity {
         oldPoint.addTrail(gameState, this);
         newPoint.addEntity(this);
         oldPoint.removeEntity(this);
-    }
-
-    @Override
-    public Entity clone() {
-        return new Ant(this.currentState, this.gameState, this.status, this.colony, this.position);
-    }
-
-    public Entity cloneWithDifferentColony(Colony newColony) {
-        return new Ant(this.currentState, this.gameState, this.status, newColony, this.position);
-    }
-
-    @Override
-    public int getPriority() {
-        return Parameters.ANT_PRIORITY;
     }
 }

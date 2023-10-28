@@ -5,7 +5,7 @@ import java.util.Vector;
 
 /**
  * Manages the data of the simulation
- * STYLE: Objektorientiertes Programmierung (es wird hier das Singleton Pattern verwendet was klar auf Objektorientierung hinweist)
+ * STYLE: Objektorientierte Programmierung (es wird hier das Singleton Pattern verwendet was klar auf Objektorientierung hinweist)
  */
 @SuppressWarnings("unchecked")
 public class DataManager {
@@ -17,6 +17,12 @@ public class DataManager {
         dataStore = new DataStore();
     }
 
+    /**
+     * Returns the instance of the DataManager and sets the simulation
+     *
+     * @param simulation the current simulation object that stores current data
+     * @return the singleton instance of the DataManager
+     */
     public static DataManager getInstance(Simulation simulation) {
         if (instance == null) {
             instance = new DataManager();
@@ -26,6 +32,11 @@ public class DataManager {
         return instance;
     }
 
+    /**
+     * Returns the instance of the DataManager without setting the simulation
+     *
+     * @return the singleton instance of the DataManager
+     */
     public static DataManager getInstance() {
         if (instance == null) {
             instance = new DataManager();
@@ -34,12 +45,18 @@ public class DataManager {
         return instance;
     }
 
+    /**
+     * Checks whether the simulation contains a field with the given key
+     *
+     * @return boolean for is the key in the simulation
+     */
     public boolean containsField(String key) {
         return simulation != null && simulation.getData(key) != null;
     }
 
     /**
-     * Adds a simple field to the simulation. If field already exists under key, it will be overwritten.
+     * Adds a simple field (e.g. a number) to the simulation. If field already exists under key, it will be overwritten.
+     *
      * @param key identifier of the datafield
      * @param value value of the datafield
      */
@@ -48,6 +65,12 @@ public class DataManager {
             simulation.addData(key, value);
     }
 
+    /**
+     * Returns the value of a simple field (e.g. a number) in the simulation
+     *
+     * @param key identifier of the datafield
+     * @return value of the datafield
+     */
     public Object getSimpleField(String key) {
         if (simulation == null) {
             return null;
@@ -55,6 +78,11 @@ public class DataManager {
         return simulation.getData(key);
     }
 
+    /**
+     * Increments a simple field (e.g. a number) in the simulation
+     *
+     * @param key identifier of the datafield
+     */
     public void incrementSimpleField(String key) {
         if (simulation != null) {
             Object value = simulation.getData(key);
@@ -66,6 +94,11 @@ public class DataManager {
         }
     }
 
+    /**
+     * Decrements a simple field (e.g. a number) in the simulation
+     *
+     * @param key identifier of the datafield
+     */
     public void decrementSimpleField(String key) {
         if (simulation != null) {
             Object value = simulation.getData(key);
@@ -77,6 +110,13 @@ public class DataManager {
         }
     }
 
+    /**
+     * Adds a complex field (e.g. a vector) to the simulation. If field already exists under key, it will be overwritten.
+     * Complex fields contain multiple values which can be summarized by instances of the Operation interface.
+     *
+     * @param key identifier of the datafield
+     * @param value first value to be added to the datafield
+     */
     public void addComplexField(String key, Object value) {
         if (simulation != null) {
             Vector<Object> values = new Vector<>();
@@ -85,6 +125,13 @@ public class DataManager {
         }
     }
 
+    /**
+     * Adds a value to a complex field (e.g. a vector) in the simulation. If field does not exist under key, it will be created.
+     * Complex fields contain multiple values which can be summarized by instances of the Operation interface.
+     *
+     * @param key identifier of the datafield
+     * @param value value to be added to the datafield
+     */
     public void updateComplexField(String key, Object value) {
         if (simulation != null) {
             if (simulation.getData(key) == null) {
@@ -96,6 +143,13 @@ public class DataManager {
         }
     }
 
+    /**
+     * Summarizes a complex field (e.g. a vector) in the simulation. It will save the result under the complex fields key plus the operation.
+     * Complex fields contain multiple values which can be summarized by instances of the Operation interface.
+     *
+     * @param key identifier of the datafield
+     * @param operation operation to be used to summarize the values
+     */
     public void summarizeComplexField(String key, Operation operation) {
         if (simulation != null && simulation.getData(key) != null && simulation.getData(key) instanceof Vector) {
             Vector<Object> values = (Vector<Object>) simulation.getData(key);
@@ -103,6 +157,9 @@ public class DataManager {
         }
     }
 
+    /**
+     * Saves the simulation to the datastore.
+     */
     public void saveSimulation() {
         dataStore.addSimulation(simulation);
     }

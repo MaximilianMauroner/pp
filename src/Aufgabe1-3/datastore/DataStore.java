@@ -6,10 +6,21 @@ import java.util.List;
 public class DataStore {
     private List<Simulation> simulationList = new ArrayList<>();
 
+    /**
+     * Adds a simulation to the datastore
+     *
+     * @param simulation the simulation to be added
+     */
     public void addSimulation(Simulation simulation) {
         simulationList.add(simulation);
     }
 
+    /**
+     * Returns the simulation with the given id
+     *
+     * @param simulationId the id of the simulation
+     * @return the simulation with the given id
+     */
     public Simulation getSimulation(String simulationId) {
         for (Simulation simulation : simulationList) {
             if (simulation.getSimulationId().equals(simulationId)) {
@@ -19,18 +30,37 @@ public class DataStore {
         return null;
     }
 
+    /**
+     * Returns the simulation list
+     *
+     * @return the simulation list
+     */
     public List<Simulation> getSimulationList() {
         return simulationList;
     }
 
+    /**
+     * Removes the simulation with the given id
+     *
+     * @param simulationId the id of the simulation to be removed
+     */
     public void removeSimulation(String simulationId) {
+        //STYLE: Funktionale Programmierung (es wird hier eine Lambda Funktion verwendet)
         simulationList.removeIf(simulation -> simulation.getSimulationId().equals(simulationId));
     }
 
+    /**
+     * Removes the given simulation
+     *
+     * @param simulation the simulation to be removed
+     */
     public void removeSimulation(Simulation simulation) {
         simulationList.remove(simulation);
     }
 
+    /**
+     * Clears the simulation list
+     */
     public void clear() {
         simulationList.clear();
     }
