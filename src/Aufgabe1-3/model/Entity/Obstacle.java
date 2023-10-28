@@ -1,6 +1,9 @@
-package model;
+package model.Entity;
 
 import controller.GameState;
+import model.Point;
+import model.Position;
+import model.Status;
 
 /**
  * Class for the obstacle entity
@@ -8,10 +11,14 @@ import controller.GameState;
  * Therefore it does not have any logic
  */
 public class Obstacle implements Entity {
+
+    Position position;
+
     @Override
     public void run(GameState gameState, Status status, Point point) {
 
     }
+
     @Override
     public Entity clone() {
         return new Obstacle();
@@ -20,5 +27,15 @@ public class Obstacle implements Entity {
     @Override
     public int getPriority() {
         return model.Parameters.OBSTACLE_PRIORITY;
+    }
+
+    @Override
+    public Position getPosition() {
+        return this.position;
+    }
+
+    @Override
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }

@@ -4,6 +4,7 @@ package controller;
 import datastore.DataManager;
 import datastore.Operation;
 import model.*;
+import model.Entity.OptimalPathPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +74,9 @@ public class PathManager {
 
     /**
      * Calculates the optimal path from the start position to the end position
+     *
      * @param start the start position
-     * @param end the end position
+     * @param end   the end position
      * @return the optimal path
      */
     private Path a_star(Position start, Position end) {

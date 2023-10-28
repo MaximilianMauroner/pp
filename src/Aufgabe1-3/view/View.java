@@ -3,6 +3,7 @@ package view;
 import codedraw.CodeDraw;
 import controller.GameState;
 import model.*;
+import model.Entity.*;
 
 import java.awt.Color;
 import java.util.Random;
