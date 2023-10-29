@@ -9,7 +9,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * Class for the trail entity
  * Trail objects have no other utility than to be on a position on the grid with a given strength and origin (e.g. ant that created it)
  * Trail objects can be read and written to but do not affect the game themselves
- * The only logic they have is to decay over time
+ *
+ * Modularization Units:
+ * - Module for employing ants to lay trails, have trails affect each other and decay, as well as some utility methods
+ * - Objects for its position and strengths associated with each colony (each colony at least one ant has laid a trail for)
+ *
+ * Abstraction: Is a subtype of Entity and simulates the addition, interaction and decay of pheromones a real world ant would leave behind
  */
 public class Trail implements Entity {
 

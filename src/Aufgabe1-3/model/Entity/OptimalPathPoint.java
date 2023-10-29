@@ -6,6 +6,13 @@ import model.Point;
 import model.Position;
 import model.Status;
 
+/**
+ * Modularization Units:
+ * - same as in Entity.java except that it stores the Object of the path it is associated with (as well its position)
+ *
+ * Abstraction: Represents the theoretical point of a path on the grid, which for information purposes is displayed but does not interact with the simulation
+ */
+
 public class OptimalPathPoint implements Entity {
     private Path path;
 

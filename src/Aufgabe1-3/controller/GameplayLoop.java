@@ -2,6 +2,16 @@ package controller;
 
 import view.View;
 
+/**
+ * The central element for running the simulation
+ *
+ * Modularization Units:
+ * - Objects for the game, view, etc.
+ * - Component that runs the game logic and informs the view about changes
+ *
+ * Abstraction: A simulation of the abstract concept of a game, (e.g. the collection of entites on a map, that interact with each other over time)
+ */
+
 // STYLE: this uses a bit of concurrent programming as the game loop runs in a separate thread.
 // This has implications on the way some data is accessed, e.g. Points in GameState or Entities in Points are accessed in a thread-safe way.
 public class GameplayLoop extends Thread {

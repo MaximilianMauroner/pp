@@ -9,6 +9,13 @@ import model.Status;
  * Interface for the entities of the game
  * Entities are the objects that are placed on the grid
  * They can be ants, food, trails, etc.
+ *
+ * Modularization Units:
+ * - Modularization methods for manipulating the entities and their properties (e.g. doing some behaviour, updating, comparing, etc.)
+ * - In some way a component that is used to ensure the modularity of the game logic
+ *
+ * Abstraction: Is the base-type (super-type) for all things that populate the simulation.
+ *
  * STYLE: eigentlich ist hier auch objektorientierte Programmierung zu sehen, da Entity der Obertyp von Ant, Food, etc. ist
  * und Untertyp-Beziehungen oft bei der objektorientierten Programmierung verwendet werden
  */

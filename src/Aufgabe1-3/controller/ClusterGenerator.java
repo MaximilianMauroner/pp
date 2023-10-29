@@ -13,6 +13,11 @@ import java.util.Random;
 /**
  * Class for generating clusters of entities
  * generate function is accessed like a module
+ *
+ * Modularization Units:
+ * - Module for methods that generate clusters of entities
+ *
+ * Abstraction: Not really in the slides but it just is a utility class for convenience during the generation of the simulation
  */
 public class ClusterGenerator {
 

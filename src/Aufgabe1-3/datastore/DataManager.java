@@ -5,6 +5,15 @@ import java.util.Vector;
 
 /**
  * Manages the data of the simulation
+ *
+ * Modularization Units:
+ * - Objects for the datastore and the (current) simulation
+ * - A object for the singleton instance of the DataManager
+ * - Module for all the methods/operations that store/access data for a specific simulation (usefull for making sure the data is stored in a consistent/uniform way)
+ * - Sort of represents a Component as it is a standalone piece of software and can be used regardless of the data it stores
+ *
+ * Abstraction: If we follow the slides, the DataManager is a simulation of a data storage system. But in reality it is just a wrapper for the DataStore and the Simulation.
+ *
  * STYLE: Objektorientierte Programmierung (es wird hier das Singleton Pattern verwendet was klar auf Objektorientierung hinweist)
  */
 @SuppressWarnings("unchecked")

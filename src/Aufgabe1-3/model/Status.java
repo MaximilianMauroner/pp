@@ -6,6 +6,11 @@ import datastore.Simulation;
  * Class for the status of the simulation
  * The status contains all the parameters that can be changed by the user
  * The status is used to create the simulation
+ *
+ * Modularization Units:
+ * - A module for storing, accessing and calculating mutable parameters and information of the simulation
+ *
+ * Abstraction: Is a simulation of the real worlds (changeable and random) state which is perceivable by its entities
  */
 public class Status {
     private final int width, height, scale, simulationTimeLimit, antCount, foodCount, obstacleCount;

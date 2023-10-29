@@ -8,6 +8,15 @@ import model.Status;
 
 import java.util.Random;
 
+/**
+ * Class for the corpse entity
+ * Corpse objects have no other utility than to be on a position on the grid
+ *
+ * Modularization Units:
+ * - same as in Entity.java but the also modularize a corpses strength/decay and seed
+ *
+ * Abstraction: A subtype of Entity and a representation of a real world corpse of an ant. Does only serve as a visual representation
+ */
 public class Corpse implements Entity {
     private final int seed = new Random().nextInt();
     private float strength = 1;

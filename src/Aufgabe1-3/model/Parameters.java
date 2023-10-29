@@ -2,6 +2,14 @@ package model;
 
 import java.awt.*;
 
+/**
+ * Class for the immutable parameters of the game
+ *
+ * Modularization Units:
+ * - A module for storing, accessing and calculating immutable parameters and information of the simulation
+ *
+ * Abstraction: A representation of all meta-information of the simulation, but also parameters used for controlling and presenting the simulation
+ */
 public class Parameters {
     public static final int SCALE_BY = 4;
 
@@ -35,7 +43,7 @@ public class Parameters {
     public static final int FOOD_SIZE = 10;
     public static final int HIVE_SIZE = 20;
     public static final int OBSTACLE_SIZE = 8;
-    public static final int TRAIL_SIZE = 2; // aka how much do you want to kill your pc
+    public static final int TRAIL_SIZE = 2; // an indication for how much you want to kill your pc
 
     // amount of entities
     public static final int HIVE_COUNT = 2;
