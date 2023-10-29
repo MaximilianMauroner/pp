@@ -12,7 +12,6 @@ import java.util.PriorityQueue;
 
 /**
  * Manages the optimal paths of the simulation
- * STYLE: Objektorientiertes Programmierung (es wird hier das Singleton Pattern verwendet was klar auf Objektorientierung hinweist)
  */
 public class PathManager {
 
@@ -28,14 +27,30 @@ public class PathManager {
         this.gameState = gameState;
     }
 
+
+    /**
+     * Adds a start position from which paths are calculated
+     *
+     * @param position the start position
+     */
     public void addStart(Position position) {
         startPositions.add(position);
     }
 
+    /**
+     * Adds an end position to which paths are calculated
+     *
+     * @param position the end position
+     */
     public void addEnd(Position position) {
         endPositions.add(position);
     }
 
+    /**
+     * Adds the position to end position and calculates a path from all start positions to the end position
+     *
+     * @param position the start position
+     */
     public void registerNewPaths(Position position) {
         endPositions.add(position);
         for (Position start : startPositions) {
@@ -43,11 +58,21 @@ public class PathManager {
         }
     }
 
+    /**
+     * Removes the position from end position and removes all paths that contain the position
+     *
+     * @param position the end position
+     */
     public void deregisterPaths(Position position) {
         endPositions.remove(position);
         paths.removeIf(path -> path.contains(position));
     }
 
+    /**
+     * Removes the position both start and end positions and removes all paths that contain the position
+     *
+     * @param position the start position
+     */
     public void removePosition(Position position) {
         startPositions.remove(position);
         endPositions.remove(position);
@@ -55,6 +80,9 @@ public class PathManager {
         paths.removeIf(path -> path.contains(position));
     }
 
+    /**
+     * Gathers all metrics the paths have calculated and adds them to the simulation data
+     */
     public void calculatePaths() {
         for (Path path : paths) {
             DataManager.getInstance().updateComplexField("pathMetric", path.getPathMetric());
@@ -62,6 +90,9 @@ public class PathManager {
         DataManager.getInstance().summarizeComplexField("pathMetric", new Operation.Mean());
     }
 
+    /**
+     * Clears all paths and positions
+     */
     public void clear() {
         startPositions.clear();
         endPositions.clear();
@@ -73,7 +104,7 @@ public class PathManager {
     // (Node hat nur public Variablen, static utility functions, Kommunikation im weiteren Sinne über die PriorityQueue, ...)
 
     /**
-     * Calculates the optimal path from the start position to the end position
+     * Calculates the optimal path from the start position to the end position using a* algorithm
      *
      * @param start the start position
      * @param end   the end position
@@ -138,6 +169,9 @@ public class PathManager {
 
 }
 
+/**
+ * Represents a position in a tree. Used for the a* algorithm
+ */
 class Node implements Comparable<Node> {
     public Position position;
     public Node parent;

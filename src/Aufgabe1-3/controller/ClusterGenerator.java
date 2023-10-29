@@ -16,6 +16,14 @@ import java.util.Random;
  */
 public class ClusterGenerator {
 
+    /**
+     * Generates a cluster of entities
+     *
+     * @param entity   the entity to be generated
+     * @param position the position of the cluster
+     * @param size     the size of the cluster
+     * @param gs       the game state
+     */
     public static void generate(Entity entity, Position position, int size, GameState gs) {
         for (int i = -(size / 2); i <= size / 2; i++) {
             for (int j = -(size / 2); j <= size / 2; j++) {
@@ -23,6 +31,9 @@ public class ClusterGenerator {
             }
         }
     }
+
+
+    // the following methods implement a organic generation of entities
 
     public static void advancedObstacleGeneration(Entity entity, Position position, int size, GameState gs) {
         Random random = new Random();

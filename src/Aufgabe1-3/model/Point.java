@@ -86,6 +86,12 @@ public class Point {
         this.addEntity(trail);
     }
 
+    /**
+     * Adds a trail with more than one trail object to surrounding points within a specified radius
+     *
+     * @param gameState gamestate to get the point objects
+     * @param ant ant so the ant can be associated with the trail
+     */
     public void addTrail(GameState gameState, Ant ant) {
         int radius = Math.ceilDiv(Parameters.TRAIL_SIZE, 2);
         int x = this.position.getX();
@@ -108,7 +114,6 @@ public class Point {
         }
     }
 
-
     /**
      * Gets the strength of the trail on the point
      */
@@ -117,28 +122,6 @@ public class Point {
             return ((Trail) entities.get(hasTrail)).getStrength();
         }
         return 0;
-    }
-
-
-    /**
-     * Checks whether the point has an obstacle
-     */
-    private void updateEntities() {
-        this.hasObstacle = -1;
-        this.hasHive = -1;
-        this.hasTrail = -1;
-        for (int i = 0; i < this.entities.size(); i++) {
-            Entity e = this.entities.get(i);
-            if (e.getClass() == Hive.class) {
-                this.hasHive = i;
-            }
-            if (e.getClass() == Obstacle.class) {
-                this.hasObstacle = i;
-            }
-            if (e.getClass() == Trail.class) {
-                this.hasTrail = i;
-            }
-        }
     }
 
     /**
@@ -162,4 +145,24 @@ public class Point {
         return this.hasHive == -1;
     }
 
+    /**
+     * Checks whether the point has an obstacle
+     */
+    private void updateEntities() {
+        this.hasObstacle = -1;
+        this.hasHive = -1;
+        this.hasTrail = -1;
+        for (int i = 0; i < this.entities.size(); i++) {
+            Entity e = this.entities.get(i);
+            if (e.getClass() == Hive.class) {
+                this.hasHive = i;
+            }
+            if (e.getClass() == Obstacle.class) {
+                this.hasObstacle = i;
+            }
+            if (e.getClass() == Trail.class) {
+                this.hasTrail = i;
+            }
+        }
+    }
 }

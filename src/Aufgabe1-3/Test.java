@@ -8,8 +8,36 @@ import java.util.UUID;
 /*
 Distribution of work:
 - Maximilian: Model(Position, Point, Status, Cluster Generator), Controller(GameState, GameLoop)
-- Lukas: Model(Entities), Controller(Ant State Machine, Game generation), Optimal Path
+- Lukas: Model(Entities), Controller(Ant State Machine, Game generation), Optimal Path, Datastore, Ant Logic additions, Multiple Colony support
 - Christopher: View
+
+
+Features (not done):
+- event loop (not needed)
+- statistics end screen (low priority)
+- food object spawn/despawn (low priority)
+- trail influence (low priority / never really planned)
+
+Features (done):
+- Infinite size grid
+- Hive decay
+- Multiple colonies
+- Simulation Metrics and optimal path calculation
+- Overhauled ant logic
+- Ants can fight each other & die
+- Day/Night cycle
+- efficient view
+- entity view priority
+- ... and more little changes
+
+Structure:
+For every simulation run, parameters get randomized and new gamefield is generated.
+All objects (Ants, Food, Hive, etc.) are subclasses of Entity and are stored in Points on a sparse grid.
+GameState contains all points and the logic for manipulation of the gamefield.
+The Gameloop runs in a separate thread and calls the GameState to update which in turn calls the entities run method
+(some of which actually interact with other entities while some do nothing).
+Besides the main simulation function, a path finding algorithm is implemented as a benchmark for the ants random path finding.
+The results of the simulation are stored in a Simulation object which is then stored in a DataManager object, to compare multiple simulation runs.
  */
 
 public class Test {
