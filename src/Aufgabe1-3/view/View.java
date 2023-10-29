@@ -8,6 +8,17 @@ import model.Entity.*;
 import java.awt.Color;
 import java.util.*;
 
+/**
+ * Class for the view
+ * Contains the canvas and the functions to draw on it
+ *
+ * Modularization Units:
+ * - Objects of the draw window
+ * - Module advertising draw functions
+ * - But most importantly a component that can draw whatever game state is given to it
+ *
+ * Abstraction: The representation of the simulation, all objects and entities are drawn here
+ */
 public class View {
     private final int width, height;
     private final CodeDraw cd;

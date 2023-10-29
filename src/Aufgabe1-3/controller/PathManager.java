@@ -12,6 +12,13 @@ import java.util.PriorityQueue;
 
 /**
  * Manages the optimal paths of the simulation
+ *
+ * Modularization Units:
+ * - Objects for the paths and positions as well as game state (for accessing the points)
+ * - Module that adds all utility for adding, deleting and calculating paths
+ * - Class of Nodes for the a* algorithm
+ *
+ * Abstraction: A representation of the real world concept of multiple paths. Sort of the base class for the path objects
  */
 public class PathManager {
 
@@ -167,45 +174,50 @@ public class PathManager {
         return path;
     }
 
-}
 
-/**
- * Represents a position in a tree. Used for the a* algorithm
- */
-class Node implements Comparable<Node> {
-    public Position position;
-    public Node parent;
-    public double g;
-    public double h;
-    public double f;
+    /**
+     * Represents a position in a tree. Used for the a* algorithm
+     *
+     * Modularization Units:
+     * - Module for storing tree node data and utility methods
+     *
+     * Abstraction: A representation of the nodes the a star algorithm creates as it "explores" a grid of positions. Sort of a simulation of a tree
+     */
+    class Node implements Comparable<Node> {
+        public Position position;
+        public Node parent;
+        public double g;
+        public double h;
+        public double f;
 
-    public Node(Position position, Node parent) {
-        this.position = position;
-        this.parent = parent;
-    }
-
-
-    public static int getDistance(Node n1, Node n2) {
-        int dx = Math.abs(n1.position.getX() - n2.position.getX());
-        int dy = Math.abs(n1.position.getY() - n2.position.getY());
-
-        if (dx > dy)
-            return 14 * dy + 10 * (dx - dy);
-        else
-            return 14 * dx + 10 * (dy - dx);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof Node) {
-            Node n = (Node) o;
-            return n.position.equals(this.position);
+        public Node(Position position, Node parent) {
+            this.position = position;
+            this.parent = parent;
         }
-        return false;
-    }
 
-    @Override
-    public int compareTo(Node o) {
-        return Double.compare(this.f, o.f);
+
+        public static int getDistance(Node n1, Node n2) {
+            int dx = Math.abs(n1.position.getX() - n2.position.getX());
+            int dy = Math.abs(n1.position.getY() - n2.position.getY());
+
+            if (dx > dy)
+                return 14 * dy + 10 * (dx - dy);
+            else
+                return 14 * dx + 10 * (dy - dx);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof Node) {
+                Node n = (Node) o;
+                return n.position.equals(this.position);
+            }
+            return false;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            return Double.compare(this.f, o.f);
+        }
     }
 }

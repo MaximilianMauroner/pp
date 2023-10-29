@@ -12,6 +12,13 @@ import java.util.List;
 /**
  * Class for the ant entity and its logic
  * contains reference objects to the game and status (for parameter access)
+ *
+ * Modularization Units:
+ * - Objects such as GameState, Status, Colony for reference and acces to their methods
+ * - Module for all internal variables (e.g. current state, direction, etc.) and methods for interaction as well as implementing ant logic/bahaviour
+ *
+ * Abstract: Is a subtype of Entity and represents a single ant.
+ * It simulates the decisions a ant would make one step at a time, based on its surroundings and current state. Also a core part of the simulation.
  */
 public class Ant implements Entity {
     private final int id = HelperFunctions.generateRandomId();

@@ -13,8 +13,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class for the hive entity
- * Hive objects have no other utility than to be on a position on the grid
- * Therefore it does not have any logic
+ * Hive objects have no other utility than to be on a position on the grid, and "store" food
+ *
+ * Modularization Units:
+ * - Module for all hive and food related variables and methods for updating them
+ * - Objects for its position and colony it's a part of
+ * - otherwise just the same as in Entity.java
+ *
+ * Abstraction: Is a subtype of Entity and represents one part of a colonies home
  */
 public class Hive implements Entity {
 

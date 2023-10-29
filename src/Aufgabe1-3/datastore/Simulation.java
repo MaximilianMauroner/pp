@@ -2,6 +2,15 @@ package datastore;
 
 import java.util.HashMap;
 
+/**
+ * Also generic data store that stores the data of a singe simulation run
+ *
+ * Modularization Units:
+ * - Objects for the datastore and the simulation
+ * - Module for all data and utility methods for accessing the data
+ *
+ * Abstraction: A abstraction of all data points that can be associated with a simulation.
+ */
 @SuppressWarnings("unchecked")
 public class Simulation {
     private String simulationId;

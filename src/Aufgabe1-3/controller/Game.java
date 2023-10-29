@@ -14,6 +14,12 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Class for the game
  * It generates the game state and starts the game loop
+ *
+ * Modularization Units:
+ * - Objects of the game, view, etc.
+ * - Module for generating the game state
+ *
+ * Abstraction: A simulation of the abstract concept of a game, which is a collection of entities that interact with each other
  */
 public class Game {
 

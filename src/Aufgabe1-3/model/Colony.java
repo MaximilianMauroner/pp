@@ -12,6 +12,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Class for the colony
+ *
+ * Modularization Units:
+ * - Objects for storing the hives and ants that belong to the colony as well as the gamestate (for method access)
+ * - Module for all the logic ants and hive objects need to interact with each other (ants need to know what colony they belong to and where its located;
+ *   hives propagate the collected food)
+ *
+ * Abstraction: A simulation of the abstract concept of a colony, which is a group of ants and hives that can grow and shrink depending on the amount of food it has.
+ */
+
 public class Colony {
 
     private final int id = HelperFunctions.generateRandomId();

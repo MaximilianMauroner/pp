@@ -5,6 +5,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+/**
+ * A interface for making sure different operations can be done to a list of data points in a uniform and extendable way
+ *
+ * Modularization Units:
+ * - Module that only contains the method to perform a computation
+ * - Classes for specific instances of the operation interface
+ */
+
 public interface Operation {
 
     /**

@@ -12,6 +12,12 @@ import java.util.List;
  * Class for the points of the game
  * Points have a specified position on the grid and a list of entity objects
  * Not every position has a point object
+ *
+ * Modularization Units:
+ * - Contains objects (in a list) for entities currently on this point (e.g. ants, trails, obstacles).
+ * - Modularizes the logic for manipulating the entities on the point (e.g. adding, removing, updating, querying)
+ *
+ * Abstraction: Represents the objects of a real world position on a grid, which can contain multiple entities.
  */
 public class Point {
     private final List<Entity> entities;

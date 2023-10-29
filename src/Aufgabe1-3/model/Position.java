@@ -7,6 +7,11 @@ import java.util.List;
 /**
  * Class for the position of the entities
  * The position is defined by the x and y coordinates
+ *
+ * Modularization Units:
+ * - A module for making calculations concerned about positions (e.g. distances, directions, neighbourhoods. etc.)
+ *
+ * Abstraction: Represents the numerical part of a real world position on a grid.
  */
 public class Position {
     private int x, y;

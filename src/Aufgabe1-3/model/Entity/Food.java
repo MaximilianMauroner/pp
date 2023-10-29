@@ -5,6 +5,16 @@ import model.Point;
 import model.Position;
 import model.Status;
 
+/**
+ * Class for the food entity
+ * Food is an entity that can be placed on the grid
+ * It is used to feed the ants
+ *
+ * Modularization Units:
+ * - same as in Entity.java as no additional methods are added (does however contain the object of its current position)
+ *
+ * Abstraction: A representation of a real world piece of food
+ */
 public class Food implements Entity {
 
     private Position position;
