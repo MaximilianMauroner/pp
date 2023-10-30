@@ -41,8 +41,55 @@ The results of the simulation are stored in a Simulation object which is then st
  */
 
 public class Test {
-
-
+    /**
+     * Aufgabenverteilung:
+     * ### Maxi
+     * - Infinite Positions
+     * - Beschränkung im Point entfernen
+     * - Hive decay
+     * - nach bestimmter Anzahl an Ameisen
+     * - wenn Ameisen Futter bringen wird neues Hive Objekt generiert
+     * - new Trails Logic
+     * - trail for colony and stuff
+     * - handle multiple colonies for trail
+     * - Fix bau nicht essen
+     * - Ants vereinigen fix Maxi
+     * - wenn 2 Ameisen aufeinander treffen, werden sie zu einer
+     * <p>
+     * ### Lukas
+     * - Simulation Metrik
+     * - Optimale Pfade berechnen A*
+     * - Abweichung von Pfaden berechnen
+     * - Speichern von Daten
+     * - Ant movement
+     * - Ants move for a few steps
+     * - then check for odour
+     * - then move again
+     * - needs view of ant
+     * - add entity priorities
+     * - maybe needs compareTo() function
+     * - Ants fight each other (maybe); call antDies() in View
+     * - wenn zwei von unterschiedlichen Kolonien aufeinander treffen, kämpfen sie
+     * - Ant Objekt entfernen Corpse spawnen
+     * - View hat Observer
+     * - Test Cases (simulation)
+     * - Paradigmen erläutern (min 5x)
+     * - comment explaining the entire process
+     * <p>
+     * ### Chris
+     * - Tageszeit simulation~~
+     * - Game-State Clock abfragen "gameState.getTime();"
+     * - Hintergrund auf Basis der Zeit verändern
+     * - Statistik End Screen
+     * - Effiziente Darstellung in View
+     * - Entity View Priorities
+     * - Verschiedene Entities haben verschiedene Priorities
+     * - Mit höherer Priority werden vor niedriger Priority dargestellt
+     * - Explosion when ant dies
+     * - Class Corpse implements Entity
+     * - generation organisch
+     * - Generate Function ändern
+     */
     public static void main(String[] args) {
         Status s = new Status(Parameters.WIDTH, Parameters.HEIGHT, Parameters.SCALE_BY, Parameters.EVALUATION_TIME,
                 Parameters.INITIAL_ANT_COUNT, 20, 50, 10, Parameters.INITIAL_FOOD_COUNT,
@@ -70,5 +117,3 @@ public class Test {
 
     }
 }
-
-
