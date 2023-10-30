@@ -17,7 +17,7 @@ public class DataStore {
     private final List<Simulation> simulationList = new ArrayList<>();
 
     /**
-     * Adds a simulation to the datastore
+     * Adds a simulation to the datastore list
      *
      * @param simulation the simulation to be added
      */
@@ -29,7 +29,7 @@ public class DataStore {
      * Returns the simulation with the given id
      *
      * @param simulationId the id of the simulation
-     * @return the simulation with the given id
+     * @return the simulation with the given id. If no simulation with that id exists, null will be returned
      */
     public Simulation getSimulation(String simulationId) {
         for (Simulation simulation : simulationList) {
@@ -41,7 +41,6 @@ public class DataStore {
     }
 
     /**
-     * Returns the simulation list
      *
      * @return the simulation list
      */
@@ -50,7 +49,7 @@ public class DataStore {
     }
 
     /**
-     * Removes the simulation with the given id
+     * Removes the simulation with the given id if there is a simulation with that id
      *
      * @param simulationId the id of the simulation to be removed
      */
@@ -60,7 +59,7 @@ public class DataStore {
     }
 
     /**
-     * Removes the given simulation
+     * Removes the given simulation if it is in the simulation list
      *
      * @param simulation the simulation to be removed
      */
@@ -75,6 +74,9 @@ public class DataStore {
         simulationList.clear();
     }
 
+    /**
+     * @return all data stored in all simulations
+     */
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();

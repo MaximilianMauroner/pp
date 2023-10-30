@@ -24,11 +24,13 @@ public interface Operation {
 
     class Median implements Operation {
 
+        // ERROR: here we have a problem. the precondition is stronger than it is in the interface.
+        // We should (especially if we think of only dealing with numbers) change the type in the vector to Number
         /**
          * Computes the median (value in the middle of an ordered list) of the given data
          *
-         * @param data the data to be computed
-         * @return the median of the given data
+         * @param data the data to be computed. The data should be ordered
+         * @return the median of the given data or null if the data is empty
          */
         @Override
         public Object compute(Vector<Object> data) {
@@ -36,6 +38,9 @@ public interface Operation {
             return list.get(list.size() / 2);
         }
 
+        /**
+         * @return the name of this operation
+         */
         @Override
         public String toString() {
             return "Median";
@@ -43,12 +48,13 @@ public interface Operation {
     }
 
     class Mean implements Operation {
-
+        // ERROR: The postcondition here should be that null or 0 is returned if the data is empty.
+        // That's not the case here, we would get an (un-catched) exception
         /**
          * Computes the mean (average) of the given data
          *
-         * @param data the data to be computed
-         * @return the mean of the given data
+         * @param data the data to be computed. All data points need to be numbers
+         * @return the mean of the given data.
          */
         @Override
         public Object compute(Vector<Object> data) {
@@ -63,6 +69,9 @@ public interface Operation {
             return sum / data.size();
         }
 
+        /**
+         * @return the name of this operation
+         */
         @Override
         public String toString() {
             return "Mean";
