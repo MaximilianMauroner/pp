@@ -32,6 +32,44 @@ Since we included an external library we also need to specify classpath
 java -cp out:lib/CodeDraw.jar src.Test
 ```
 
+# Aufgabe 3
+
+## Zusicherungen und Analyse
+- Methodenköpfe anpassen, sodass man Zusicherungen daraus bilden kann
+  - Vorbedingungen haben wir in sehr wenigen Stellen, weil die methoden selbst viel einschränken
+  - Nachbedingungen könne wir aus den Methodenköpfen ableiten
+- Invarianten (bzw. History-Constraints) müssen wir noch dazuschreiben bei einzelnen Variablen
+- 3 GOOD Kommentare für objektorientierten Teil (ein paar Kandidaten wo wir das machen könnten)
+  - Klassenzusammenhalt: Entities + Gamestate, PathManager, ...
+  - Objektkopplung: DataManager, View, ...
+  - Dynamisches Binden: Point wo Entities anstatt konkreter Klassen stehen, Operation 
+- 3 BAD Kommentare für objektorientierten Teil 
+  - Klassenzusammenhalt: DataManager
+  - Objektkopplung: Path und OptimalPathPoint, ... 
+  - Dynamisches Binden: Generator (ev könnten die advanced Funktionen generic sein)
+- 3 GOOD Kommentare für prozeduralen Teil
+  - A* Algorithmus
+  - ClusterGenerator
+- 3 BAD Kommentare für prozeduralen Teil
+  - Ant Logic
+  - Status
+  - Parameters 
+
+## Funktionaler Teil
+- schon viel verwendet 
+- noch mehr verwenden
+  - Game (speziell wo wir den GameState anlegen)
+  - View
+- Feature finden was ausschließlich funktional programmiert werden kann
+- STYLE Kommentar hinzufügen
+
+## Paralleler/Nebenläufiger Teil
+- auch schon verwendet (GameLoop)
+- ev. noch mehr verwenden
+  - ev. PathManager ganz nebenläufig machen
+  - ev. noch ein View fenster für Stats (das könnte dann parallel auf Gamestate zugreifen bzw. EventLoop mit notify)
+- STYLE Kommentar hinzufügen
+
 # Aufgabe 2
 
 # Improvements:
