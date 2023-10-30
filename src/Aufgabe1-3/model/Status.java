@@ -6,16 +6,20 @@ import datastore.Simulation;
  * Class for the status of the simulation
  * The status contains all the parameters that can be changed by the user
  * The status is used to create the simulation
- *
+ * <p>
  * Modularization Units:
  * - A module for storing, accessing and calculating mutable parameters and information of the simulation
- *
+ * <p>
  * Abstraction: Is a simulation of the real worlds (changeable and random) state which is perceivable by its entities
  */
 public class Status {
     private final int width, height, scale, simulationTimeLimit, antCount, foodCount, obstacleCount;
     private int antEmptySteps, antMoveSteps, antWaitSteps, foodHiveDistance, antSpawnRadius, simulationTime;
-    private double trailDecay, lowTrail, highTrail, searchRadiusGrowthFactor, minHiveHealth;
+    private double trailDecay;
+    private double lowTrail;
+    private double highTrail;
+    private double searchRadiusGrowthFactor;
+    private final double minHiveHealth;
 
     public Status(int width, int height, int scale, int simulationTime, int antCount, int antEmptySteps, int antMoveSteps, int antWaitSteps, int foodCount,
                   int obstacleCount, int antSpawnRadius, int foodHiveDistance,
@@ -118,15 +122,15 @@ public class Status {
      * @param confidence randomize values within interval of confidence in percent (e.g. if confidence is 0.1, then the value will be randomized within 10% of the original value)
      */
     public void randomize(double confidence) {
-        this.antEmptySteps = (int) randomize(antEmptySteps, confidence,1,40);
-        this.antMoveSteps = (int) randomize(antMoveSteps, confidence,30,80);
-        this.antWaitSteps = (int) randomize(antWaitSteps, confidence,10,30);
-        this.antSpawnRadius = (int) randomize(antSpawnRadius, confidence, 1,50);
-        this.foodHiveDistance = (int) randomize(foodHiveDistance, confidence,1,200);
-        this.trailDecay = randomize(trailDecay, confidence, 0,1);
-        this.lowTrail = randomize(lowTrail, confidence,0,1);
-        this.highTrail = randomize(highTrail, confidence,0,1);
-        this.searchRadiusGrowthFactor = randomize(searchRadiusGrowthFactor, confidence,1,2);
+        this.antEmptySteps = (int) randomize(antEmptySteps, confidence, 1, 40);
+        this.antMoveSteps = (int) randomize(antMoveSteps, confidence, 30, 80);
+        this.antWaitSteps = (int) randomize(antWaitSteps, confidence, 10, 30);
+        this.antSpawnRadius = (int) randomize(antSpawnRadius, confidence, 1, 50);
+        this.foodHiveDistance = (int) randomize(foodHiveDistance, confidence, 1, 200);
+        this.trailDecay = randomize(trailDecay, confidence, 0, 1);
+        this.lowTrail = randomize(lowTrail, confidence, 0, 1);
+        this.highTrail = randomize(highTrail, confidence, 0, 1);
+        this.searchRadiusGrowthFactor = randomize(searchRadiusGrowthFactor, confidence, 1, 2);
     }
 
     public void exportRandomParameters(Simulation simulation) {

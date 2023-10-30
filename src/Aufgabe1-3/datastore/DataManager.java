@@ -5,21 +5,21 @@ import java.util.Vector;
 
 /**
  * Manages the data of the simulation
- *
+ * <p>
  * Modularization Units:
  * - Objects for the datastore and the (current) simulation
  * - A object for the singleton instance of the DataManager
- * - Module for all the methods/operations that store/access data for a specific simulation (usefull for making sure the data is stored in a consistent/uniform way)
+ * - Module for all the methods/operations that store/access data for a specific simulation (useful for making sure the data is stored in a consistent/uniform way)
  * - Sort of represents a Component as it is a standalone piece of software and can be used regardless of the data it stores
- *
+ * <p>
  * Abstraction: If we follow the slides, the DataManager is a simulation of a data storage system. But in reality it is just a wrapper for the DataStore and the Simulation.
- *
+ * <p>
  * STYLE: Objektorientierte Programmierung (es wird hier das Singleton Pattern verwendet was klar auf Objektorientierung hinweist)
  */
 @SuppressWarnings("unchecked")
 public class DataManager {
     private static DataManager instance;
-    private DataStore dataStore;
+    private final DataStore dataStore;
     private Simulation simulation;
 
     private DataManager() {
@@ -66,8 +66,8 @@ public class DataManager {
     /**
      * Adds a simple field (e.g. a number) to the simulation. If field already exists under key, it will be overwritten.
      *
-     * @param key identifier of the datafield
-     * @param value value of the datafield
+     * @param key   identifier of the data-field
+     * @param value value of the data-field
      */
     public void addSimpleField(String key, Object value) {
         if (simulation != null)
@@ -77,8 +77,8 @@ public class DataManager {
     /**
      * Returns the value of a simple field (e.g. a number) in the simulation
      *
-     * @param key identifier of the datafield
-     * @return value of the datafield
+     * @param key identifier of the data-field
+     * @return value of the data-field
      */
     public Object getSimpleField(String key) {
         if (simulation == null) {
@@ -90,7 +90,7 @@ public class DataManager {
     /**
      * Increments a simple field (e.g. a number) in the simulation
      *
-     * @param key identifier of the datafield
+     * @param key identifier of the data-field
      */
     public void incrementSimpleField(String key) {
         if (simulation != null) {
@@ -106,7 +106,7 @@ public class DataManager {
     /**
      * Decrements a simple field (e.g. a number) in the simulation
      *
-     * @param key identifier of the datafield
+     * @param key identifier of the data-field
      */
     public void decrementSimpleField(String key) {
         if (simulation != null) {
@@ -123,8 +123,8 @@ public class DataManager {
      * Adds a complex field (e.g. a vector) to the simulation. If field already exists under key, it will be overwritten.
      * Complex fields contain multiple values which can be summarized by instances of the Operation interface.
      *
-     * @param key identifier of the datafield
-     * @param value first value to be added to the datafield
+     * @param key   identifier of the data-field
+     * @param value first value to be added to the data-field
      */
     public void addComplexField(String key, Object value) {
         if (simulation != null) {
@@ -138,8 +138,8 @@ public class DataManager {
      * Adds a value to a complex field (e.g. a vector) in the simulation. If field does not exist under key, it will be created.
      * Complex fields contain multiple values which can be summarized by instances of the Operation interface.
      *
-     * @param key identifier of the datafield
-     * @param value value to be added to the datafield
+     * @param key   identifier of the data-field
+     * @param value value to be added to the data-field
      */
     public void updateComplexField(String key, Object value) {
         if (simulation != null) {
@@ -156,7 +156,7 @@ public class DataManager {
      * Summarizes a complex field (e.g. a vector) in the simulation. It will save the result under the complex fields key plus the operation.
      * Complex fields contain multiple values which can be summarized by instances of the Operation interface.
      *
-     * @param key identifier of the datafield
+     * @param key       identifier of the data-field
      * @param operation operation to be used to summarize the values
      */
     public void summarizeComplexField(String key, Operation operation) {

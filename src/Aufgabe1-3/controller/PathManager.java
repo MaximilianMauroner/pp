@@ -12,20 +12,20 @@ import java.util.PriorityQueue;
 
 /**
  * Manages the optimal paths of the simulation
- *
+ * <p>
  * Modularization Units:
  * - Objects for the paths and positions as well as game state (for accessing the points)
  * - Module that adds all utility for adding, deleting and calculating paths
- * - Class of Nodes for the a* algorithm
- *
+ * - Class of Nodes for the A* algorithm
+ * <p>
  * Abstraction: A representation of the real world concept of multiple paths. Sort of the base class for the path objects
  */
 public class PathManager {
 
-    private List<Path> paths;
-    private List<Position> startPositions;
-    private List<Position> endPositions;
-    private GameState gameState;
+    private final List<Path> paths;
+    private final List<Position> startPositions;
+    private final List<Position> endPositions;
+    private final GameState gameState;
 
     public PathManager(GameState gameState) {
         paths = new ArrayList<>();
@@ -176,15 +176,15 @@ public class PathManager {
 
 
     /**
-     * Represents a position in a tree. Used for the a* algorithm
-     *
+     * Represents a position in a tree. Used for the A* algorithm
+     * <p>
      * Modularization Units:
      * - Module for storing tree node data and utility methods
-     *
-     * Abstraction: A representation of the nodes the a star algorithm creates as it "explores" a grid of positions. Sort of a simulation of a tree
+     * <p>
+     * Abstraction: A representation of the nodes that the A star algorithm creates as it "explores" a grid of positions. Sort of a simulation of a tree
      */
     class Node implements Comparable<Node> {
-        public Position position;
+        public final Position position;
         public Node parent;
         public double g;
         public double h;

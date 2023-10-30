@@ -11,12 +11,12 @@ import java.util.*;
 /**
  * Class for the view
  * Contains the canvas and the functions to draw on it
- *
+ * <p>
  * Modularization Units:
  * - Objects of the draw window
  * - Module advertising draw functions
  * - But most importantly a component that can draw whatever game state is given to it
- *
+ * <p>
  * Abstraction: The representation of the simulation, all objects and entities are drawn here
  */
 public class View {
@@ -98,7 +98,7 @@ public class View {
      * @param color           color to mix with the backgroundColor
      * @param backgroundColor Background color. Color to mix with the foreground color
      * @param strength        strength of the color. Must be between 0 and 1
-     * @return Returnes the mixed color of the two colors
+     * @return Returns the mixed color of the two colors
      */
     private Color mixColors(Color color, Color backgroundColor, float strength) {
         assert strength >= 0 && strength <= 1;

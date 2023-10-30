@@ -4,12 +4,12 @@ import view.View;
 
 /**
  * The central element for running the simulation
- *
+ * <p>
  * Modularization Units:
  * - Objects for the game, view, etc.
  * - Component that runs the game logic and informs the view about changes
- *
- * Abstraction: A simulation of the abstract concept of a game, (e.g. the collection of entites on a map, that interact with each other over time)
+ * <p>
+ * Abstraction: A simulation of the abstract concept of a game, (e.g. the collection of entities on a map, that interact with each other over time)
  */
 
 // STYLE: this uses a bit of concurrent programming as the game loop runs in a separate thread.

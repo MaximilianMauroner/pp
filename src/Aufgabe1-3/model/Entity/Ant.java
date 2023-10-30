@@ -3,7 +3,6 @@ package model.Entity;
 import controller.GameState;
 import controller.HelperFunctions;
 import model.*;
-import model.Status;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,17 +11,17 @@ import java.util.List;
 /**
  * Class for the ant entity and its logic
  * contains reference objects to the game and status (for parameter access)
- *
+ * <p>
  * Modularization Units:
- * - Objects such as GameState, Status, Colony for reference and acces to their methods
- * - Module for all internal variables (e.g. current state, direction, etc.) and methods for interaction as well as implementing ant logic/bahaviour
- *
+ * - Objects such as GameState, Status, Colony for reference and access to their methods
+ * - Module for all internal variables (e.g. current state, direction, etc.) and methods for interaction as well as implementing ant logic/behaviour
+ * <p>
  * Abstract: Is a subtype of Entity and represents a single ant.
- * It simulates the decisions a ant would make one step at a time, based on its surroundings and current state. Also a core part of the simulation.
+ * It simulates the decisions an ant would make one step at a time, based on its surroundings and current state. It's also a core part of the simulation.
  */
 public class Ant implements Entity {
     private final int id = HelperFunctions.generateRandomId();
-    private AntState currentState = AntState.EXPLORE;
+    private AntState currentState;
     private int emptySteps = 0;
     private AntDirection direction = AntDirection.values()[(int) (Math.random() * AntDirection.values().length)];
     private GameState gameState;
@@ -142,7 +141,7 @@ public class Ant implements Entity {
             } else if (this.currentState == AntState.RETURN) {
                 this.direction = oldPoint.getPosition().getRelativeChange(hivePos);
             } else {
-                    changeDirection(oldPoint.getPosition());
+                changeDirection(oldPoint.getPosition());
             }
         }
 
@@ -196,6 +195,7 @@ public class Ant implements Entity {
         // ant prefers empty positions in exploration mode
         ArrayList<Position> emptyPositions = new ArrayList<>();
         Iterator<Position> iter = nearestPositions.iterator();
+        //noinspection WhileLoopReplaceableByForEach
         while (iter.hasNext()) {
             Position pos = iter.next();
             Point point = gameState.getPoint(pos);
@@ -221,14 +221,14 @@ public class Ant implements Entity {
                         point.removeEntity(e);
                         this.foodCount++;
                         this.currentState = AntState.FOODRETRIEVE;
-                        System.out.println("Ant-" + this.hashCode() + ": Found food, switching to foodretrieve mode:" + this.currentState);
+                        System.out.println("Ant-" + this.hashCode() + ": Found food, switching to food-retrieve mode:" + this.currentState);
                     } else if (e instanceof Ant otherAnt) {
                         if (otherAnt.currentState == AntState.FOODRETRIEVE) {
                             if (otherAnt.hivePos.equals(this.hivePos)) {
                                 endPosition = pos;
                                 newPoint = point;
                                 this.currentState = AntState.FOODSEARCH;
-                                System.out.println("Ant-" + this.hashCode() + ": Met another ant, switching to foodsearch mode");
+                                System.out.println("Ant-" + this.hashCode() + ": Met another ant, switching to food-search mode");
                             } else {
                                 // kill ant
                                 if (Math.random() < 0.5) {
@@ -272,7 +272,7 @@ public class Ant implements Entity {
                         point.removeEntity(e);
                         this.foodCount++;
                         this.currentState = AntState.FOODRETRIEVE;
-                        System.out.println("Ant-" + this.getId() + ": Found food, switching to foodretrieve mode");
+                        System.out.println("Ant-" + this.getId() + ": Found food, switching to food-retrieve mode");
                     } else if (e instanceof Trail && ((Trail) e).isNewPath(this)) { // origin so ant doesn't follow own trail
                         double strength = ((Trail) e).getColonyStrength(this.colony);
                         if (strength > highFactor) {
@@ -321,7 +321,7 @@ public class Ant implements Entity {
                         this.currentState = AntState.FOODSEARCH;
                         hive.addFood();
                         this.oldFoodCount = this.foodCount;
-                        System.out.println("Ant-" + this.getId() + ": Reached hive, switching to foodsearch mode");
+                        System.out.println("Ant-" + this.getId() + ": Reached hive, switching to food-search mode");
                     }
                 }
             }
@@ -340,7 +340,7 @@ public class Ant implements Entity {
     public void antReturn(Point oldPoint, List<Position> nearestPositions, Position endPosition) {
         Point newPoint = null;
 
-        for (Position pos: nearestPositions) {
+        for (Position pos : nearestPositions) {
             Point point = gameState.getPoint(pos);
 
             if (point != null) {
@@ -354,7 +354,7 @@ public class Ant implements Entity {
                             System.out.println("Ant-" + this.hashCode() + ": new search radius: " + this.searchRadius);
                         }
                         this.oldFoodCount = this.foodCount;
-                        System.out.println("Ant-" + this.hashCode() + ": Reached hive, switching to foodsearch mode");
+                        System.out.println("Ant-" + this.hashCode() + ": Reached hive, switching to food-search mode");
                         break;
                     }
                 }

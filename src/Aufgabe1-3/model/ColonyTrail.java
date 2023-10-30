@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Modularization Units:
  * - Objects for storing the strength of the trail and the origin of the trail
  * - Module for combining trails, decaying trails and changing the strength of the trail
- *
+ * <p>
  * Abstraction: A addition to the basic trail class that allows for trails of different colonies to interact
  */
 public class ColonyTrail {

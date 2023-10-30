@@ -5,16 +5,16 @@ import java.util.List;
 
 /**
  * A very generic data store that stores multiple simulations
- *
+ * <p>
  * Modularization Units:
  * - Objects for the datastore and the simulations
  * - Module for all utility methods for accessing the data/simulations
- *
+ * <p>
  * Abstraction: A simulation of a data storage system
  */
 
 public class DataStore {
-    private List<Simulation> simulationList = new ArrayList<>();
+    private final List<Simulation> simulationList = new ArrayList<>();
 
     /**
      * Adds a simulation to the datastore
@@ -55,7 +55,7 @@ public class DataStore {
      * @param simulationId the id of the simulation to be removed
      */
     public void removeSimulation(String simulationId) {
-        //STYLE: Funktionale Programmierung (es wird hier eine Lambda Funktion verwendet)
+        //STYLE: Funktionale Programmierung (es wird hier eine Lambda-Funktion verwendet)
         simulationList.removeIf(simulation -> simulation.getSimulationId().equals(simulationId));
     }
 

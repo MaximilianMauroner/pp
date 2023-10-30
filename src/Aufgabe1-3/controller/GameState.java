@@ -11,17 +11,17 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Class for the game state
  * Contains point objects and the parameters of the game
- *
+ * <p>
  * Modularization Units:
  * - Objects for storing the points of the game and the parameters of the game
  * - Module for all simulated entities and their manipulation of their environment
- *
+ * <p>
  * Abstraction: A simulation of the abstract concept of a game state, which is a collection of points that contain entities
  */
 public class GameState {
 
-    ConcurrentHashMap<Position, Point> points;
-    Status status;
+    final ConcurrentHashMap<Position, Point> points;
+    final Status status;
 
     /**
      * Generates the game state with randomized parameters

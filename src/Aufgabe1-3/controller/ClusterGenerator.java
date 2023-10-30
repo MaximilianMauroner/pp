@@ -6,17 +6,16 @@ import model.Entity.Hive;
 import model.Point;
 import model.Position;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 /**
  * Class for generating clusters of entities
  * generate function is accessed like a module
- *
+ * <p>
  * Modularization Units:
  * - Module for methods that generate clusters of entities
- *
+ * <p>
  * Abstraction: Not really in the slides but it just is a utility class for convenience during the generation of the simulation
  */
 public class ClusterGenerator {
@@ -38,7 +37,7 @@ public class ClusterGenerator {
     }
 
 
-    // the following methods implement a organic generation of entities
+    // the following methods implement an organic generation of entities
 
     public static void advancedObstacleGeneration(Entity entity, Position position, int size, GameState gs) {
         Random random = new Random();
@@ -82,7 +81,7 @@ public class ClusterGenerator {
         double stddev = (double) size / random.nextInt(2, 6); // Standard deviation of the distribution
 
         for (int i = 0; i < numberOfPoints; i++) {
-            int x = -1;
+            int x;
             int y;
 
             int r = random.nextInt(100);

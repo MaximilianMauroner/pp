@@ -4,10 +4,10 @@ import java.awt.*;
 
 /**
  * Class for the immutable parameters of the game
- *
+ * <p>
  * Modularization Units:
  * - A module for storing, accessing and calculating immutable parameters and information of the simulation
- *
+ * <p>
  * Abstraction: A representation of all meta-information of the simulation, but also parameters used for controlling and presenting the simulation
  */
 public class Parameters {

@@ -7,14 +7,15 @@ import java.util.List;
 /**
  * Class for the position of the entities
  * The position is defined by the x and y coordinates
- *
+ * <p>
  * Modularization Units:
  * - A module for making calculations concerned about positions (e.g. distances, directions, neighbourhoods. etc.)
- *
+ * <p>
  * Abstraction: Represents the numerical part of a real world position on a grid.
  */
 public class Position {
-    private int x, y;
+    private final int x;
+    private final int y;
 
     public Position(int x, int y) {
         this.x = x;
@@ -64,74 +65,65 @@ public class Position {
      */
     public List<Position> getPossibleNextPosition(AntDirection direction) {
         //Geradeaus, Links, Rechts, Halblinks, Halbrechts
-        switch (direction) {
-            case NORTH:
-                return new ArrayList<>(Arrays.asList(
-                        new Position(x, y - 1),
-                        new Position(x - 1, y),
-                        new Position(x + 1, y),
-                        new Position(x - 1, y - 1),
-                        new Position(x + 1, y - 1)
-                ));
-            case NORTHEAST:
-                return new ArrayList<>(Arrays.asList(
-                        new Position(x - 1, y + 1),
-                        new Position(x - 1, y - 1),
-                        new Position(x + 1, y + 1),
-                        new Position(x, y - 1),
-                        new Position(x + 1, y)
-                ));
-            case EAST:
-                return new ArrayList<>(Arrays.asList(
-                        new Position(x + 1, y),
-                        new Position(x, y - 1),
-                        new Position(x, y + 1),
-                        new Position(x - 1, y + 1),
-                        new Position(x + 1, y + 1)
-                ));
-            case SOUTHEAST:
-                return new ArrayList<>(Arrays.asList(
-                        new Position(x, y + 1),
-                        new Position(x + 1, y + 1),
-                        new Position(x - 1, y + 1),
-                        new Position(x + 1, y),
-                        new Position(x - 1, y)
-                ));
-            case SOUTH:
-                return new ArrayList<>(Arrays.asList(
-                        new Position(x, y + 1),
-                        new Position(x - 1, y),
-                        new Position(x + 1, y),
-                        new Position(x + 1, y + 1),
-                        new Position(x - 1, y + 1)
-                ));
-            case SOUTHWEST:
-                return new ArrayList<>(Arrays.asList(
-                        new Position(x + 1, y - 1),
-                        new Position(x - 1, y - 1),
-                        new Position(x + 1, y + 1),
-                        new Position(x - 1, y),
-                        new Position(x, y + 1)
-                ));
-            case WEST:
-                return new ArrayList<>(Arrays.asList(
-                        new Position(x - 1, y),
-                        new Position(x, y - 1),
-                        new Position(x, y + 1),
-                        new Position(x - 1, y - 1),
-                        new Position(x + 1, y - 1)
-                ));
-            case NORTHWEST:
-                return new ArrayList<>(Arrays.asList(
-                        new Position(x - 1, y - 1),
-                        new Position(x - 1, y + 1),
-                        new Position(x + 1, y - 1),
-                        new Position(x - 1, y),
-                        new Position(x, y - 1)
-                ));
-            default:
-                return null;
-        }
+        return switch (direction) {
+            case NORTH -> new ArrayList<>(Arrays.asList(
+                    new Position(x, y - 1),
+                    new Position(x - 1, y),
+                    new Position(x + 1, y),
+                    new Position(x - 1, y - 1),
+                    new Position(x + 1, y - 1)
+            ));
+            case NORTHEAST -> new ArrayList<>(Arrays.asList(
+                    new Position(x - 1, y + 1),
+                    new Position(x - 1, y - 1),
+                    new Position(x + 1, y + 1),
+                    new Position(x, y - 1),
+                    new Position(x + 1, y)
+            ));
+            case EAST -> new ArrayList<>(Arrays.asList(
+                    new Position(x + 1, y),
+                    new Position(x, y - 1),
+                    new Position(x, y + 1),
+                    new Position(x - 1, y + 1),
+                    new Position(x + 1, y + 1)
+            ));
+            case SOUTHEAST -> new ArrayList<>(Arrays.asList(
+                    new Position(x, y + 1),
+                    new Position(x + 1, y + 1),
+                    new Position(x - 1, y + 1),
+                    new Position(x + 1, y),
+                    new Position(x - 1, y)
+            ));
+            case SOUTH -> new ArrayList<>(Arrays.asList(
+                    new Position(x, y + 1),
+                    new Position(x - 1, y),
+                    new Position(x + 1, y),
+                    new Position(x + 1, y + 1),
+                    new Position(x - 1, y + 1)
+            ));
+            case SOUTHWEST -> new ArrayList<>(Arrays.asList(
+                    new Position(x + 1, y - 1),
+                    new Position(x - 1, y - 1),
+                    new Position(x + 1, y + 1),
+                    new Position(x - 1, y),
+                    new Position(x, y + 1)
+            ));
+            case WEST -> new ArrayList<>(Arrays.asList(
+                    new Position(x - 1, y),
+                    new Position(x, y - 1),
+                    new Position(x, y + 1),
+                    new Position(x - 1, y - 1),
+                    new Position(x + 1, y - 1)
+            ));
+            case NORTHWEST -> new ArrayList<>(Arrays.asList(
+                    new Position(x - 1, y - 1),
+                    new Position(x - 1, y + 1),
+                    new Position(x + 1, y - 1),
+                    new Position(x - 1, y),
+                    new Position(x, y - 1)
+            ));
+            default -> null;
+        };
     }
 
     public double euclideanDistance(Position p) {

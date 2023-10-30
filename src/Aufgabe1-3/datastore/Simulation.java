@@ -4,19 +4,19 @@ import java.util.HashMap;
 
 /**
  * Also generic data store that stores the data of a singe simulation run
- *
+ * <p>
  * Modularization Units:
  * - Objects for the datastore and the simulation
  * - Module for all data and utility methods for accessing the data
- *
+ * <p>
  * Abstraction: A abstraction of all data points that can be associated with a simulation.
  */
 @SuppressWarnings("unchecked")
 public class Simulation {
-    private String simulationId;
-    private String simulationName;
+    private final String simulationId;
+    private final String simulationName;
 
-    private HashMap<String, Object> data;
+    private final HashMap<String, Object> data;
 
     public Simulation(String simulationId, String simulationName) {
         this.simulationId = simulationId;
@@ -44,7 +44,8 @@ public class Simulation {
 
     /**
      * Adds a value to the simulation
-     * @param key the identifier of the value
+     *
+     * @param key   the identifier of the value
      * @param value the value to be added
      */
     public void addData(String key, Object value) {

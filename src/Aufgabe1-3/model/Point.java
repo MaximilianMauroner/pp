@@ -5,18 +5,17 @@ import model.Entity.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Class for the points of the game
  * Points have a specified position on the grid and a list of entity objects
  * Not every position has a point object
- *
+ * <p>
  * Modularization Units:
  * - Contains objects (in a list) for entities currently on this point (e.g. ants, trails, obstacles).
- * - Modularizes the logic for manipulating the entities on the point (e.g. adding, removing, updating, querying)
- *
+ * - Modularize the logic for manipulating the entities on the point (e.g. adding, removing, updating, querying)
+ * <p>
  * Abstraction: Represents the objects of a real world position on a grid, which can contain multiple entities.
  */
 public class Point {
@@ -95,8 +94,8 @@ public class Point {
     /**
      * Adds a trail with more than one trail object to surrounding points within a specified radius
      *
-     * @param gameState gamestate to get the point objects
-     * @param ant ant so the ant can be associated with the trail
+     * @param gameState game-state to get the point objects
+     * @param ant       ant so the ant can be associated with the trail
      */
     public void addTrail(GameState gameState, Ant ant) {
         int radius = Math.ceilDiv(Parameters.TRAIL_SIZE, 2);

@@ -42,16 +42,16 @@ java -cp out:lib/CodeDraw.jar src.Test
 
 **Helfen die Störfaktoren dadurch dass neue Wege geschaffen werden?**
 
-- Raum ausbreiten unendlich (easy)
-- Tageszeiten Implementieren (easy)
+- Raum ausbreiten unendlich
+- Tageszeiten Implementieren
     - Ameisen kommen am abend nach in den bau
-- display only interesting part (or make interactive with inputs {arrow keys}) (medium)
-- Raum ist 3D (hard)
+- display only interesting part (or make interactive with inputs {arrow keys})
+- Raum ist 3D
     - 3D pathfinding algo
     - 3D objects
     - compare optimal path to chosen path $\to$
 - Machine Learning to find path for each ant
-- Food can run out (can be finished)
+- Food can run out
     - do we create new food if there is none left, or does the simulation end?
 - Multiple ant colonies (so different odour for each colony to identify)
     - fights with other colonies
@@ -78,29 +78,26 @@ java -cp out:lib/CodeDraw.jar src.Test
 
 ### Maxi
 
-~~- Infinite Positions~~
-~~- Beschränkung im Point entfernen~~
+- Infinite Positions
+- Beschränkung im Point entfernen
 
 - Hive decay
     - nach bestimmter Anzahl an Ameisen
-      ~~- wenn Ameisen Futter bringen wird neues Hive Objekt generiert~~
+    - wenn Ameisen Futter bringen wird neues Hive Objekt generiert
 - new Trails Logic
     - trail for colony and stuff
     - handle multiple colonies for trail
 - Fix bau nicht essen
 - Ants vereinigen fix Maxi
     - wenn 2 Ameisen aufeinander treffen, werden sie zu einer
-- Event Loop (prio? )
-  - Event subscriber
-  - event publisher
-  - Event name
+- comment explaining the entire process
 
 ### Lukas
 
-- ~~Simulation Metrik~~
-    - ~~Optimale Pfade berechnen A*~~
-    - ~~Abweichung von Pfaden berechnen~~
-    - ~~Speichern von Daten~~
+- Simulation Metrik
+    - Optimale Pfade berechnen A*
+    - Abweichung von Pfaden berechnen
+    - Speichern von Daten
 - Ant movement
     - Ants move for a few steps
     - then check for odour
@@ -112,32 +109,32 @@ java -cp out:lib/CodeDraw.jar src.Test
     - wenn zwei von unterschiedlichen Kolonien aufeinander treffen, kämpfen sie
     - Ant Objekt entfernen Corpse spawnen
     - View hat Observer
+- Test Cases (simulation)
+- Paradigmen erläutern (min 5x)
 
 ### Chris
 
-- ~~Tageszeit simulation~~
-    - ~~(Chris) Gamestate Clock abfragen "gameState.getTime();"~~
-    - ~~(Chris) Hintergrund auf Basis der Zeit verändern~~
-- (Chris) Statistik End Screen (low Priority)
-- (Chris) Effiziente Darstellung in View
-- ~~(Chris) Entity View Priorities~~
-    - ~~Verschiedene Entities haben verschiedene Priorities~~
-    - ~~Mit höherer Priority werden vor niedriger Priority dargestellt~~
-- (Chris) Explosion when ant dies >_<
-  - ~~(Chris) Class Corpse implements Entity~~
+- Tageszeit simulation~~
+    - Game-State Clock abfragen "gameState.getTime();"
+    - Hintergrund auf Basis der Zeit verändern
+- Statistik End Screen
+- Effiziente Darstellung in View
+- Entity View Priorities
+    - Verschiedene Entities haben verschiedene Priorities
+    - Mit höherer Priority werden vor niedriger Priority dargestellt
+- Explosion when ant dies >_<
+    - Class Corpse implements Entity
+- generation organisch
+    - Generate Function ändern
 
-### Shared
+### Future
 
-- Food Objekte despawnen (Lukas/Maxi)
+- Food Objekte De-Spawnen (Lukas/Maxi)
     - neue werden random generiert
-    - ~~(Chris) generation organisch~~
-        - ~~Generate Function ändern~~
-
-### Unassigned
-
-- Trail Einfluss (eher schwierig, low priority)
+- Event Loop (prio? )
+    - Event subscriber
+    - event publisher
+    - Event name
+- Trail Einfluss
     - Wind trägt randomly den trail weg
     - in run Funktion wird random ein Störfaktor aufgerufen
-- Test Cases (meh)
-- Paradigmen erläutern (min 5x)
-- comment explaining the entire process

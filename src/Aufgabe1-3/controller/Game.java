@@ -1,12 +1,10 @@
 package controller;
 
 import model.Entity.*;
-import model.Status;
 import model.*;
 import view.View;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,11 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Class for the game
  * It generates the game state and starts the game loop
- *
+ * <p>
  * Modularization Units:
  * - Objects of the game, view, etc.
  * - Module for generating the game state
- *
+ * <p>
  * Abstraction: A simulation of the abstract concept of a game, which is a collection of entities that interact with each other
  */
 public class Game {
@@ -28,13 +26,13 @@ public class Game {
      * Objects of the game
      */
     private GameState gameState;
-    private View view;
+    private final View view;
     private PathManager pathManager;
 
     /**
      * Status of the simulation. Actually accessed like a module containing variables
      */
-    private Status status;
+    private final Status status;
 
     public Game(Status status) {
         this.status = status;
@@ -91,7 +89,6 @@ public class Game {
             ClusterGenerator.advancedHiveGeneration(hive, hivePosition, Parameters.HIVE_SIZE, gameState);
             pathManager.addStart(hivePosition);
         }
-
 
 
         // randomly spawn ants around hive
@@ -175,7 +172,7 @@ public class Game {
      * Calculates a random position within a radius around a given position
      *
      * @param pos  position around which the random position is calculated
-     * @param dist distance to the given position (only distance along one axis, not euclidean distance)
+     * @param dist distance to the given position (only distance along one axis, not Euclidean distance)
      */
     private int calculatePosition(int pos, int dist) {
         return (int) (Math.random() * dist * 2) - dist + pos;

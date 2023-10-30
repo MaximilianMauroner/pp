@@ -9,17 +9,17 @@ import java.util.concurrent.ConcurrentHashMap;
  * Class for the trail entity
  * Trail objects have no other utility than to be on a position on the grid with a given strength and origin (e.g. ant that created it)
  * Trail objects can be read and written to but do not affect the game themselves
- *
+ * <p>
  * Modularization Units:
  * - Module for employing ants to lay trails, have trails affect each other and decay, as well as some utility methods
  * - Objects for its position and strengths associated with each colony (each colony at least one ant has laid a trail for)
- *
+ * <p>
  * Abstraction: Is a subtype of Entity and simulates the addition, interaction and decay of pheromones a real world ant would leave behind
  */
 public class Trail implements Entity {
 
     private Position position;
-    private ConcurrentHashMap<Integer, ColonyTrail> colonyStrength = new ConcurrentHashMap<Integer, ColonyTrail>();
+    private ConcurrentHashMap<Integer, ColonyTrail> colonyStrength = new ConcurrentHashMap<>();
 
     public Trail(double strength, int origin, Colony colony) {
         this.changeStrength(strength, origin, colony);
@@ -43,7 +43,7 @@ public class Trail implements Entity {
 
 
     /**
-     * Returns the strength of the trail
+     * Returns the strength for all the trails
      */
     public double getStrength() {
         double total = 0;
@@ -58,6 +58,9 @@ public class Trail implements Entity {
         return total / size;
     }
 
+    /**
+     * Returns the strength for one trail colony
+     */
     public double getColonyStrength(Colony colony) {
         if (this.colonyStrength.containsKey(colony.getId())) {
             double total = this.colonyStrength.get(colony.getId()).getStrength();
@@ -89,7 +92,7 @@ public class Trail implements Entity {
      * @return true if the trail is new
      */
     public boolean isNewPath(Ant ant) {
-        return !(this.colonyStrength.containsKey(ant.getColony()) && this.colonyStrength.get(ant.getColony()).isNewPath(ant.getId()));
+        return !(this.colonyStrength.containsKey(ant.getColony().getId()) && this.colonyStrength.get(ant.getColony().getId()).isNewPath(ant.getId()));
     }
 
     /**
@@ -121,7 +124,7 @@ public class Trail implements Entity {
 
     @Override
     public Entity clone() {
-        ConcurrentHashMap<Integer, ColonyTrail> t = new ConcurrentHashMap<Integer, ColonyTrail>(this.colonyStrength);
+        ConcurrentHashMap<Integer, ColonyTrail> t = new ConcurrentHashMap<>(this.colonyStrength);
         return new Trail(t);
     }
 

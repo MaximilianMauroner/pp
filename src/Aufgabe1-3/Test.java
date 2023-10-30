@@ -15,7 +15,7 @@ Distribution of work:
 Features (not done):
 - event loop (not needed)
 - statistics end screen (low priority)
-- food object spawn/despawn (low priority)
+- food object spawn/de-spawn (low priority)
 - trail influence (low priority / never really planned)
 
 Features (done):

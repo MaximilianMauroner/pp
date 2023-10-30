@@ -6,20 +6,17 @@ import datastore.DataManager;
 import model.Entity.Ant;
 import model.Entity.Hive;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Class for the colony
- *
+ * <p>
  * Modularization Units:
- * - Objects for storing the hives and ants that belong to the colony as well as the gamestate (for method access)
+ * - Objects for storing the hives and ants that belong to the colony as well as the game-state (for method access)
  * - Module for all the logic ants and hive objects need to interact with each other (ants need to know what colony they belong to and where its located;
- *   hives propagate the collected food)
- *
+ * hives propagate the collected food)
+ * <p>
  * Abstraction: A simulation of the abstract concept of a colony, which is a group of ants and hives that can grow and shrink depending on the amount of food it has.
  */
 
@@ -30,7 +27,7 @@ public class Colony {
     private ConcurrentHashMap<Integer, Hive> hives;
     private ConcurrentHashMap<Integer, Ant> ants;
 
-    private GameState gameState;
+    private final GameState gameState;
 
     public Colony(GameState gameState) {
         this.hives = new ConcurrentHashMap<>();
@@ -85,15 +82,13 @@ public class Colony {
     public void diffBetweenColonyAndGS(GameState gs) {
         AtomicInteger asize = new AtomicInteger(0);
         AtomicInteger hsize = new AtomicInteger(0);
-        gameState.getPoints().forEach((position, point) -> {
-            point.getEntities().forEach(entity -> {
-                if (entity instanceof Ant) {
-                    asize.getAndIncrement();
-                } else if (entity instanceof Hive) {
-                    hsize.getAndIncrement();
-                }
-            });
-        });
+        gameState.getPoints().forEach((position, point) -> point.getEntities().forEach(entity -> {
+            if (entity instanceof Ant) {
+                asize.getAndIncrement();
+            } else if (entity instanceof Hive) {
+                hsize.getAndIncrement();
+            }
+        }));
         System.out.println("A-gs:" + asize.get() + " A-colony:" + this.ants.size() + "\tH-gs:" + hsize.get() + " H-colony:" + this.hives.size());
 
     }
