@@ -90,7 +90,6 @@ java -cp out:lib/CodeDraw.jar src.Test
 - Fix bau nicht essen
 - Ants vereinigen fix Maxi
     - wenn 2 Ameisen aufeinander treffen, werden sie zu einer
-- comment explaining the entire process
 
 ### Lukas
 
@@ -111,6 +110,7 @@ java -cp out:lib/CodeDraw.jar src.Test
     - View hat Observer
 - Test Cases (simulation)
 - Paradigmen erläutern (min 5x)
+- comment explaining the entire process
 
 ### Chris
 
