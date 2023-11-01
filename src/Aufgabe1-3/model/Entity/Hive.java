@@ -24,31 +24,39 @@ public class Hive implements Entity {
     private int health = 1000000;
 
     private final int id = HelperFunctions.generateRandomId();
-    private final Colony colony;
+    private final Colony colony; //(history-constraint: colony != null)
 
     private Position position;
 
 
+    /**
+     * Initializes new hive object
+     * @param colony colony the hive is a part of
+     * @param position position of the hive
+     */
     public Hive(Colony colony, Position position) {
         this.colony = colony;
         this.colony.addHive(this);
         this.position = position;
     }
 
+    /**
+     * @return the colony the hive is a part of
+     */
     public Colony getColony() {
         return colony;
     }
 
 
     /**
-     * Returns the health of the hive
+     * updates the health of the hive
      */
     public void updateVisited() {
         health += 1000;
     }
 
     /**
-     * Increments the food count for the entire colony(e.g. when ant reaches hive)
+     * Increments the food count for the entire colony (e.g. when ant reaches hive)
      * and increment the health for the hive
      */
     public void addFood() {

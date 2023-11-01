@@ -21,29 +21,52 @@ public class Trail implements Entity {
     private Position position;
     private ConcurrentHashMap<Integer, ColonyTrail> colonyStrength = new ConcurrentHashMap<>();
 
+    /**
+     * Initializes new trail object
+     * @param strength strength of the trail (precondition: strength >= 0)
+     * @param origin origin (ant) of the trail
+     * @param colony colony of the trail (precondition: colony != null)
+     */
     public Trail(double strength, int origin, Colony colony) {
         this.changeStrength(strength, origin, colony);
     }
 
+    /**
+     * Initializes new trail object with a strength and an ant
+     * @param strength strength of the trail (precondition: strength >= 0)
+     * @param ant ant that created the trail (precondition: ant != null)
+     */
     public Trail(double strength, Ant ant) {
         this.changeStrength(strength, ant.getId(), ant.getColony());
     }
 
+    /**
+     * Initializes new trail object with a map of colony ids and their respective trails
+     * @param value map of colony ids and their respective trails (precondition: value != null)
+     */
     public Trail(ConcurrentHashMap<Integer, ColonyTrail> value) {
         this.colonyStrength = value;
     }
 
+    /**
+     * Removes the trail for a colony
+     * @param colony colony to be removed (precondition: colony != null)
+     */
     public void removeColony(Colony colony) {
         this.colonyStrength.remove(colony.getId());
     }
 
+    /**
+     * @return true if there are no trails for any colony
+     */
     public boolean isEmpty() {
         return this.colonyStrength.isEmpty();
     }
 
 
     /**
-     * Returns the strength for all the trails
+     * Calculates the average strength for all the trails
+     * @return average strength of all trails (if no trails exist, returns 0)
      */
     public double getStrength() {
         double total = 0;
@@ -60,6 +83,8 @@ public class Trail implements Entity {
 
     /**
      * Returns the strength for one trail colony
+     * @param colony colony to get the average strength for (precondition: colony != null)
+     * @return strength of the trail for the colony (if no trail exists for that colony, returns 0)
      */
     public double getColonyStrength(Colony colony) {
         if (this.colonyStrength.containsKey(colony.getId())) {
@@ -75,6 +100,7 @@ public class Trail implements Entity {
      *
      * @param strength strength to be added
      * @param antId    ant that created the trail (using ant ids)
+     * @param colony   colony of the ant (precondition: colony != null)
      */
     public void changeStrength(double strength, int antId, Colony colony) {
         if (this.colonyStrength.containsKey(colony.getId())) {
@@ -88,7 +114,7 @@ public class Trail implements Entity {
     /**
      * Checks if the trail is new
      *
-     * @param ant of the trail
+     * @param ant of the trail (precondition: ant != null)
      * @return true if the trail is new
      */
     public boolean isNewPath(Ant ant) {
@@ -98,7 +124,7 @@ public class Trail implements Entity {
     /**
      * Combines two trails
      *
-     * @param trail trail to be combined with
+     * @param trail trail to be combined with (precondition: trail != null)
      */
     public void combineTrails(Trail trail) {
         // STYLE: this uses a lambda expression so kind of functional programming :)
@@ -111,9 +137,12 @@ public class Trail implements Entity {
         });
     }
 
+    /**
+     * Performs the trails decay
+     */
     @Override
     public void run(GameState gameState, Status status, Point point) {
-        // here as well
+        // STYLE: here as well
         colonyStrength.forEach((k, v) -> {
             v.decayTrails(status);
             if (v.isEmpty()) {

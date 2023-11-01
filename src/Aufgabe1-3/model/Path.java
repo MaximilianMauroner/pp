@@ -17,18 +17,33 @@ public class Path {
     private final List<Position> positionList = new ArrayList<>();
     private double metric = 0; // ToDo: think of a statistically more sound metric
 
+    /**
+     * @return list of all positions on the path
+     */
     public List<Position> getPositionList() {
         return positionList;
     }
 
+    /**
+     * Adds a position to the path
+     * @param position position to be added to the path
+     */
     public void addPosition(Position position) {
         positionList.add(position);
     }
 
+    /**
+     * @param metric metric to be added to the path (see OptimalPathPoint)
+     *               (precondition: metric >= 0)
+     */
     public void addPointMetric(double metric) {
         this.metric += metric;
     }
 
+    /**
+     * Calculates the mean of all point metrics
+     * @return metric for the path
+     */
     public double getPathMetric() {
         return metric / positionList.size();
     }
@@ -42,6 +57,11 @@ public class Path {
         return clone;
     }
 
+    /**
+     * Checks whether the path contains the given position
+     * @param position position to be checked
+     * @return true if the path contains the given position
+     */
     public boolean contains(Position position) {
         for (Position p : positionList) {
             if (p.equals(position)) {

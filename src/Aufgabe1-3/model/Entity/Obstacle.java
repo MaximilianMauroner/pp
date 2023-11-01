@@ -21,7 +21,6 @@ public class Obstacle implements Entity {
 
     @Override
     public void run(GameState gameState, Status status, Point point) {
-
     }
 
     @Override

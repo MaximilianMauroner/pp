@@ -19,7 +19,7 @@ public class ColonyTrail {
     /**
      * Combines two trails
      *
-     * @param trail trail to be combined with
+     * @param trail trail to be combined with (precondition: trail is not null)
      */
     public void combineTrails(ColonyTrail trail) {
         // STYLE: this uses a lambda expression so kind of functional programming :)
@@ -32,6 +32,11 @@ public class ColonyTrail {
         });
     }
 
+    /**
+     * Decays the trails
+     *
+     * @param status status of the simulation
+     */
     public void decayTrails(Status status) {
         // here as well
         trailStrengths.forEach((k, v) -> {
@@ -72,6 +77,10 @@ public class ColonyTrail {
         this.trailStrengths.put(origin, value);
     }
 
+    /**
+     * Calculates the average trail strength for this colony
+     * @return the average trail strength (if there are no trails, 0 is returned)
+     */
     public double getStrength() {
         double total = 0;
         if (!this.trailStrengths.isEmpty()) {
@@ -85,10 +94,16 @@ public class ColonyTrail {
         return total / this.trailStrengths.size();
     }
 
+    /**
+     * @return how many trails are stored
+     */
     public int getCount() {
         return this.trailStrengths.size();
     }
 
+    /**
+     * @return true if the trail is empty
+     */
     public boolean isEmpty() {
         return this.trailStrengths.isEmpty();
     }

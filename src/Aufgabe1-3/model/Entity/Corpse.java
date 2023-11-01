@@ -19,7 +19,7 @@ import java.util.Random;
  */
 public class Corpse implements Entity {
     private final int seed = new Random().nextInt();
-    private float strength = 1;
+    private float strength = 1; //(invariant: strength >= 0)
 
     private Position position;
 
@@ -50,10 +50,16 @@ public class Corpse implements Entity {
         this.position = position;
     }
 
+    /**
+     * @return the seed of the corpse
+     */
     public int getSeed() {
         return seed;
     }
 
+    /**
+     * @return the strength of the corpse
+     */
     public float getStrength() {
         return strength;
     }

@@ -2,6 +2,8 @@ package datastore;
 
 import java.util.Vector;
 
+// NOTE: Generally with this whole DataStore concept, I think choosing Object as the type for all data entries is a bad idea.
+// We are really just dealing with numbers and vectors of numbers. So we should use Number and Vector<Number> instead.
 
 /**
  * Manages the data of the simulation
@@ -20,7 +22,7 @@ import java.util.Vector;
 public class DataManager {
     private static DataManager instance;
     private final DataStore dataStore;
-    private Simulation simulation;
+    private Simulation simulation; // (invariant) should be non-null
 
     private DataManager() {
         dataStore = new DataStore();
@@ -29,7 +31,7 @@ public class DataManager {
     /**
      * Returns the instance of the DataManager and sets the simulation
      *
-     * @param simulation the current simulation object that stores current data
+     * @param simulation the current simulation object that stores current data. Should be non-null
      * @return the singleton instance of the DataManager
      */
     public static DataManager getInstance(Simulation simulation) {
@@ -57,7 +59,7 @@ public class DataManager {
     /**
      * Checks whether the simulation contains a field with the given key
      *
-     * @return boolean for is the key in the simulation
+     * @return boolean for "is the key in the simulation"
      */
     public boolean containsField(String key) {
         return simulation != null && simulation.getData(key) != null;
@@ -78,7 +80,7 @@ public class DataManager {
      * Returns the value of a simple field (e.g. a number) in the simulation
      *
      * @param key identifier of the data-field
-     * @return value of the data-field
+     * @return value of the data-field under that identifier. if the simulation is null, then null will be returned
      */
     public Object getSimpleField(String key) {
         if (simulation == null) {
@@ -88,7 +90,7 @@ public class DataManager {
     }
 
     /**
-     * Increments a simple field (e.g. a number) in the simulation
+     * Increments a simple field (e.g. a number) in the simulation. If the field does not exist under the key, it will be created.
      *
      * @param key identifier of the data-field
      */
@@ -104,7 +106,7 @@ public class DataManager {
     }
 
     /**
-     * Decrements a simple field (e.g. a number) in the simulation
+     * Decrements a simple field (e.g. a number) in the simulation. If the field does not exist under the key, it will be created.
      *
      * @param key identifier of the data-field
      */
@@ -152,6 +154,7 @@ public class DataManager {
         }
     }
 
+    // ERROR: We do not explicitly store comparables, nor do we sort the vector. So Median will not work here.
     /**
      * Summarizes a complex field (e.g. a vector) in the simulation. It will save the result under the complex fields key plus the operation.
      * Complex fields contain multiple values which can be summarized by instances of the Operation interface.
@@ -173,6 +176,10 @@ public class DataManager {
         dataStore.addSimulation(simulation);
     }
 
+    /**
+     *
+     * @return all data stored in the datastore
+     */
     @Override
     public String toString() {
         return dataStore.toString();

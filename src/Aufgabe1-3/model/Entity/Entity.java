@@ -57,11 +57,13 @@ public interface Entity extends Comparable<Entity> {
 
     /**
      * Returns the position of the entity
+     * @return the position
      */
     Position getPosition();
 
     /**
      * Sets the position of the entity
+     * @param position the position to be set (precondition: position != null)
      */
     void setPosition(Position position);
 }

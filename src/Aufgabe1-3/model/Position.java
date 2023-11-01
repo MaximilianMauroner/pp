@@ -22,10 +22,17 @@ public class Position {
         this.y = y;
     }
 
+
+    /**
+     * Returns the x coordinate of the position
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * Returns the y coordinate of the position
+     */
     public int getY() {
         return y;
     }
@@ -62,6 +69,7 @@ public class Position {
      * Calculates possible next positions given direction (e.g. position the ant object can move to)
      *
      * @param direction direction the ant is looking
+     * @return list of possible next positions
      */
     public List<Position> getPossibleNextPosition(AntDirection direction) {
         //Geradeaus, Links, Rechts, Halblinks, Halbrechts
@@ -126,13 +134,24 @@ public class Position {
         };
     }
 
+    /**
+     * Calculates the euclidean distance to the given position
+     *
+     * @param p the position to which the distance is calculated (precondition: p != null)
+     * @return the euclidean distance to the given position
+     */
     public double euclideanDistance(Position p) {
         return Math.sqrt(Math.pow(x - p.getX(), 2) + Math.pow(y - p.getY(), 2));
     }
 
+    /**
+     * Calculates all neighbours of the position
+     * @return a list of all eight neighbours of the position
+     */
     public List<Position> getNeighbours() {
         List<Position> neighbours = new ArrayList<>();
 
+        // NOTE: using for loops here would've been better. I don't know why I did it like this
 //        for (int i = -1; i <= 1; i++) {
 //            for (int j = -1; j <=1; j++) {
 //                if (i == 0 && j == 0 || x + i < 0 || x + i >= status.getWidth() || y + j < 0 || y + j >= status.getHeight()) continue;
@@ -152,10 +171,27 @@ public class Position {
         return neighbours;
     }
 
+    /**
+     * Checks if the given position is within a given radius of the position
+     *
+     * @param p      the position to check (precondition: p != null)
+     * @param radius the radius to check (precondition: radius >= 0)
+     * @return true if the given position is within the given radius of the position
+     */
     public boolean withinRadius(Position p, int radius) {
         return this.euclideanDistance(p) <= radius;
     }
 
+    /**
+     * Returns a random position near the position
+     *
+     * @return a random position near the position
+     */
+    public Position getRandomPositionNearPos() {
+        int x = (int) (Math.random() * 5) - 3 + this.getX();
+        int y = (int) (Math.random() * 5) - 3 + this.getY();
+        return new Position(x, y);
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -178,9 +214,4 @@ public class Position {
                 '}';
     }
 
-    public Position getRandomPositionNearPos() {
-        int x = (int) (Math.random() * 5) - 3 + this.getX();
-        int y = (int) (Math.random() * 5) - 3 + this.getY();
-        return new Position(x, y);
-    }
 }

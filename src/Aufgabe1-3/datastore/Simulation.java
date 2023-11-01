@@ -13,7 +13,7 @@ import java.util.HashMap;
  */
 @SuppressWarnings("unchecked")
 public class Simulation {
-    private final String simulationId;
+    private final String simulationId;  // (client history-condition) needs to be unique and is generated before creating the simulation
     private final String simulationName;
 
     private final HashMap<String, Object> data;
@@ -43,7 +43,7 @@ public class Simulation {
     }
 
     /**
-     * Adds a value to the simulation
+     * Adds a value to the simulations data map. If the key already exists, the value will be overwritten
      *
      * @param key   the identifier of the value
      * @param value the value to be added
@@ -56,7 +56,7 @@ public class Simulation {
      * Returns the value of the given key
      *
      * @param key the identifier of the value
-     * @return the value of the given key
+     * @return the value of the given key. If no key exists or the objects stored at that key is null, null will be returned
      */
     public Object getData(String key) {
         return data.get(key);

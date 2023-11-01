@@ -15,7 +15,7 @@ import datastore.Simulation;
 public class Status {
     private final int width, height, scale, simulationTimeLimit, antCount, foodCount, obstacleCount;
     private int antEmptySteps, antMoveSteps, antWaitSteps, foodHiveDistance, antSpawnRadius, simulationTime;
-    private double trailDecay;
+    private double trailDecay; // (invariant: 0 < trailDecay < 1)
     private double lowTrail;
     private double highTrail;
     private double searchRadiusGrowthFactor;
@@ -43,74 +43,128 @@ public class Status {
         this.minHiveHealth = minHiveHealth;
     }
 
+    /**
+     * @return the width of the simulation window
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * @return the height of the simulation window
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * @return the scaling of the simulation window
+     */
     public int getScale() {
         return scale;
     }
 
+    /**
+     * @return the simulation time limit (e.g. how long the simulation will run in ms)
+     */
     public int getSimulationTimeLimit() {
         return simulationTimeLimit;
     }
 
+    /**
+     * @return the number of ants in the simulation
+     */
     public int getAntCount() {
         return antCount;
     }
 
+    /**
+     * @return the number of steps an ant will go on empty points until it changes mode
+     */
     public int getAntEmptySteps() {
         return antEmptySteps;
     }
 
+    /**
+     * @return the number of steps an ant will move until it stops
+     */
     public int getAntMoveSteps() {
         return antMoveSteps;
     }
 
+    /**
+     * @return the number of steps an ant will wait until it moves again
+     */
     public int getAntWaitSteps() {
         return antWaitSteps;
     }
 
+    /**
+     * @return how many food clusters will be generated
+     */
     public int getFoodCount() {
         return foodCount;
     }
 
+    /**
+     * @return how many obstacles will be generated
+     */
     public int getObstacleCount() {
         return obstacleCount;
     }
 
+    /**
+     * @return the radius in which ants will spawn around the hive
+     */
     public int getAntSpawnRadius() {
         return antSpawnRadius;
     }
 
+    /**
+     * @return the distance between food and hive
+     */
     public int getFoodHiveDistance() {
         return foodHiveDistance;
     }
 
+    /**
+     * @return the decay of the trail
+     */
     public double getTrailDecay() {
         return trailDecay;
     }
 
+    /**
+     * @return the lower bound of the trail
+     */
     public double getLowTrail() {
         return lowTrail;
     }
 
+    /**
+     * @return the upper bound of the trail
+     */
     public double getHighTrail() {
         return highTrail;
     }
 
+    /**
+     * @return the growth factor of the search radius
+     */
     public double getSearchRadiusGrowthFactor() {
         return searchRadiusGrowthFactor;
     }
 
+    /**
+     * @return the current simulation time
+     */
     public int getSimulationTime() {
         return this.simulationTime;
     }
 
+    /**
+     * @return the minimum health of the hive
+     */
     public double getMinHiveHealth() {
         return minHiveHealth;
     }
@@ -119,7 +173,8 @@ public class Status {
     /**
      * Randomizes the values of parameters that affect game behavior
      *
-     * @param confidence randomize values within interval of confidence in percent (e.g. if confidence is 0.1, then the value will be randomized within 10% of the original value)
+     * @param confidence randomize values within interval of confidence in percent (precondition: confidence >= 0)
+     *                   (e.g. if confidence is 0.1, then the value will be randomized within 10% of the original value)
      */
     public void randomize(double confidence) {
         this.antEmptySteps = (int) randomize(antEmptySteps, confidence, 1, 40);
@@ -133,6 +188,10 @@ public class Status {
         this.searchRadiusGrowthFactor = randomize(searchRadiusGrowthFactor, confidence, 1, 2);
     }
 
+    /**
+     * Exports the random parameters to the simulation. (precondition: simulation != null)
+     * @param simulation the current simulation object
+     */
     public void exportRandomParameters(Simulation simulation) {
         simulation.addData("antEmptySteps", this.antEmptySteps);
         simulation.addData("antMoveSteps", this.antMoveSteps);
@@ -145,6 +204,9 @@ public class Status {
         simulation.addData("searchRadiusGrowthFactor", this.searchRadiusGrowthFactor);
     }
 
+    /**
+     * Increments the simulation time by one hour
+     */
     public void nextTime() {
         System.out.println(this.simulationTime);
         this.simulationTime = (this.simulationTime + 1) % 24;
@@ -155,9 +217,10 @@ public class Status {
      * Randomizes of a value with a given confidence within a given interval
      *
      * @param value      value to be randomized
-     * @param confidence randomize values within interval of confidence in percent
+     * @param confidence randomize values within interval of confidence in percent (precondition: confidence >= 0)
      * @param lowerLimit lower limit of the randomized value
      * @param upperLimit upper limit of the randomized value
+     * (precondition: lowerLimit <= upperLimit)
      */
     private double randomize(double value, double confidence, int lowerLimit, int upperLimit) {
         double result = value * (1 + (Math.random() * confidence * 2 - confidence));

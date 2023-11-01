@@ -26,35 +26,23 @@ public class Ant implements Entity {
     private AntDirection direction = AntDirection.values()[(int) (Math.random() * AntDirection.values().length)];
     private GameState gameState;
     private Status status;
-
     private final Colony colony;
     private final Position hivePos;
-
     private int moveSteps;
-
     private int waitSteps;
-
     private Position position;
-
-    public Position getPosition() {
-        return position;
-    }
-
-    @Override
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
     private int searchRadius = Parameters.INITIAL_ANT_SEARCH_RADIUS;
-
     private int foodCount = 0;
     private int oldFoodCount = 0;
 
-
-    public AntState getState() {
-        return this.currentState;
-    }
-
+    /**
+     * Initializes new ant object
+     * @param currentState the current state of the ant
+     * @param gameState the game state the ant is a part of
+     * @param status the status of the current simulation
+     * @param colony the ants colony
+     * @param position the position of the ant
+     */
     public Ant(AntState currentState, GameState gameState, Status status, Colony colony, Position position) {
         this.currentState = currentState;
         this.gameState = gameState;
@@ -67,21 +55,38 @@ public class Ant implements Entity {
         this.position = position;
     }
 
+    public Position getPosition() {
+        return position;
+    }
 
+    @Override
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    /**
+     * @return the current state of the ant
+     */
+    public AntState getState() {
+        return this.currentState;
+    }
+
+    /**
+     * @return the colony the ant is a part of
+     */
     public Colony getColony() {
         return colony;
     }
 
+    /**
+     * @return the id of the ant
+     */
     public int getId() {
         return this.id;
     }
 
     /**
      * Starts the State Logic of the Ant. The Ant will move to the next Point.
-     *
-     * @param gameState the current game state
-     * @param status    the current parameters of the game
-     * @param oldPoint  the point the ant is currently on
      */
     @Override
     public void run(GameState gameState, Status status, Point oldPoint) {
@@ -369,6 +374,11 @@ public class Ant implements Entity {
         return new Ant(this.currentState, this.gameState, this.status, this.colony, this.position);
     }
 
+    /**
+     * Clones this ant but gives it a new colony
+     * @param newColony new colony for the ant (precondition: newColony != null)
+     * @return the cloned ant with the new colony
+     */
     public Entity cloneWithDifferentColony(Colony newColony) {
         return new Ant(this.currentState, this.gameState, this.status, newColony, this.position);
     }
@@ -381,7 +391,7 @@ public class Ant implements Entity {
     /**
      * Searches the environment for all points of interest within a specified radius.
      *
-     * @param currentPosition the current position of the ant
+     * @param currentPosition the current position of the ant (precondition: currentPosition != null)
      * @return an array of AntDirections containing the direction to the food, hive, high trail and low trail (in that order)
      */
     private AntDirection[] search(Position currentPosition) {
