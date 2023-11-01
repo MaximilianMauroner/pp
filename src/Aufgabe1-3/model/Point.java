@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class Point {
     private final List<Entity> entities;
-    private final Position position;
+    private final Position position; // (client-side history-constraint: position != null)
 
 
     private int hasObstacle = -1;
@@ -28,12 +28,22 @@ public class Point {
 
     private int hasTrail = -1;
 
+    /**
+     * Initialize new point with a position and a list of entities
+     * @param position position of the point
+     * @param entities list of entities on the point (precondition: entities is not null)
+     */
     public Point(Position position, List<Entity> entities) {
         this.position = position;
         this.entities = entities;
         this.updateEntities();
     }
 
+    /**
+     * Initialize new point with a position and a single entity
+     * @param position position of the point
+     * @param entity entity on the point
+     */
     public Point(Position position, Entity entity) {
         this.position = position;
         this.entities = new ArrayList<>();
@@ -57,6 +67,11 @@ public class Point {
         return entities;
     }
 
+    /**
+     * Adds an entity to the point
+     *
+     * @param entity entity to be added (precondition: entity is not null)
+     */
     public void addEntity(Entity entity) {
         entity.setPosition(this.position);
         entities.add(entity);
@@ -64,6 +79,10 @@ public class Point {
         this.updateEntities();
     }
 
+    /**
+     * Removes an entity from the point
+     * @param entity entity to be removed (precondition: entity is not null)
+     */
     public void removeEntity(Entity entity) {
         entities.remove(entity);
         if (entity.getClass() == Hive.class) {
@@ -80,7 +99,7 @@ public class Point {
     /**
      * Adds a trail to the point
      *
-     * @param trail trail to be added
+     * @param trail trail to be added (precondition: trail is not null)
      */
     public void addTrail(Trail trail) {
         if (hasTrail != -1) {
@@ -120,7 +139,7 @@ public class Point {
     }
 
     /**
-     * Gets the strength of the trail on the point
+     * Gets the strength of the trail on the point (if no trail is present, 0 is returned)
      */
     public double getTrail() {
         if (hasTrail != -1) {
@@ -136,6 +155,9 @@ public class Point {
         return this.hasObstacle != -1;
     }
 
+    /**
+     * Notifies the hive that it has been visited
+     */
     public void updateHiveVisited() {
         if (hasHive != -1) {
             Hive e = (Hive) entities.get(hasHive);
@@ -145,13 +167,14 @@ public class Point {
 
     /**
      * Returns whether the point has a hive
+     * @return true if the point has a hive
      */
     public boolean hasHive() {
         return this.hasHive == -1;
     }
 
     /**
-     * Checks whether the point has an obstacle
+     * Starts checks for the entities on the point (e.g. is there a Hive, Obstacle, etc.)
      */
     private void updateEntities() {
         this.hasObstacle = -1;

@@ -14,10 +14,14 @@ import model.Status;
  */
 
 public class OptimalPathPoint implements Entity {
-    private final Path path;
+    private final Path path; //(history-constraint: path != null)
 
     private Position position;
 
+    /**
+     * Initializes new optimal path point
+     * @param path the path it is associated with
+     */
     public OptimalPathPoint(Path path) {
         this.path = path;
     }
