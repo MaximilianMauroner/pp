@@ -1,12 +1,18 @@
 package controller;
 
+import codedraw.CodeDraw;
 import model.Entity.*;
 import model.*;
+import model.Point;
 import view.View;
 
+import javax.sound.sampled.Line;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 /**
@@ -23,20 +29,20 @@ public class Game {
 
 
     /**
-     * Objects of the game
-     */
-    private GameState gameState;
-    private final View view;
-    private PathManager pathManager;
-
-    /**
      * Status of the simulation. Actually accessed like a module containing variables
      */
     private final Status status;
+    private final GameBuffer gameBuffer;
+    private View view;
+    /**
+     * Objects of the game
+     */
+    private GameState gameState;
+    private PathManager pathManager;
 
     public Game(Status status) {
         this.status = status;
-        this.view = new View(status.getWidth(), status.getHeight());
+        this.gameBuffer = new GameBuffer();
     }
 
     /**
@@ -141,10 +147,6 @@ public class Game {
     /**
      * Starts the game without duration limit
      */
-    public void start() {
-        GameplayLoop gameplayLoop = new GameplayLoop(view, gameState);
-        gameplayLoop.start();
-    }
 
 
     /**
@@ -153,8 +155,16 @@ public class Game {
      * @param duration duration of the game in milliseconds
      */
     public void start(int duration) {
-        GameplayLoop gameplayLoop = new GameplayLoop(view, gameState);
-        gameplayLoop.start();
+        BlockingQueue<BufferElement> buffer = new LinkedBlockingQueue<>();
+
+        CodeDraw cd = new CodeDraw(status.getWidth() * Parameters.SCALE_BY, status.getHeight() * Parameters.SCALE_BY);
+        GameplayLoop gameplayLoop = new GameplayLoop(gameState, buffer, cd);
+        cd.clear(Color.BLACK);
+        new Thread(gameplayLoop).start();
+
+
+        view = new View(cd, buffer);
+        view.start();
 
         // wait for duration
         try {

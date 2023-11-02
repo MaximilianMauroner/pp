@@ -1,12 +1,16 @@
 package view;
 
 import codedraw.CodeDraw;
+import controller.BufferElement;
+import controller.GameBuffer;
 import controller.GameState;
 import model.*;
 import model.Entity.*;
 
 import java.awt.Color;
+import java.nio.Buffer;
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Class for the view
@@ -19,16 +23,33 @@ import java.util.*;
  * <p>
  * Abstraction: The representation of the simulation, all objects and entities are drawn here
  */
-public class View {
+public class View extends Thread {
     private final int width, height;
-    private final CodeDraw cd;
+    private CodeDraw cd;
     private Color BACKGROUND_COLOR = Color.BLACK;
+
+    private BlockingQueue<BufferElement> bufferQueue;
 
     public View(int width, int height) {
         this.width = width * Parameters.SCALE_BY;
         this.height = height * Parameters.SCALE_BY;
         cd = new CodeDraw(this.width, this.height);
         cd.setTitle("Ants colony simulation");
+    }
+
+    public View(int width, int height, BlockingQueue<BufferElement> bufferQueue) {
+        this.width = width * Parameters.SCALE_BY;
+        this.height = height * Parameters.SCALE_BY;
+        cd = new CodeDraw(this.width, this.height);
+        cd.setTitle("Ants colony simulation");
+        this.bufferQueue = bufferQueue;
+    }
+
+    public View(CodeDraw cd, BlockingQueue<BufferElement> bufferQueue) {
+        this.width = cd.getWidth();
+        this.height = cd.getHeight();
+        this.bufferQueue = bufferQueue;
+        this.cd = cd;
     }
 
     /**
@@ -45,13 +66,45 @@ public class View {
 
         List<CanvasElement> elementsToDraw = new ArrayList<>();
 
-        for (Point point : gameState.getPoints().values())
-            for (Entity entity : point.getEntities())
-                elementsToDraw.add(new CanvasElement(entity, point.getPosition()));
+        gameState.getPoints().values().forEach(point -> {
+            point.getEntities().forEach(entity -> elementsToDraw.add(new CanvasElement(entity, point.getPosition())));
+        });
 
 
         drawElements(elementsToDraw);
         cd.show();
+    }
+
+    public void run() {
+        while (true) {
+            try {
+                this.draw(bufferQueue.take());
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void draw(BufferElement element) {
+        Position pos= element.getPosition();
+        Entity entity = element.getEntity();
+        int x = pos.getX() * Parameters.SCALE_BY;
+        int y = pos.getY() * Parameters.SCALE_BY;
+        if (entity instanceof OptimalPathPoint) setPixels(x, y, Parameters.SCALE_BY, Parameters.OPTIMAL_PATH_COLOR);
+        if (entity instanceof Trail e)
+            setPixels(x, y, Parameters.SCALE_BY, mixColors(Parameters.TRAIL_COLOR, BACKGROUND_COLOR, e.getStrength() <= 0.15 ? 0 : (float) e.getStrength()));
+        if (entity instanceof Food) setPixels(x, y, Parameters.SCALE_BY, Parameters.FOOD_SOURCE_COLOR);
+        if (entity instanceof Hive) setPixels(x, y, Parameters.SCALE_BY, Parameters.COLONY_HOME_COLOR);
+        if (entity instanceof Obstacle) setPixels(x, y, Parameters.SCALE_BY, Parameters.OBSTACLE_COLOR);
+        if (entity instanceof Corpse c)
+            drawCorpse(x, y, mixColors(Parameters.CORPSE_COLOR, BACKGROUND_COLOR, c.getStrength() <= 0.15 ? 0 : c.getStrength()), c.getSeed());
+        if (entity instanceof Ant) {
+            switch (((Ant) entity).getState()) {
+                case EXPLORE, RETURN -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_DEFAULT_COLOR);
+                case FOODSEARCH -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_SEARCH_COLOR);
+                case FOODRETRIEVE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_RETRIVE_COLOR);
+            }
+        }
     }
 
 
@@ -104,10 +157,7 @@ public class View {
         assert strength >= 0 && strength <= 1;
 
         try {
-            return new Color(
-                    (int) (color.getRed() * strength + ((1 - strength) * backgroundColor.getRed())),
-                    (int) (color.getGreen() * strength + ((1 - strength) * backgroundColor.getGreen())),
-                    (int) (color.getBlue() * strength + ((1 - strength) * backgroundColor.getBlue())));
+            return new Color((int) (color.getRed() * strength + ((1 - strength) * backgroundColor.getRed())), (int) (color.getGreen() * strength + ((1 - strength) * backgroundColor.getGreen())), (int) (color.getBlue() * strength + ((1 - strength) * backgroundColor.getBlue())));
         } catch (Exception e) {
             System.out.println("r:" + (int) (color.getRed() * strength + ((1 - strength) * backgroundColor.getRed())));
             System.out.println("g:" + (int) (color.getGreen() * strength + ((1 - strength) * backgroundColor.getGreen())));

@@ -1,5 +1,7 @@
 package model.Entity;
 
+import controller.BufferElement;
+import controller.GameBuffer;
 import controller.GameState;
 import model.Parameters;
 import model.Point;
@@ -7,6 +9,7 @@ import model.Position;
 import model.Status;
 
 import java.util.Random;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Class for the corpse entity
@@ -24,11 +27,15 @@ public class Corpse implements Entity {
     private Position position;
 
     @Override
-    public void run(GameState gameState, Status status, Point point) {
+    public void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> queue) {
         this.strength *= (float) status.getTrailDecay();
         if (this.strength < status.getLowTrail() / 2) {
             point.removeEntity(this);
         }
+        if (this.position == null) {
+            this.position = point.getPosition();
+        }
+        GameBuffer.add(queue, this, point.getPosition());
     }
 
     @Override

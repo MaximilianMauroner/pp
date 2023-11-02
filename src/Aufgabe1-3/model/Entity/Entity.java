@@ -1,9 +1,13 @@
 package model.Entity;
 
+import controller.BufferElement;
+import controller.GameBuffer;
 import controller.GameState;
 import model.Point;
 import model.Position;
 import model.Status;
+
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Interface for the entities of the game
@@ -28,7 +32,7 @@ public interface Entity extends Comparable<Entity> {
      * @param status    the status of the game
      * @param point     the point where the entity is located
      */
-    void run(GameState gameState, Status status, Point point);
+    void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> gameBuffer);
 
     /**
      * Returns a clone of the entity
@@ -57,12 +61,14 @@ public interface Entity extends Comparable<Entity> {
 
     /**
      * Returns the position of the entity
+     *
      * @return the position
      */
     Position getPosition();
 
     /**
      * Sets the position of the entity
+     *
      * @param position the position to be set (precondition: position != null)
      */
     void setPosition(Position position);

@@ -1,5 +1,7 @@
 package model.Entity;
 
+import controller.BufferElement;
+import controller.GameBuffer;
 import controller.GameState;
 import controller.HelperFunctions;
 import model.*;
@@ -7,6 +9,8 @@ import model.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Class for the ant entity and its logic
@@ -21,13 +25,13 @@ import java.util.List;
  */
 public class Ant implements Entity {
     private final int id = HelperFunctions.generateRandomId();
+    private final Colony colony;
+    private final Position hivePos;
     private AntState currentState;
     private int emptySteps = 0;
     private AntDirection direction = AntDirection.values()[(int) (Math.random() * AntDirection.values().length)];
     private GameState gameState;
     private Status status;
-    private final Colony colony;
-    private final Position hivePos;
     private int moveSteps;
     private int waitSteps;
     private Position position;
@@ -37,11 +41,12 @@ public class Ant implements Entity {
 
     /**
      * Initializes new ant object
+     *
      * @param currentState the current state of the ant
-     * @param gameState the game state the ant is a part of
-     * @param status the status of the current simulation
-     * @param colony the ants colony
-     * @param position the position of the ant
+     * @param gameState    the game state the ant is a part of
+     * @param status       the status of the current simulation
+     * @param colony       the ants colony
+     * @param position     the position of the ant
      */
     public Ant(AntState currentState, GameState gameState, Status status, Colony colony, Position position) {
         this.currentState = currentState;
@@ -89,7 +94,7 @@ public class Ant implements Entity {
      * Starts the State Logic of the Ant. The Ant will move to the next Point.
      */
     @Override
-    public void run(GameState gameState, Status status, Point oldPoint) {
+    public void run(GameState gameState, Status status, Point oldPoint, BlockingQueue<BufferElement> queue) {
         this.gameState = gameState;
         this.status = status;
 
@@ -149,6 +154,7 @@ public class Ant implements Entity {
                 changeDirection(oldPoint.getPosition());
             }
         }
+        GameBuffer.add(queue, this, oldPoint.getPosition());
 
     }
 
@@ -376,6 +382,7 @@ public class Ant implements Entity {
 
     /**
      * Clones this ant but gives it a new colony
+     *
      * @param newColony new colony for the ant (precondition: newColony != null)
      * @return the cloned ant with the new colony
      */

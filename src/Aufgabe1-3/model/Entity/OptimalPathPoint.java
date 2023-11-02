@@ -1,10 +1,14 @@
 package model.Entity;
 
+import controller.BufferElement;
+import controller.GameBuffer;
 import controller.GameState;
 import model.Path;
 import model.Point;
 import model.Position;
 import model.Status;
+
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Modularization Units:
@@ -20,6 +24,7 @@ public class OptimalPathPoint implements Entity {
 
     /**
      * Initializes new optimal path point
+     *
      * @param path the path it is associated with
      */
     public OptimalPathPoint(Path path) {
@@ -27,8 +32,12 @@ public class OptimalPathPoint implements Entity {
     }
 
     @Override
-    public void run(GameState gameState, Status status, Point point) {
+    public void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> queue) {
         this.path.addPointMetric(point.getTrail());
+        if (this.position == null) {
+            this.position = point.getPosition();
+        }
+        GameBuffer.add(queue, this, point.getPosition());
     }
 
     @Override

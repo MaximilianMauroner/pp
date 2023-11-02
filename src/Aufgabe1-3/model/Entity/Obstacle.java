@@ -1,9 +1,13 @@
 package model.Entity;
 
+import controller.BufferElement;
+import controller.GameBuffer;
 import controller.GameState;
 import model.Point;
 import model.Position;
 import model.Status;
+
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Class for the obstacle entity
@@ -20,7 +24,11 @@ public class Obstacle implements Entity {
     Position position;
 
     @Override
-    public void run(GameState gameState, Status status, Point point) {
+    public void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> queue) {
+        if (this.position == null) {
+            this.position = point.getPosition();
+        }
+        GameBuffer.add(queue, this, point.getPosition());
     }
 
     @Override

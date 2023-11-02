@@ -6,6 +6,7 @@ import model.Position;
 import model.Status;
 
 import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -31,22 +32,20 @@ public class GameState {
      */
     public GameState(ConcurrentHashMap<Position, Point> points, Status status) {
         this.points = points;
-
         this.status = status;
     }
 
     /**
      * Runs one iteration of the game
      */
-    public void getNextFrame() {
+    public void getNextFrame(BlockingQueue<BufferElement> queue) {
         for (Point p : points.values()) {
             ArrayList<Entity> entities = new ArrayList<>(p.getEntities());
             for (Entity e : entities) {
-                e.run(this, status, p);
+                e.run(this, status, p, queue);
             }
         }
     }
-
 
     /**
      * Returns the points of the game
