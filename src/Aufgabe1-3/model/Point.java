@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// GOOD: Dynamic Binding: The point class is used to store all entities, which are all subtypes of Entity.
+// For the most methods here we only deal with the Entity type, but the actual type is determined at runtime.
+
 /**
  * Class for the points of the game
  * Points have a specified position on the grid and a list of entity objects

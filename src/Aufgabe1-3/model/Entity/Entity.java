@@ -5,6 +5,7 @@ import model.Point;
 import model.Position;
 import model.Status;
 
+
 /**
  * Interface for the entities of the game
  * Entities are the objects that are placed on the grid

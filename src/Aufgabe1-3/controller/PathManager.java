@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
+// GOOD: Class-Cohesion: Path Manager is only concerned with the paths, while the path deals with its individual positions.
+// Also, this part is completely separated from the game logic.
+
 /**
  * Manages the optimal paths of the simulation
  * <p>
