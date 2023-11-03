@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-// GOOD: Class-Cohesion: Path Manager is only concerned with the paths, while the path deals with its individual positions.
+// GOOD (object oriented): Class-Cohesion: Path Manager is only concerned with the paths, while the path deals with its individual positions.
 // Also, this part is completely separated from the game logic.
 
 /**
@@ -113,6 +113,9 @@ public class PathManager {
     // STYLE: Berechnung vom Pfad ist prozedural
     // (Node hat nur public Variablen, static utility functions, Kommunikation im weiteren Sinne über die PriorityQueue, ...)
 
+    // GOOD (procedural): While being only a small snippet of code, the control flow is understandable and almost no "global" variables are used.
+    // There is a nominal abstraction explaining a part of the algorithm (which is not common for this style) but only where it deviates from typical implementations.
+
     /**
      * Calculates the optimal path from the start position to the end position using a* algorithm
      *
@@ -160,7 +163,6 @@ public class PathManager {
             }
         }
 
-        // backtracking
         while (target.parent != null) {
             Point point = this.gameState.getPoint(target.position);
             if (point == null) {

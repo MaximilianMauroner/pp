@@ -5,7 +5,7 @@ import java.util.Vector;
 // NOTE: Generally with this whole DataStore concept, I think choosing Object as the type for all data entries is a bad idea.
 // We are really just dealing with numbers and vectors of numbers. So we should use Number and Vector<Number> instead.
 
-// GOOD: Coupling: We can mostly change the DataStore and Simulation without affecting the DataManager.
+// GOOD (object oriented): Coupling: We can mostly change the DataStore and Simulation without affecting the DataManager.
 // As long as the interface for getting and setting data looks the same, we can change the implementation.
 
 /**

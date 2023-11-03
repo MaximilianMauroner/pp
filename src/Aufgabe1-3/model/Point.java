@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// GOOD: Dynamic Binding: The point class is used to store all entities, which are all subtypes of Entity.
-// For the most methods here we only deal with the Entity type, but the actual type is determined at runtime.
-
+// BAD (object oriented): However good we implemented dynamic binding, this class has a lot of methods which indicates high coupling.
 /**
  * Class for the points of the game
  * Points have a specified position on the grid and a list of entity objects
@@ -113,6 +111,7 @@ public class Point {
         this.addEntity(trail);
     }
 
+    // BAD (procedural): This also stretches to the methods of the Trail class, but the control flow is a bit difficult to follow.
     /**
      * Adds a trail with more than one trail object to surrounding points within a specified radius
      *

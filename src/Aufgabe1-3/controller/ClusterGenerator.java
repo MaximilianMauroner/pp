@@ -9,6 +9,8 @@ import model.Position;
 import java.util.List;
 import java.util.Random;
 
+// BAD (object oriented): Here we could've used dynamic binding to have a single method for advanced generation of all entities.
+
 /**
  * Class for generating clusters of entities
  * generate function is accessed like a module

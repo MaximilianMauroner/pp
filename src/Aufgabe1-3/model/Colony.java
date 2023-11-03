@@ -9,6 +9,9 @@ import model.Entity.Hive;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+
+// BAD (procedural): Also here some of the procedural snippets are a bit difficult to follow.
+
 /**
  * Class for the colony
  * <p>

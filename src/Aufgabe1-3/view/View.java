@@ -8,6 +8,9 @@ import model.Entity.*;
 import java.awt.Color;
 import java.util.*;
 
+// GOOD (procedural): The logic within this class seems to follow a procedural style, and with the low amount of variables and methods, it is easy to understand.
+// Also, nominal abstraction are not used, too much (except for javaDoc comments).
+
 /**
  * Class for the view
  * Contains the canvas and the functions to draw on it

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 /**
  * Class for the game
  * It generates the game state and starts the game loop
@@ -20,7 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * Abstraction: A simulation of the abstract concept of a game, which is a collection of entities that interact with each other
  */
 public class Game {
-
 
     /**
      * Objects of the game
@@ -39,6 +37,10 @@ public class Game {
         this.view = new View(status.getWidth(), status.getHeight());
     }
 
+
+    //GOOD (procedural): Ok this might be a bit of a stretch, but I think this is a good example of procedural programming.
+    // The function does use a lot of functional stuff but what it does is basically just a sequence of steps that are executed in order, hence procedural.
+    // The function is also not too long and does only use a small amount of variables, which is also a good sign for procedural programming.
     /**
      * Generates the game state with randomized parameters
      */
