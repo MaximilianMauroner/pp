@@ -201,6 +201,13 @@ public class PathManager {
         }
 
 
+        /**
+         * Calculates the A* distance metric between two nodes
+         *
+         * @param n1 the first node
+         * @param n2 the second node
+         * @return the distance between the two nodes
+         */
         public static int getDistance(Node n1, Node n2) {
             int dx = Math.abs(n1.position.getX() - n2.position.getX());
             int dy = Math.abs(n1.position.getY() - n2.position.getY());

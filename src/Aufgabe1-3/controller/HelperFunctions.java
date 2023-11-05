@@ -17,6 +17,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HelperFunctions {
     public static final ConcurrentHashMap<Integer, Integer> ids = new ConcurrentHashMap<>();
 
+    /**
+     * Generates a random id that is not already used
+     *
+     * @return a random integer id
+     */
     public static int generateRandomId() {
         int id = new Random().nextInt();
         while (ids.containsKey(id)) {
