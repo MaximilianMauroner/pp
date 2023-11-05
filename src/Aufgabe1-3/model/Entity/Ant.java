@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+// BAD (procedural): While the Ant class is part of a object oriented structure, within we use a lot of procedural programming.
+// However this is not a good example for a procedural style. We have convoluted aliases (like endPosition, oldPoint, newPoint)
+// and the control flow takes some time to understand.
+
 /**
  * Class for the ant entity and its logic
  * contains reference objects to the game and status (for parameter access)

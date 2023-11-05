@@ -3,6 +3,8 @@ package controller;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
+//BAD (object oriented): While this might be only a class for later extention. It is too small and its functinality might be better placed in the class that uses it.
+
 /**
  * Class for helper functions
  * Contains functions that are used in multiple places throughout the program
@@ -15,6 +17,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HelperFunctions {
     public static final ConcurrentHashMap<Integer, Integer> ids = new ConcurrentHashMap<>();
 
+    /**
+     * Generates a random id that is not already used
+     *
+     * @return a random integer id
+     */
     public static int generateRandomId() {
         int id = new Random().nextInt();
         while (ids.containsKey(id)) {

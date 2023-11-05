@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// BAD (object oriented): However good we implemented dynamic binding, this class has a lot of methods which indicates high coupling.
 /**
  * Class for the points of the game
  * Points have a specified position on the grid and a list of entity objects
@@ -110,6 +111,7 @@ public class Point {
         this.addEntity(trail);
     }
 
+    // BAD (procedural): This also stretches to the methods of the Trail class, but the control flow is a bit difficult to follow.
     /**
      * Adds a trail with more than one trail object to surrounding points within a specified radius
      *

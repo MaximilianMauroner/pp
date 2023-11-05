@@ -37,7 +37,6 @@ public class Position {
         return y;
     }
 
-
     /**
      * Calculates the direction to the given position (e.g. position the ant object moves to)
      *
