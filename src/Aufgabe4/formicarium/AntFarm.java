@@ -10,5 +10,9 @@ package formicarium;
  * keine Gänge anlegen können und sich bei zu viel Platz in der Mitte
  * verstecken (von außen nicht beobachtbar sind).
  */
-public class AntFarm {
+public class AntFarm implements Nest {
+    @Override
+    public Arena getArena() {
+        return null;
+    }
 }

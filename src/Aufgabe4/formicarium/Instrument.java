@@ -9,5 +9,5 @@ package formicarium;
  * ist, semiprofessionellen Ansprüchen genügt oder eher nur für die
  * gelegentliche Verwendung gedacht ist.
  */
-public class Instrument {
+public interface Instrument extends FormicariumItem {
 }

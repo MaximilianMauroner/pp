@@ -14,5 +14,5 @@ package formicarium;
  * Nest lassen vor allem größeren Ameisenarten die Umwelt größer
  * erscheinen, als sie tatsächlich ist.
  */
-public class Arena {
+public class Arena implements FormicariumPart {
 }

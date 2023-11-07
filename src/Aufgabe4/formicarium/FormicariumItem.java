@@ -8,5 +8,5 @@ package formicarium;
  * ein von Compatible beschriebenes Umweltkriterium nicht relevant
  * ist, wird dafür der größtmögliche Wertebereich angenommen.
  */
-public class FormicariumItem {
+public interface FormicariumItem {
 }

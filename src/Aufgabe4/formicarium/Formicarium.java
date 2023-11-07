@@ -11,5 +11,5 @@ package formicarium;
  * vom Typ Compatible zurück, das die vom Formicarium gebotenen
  * Umweltbedingungen beschreibt.
  */
-public class Formicarium {
+public interface Formicarium extends FormicariumPart {
 }

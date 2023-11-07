@@ -16,5 +16,5 @@ package formicarium;
  * Werte (siehe Formicarium) sind anzupassen. Änderungen durch add
  * und remove lassen die Identität des Formicariums unverändert.
  */
-public class CompositeFormicarium {
+public class CompositeFormicarium implements Formicarium {
 }

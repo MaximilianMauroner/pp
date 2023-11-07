@@ -27,5 +27,5 @@ package formicarium;
  * Compatibility nie gleich einem Objekt, das ein physisches Objekt
  * der realen Welt darstellt.
  */
-public class Compatability {
+public interface Compatability {
 }

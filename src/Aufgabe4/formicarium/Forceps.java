@@ -8,5 +8,5 @@ package formicarium;
  * anderen Bedingungen) den Größenbereich von Ameisen angibt, für
  * den die Pinzette gut einsetzbar ist.
  */
-public class Forceps {
+public class Forceps implements Instrument {
 }

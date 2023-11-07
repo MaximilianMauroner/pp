@@ -11,5 +11,7 @@ package formicarium;
  * ein eigenständiger, mit mehr oder weniger langen Röhren mit der
  * Arena verbundener Behälter
  */
-public class Nest {
+public interface Nest extends Formicarium {
+
+    Arena getArena();
 }
