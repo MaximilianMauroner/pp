@@ -9,4 +9,13 @@ package formicarium;
  * den die Pinzette gut einsetzbar ist.
  */
 public class Forceps implements Instrument {
+    @Override
+    public Compatability compatability() {
+        return null;
+    }
+
+    @Override
+    public String quality() {
+        return null;
+    }
 }

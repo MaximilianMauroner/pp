@@ -28,4 +28,19 @@ package formicarium;
  * der realen Welt darstellt.
  */
 public interface Compatability {
+    int minSize();
+    int maxSize();
+
+    double minTemperature();
+    double maxTemperature();
+
+    double minHumidity();
+    double maxHumidity();
+
+    String time();
+    void setTime();
+    String maxTime();
+
+    Compatability compatible(Compatability other) throws IllegalArgumentException;
 }
+

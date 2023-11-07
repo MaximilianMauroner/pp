@@ -9,4 +9,5 @@ package formicarium;
  * ist, wird dafür der größtmögliche Wertebereich angenommen.
  */
 public interface FormicariumItem {
+    Compatability compatability();
 }

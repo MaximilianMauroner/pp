@@ -1,5 +1,7 @@
 package formicarium;
 
+import java.util.Set;
+
 /**
  * ToDo: Write out specification and add subtype relation as stated
  * Eine (möglicherweise leere) Menge von Formicarien
@@ -17,4 +19,9 @@ package formicarium;
  * Elemente können jedoch mehrfach vorhanden sein).
  */
 public class FormicariumSet {
+    Set<FormicariumItem> items;
+
+    public void add(FormicariumItem item) {
+
+    }
 }

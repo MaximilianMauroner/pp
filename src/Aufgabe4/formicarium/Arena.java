@@ -15,4 +15,8 @@ package formicarium;
  * erscheinen, als sie tatsächlich ist.
  */
 public class Arena implements FormicariumPart {
+    @Override
+    public Compatability compatability() {
+        return null;
+    }
 }

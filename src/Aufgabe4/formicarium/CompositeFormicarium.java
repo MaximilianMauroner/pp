@@ -1,5 +1,7 @@
 package formicarium;
 
+import java.util.List;
+
 /**
  * ToDo: Write out specification and add subtype relation as stated
  * Ein Formicarium, das durch Hinzufügen und
@@ -17,4 +19,14 @@ package formicarium;
  * und remove lassen die Identität des Formicariums unverändert.
  */
 public class CompositeFormicarium implements Formicarium {
+    List<FormicariumPart> parts;
+
+    @Override
+    public Compatability compatability() {
+        return null;
+    }
+
+    public void add(FormicariumPart part) {
+
+    }
 }

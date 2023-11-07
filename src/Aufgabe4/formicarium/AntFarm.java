@@ -15,4 +15,9 @@ public class AntFarm implements Nest {
     public Arena getArena() {
         return null;
     }
+
+    @Override
+    public Compatability compatability() {
+        return null;
+    }
 }
