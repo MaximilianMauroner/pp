@@ -1,5 +1,6 @@
 package formicarium;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -20,13 +21,29 @@ import java.util.List;
  */
 public class CompositeFormicarium implements Formicarium {
     List<FormicariumPart> parts;
+    Compatability compatibility;
+
+    public CompositeFormicarium() {
+        this.compatibility = new Compatability(Integer.MIN_VALUE, Integer.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Time.UNBOUNDED, Time.UNBOUNDED);
+    }
 
     @Override
     public Compatability compatability() {
-        return null;
+        return this.compatibility;
     }
 
     public void add(FormicariumPart part) {
+        try {
+            Compatability newCompatibility = part.compatability().compatible(this.compatability());
+            this.parts.add(part);
+            this.compatibility = newCompatibility;
+        } catch (IllegalArgumentException e) {
+            System.out.println("The part is not compatible with the formicarium.");
+        }
+    }
 
+    @Override
+    public Iterator<FormicariumPart> iterator() {
+        return null;
     }
 }

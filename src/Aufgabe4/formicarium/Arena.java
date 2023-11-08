@@ -15,8 +15,19 @@ package formicarium;
  * erscheinen, als sie tatsächlich ist.
  */
 public class Arena implements FormicariumPart {
+    private final String substrate;
+    private final int tubeLength; // non-negative, if 0, no tube
+
+    public Arena() {
+        this.substrate = "Sand";
+        this.tubeLength = 15;
+    }
+
+
     @Override
     public Compatability compatability() {
-        return null;
+        int minSize = this.tubeLength / 3;
+        int maxSize = this.tubeLength / 2;
+        return new Compatability(minSize, maxSize, 10, 15, 70, 85, Time.MONTH, Time.YEAR);
     }
 }

@@ -1,5 +1,8 @@
 package formicarium;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * ToDo: Write out specification and add subtype relation as stated
  * Ein zur Haltung von Ameisen vorgesehenes Terrarium mit
@@ -11,5 +14,6 @@ package formicarium;
  * vom Typ Compatible zurück, das die vom Formicarium gebotenen
  * Umweltbedingungen beschreibt.
  */
-public interface Formicarium extends FormicariumPart {
+public interface Formicarium extends FormicariumPart, Iterable<FormicariumPart> {
+
 }

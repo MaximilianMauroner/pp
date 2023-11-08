@@ -6,13 +6,19 @@ package formicarium;
  * Temperaturniveaus benötigen. Als Objekte von Thermometer werden hier nur solche Temperaturmessgeräte angesehen, die Bestandteil eines Formicariums sein können.
  */
 public class Thermometer implements Instrument, FormicariumPart {
-    @Override
-    public Compatability compatability() {
-        return null;
+    private final Quality quality;
+
+    public Thermometer() {
+        this.quality = Quality.SEMIPROFESSIONAL;
     }
 
     @Override
-    public String quality() {
-        return null;
+    public Compatability compatability() {
+        return new Compatability(Integer.MIN_VALUE, Integer.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Time.UNBOUNDED, Time.UNBOUNDED);
+    }
+
+    @Override
+    public Quality quality() {
+        return this.quality;
     }
 }

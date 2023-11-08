@@ -9,13 +9,23 @@ package formicarium;
  * den die Pinzette gut einsetzbar ist.
  */
 public class Forceps implements Instrument {
-    @Override
-    public Compatability compatability() {
-        return null;
+    private final int minSize;
+    private final int maxSize;
+    private final Quality quality;
+
+    public Forceps() {
+        this.minSize = 2;
+        this.maxSize = 7;
+        this.quality = Quality.SEMIPROFESSIONAL;
     }
 
     @Override
-    public String quality() {
-        return null;
+    public Compatability compatability() {
+        return new Compatability (minSize, maxSize, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Time.UNBOUNDED, Time.UNBOUNDED);
+    }
+
+    @Override
+    public Quality quality() {
+        return this.quality;
     }
 }

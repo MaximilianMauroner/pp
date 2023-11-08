@@ -1,5 +1,7 @@
 package formicarium;
 
+import java.util.Iterator;
+
 /**
  * ToDo: Write out specification and add subtype relation as stated
  * Eine Form eines Ameisennests bestehend aus einem Substrat
@@ -11,13 +13,61 @@ package formicarium;
  * verstecken (von außen nicht beobachtbar sind).
  */
 public class AntFarm implements Nest {
+    private final String substrate;
+    private final int plateDistance;
+    private final Thermometer thermometer;
+    private Arena arena;
+
+    public AntFarm(Thermometer thermometer) {
+        this.substrate = "Sand";
+        this.plateDistance = 10;
+        this.thermometer = thermometer;
+    }
+
+    public AntFarm(Thermometer thermometer, Arena arena) {
+        this.substrate = "Sand";
+        this.plateDistance = 10;
+        this.thermometer = thermometer;
+        this.arena = arena;
+    }
+
+    @Override
+    public void setArena(Arena arena) {
+        this.arena = arena;
+    }
+
     @Override
     public Arena getArena() {
-        return null;
+        return arena;
+    }
+
+    @Override
+    public Thermometer getThermometer() {
+        return this.thermometer;
     }
 
     @Override
     public Compatability compatability() {
+        int minSize = this.plateDistance - 5;
+        int maxSize = this.plateDistance + 5;
+        double minTemperature = 20.5;
+        double maxTemperature = 25.5;
+        double minHumidity = 80;
+        double maxHumidity = 95;
+
+        Time time;
+        Time maxTime = Time.YEAR;
+        if (this.arena == null) {
+            time = Time.DAY;
+        } else {
+            time = maxTime;
+        }
+
+        return new Compatability(minSize, maxSize, minTemperature, maxTemperature, minHumidity, maxHumidity, time, maxTime);
+    }
+
+    @Override
+    public Iterator<FormicariumPart> iterator() {
         return null;
     }
 }

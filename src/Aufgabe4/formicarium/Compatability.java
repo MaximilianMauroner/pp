@@ -27,20 +27,85 @@ package formicarium;
  * Compatibility nie gleich einem Objekt, das ein physisches Objekt
  * der realen Welt darstellt.
  */
-public interface Compatability {
-    int minSize();
-    int maxSize();
+public class Compatability {
+    private final int minSize;
+    private final int maxSize;
+    private final double minTemperature;
+    private final double maxTemperature;
+    private final double minHumidity;
+    private final double maxHumidity;
+    private Time time;
+    private final Time maxTime;
 
-    double minTemperature();
-    double maxTemperature();
+    public Compatability(int minSize, int maxSize, double minTemperature, double maxTemperature, double minHumidity, double maxHumidity, Time time, Time maxTime) {
+        this.minSize = minSize;
+        this.maxSize = maxSize;
+        this.minTemperature = minTemperature;
+        this.maxTemperature = maxTemperature;
+        this.minHumidity = minHumidity;
+        this.maxHumidity = maxHumidity;
+        this.time = time;
+        this.maxTime = maxTime;
+    }
 
-    double minHumidity();
-    double maxHumidity();
+    int minSize() {
+        return this.minSize;
+    }
+    int maxSize() {
+        return this.maxSize;
+    }
 
-    String time();
-    void setTime();
-    String maxTime();
+    double minTemperature() {
+        return this.minTemperature;
+    }
+    double maxTemperature() {
+        return this.maxTemperature;
+    }
 
-    Compatability compatible(Compatability other) throws IllegalArgumentException;
+    double minHumidity() {
+        return this.minHumidity;
+    }
+    double maxHumidity() {
+        return this.maxHumidity;
+    }
+
+    Time time() {
+        return this.time;
+    }
+
+    void setTime(Time time) {
+        if (time.compareTo(this.maxTime) <= 0) {
+            this.time = time;
+        }
+    }
+    Time maxTime() {
+        return this.maxTime;
+    }
+
+    Compatability compatible(Compatability other) throws IllegalArgumentException {
+        Time compTime = Time.values()[Math.min(this.time.ordinal(), other.time.ordinal())];
+        Time compMaxTime = Time.values()[Math.min(this.maxTime.ordinal(), other.maxTime.ordinal())];
+
+        if (this.minSize > other.maxSize || this.maxSize < other.minSize) {
+            throw new IllegalArgumentException("Size not compatible");
+        }
+        if (this.minTemperature > other.maxTemperature || this.maxTemperature < other.minTemperature) {
+            throw new IllegalArgumentException("Temperature not compatible");
+        }
+        if (this.minHumidity > other.maxHumidity || this.maxHumidity < other.minHumidity) {
+            throw new IllegalArgumentException("Humidity not compatible");
+        }
+
+        return new Compatability(
+            Math.max(this.minSize, other.minSize),
+            Math.min(this.maxSize, other.maxSize),
+            Math.max(this.minTemperature, other.minTemperature),
+            Math.min(this.maxTemperature, other.maxTemperature),
+            Math.max(this.minHumidity, other.minHumidity),
+            Math.min(this.maxHumidity, other.maxHumidity),
+            compTime,
+            compMaxTime
+        );
+    }
 }
 
