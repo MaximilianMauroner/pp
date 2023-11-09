@@ -12,8 +12,5 @@ package formicarium;
  * Arena verbundener Behälter
  */
 public interface Nest extends Formicarium {
-
-    void setArena(Arena arena);
-    Arena getArena();
-    Thermometer getThermometer();
+    boolean isFormicarium();
 }

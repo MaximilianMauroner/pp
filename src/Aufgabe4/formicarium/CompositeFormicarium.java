@@ -1,5 +1,6 @@
 package formicarium;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,7 +24,9 @@ public class CompositeFormicarium implements Formicarium {
     List<FormicariumPart> parts;
     Compatability compatibility;
 
-    public CompositeFormicarium() {
+    public CompositeFormicarium(Thermometer thermometer) {
+        this.parts = new ArrayList<>();
+        this.parts.add(thermometer);
         this.compatibility = new Compatability(Integer.MIN_VALUE, Integer.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Time.UNBOUNDED, Time.UNBOUNDED);
     }
 
@@ -35,8 +38,10 @@ public class CompositeFormicarium implements Formicarium {
     public void add(FormicariumPart part) {
         try {
             Compatability newCompatibility = part.compatability().compatible(this.compatability());
-            this.parts.add(part);
-            this.compatibility = newCompatibility;
+            if (!this.parts.contains(part)) {
+                this.parts.add(part);
+                this.compatibility = newCompatibility;
+            }
         } catch (IllegalArgumentException e) {
             System.out.println("The part is not compatible with the formicarium.");
         }
@@ -44,6 +49,16 @@ public class CompositeFormicarium implements Formicarium {
 
     @Override
     public Iterator<FormicariumPart> iterator() {
+        return new FormicariumPartIterator(this.parts);
+    }
+
+    @Override
+    public Thermometer thermometer() {
+        for (FormicariumPart part : this.parts) {
+            if (part instanceof Thermometer) {
+                return (Thermometer) part;
+            }
+        }
         return null;
     }
 }

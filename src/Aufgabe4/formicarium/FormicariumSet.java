@@ -34,6 +34,6 @@ public class FormicariumSet implements Iterable<FormicariumItem> {
 
     @Override
     public Iterator<FormicariumItem> iterator() {
-        return null;
+        return new FormicariumItemIterator(this.items);
     }
 }

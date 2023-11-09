@@ -175,5 +175,33 @@ import formicarium.*;
 
 public class Test {
         public static void main(String[] args) {
+            Thermometer thermometer = new Thermometer();
+            CompositeFormicarium comp = new CompositeFormicarium(thermometer);
+            Formicarium antFarm = new AntFarm();
+            comp.add(antFarm);
+            Arena arena = new Arena();
+            comp.add(arena);
+
+            FormicariumPartIterator iter = (FormicariumPartIterator) comp.iterator();
+            if (iter.hasNext()) {
+                FormicariumPart part = iter.next();
+                System.out.println(part.getClass().getSimpleName());
+                iter.remove();
+            }
+
+            FormicariumSet set = new FormicariumSet();
+            set.add(antFarm);
+            set.add(new AntFarm());
+            set.add(new AntFarm());
+            set.add(new AntFarm());
+            set.add(new AntFarm());
+            set.add(new AntFarm());
+            set.add(new AntFarm());
+            set.add(new AntFarm());
+            FormicariumItemIterator iter2 = (FormicariumItemIterator) set.iterator();
+            if (iter2.hasNext()) {
+                FormicariumItem item = iter2.next();
+                iter2.remove(4);
+            }
     }
 }

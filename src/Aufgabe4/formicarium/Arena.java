@@ -28,6 +28,6 @@ public class Arena implements FormicariumPart {
     public Compatability compatability() {
         int minSize = this.tubeLength / 3;
         int maxSize = this.tubeLength / 2;
-        return new Compatability(minSize, maxSize, 10, 15, 70, 85, Time.MONTH, Time.YEAR);
+        return new Compatability(minSize, maxSize, 15, 25, 70, 85, Time.MONTH, Time.YEAR);
     }
 }

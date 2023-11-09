@@ -15,8 +15,7 @@ import java.util.Iterator;
 public class AntFarm implements Nest {
     private final String substrate;
     private final int plateDistance;
-    private final Thermometer thermometer;
-    private Arena arena;
+    private Thermometer thermometer;
 
     public AntFarm(Thermometer thermometer) {
         this.substrate = "Sand";
@@ -24,25 +23,23 @@ public class AntFarm implements Nest {
         this.thermometer = thermometer;
     }
 
-    public AntFarm(Thermometer thermometer, Arena arena) {
+    public AntFarm() {
         this.substrate = "Sand";
         this.plateDistance = 10;
-        this.thermometer = thermometer;
-        this.arena = arena;
+    }
+
+    /**
+     * When AntFarm is a Formicarium, it needs to have a thermometer
+     * When it is just a Part of a CompositeFormicarium, it doesn't.
+     * @return true if AntFarm is a Formicarium, false otherwise
+     */
+    @Override
+    public boolean isFormicarium() {
+        return thermometer != null;
     }
 
     @Override
-    public void setArena(Arena arena) {
-        this.arena = arena;
-    }
-
-    @Override
-    public Arena getArena() {
-        return arena;
-    }
-
-    @Override
-    public Thermometer getThermometer() {
+    public Thermometer thermometer() {
         return this.thermometer;
     }
 
@@ -57,7 +54,7 @@ public class AntFarm implements Nest {
 
         Time time;
         Time maxTime = Time.YEAR;
-        if (this.arena == null) {
+        if (this.isFormicarium()) {
             time = Time.DAY;
         } else {
             time = maxTime;
@@ -68,6 +65,6 @@ public class AntFarm implements Nest {
 
     @Override
     public Iterator<FormicariumPart> iterator() {
-        return null;
+        return new FormicariumPartIterator(this);
     }
 }
