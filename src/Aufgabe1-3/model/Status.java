@@ -14,12 +14,12 @@ import datastore.Simulation;
  */
 public class Status {
     private final int width, height, scale, simulationTimeLimit, antCount, foodCount, obstacleCount;
+    private final double minHiveHealth;
     private int antEmptySteps, antMoveSteps, antWaitSteps, foodHiveDistance, antSpawnRadius, simulationTime;
     private double trailDecay; // (invariant: 0 < trailDecay < 1)
     private double lowTrail;
     private double highTrail;
     private double searchRadiusGrowthFactor;
-    private final double minHiveHealth;
 
     public Status(int width, int height, int scale, int simulationTime, int antCount, int antEmptySteps, int antMoveSteps, int antWaitSteps, int foodCount,
                   int obstacleCount, int antSpawnRadius, int foodHiveDistance,
@@ -169,6 +169,10 @@ public class Status {
         return minHiveHealth;
     }
 
+    public void resetSimulationTime() {
+        this.simulationTime = 0;
+    }
+
 
     /**
      * Randomizes the values of parameters that affect game behavior
@@ -190,6 +194,7 @@ public class Status {
 
     /**
      * Exports the random parameters to the simulation. (precondition: simulation != null)
+     *
      * @param simulation the current simulation object
      */
     public void exportRandomParameters(Simulation simulation) {
@@ -220,7 +225,7 @@ public class Status {
      * @param confidence randomize values within interval of confidence in percent (precondition: confidence >= 0)
      * @param lowerLimit lower limit of the randomized value
      * @param upperLimit upper limit of the randomized value
-     * (precondition: lowerLimit <= upperLimit)
+     *                   (precondition: lowerLimit <= upperLimit)
      */
     private double randomize(double value, double confidence, int lowerLimit, int upperLimit) {
         double result = value * (1 + (Math.random() * confidence * 2 - confidence));

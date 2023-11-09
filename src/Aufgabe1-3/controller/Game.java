@@ -34,6 +34,7 @@ public class Game {
     private final Status status;
     private final GameBuffer gameBuffer;
     private View view;
+
     /**
      * Objects of the game
      */
@@ -55,7 +56,6 @@ public class Game {
 
         this.gameState = new GameState(new ConcurrentHashMap<>(), status);
         this.pathManager = new PathManager(gameState);
-        Colony c = new Colony(this.gameState);
 
         // randomly spawn obstacles
         int obstacleCount = (int) (Math.random() * status.getObstacleCount());
@@ -158,8 +158,8 @@ public class Game {
         BlockingQueue<BufferElement> buffer = new LinkedBlockingQueue<>();
 
         CodeDraw cd = new CodeDraw(status.getWidth() * Parameters.SCALE_BY, status.getHeight() * Parameters.SCALE_BY);
-        GameplayLoop gameplayLoop = new GameplayLoop(gameState, buffer, cd);
         cd.clear(Color.BLACK);
+        GameplayLoop gameplayLoop = new GameplayLoop(gameState, buffer, cd);
         new Thread(gameplayLoop).start();
 
 
@@ -174,6 +174,9 @@ public class Game {
         }
 
         gameplayLoop.setRunning(false);
+        view.setRunning(false);
+        cd.close();
+        gameState.getStatus().resetSimulationTime();
         pathManager.calculatePaths();
     }
 

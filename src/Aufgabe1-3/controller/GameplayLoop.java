@@ -56,6 +56,7 @@ public class GameplayLoop implements Runnable {
 
         while (isRunning) {
             now = System.nanoTime();
+            View.changeTime(cd, gameState);
             gameState.getNextFrame(queue);
             cd.show();
 
