@@ -75,16 +75,28 @@ public class GameState {
     /**
      * Sets the point at the given position
      *
-     * @param point point to be set
+     * @param point point to be set (precondition: point != null)
      */
     public void setPoint(Point point) {
         points.put(point.getPosition(), point);
     }
 
+    /**
+     * Checks wether a given point exists
+     *
+     * @param position position of the point to be checked
+     * @return true if the point exists, false otherwise
+     */
     public boolean hasPosition(Position position) {
         return points.containsKey(position);
     }
 
+    /**
+     * Checks wether a given point exists
+     * @param x x-coordinate of the point to be checked
+     * @param y y-coordinate of the point to be checked
+     * @return true if the point exists, false otherwise
+     */
     public boolean hasPosition(int x, int y) {
         return points.containsKey(new Position(x, y));
     }

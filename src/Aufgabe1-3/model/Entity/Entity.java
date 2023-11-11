@@ -9,6 +9,11 @@ import model.Status;
 
 import java.util.concurrent.BlockingQueue;
 
+
+// GOOD (object oriented): Dynamic Binding: This is true for all subclasses of Entity, but this part of the program is a good example for dynamic binding.
+// Wherever we could use a concrete type, we use the abstract type Entity instead (see Point.java).
+
+
 /**
  * Interface for the entities of the game
  * Entities are the objects that are placed on the grid

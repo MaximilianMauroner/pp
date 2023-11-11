@@ -9,6 +9,9 @@ import model.Entity.Hive;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+
+// BAD (procedural): Also here some of the procedural snippets are a bit difficult to follow.
+
 /**
  * Class for the colony
  * <p>
@@ -27,23 +30,39 @@ public class Colony {
     private ConcurrentHashMap<Integer, Hive> hives;
     private ConcurrentHashMap<Integer, Ant> ants;
 
-    private final GameState gameState;
+    private final GameState gameState; //(history-constraint: gameState != null)
 
+    /**
+     * Initializes new colony object
+     *
+     * @param gameState game-state the colony is a part of
+     */
     public Colony(GameState gameState) {
         this.hives = new ConcurrentHashMap<>();
         this.ants = new ConcurrentHashMap<>();
         this.gameState = gameState;
     }
 
+    /**
+     * @return the unique id of the colony
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Removes an ant from the colony
+     * @param ant ant to be removed (precondition: ant != null)
+     */
     public void removeAnt(Ant ant) {
         ants.remove(ant.getId());
         this.gameState.getPoint(ant.getPosition()).removeEntity(ant);
     }
 
+    /**
+     * Removes a hive from the colony
+     * @param hive hive to be removed (precondition: hive != null)
+     */
     public void removeHive(Hive hive) {
         System.out.println("Remove HIVE");
         hives.remove(hive.getId());
@@ -53,14 +72,24 @@ public class Colony {
 
     }
 
+    /**
+     * @return the hives of the colony
+     */
     public ConcurrentHashMap<Integer, Hive> getHives() {
         return hives;
     }
 
+    /**
+     * @return the ants of the colony
+     */
     public ConcurrentHashMap<Integer, Ant> getAnts() {
         return ants;
     }
 
+    /**
+     * Removes the colony from the game-state
+     * @param gs game-state the colony is a part of (precondition: gs != null)
+     */
     public void removeColony(GameState gs) {
         for (Hive hive : this.hives.values()) {
             Point p = gs.getPoint(hive.getPosition());
@@ -75,10 +104,17 @@ public class Colony {
         System.out.println("Remove Colony");
     }
 
+    /**
+     * @return the amount of food the colony has
+     */
     public int getFoodCount() {
         return foodCount;
     }
 
+    /**
+     * How many ants and hives the game actually has compared to how much this colony thinks it has
+     * @param gs game-state the colony is a part of (precondition: gs != null)
+     */
     public void diffBetweenColonyAndGS(GameState gs) {
         AtomicInteger asize = new AtomicInteger(0);
         AtomicInteger hsize = new AtomicInteger(0);
@@ -93,6 +129,11 @@ public class Colony {
 
     }
 
+    /**
+     * Updates the colony and ajusts size depending on the amount of food it has
+     * @param gs game-state the colony is a part of (precondition: gs != null)
+     * @param hive hive that's calling the update (precondition: hive != null)
+     */
     public void handleHiveUpdate(GameState gs, Hive hive) {
 //        this.diffBetweenColonyAndGS(gs);
         Position hivePosition = hive.getPosition();
@@ -114,6 +155,10 @@ public class Colony {
         }
     }
 
+    /**
+     * Increments the food count for the entire colony (e.g. when ant reaches hive)
+     * and increment the health for the hive
+     */
     public void addFood() {
         this.foodCount += 1000;
         DataManager dataManager = DataManager.getInstance();
@@ -122,15 +167,26 @@ public class Colony {
         System.out.println("Food added to hive" + dataManager.getSimpleField("foodCount-" + this.getId()));
     }
 
+    /**
+     * Adds a hive to the colony
+     * @param hive hive to be added (precondition: hive != null)
+     */
     public void addHive(Hive hive) {
         System.out.println("Add HIVE");
         this.hives.put(hive.getId(), hive);
     }
 
+    /**
+     * Adds an ant to the colony
+     * @param ant ant to be added (precondition: ant != null)
+     */
     public void addAnt(Ant ant) {
         this.ants.put(ant.getId(), ant);
     }
 
+    /**
+     * @return the central point of the colony
+     */
     public Position getCentralHivePoint() {
         int x = 0;
         int y = 0;

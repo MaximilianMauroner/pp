@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
+// GOOD (object oriented): Class-Cohesion: Path Manager is only concerned with the paths, while the path deals with its individual positions.
+// Also, this part is completely separated from the game logic.
+
 /**
  * Manages the optimal paths of the simulation
  * <p>
@@ -110,6 +113,9 @@ public class PathManager {
     // STYLE: Berechnung vom Pfad ist prozedural
     // (Node hat nur public Variablen, static utility functions, Kommunikation im weiteren Sinne über die PriorityQueue, ...)
 
+    // GOOD (procedural): While being only a small snippet of code, the control flow is understandable and almost no "global" variables are used.
+    // There is a nominal abstraction explaining a part of the algorithm (which is not common for this style) but only where it deviates from typical implementations.
+
     /**
      * Calculates the optimal path from the start position to the end position using a* algorithm
      *
@@ -157,7 +163,6 @@ public class PathManager {
             }
         }
 
-        // backtracking
         while (target.parent != null) {
             Point point = this.gameState.getPoint(target.position);
             if (point == null) {
@@ -196,6 +201,13 @@ public class PathManager {
         }
 
 
+        /**
+         * Calculates the A* distance metric between two nodes
+         *
+         * @param n1 the first node
+         * @param n2 the second node
+         * @return the distance between the two nodes
+         */
         public static int getDistance(Node n1, Node n2) {
             int dx = Math.abs(n1.position.getX() - n2.position.getX());
             int dy = Math.abs(n1.position.getY() - n2.position.getY());

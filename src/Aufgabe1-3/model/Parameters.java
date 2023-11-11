@@ -15,8 +15,9 @@ public class Parameters {
 
     public static final int WIDTH = 225;
     public static final int HEIGHT = 225;
-
     public static final int SIMULATION_RUNS = 5;
+    public static final int FRAME_BUFFER_SIZE = 100;
+    public static boolean ENABLE_ASYNC_VIEW = false;
 
     //Set color for entities
     public static final Color ANT_DEFAULT_COLOR = Color.RED;
