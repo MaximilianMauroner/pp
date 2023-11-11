@@ -1,11 +1,15 @@
 package model.Entity;
 
+import controller.BufferElement;
+import controller.GameBuffer;
 import controller.HelperFunctions;
 import controller.GameState;
 import model.Colony;
 import model.Point;
 import model.Position;
 import model.Status;
+
+import java.util.concurrent.BlockingQueue;
 
 
 /**
@@ -21,17 +25,16 @@ import model.Status;
  */
 public class Hive implements Entity {
 
-    private int health = 1000000;
-
     private final int id = HelperFunctions.generateRandomId();
     private final Colony colony; //(history-constraint: colony != null)
-
+    private int health = 1000000;
     private Position position;
 
 
     /**
      * Initializes new hive object
-     * @param colony colony the hive is a part of
+     *
+     * @param colony   colony the hive is a part of
      * @param position position of the hive
      */
     public Hive(Colony colony, Position position) {
@@ -69,13 +72,17 @@ public class Hive implements Entity {
     // if it has, it should increase in size
     //we increase the size by creating a new hive object in a different
     // position which is part of the same colony
-    public void run(GameState gameState, Status status, Point point) {
+    public void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> queue) {
 
         colony.handleHiveUpdate(gameState, this);
         this.health--;
         if (health <= 0) {
             colony.removeHive(this);
         }
+        if (this.position == null) {
+            this.position = point.getPosition();
+        }
+        GameBuffer.add(queue, this, point.getPosition());
     }
 
     @Override

@@ -1,6 +1,14 @@
 package controller;
 
+import codedraw.CodeDraw;
+import model.Entity.Entity;
+import model.Point;
 import view.View;
+
+import java.awt.*;
+import java.util.Iterator;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * The central element for running the simulation
@@ -14,19 +22,23 @@ import view.View;
 
 // STYLE: this uses a bit of concurrent programming as the game loop runs in a separate thread.
 // This has implications on the way some data is accessed, e.g. Points in GameState or Entities in Points are accessed in a thread-safe way.
-public class GameplayLoop extends Thread {
+public class GameplayLoop implements Runnable {
 
     /**
      * The view and game state objects
      */
-    private final View view;
     private final GameState gameState;
     private boolean isRunning = false;
 
-    public GameplayLoop(View view, GameState gameState) {
-        this.view = view;
+    private BlockingQueue<BufferElement> queue;
+    private CodeDraw cd;
+
+    public GameplayLoop(GameState gameState, BlockingQueue<BufferElement> queue, CodeDraw cd) {
         this.gameState = gameState;
+        this.queue = queue;
+        this.cd = cd;
     }
+
 
     /**
      * Starts the game loop. The game loop will run until isRunning is set to false.
@@ -44,18 +56,16 @@ public class GameplayLoop extends Thread {
 
         while (isRunning) {
             now = System.nanoTime();
-            gameState.getNextFrame();
-            view.draw(gameState);
+            View.changeTime(cd, gameState);
+            gameState.getNextFrame(queue);
+            cd.show();
+
+
             frames++;
             if (frames == FRAMES_TIL_NEXT_TIME) {
                 frames = 0;
                 gameState.getStatus().nextTime();
             }
-//            AtomicInteger count = new AtomicInteger();
-//            gameState.getPoints().forEach((position, point) ->
-//                    count.addAndGet((int) point.getEntities().stream().filter(entity -> entity instanceof Ant).count())
-//            );
-//            System.out.println("Ants: " + count.get());
 
             updateTime = System.nanoTime() - now;
             wait = (OPTIMAL_TIME - updateTime) / 1000000;

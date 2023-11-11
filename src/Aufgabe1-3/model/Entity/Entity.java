@@ -1,13 +1,18 @@
 package model.Entity;
 
+import controller.BufferElement;
+import controller.GameBuffer;
 import controller.GameState;
 import model.Point;
 import model.Position;
 import model.Status;
 
+import java.util.concurrent.BlockingQueue;
+
 
 // GOOD (object oriented): Dynamic Binding: This is true for all subclasses of Entity, but this part of the program is a good example for dynamic binding.
 // Wherever we could use a concrete type, we use the abstract type Entity instead (see Point.java).
+
 
 /**
  * Interface for the entities of the game
@@ -32,7 +37,7 @@ public interface Entity extends Comparable<Entity> {
      * @param status    the status of the game
      * @param point     the point where the entity is located
      */
-    void run(GameState gameState, Status status, Point point);
+    void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> gameBuffer);
 
     /**
      * Returns a clone of the entity
@@ -61,12 +66,14 @@ public interface Entity extends Comparable<Entity> {
 
     /**
      * Returns the position of the entity
+     *
      * @return the position
      */
     Position getPosition();
 
     /**
      * Sets the position of the entity
+     *
      * @param position the position to be set (precondition: position != null)
      */
     void setPosition(Position position);

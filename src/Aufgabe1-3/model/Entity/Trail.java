@@ -1,8 +1,12 @@
 package model.Entity;
 
+import controller.BufferElement;
+import controller.Game;
+import controller.GameBuffer;
 import controller.GameState;
 import model.*;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -23,9 +27,10 @@ public class Trail implements Entity {
 
     /**
      * Initializes new trail object
+     *
      * @param strength strength of the trail (precondition: strength >= 0)
-     * @param origin origin (ant) of the trail
-     * @param colony colony of the trail (precondition: colony != null)
+     * @param origin   origin (ant) of the trail
+     * @param colony   colony of the trail (precondition: colony != null)
      */
     public Trail(double strength, int origin, Colony colony) {
         this.changeStrength(strength, origin, colony);
@@ -33,8 +38,9 @@ public class Trail implements Entity {
 
     /**
      * Initializes new trail object with a strength and an ant
+     *
      * @param strength strength of the trail (precondition: strength >= 0)
-     * @param ant ant that created the trail (precondition: ant != null)
+     * @param ant      ant that created the trail (precondition: ant != null)
      */
     public Trail(double strength, Ant ant) {
         this.changeStrength(strength, ant.getId(), ant.getColony());
@@ -42,6 +48,7 @@ public class Trail implements Entity {
 
     /**
      * Initializes new trail object with a map of colony ids and their respective trails
+     *
      * @param value map of colony ids and their respective trails (precondition: value != null)
      */
     public Trail(ConcurrentHashMap<Integer, ColonyTrail> value) {
@@ -50,6 +57,7 @@ public class Trail implements Entity {
 
     /**
      * Removes the trail for a colony
+     *
      * @param colony colony to be removed (precondition: colony != null)
      */
     public void removeColony(Colony colony) {
@@ -66,6 +74,7 @@ public class Trail implements Entity {
 
     /**
      * Calculates the average strength for all the trails
+     *
      * @return average strength of all trails (if no trails exist, returns 0)
      */
     public double getStrength() {
@@ -83,6 +92,7 @@ public class Trail implements Entity {
 
     /**
      * Returns the strength for one trail colony
+     *
      * @param colony colony to get the average strength for (precondition: colony != null)
      * @return strength of the trail for the colony (if no trail exists for that colony, returns 0)
      */
@@ -141,7 +151,7 @@ public class Trail implements Entity {
      * Performs the trails decay
      */
     @Override
-    public void run(GameState gameState, Status status, Point point) {
+    public void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> queue) {
         // STYLE: here as well
         colonyStrength.forEach((k, v) -> {
             v.decayTrails(status);
@@ -149,6 +159,10 @@ public class Trail implements Entity {
                 point.removeEntity(this);
             }
         });
+        if (this.position == null) {
+            this.position = point.getPosition();
+        }
+        GameBuffer.add(queue, this, point.getPosition());
     }
 
     @Override
