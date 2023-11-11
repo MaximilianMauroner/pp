@@ -32,6 +32,10 @@ public class FormicariumSet implements Iterable<FormicariumItem> {
         this.items.add(item);
     }
 
+    public Set<FormicariumItem> getItems() {
+        return items;
+    }
+
     @Override
     public Iterator<FormicariumItem> iterator() {
         return new FormicariumItemIterator(this.items);

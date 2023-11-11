@@ -61,4 +61,8 @@ public class CompositeFormicarium implements Formicarium {
         }
         return null;
     }
+
+    public FormicariumPart get(int index) {
+        return this.parts.get(index);
+    }
 }
