@@ -174,6 +174,8 @@ import formicarium.*;
 
 public class Test {
     public static void main(String[] args) {
+        System.out.println("Test Cases: ");
+
         Thermometer thermometer = new Thermometer();
 
         CompositeFormicarium comp = new CompositeFormicarium(thermometer);
