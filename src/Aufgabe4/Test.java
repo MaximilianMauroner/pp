@@ -229,8 +229,8 @@ public class Test {
 
         testClass(iter2, set.iterator());
         if (iter2.hasNext()) {
-            testEquals(iter2.count() + "", 8 + "");
             FormicariumItem item = iter2.next();
+            testEquals(iter2.count() + "", 8 + "");
             iter2.remove(4);
             testEquals(iter2.count() + "", 4 + "");
         }

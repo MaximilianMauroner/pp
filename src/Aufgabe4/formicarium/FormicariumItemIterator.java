@@ -61,7 +61,6 @@ public class FormicariumItemIterator implements Iterator<FormicariumItem> {
             for (int i = 0; i < count; i++) {
                 items.stream().filter(item -> item.getClass().equals(lastReturnedClass)).findFirst().ifPresent(items::remove);
             }
-            lastReturnedClass = null;
         }
     }
 }
