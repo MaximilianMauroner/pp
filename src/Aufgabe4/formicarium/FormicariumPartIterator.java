@@ -39,6 +39,10 @@ public class FormicariumPartIterator implements Iterator<FormicariumPart> {
         }
 
         if (this.parts.size() > 1) {
+            int removedIndex = this.parts.indexOf(this.lastReturned);
+            if (removedIndex < this.index) {
+                this.index--;
+            }
             this.parts.remove(this.lastReturned);
             this.lastReturned = null;
         }
