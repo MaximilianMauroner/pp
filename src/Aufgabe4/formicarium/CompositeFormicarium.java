@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * ToDo: Write out specification and add subtype relation as stated
  * Ein Formicarium, das durch Hinzufügen und
  * Wegnehmen von Bestandteilen änderbar ist. Über einen Iterator
  * sind alle Bestandteile zugreifbar; remove im Iterator entfernt den
