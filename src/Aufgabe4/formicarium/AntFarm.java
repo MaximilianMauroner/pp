@@ -15,17 +15,18 @@ import java.util.Iterator;
 public class AntFarm implements Nest {
     private final String substrate;
     private final int plateDistance;
-    private Thermometer thermometer;
+    private final Thermometer thermometer;
 
-    public AntFarm(Thermometer thermometer) {
-        this.substrate = "Sand";
-        this.plateDistance = 10;
+    public AntFarm(Thermometer thermometer, String substrate, int plateDistance) {
+        this.substrate = substrate;
+        this.plateDistance = plateDistance;
         this.thermometer = thermometer;
     }
 
-    public AntFarm() {
-        this.substrate = "Sand";
-        this.plateDistance = 10;
+    public AntFarm(String substrate, int plateDistance) {
+        this.substrate = substrate;
+        this.plateDistance = plateDistance;
+        this.thermometer = null;
     }
 
     /**
@@ -45,12 +46,19 @@ public class AntFarm implements Nest {
 
     @Override
     public Compatability compatability() {
-        int minSize = this.plateDistance - 5;
-        int maxSize = this.plateDistance + 5;
-        double minTemperature = 20.5;
-        double maxTemperature = 25.5;
-        double minHumidity = 80;
-        double maxHumidity = 95;
+        int substrateFactor = switch (this.substrate) {
+            case "Sand" -> 5;
+            case "Kies" -> 4;
+            case "Erde" -> 2;
+            default -> 1;
+        };
+
+        int minSize = this.plateDistance - (substrateFactor / 2);
+        int maxSize = this.plateDistance + (substrateFactor / 2);
+        double minTemperature = 5 * substrateFactor;
+        double maxTemperature = 6 * substrateFactor;
+        double minHumidity = 16 * substrateFactor;
+        double maxHumidity = 17 * substrateFactor;
 
         Time time;
         Time maxTime = Time.YEAR;

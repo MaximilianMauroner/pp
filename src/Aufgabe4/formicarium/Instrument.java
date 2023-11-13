@@ -10,5 +10,5 @@ package formicarium;
  * gelegentliche Verwendung gedacht ist.
  */
 public interface Instrument extends FormicariumItem {
-    Quality quality();
+    String quality();
 }

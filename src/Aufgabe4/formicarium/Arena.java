@@ -16,18 +16,30 @@ package formicarium;
  */
 public class Arena implements FormicariumPart {
     private final String substrate;
-    private final int tubeLength; // non-negative, if 0, no tube
+    private final int tubeLength; // non-negative, if 0: no tube
 
-    public Arena() {
-        this.substrate = "Sand";
-        this.tubeLength = 15;
+    public Arena(String substrate, int tubeLength) {
+        this.substrate = substrate;
+        this.tubeLength = tubeLength;
     }
 
 
     @Override
     public Compatability compatability() {
-        int minSize = this.tubeLength / 3;
-        int maxSize = this.tubeLength / 2;
-        return new Compatability(minSize, maxSize, 15, 25, 70, 85, Time.MONTH, Time.YEAR);
+        int substrateFactor = switch (this.substrate) {
+            case "Sand" -> 5;
+            case "Kies" -> 4;
+            case "Erde" -> 2;
+            default -> 1;
+        };
+
+        int minSize = this.tubeLength / substrateFactor;
+        int maxSize = this.tubeLength / substrateFactor;
+        double minTemperature = 4 * substrateFactor;
+        double maxTemperature = 8 * substrateFactor;
+        double minHumidity = 14 * substrateFactor;
+        double maxHumidity = 19 * substrateFactor;
+        Time time = Time.values()[substrateFactor - 1];
+        return new Compatability(minSize, maxSize, minTemperature, maxTemperature, minHumidity, maxHumidity, time, Time.UNBOUNDED);
     }
 }

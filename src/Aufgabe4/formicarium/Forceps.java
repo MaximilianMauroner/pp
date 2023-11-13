@@ -11,12 +11,15 @@ package formicarium;
 public class Forceps implements Instrument {
     private final int minSize;
     private final int maxSize;
-    private final Quality quality;
+    private final String quality;
 
-    public Forceps() {
-        this.minSize = 2;
-        this.maxSize = 7;
-        this.quality = Quality.SEMIPROFESSIONAL;
+    public Forceps(String quality, int minSize, int maxSize) {
+        this.quality = switch (quality) {
+            case "professional", "semiprofessional", "hobby" -> quality;
+            default -> "unusable";
+        };
+        this.minSize = minSize;
+        this.maxSize = maxSize;
     }
 
     @Override
@@ -25,7 +28,7 @@ public class Forceps implements Instrument {
     }
 
     @Override
-    public Quality quality() {
+    public String quality() {
         return this.quality;
     }
 }
