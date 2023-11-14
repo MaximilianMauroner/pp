@@ -17,12 +17,20 @@ public class AntFarm implements Nest {
     private final int plateDistance;
     private final Thermometer thermometer;
 
+    // Pre: thermometer is not null and a valid Thermometer object,
+    //      substrate is one of "Sand", "Kies", "Erde" or "Holz",
+    //      plateDistance is non-negative
+    // Post: creates a new AntFarm object with the given substrate and plateDistance
     public AntFarm(Thermometer thermometer, String substrate, int plateDistance) {
         this.substrate = substrate;
         this.plateDistance = plateDistance;
         this.thermometer = thermometer;
     }
 
+    // Pre: substrate is one of "Sand", "Kies", "Erde" or "Holz",
+    //      plateDistance is non-negative
+    // Post:creates a new AntFarm object with the given substrate and plateDistance,
+    //      and a null thermometer
     public AntFarm(String substrate, int plateDistance) {
         this.substrate = substrate;
         this.plateDistance = plateDistance;
@@ -32,6 +40,7 @@ public class AntFarm implements Nest {
     /**
      * When AntFarm is a Formicarium, it needs to have a thermometer
      * When it is just a Part of a CompositeFormicarium, it doesn't.
+     *
      * @return true if AntFarm is a Formicarium, false otherwise
      */
     @Override
@@ -39,11 +48,15 @@ public class AntFarm implements Nest {
         return thermometer != null;
     }
 
+    // Pre: -
+    // Post: returns the substrate of the AntFarm
     @Override
     public Thermometer thermometer() {
         return this.thermometer;
     }
 
+    // Pre: -
+    // Post: returns the substrate of the AntFarm
     @Override
     public Compatability compatability() {
         int substrateFactor = switch (this.substrate) {
@@ -71,6 +84,8 @@ public class AntFarm implements Nest {
         return new Compatability(minSize, maxSize, minTemperature, maxTemperature, minHumidity, maxHumidity, time, maxTime);
     }
 
+    // Pre: -
+    // Post: returns an iterator substrate of the AntFarm
     @Override
     public Iterator<FormicariumPart> iterator() {
         return new FormicariumPartIterator(this);
