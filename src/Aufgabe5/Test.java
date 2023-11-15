@@ -8,7 +8,7 @@ public class Test {
         System.out.println("Hello World!");
 
         CompatibilitySet<Numeric,Numeric> lmmmmao = new CompatibilitySet<Numeric,Numeric>();
-        StatSet<Rated<Numeric, Numeric>,Numeric, Numeric> lmao = new StatSet<Numeric,Numeric,Numeric>();
+        StatSet<Numeric,Numeric, Numeric> lmao = new StatSet<Numeric,Numeric,Numeric>();
 //        lmao.add(new Object());
 //        lmao.add(new Object());
 //        lmao.add(new Object());
@@ -36,4 +36,8 @@ public class Test {
 //        CompatibilitySet<Nest,Quality>
 
     }
+
+
+
+
 }

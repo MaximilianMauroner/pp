@@ -2,7 +2,7 @@ package formicarium;
 
 import java.util.Iterator;
 
-public class CompatibilitySet<X extends Rated<X, R>, R> implements RatedSet<X, X, R> {
+public class CompatibilitySet<X extends Rated<?, R>, R> implements RatedSet<X, X, R> {
     String statistics() {
         return "";
     }

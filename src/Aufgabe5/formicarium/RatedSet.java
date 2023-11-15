@@ -2,11 +2,7 @@ package formicarium;
 
 import java.util.Iterator;
 
-public interface RatedSet<
-        X,
-        P,
-        R
-        > extends Iterable<X> {
+public interface RatedSet<X extends Rated<?, R>, P, R> extends Iterable<X> {
     void add(X x);
 
     void addCriterion(P p);
@@ -17,6 +13,6 @@ public interface RatedSet<
 
     Iterator<X> iterator(R r);
 
-    Iterator<X> criterions();
+    Iterator<P> criterions();
 
 }
