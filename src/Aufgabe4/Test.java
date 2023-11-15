@@ -1,4 +1,3 @@
-
 /* ToDo: add distinction between the types (and maybe sort them according to hierarchy)
 Justification of for not implementing sub type relations
 
@@ -187,10 +186,14 @@ public class Test {
         Arena arena = new Arena("Sand", 10);
         comp.add(arena);
 
-        System.out.println("Test CompositeFormicarium");
+        System.out.println("Test CompositeFormicarium & Compatability");
         testEquals(comp.get(0), thermometer);
         testEquals(comp.get(1), antFarm);
-        testEquals(comp.get(2), arena);
+        try {
+            comp.get(2);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Successful test");
+        }
 
         FormicariumPartIterator iter = (FormicariumPartIterator) comp.iterator();
         System.out.println("Test FormicariumPartIterator");
@@ -216,7 +219,6 @@ public class Test {
 
         FormicariumSet set = new FormicariumSet();
         set.add(antFarm);
-        set.add(new AntFarm("Sand", 10));
         set.add(new AntFarm("Sand", 10));
         set.add(new AntFarm("Sand", 10));
         set.add(new AntFarm("Sand", 10));
