@@ -37,6 +37,8 @@ public class Compatability {
     private Time time;
     private final Time maxTime;
 
+    // Pre: minSize <= maxSize, minTemperature <= maxTemperature, minHumidity <= maxHumidity, time <= maxTime
+    // Post: creates a new Compatability object with the given values
     public Compatability(int minSize, int maxSize, double minTemperature, double maxTemperature, double minHumidity, double maxHumidity, Time time, Time maxTime) {
         this.minSize = minSize;
         this.maxSize = maxSize;
@@ -48,40 +50,64 @@ public class Compatability {
         this.maxTime = maxTime;
     }
 
+    // Pre: -
+    // Post: returns the minimal size of the Compatability
     int minSize() {
         return this.minSize;
     }
+
+    // Pre: -
+    // Post: returns the maximal size of the Compatability
     int maxSize() {
         return this.maxSize;
     }
 
+    // Pre: -
+    // Post: returns the minimal temperature of the Compatability
     double minTemperature() {
         return this.minTemperature;
     }
+
+    // Pre: -
+    // Post: returns the maximal temperature of the Compatability
     double maxTemperature() {
         return this.maxTemperature;
     }
 
+    // Pre: -
+    // Post: returns the minimal humidity of the Compatability
     double minHumidity() {
         return this.minHumidity;
     }
+
+    // Pre: -
+    // Post: returns the maximal humidity of the Compatability
     double maxHumidity() {
         return this.maxHumidity;
     }
 
+    // Pre: -
+    // Post: returns the time of the Compatability
     Time time() {
         return this.time;
     }
 
+    // Pre: time <= maxTime
+    // Post: sets the time of the Compatability to the given time
     void setTime(Time time) {
         if (time.compareTo(this.maxTime) <= 0) {
             this.time = time;
         }
     }
+
+    // Pre: -
+    // Post: returns the maximal time of the Compatability
     Time maxTime() {
         return this.maxTime;
     }
 
+    // Pre: other is not null and a valid Compatability object
+    // Post: returns a Compatability object with the minSize and maxSize of the Compatability
     Compatability compatible(Compatability other) throws IllegalArgumentException {
         Time compTime = Time.values()[Math.min(this.time.ordinal(), other.time.ordinal())];
         Time compMaxTime = Time.values()[Math.min(this.maxTime.ordinal(), other.maxTime.ordinal())];
@@ -97,14 +123,14 @@ public class Compatability {
         }
 
         return new Compatability(
-            Math.max(this.minSize, other.minSize),
-            Math.min(this.maxSize, other.maxSize),
-            Math.max(this.minTemperature, other.minTemperature),
-            Math.min(this.maxTemperature, other.maxTemperature),
-            Math.max(this.minHumidity, other.minHumidity),
-            Math.min(this.maxHumidity, other.maxHumidity),
-            compTime,
-            compMaxTime
+                Math.max(this.minSize, other.minSize),
+                Math.min(this.maxSize, other.maxSize),
+                Math.max(this.minTemperature, other.minTemperature),
+                Math.min(this.maxTemperature, other.maxTemperature),
+                Math.max(this.minHumidity, other.minHumidity),
+                Math.min(this.maxHumidity, other.maxHumidity),
+                compTime,
+                compMaxTime
         );
     }
 }

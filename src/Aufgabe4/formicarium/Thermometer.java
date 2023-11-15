@@ -8,6 +8,8 @@ package formicarium;
 public class Thermometer implements Instrument, FormicariumPart {
     private final String quality;
 
+    // Pre: quality is one of "professional", "semiprofessional", "hobby"
+    // Post: creates a new Thermometer object with the given quality
     public Thermometer(String quality) {
         this.quality = switch (quality) {
             case "professional", "semiprofessional", "hobby" -> quality;
@@ -15,11 +17,15 @@ public class Thermometer implements Instrument, FormicariumPart {
         };
     }
 
+    // Pre: -
+    // Post: returns a Compatability object with the minSize and maxSize of the Thermometer
     @Override
     public Compatability compatability() {
         return new Compatability(Integer.MIN_VALUE, Integer.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Time.UNBOUNDED, Time.UNBOUNDED);
     }
 
+    // Pre: -
+    // Post: returns the quality of the Thermometer
     @Override
     public String quality() {
         return this.quality;

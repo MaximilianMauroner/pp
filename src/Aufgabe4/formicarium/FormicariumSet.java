@@ -24,14 +24,20 @@ import java.util.TreeSet;
 public class FormicariumSet implements Iterable<FormicariumItem> {
     Set<FormicariumItem> items;
 
+    // Pre: -
+    // Post: creates a new FormicariumSet object
     public FormicariumSet() {
         this.items = new HashSet<>();
     }
 
+    // Pre: item is not null and a valid FormicariumItem object
+    // Post: adds the given item to the FormicariumSet
     public void add(FormicariumItem item) {
         this.items.add(item);
     }
 
+    // Pre: -
+    // Post: returns an iterator over all FormicariumItems
     @Override
     public Iterator<FormicariumItem> iterator() {
         return new FormicariumItemIterator(this.items);

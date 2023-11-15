@@ -18,12 +18,17 @@ public class Arena implements FormicariumPart {
     private final String substrate;
     private final int tubeLength; // non-negative, if 0: no tube
 
+    // Pre: substrate is one of "Sand", "Kies", "Erde" or "Holz",
+    //      tubeLength is non-negative
+    // Post: creates a new Arena object with the given substrate and tubeLength
     public Arena(String substrate, int tubeLength) {
         this.substrate = substrate;
         this.tubeLength = tubeLength;
     }
 
 
+    // Pre: -
+    // Post: returns the substrate of the Arena
     @Override
     public Compatability compatability() {
         int substrateFactor = switch (this.substrate) {
