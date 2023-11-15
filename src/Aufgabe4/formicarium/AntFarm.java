@@ -37,12 +37,8 @@ public class AntFarm implements Nest {
         this.thermometer = null;
     }
 
-    /**
-     * When AntFarm is a Formicarium, it needs to have a thermometer
-     * When it is just a Part of a CompositeFormicarium, it doesn't.
-     *
-     * @return true if AntFarm is a Formicarium, false otherwise
-     */
+    // Pre: -
+    // Post: returns true if AntFarm is a Formicarium, false otherwise
     @Override
     public boolean isFormicarium() {
         return thermometer != null;
