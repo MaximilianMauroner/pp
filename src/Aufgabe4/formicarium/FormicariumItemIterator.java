@@ -12,6 +12,8 @@ public class FormicariumItemIterator implements Iterator<FormicariumItem> {
     private int index = 0;
     private Class<? extends FormicariumItem> lastReturnedClass;
 
+    // Pre: items is not null and a valid Set of FormicariumItem objects
+    // Post: creates a new FormicariumItemIterator object with the given items
     public FormicariumItemIterator(Set<FormicariumItem> items) {
         this.items = items;
 
@@ -22,11 +24,15 @@ public class FormicariumItemIterator implements Iterator<FormicariumItem> {
                 .values());
     }
 
+    // Pre: -
+    // Post: returns true if there is a next element, false otherwise
     @Override
     public boolean hasNext() {
         return index < distinctItems.size();
     }
 
+    // Pre: -
+    // Post: returns the next element if hasNext is true. Otherwise, an exception is thrown
     @Override
     public FormicariumItem next() {
         if (!hasNext()) {
@@ -38,6 +44,8 @@ public class FormicariumItemIterator implements Iterator<FormicariumItem> {
         return item;
     }
 
+    // Pre: -
+    // Post: returns the number of elements, of the last returned class
     public int count() {
         if (lastReturnedClass == null) {
             return 0;
@@ -45,6 +53,8 @@ public class FormicariumItemIterator implements Iterator<FormicariumItem> {
         return (int) items.stream().filter(item -> item.getClass().equals(lastReturnedClass)).count();
     }
 
+    // Pre: -
+    // Post: removes the last returned element
     @Override
     public void remove() {
         if (count() > 1) {
@@ -52,6 +62,8 @@ public class FormicariumItemIterator implements Iterator<FormicariumItem> {
         }
     }
 
+    // Pre: count not negative, count <= count()
+    // Post: removes the last returned element count-times
     public void remove(int count) {
         if (lastReturnedClass == null) {
             throw new IllegalStateException("No element to remove");

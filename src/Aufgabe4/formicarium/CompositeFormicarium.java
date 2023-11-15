@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * ToDo: Write out specification and add subtype relation as stated
  * Ein Formicarium, das durch Hinzufügen und
  * Wegnehmen von Bestandteilen änderbar ist. Über einen Iterator
  * sind alle Bestandteile zugreifbar; remove im Iterator entfernt den
@@ -24,12 +23,16 @@ public class CompositeFormicarium implements Formicarium {
     List<FormicariumPart> parts;
     Compatability compatibility;
 
+    // Pre: thermometer is a valid Thermometer object and not null
+    // Post: creates a new CompositeFormicarium object with the given thermometer
     public CompositeFormicarium(Thermometer thermometer) {
         this.parts = new ArrayList<>();
         this.parts.add(thermometer);
         this.compatibility = new Compatability(Integer.MIN_VALUE, Integer.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Time.UNBOUNDED, Time.UNBOUNDED);
     }
 
+    // Pre: -
+    // Post: creates a new CompositeFormicarium object with a null thermometer
     @Override
     public Compatability compatability() {
         return this.compatibility;
@@ -47,11 +50,15 @@ public class CompositeFormicarium implements Formicarium {
         }
     }
 
+    // Pre: -
+    // Post: returns the iterator over all Parts
     @Override
     public Iterator<FormicariumPart> iterator() {
         return new FormicariumPartIterator(this.parts);
     }
 
+    // Pre: -
+    // Post: returns the thermometer of the CompositeFormicarium
     @Override
     public Thermometer thermometer() {
         for (FormicariumPart part : this.parts) {

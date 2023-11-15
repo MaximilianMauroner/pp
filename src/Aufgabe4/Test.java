@@ -1,3 +1,4 @@
+
 /* ToDo: add distinction between the types (and maybe sort them according to hierarchy)
 Justification of for not implementing sub type relations
 
@@ -176,14 +177,14 @@ public class Test {
     public static void main(String[] args) {
         System.out.println("Test Cases: ");
 
-        Thermometer thermometer = new Thermometer();
+        Thermometer thermometer = new Thermometer("hobby");
 
         CompositeFormicarium comp = new CompositeFormicarium(thermometer);
 
-        Formicarium antFarm = new AntFarm();
+        Formicarium antFarm = new AntFarm(thermometer, "Sand", 10);
         comp.add(antFarm);
 
-        Arena arena = new Arena();
+        Arena arena = new Arena("Sand", 10);
         comp.add(arena);
 
         System.out.println("Test CompositeFormicarium");
@@ -215,16 +216,17 @@ public class Test {
 
         FormicariumSet set = new FormicariumSet();
         set.add(antFarm);
-        set.add(new AntFarm());
-        set.add(new AntFarm());
-        set.add(new AntFarm());
-        set.add(new AntFarm());
-        set.add(new AntFarm());
-        set.add(new AntFarm());
-        set.add(new AntFarm());
+        set.add(new AntFarm("Sand", 10));
+        set.add(new AntFarm("Sand", 10));
+        set.add(new AntFarm("Sand", 10));
+        set.add(new AntFarm("Sand", 10));
+        set.add(new AntFarm("Sand", 10));
+        set.add(new AntFarm("Sand", 10));
+        set.add(new AntFarm("Sand", 10));
+        set.add(new AntFarm("Sand", 10));
 
         testEquals(set.getItems().contains(antFarm), true);
-        testEquals(set.getItems().contains(new AntFarm()), false);
+        testEquals(set.getItems().contains(new AntFarm("Sand", 10)), false);
 
         FormicariumItemIterator iter2 = (FormicariumItemIterator) set.iterator();
         System.out.println("Test FormicariumItemIterator");

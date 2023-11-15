@@ -15,42 +15,59 @@ import java.util.Iterator;
 public class AntFarm implements Nest {
     private final String substrate;
     private final int plateDistance;
-    private Thermometer thermometer;
+    private final Thermometer thermometer;
 
-    public AntFarm(Thermometer thermometer) {
-        this.substrate = "Sand";
-        this.plateDistance = 10;
+    // Pre: thermometer is not null and a valid Thermometer object,
+    //      substrate is one of "Sand", "Kies", "Erde" or "Holz",
+    //      plateDistance is non-negative
+    // Post: creates a new AntFarm object with the given substrate and plateDistance
+    public AntFarm(Thermometer thermometer, String substrate, int plateDistance) {
+        this.substrate = substrate;
+        this.plateDistance = plateDistance;
         this.thermometer = thermometer;
     }
 
-    public AntFarm() {
-        this.substrate = "Sand";
-        this.plateDistance = 10;
+    // Pre: substrate is one of "Sand", "Kies", "Erde" or "Holz",
+    //      plateDistance is non-negative
+    // Post:creates a new AntFarm object with the given substrate and plateDistance,
+    //      and a null thermometer
+    public AntFarm(String substrate, int plateDistance) {
+        this.substrate = substrate;
+        this.plateDistance = plateDistance;
+        this.thermometer = null;
     }
 
-    /**
-     * When AntFarm is a Formicarium, it needs to have a thermometer
-     * When it is just a Part of a CompositeFormicarium, it doesn't.
-     * @return true if AntFarm is a Formicarium, false otherwise
-     */
+    // Pre: -
+    // Post: returns true if AntFarm is a Formicarium, false otherwise
     @Override
     public boolean isFormicarium() {
         return thermometer != null;
     }
 
+    // Pre: -
+    // Post: returns the substrate of the AntFarm
     @Override
     public Thermometer thermometer() {
         return this.thermometer;
     }
 
+    // Pre: -
+    // Post: returns the substrate of the AntFarm
     @Override
     public Compatability compatability() {
-        int minSize = this.plateDistance - 5;
-        int maxSize = this.plateDistance + 5;
-        double minTemperature = 20.5;
-        double maxTemperature = 25.5;
-        double minHumidity = 80;
-        double maxHumidity = 95;
+        int substrateFactor = switch (this.substrate) {
+            case "Sand" -> 5;
+            case "Kies" -> 4;
+            case "Erde" -> 2;
+            default -> 1;
+        };
+
+        int minSize = this.plateDistance - (substrateFactor / 2);
+        int maxSize = this.plateDistance + (substrateFactor / 2);
+        double minTemperature = 5 * substrateFactor;
+        double maxTemperature = 6 * substrateFactor;
+        double minHumidity = 16 * substrateFactor;
+        double maxHumidity = 17 * substrateFactor;
 
         Time time;
         Time maxTime = Time.YEAR;
@@ -63,6 +80,8 @@ public class AntFarm implements Nest {
         return new Compatability(minSize, maxSize, minTemperature, maxTemperature, minHumidity, maxHumidity, time, maxTime);
     }
 
+    // Pre: -
+    // Post: returns an iterator substrate of the AntFarm
     @Override
     public Iterator<FormicariumPart> iterator() {
         return new FormicariumPartIterator(this);

@@ -11,21 +11,30 @@ package formicarium;
 public class Forceps implements Instrument {
     private final int minSize;
     private final int maxSize;
-    private final Quality quality;
+    private final String quality;
 
-    public Forceps() {
-        this.minSize = 2;
-        this.maxSize = 7;
-        this.quality = Quality.SEMIPROFESSIONAL;
+    // Pre: quality is one of "professional", "semiprofessional", "hobby"
+    // Post: creates a new Forceps object with the given quality, minSize and maxSize
+    public Forceps(String quality, int minSize, int maxSize) {
+        this.quality = switch (quality) {
+            case "professional", "semiprofessional", "hobby" -> quality;
+            default -> "unusable";
+        };
+        this.minSize = minSize;
+        this.maxSize = maxSize;
     }
 
+    // Pre: -
+    // Post: returns a Compatability object with the minSize and maxSize of the Forceps
     @Override
     public Compatability compatability() {
-        return new Compatability (minSize, maxSize, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Time.UNBOUNDED, Time.UNBOUNDED);
+        return new Compatability(minSize, maxSize, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Time.UNBOUNDED, Time.UNBOUNDED);
     }
 
+    // Pre: -
+    // Post: returns the quality of the Forceps
     @Override
-    public Quality quality() {
+    public String quality() {
         return this.quality;
     }
 }
