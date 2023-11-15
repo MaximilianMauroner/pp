@@ -16,7 +16,7 @@ public class Nest implements Part {
     }
 
     @Override
-    public void setCriterium(Part part) {
+    public void setCriterion(Part part) {
 
     }
 }

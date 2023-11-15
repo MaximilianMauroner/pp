@@ -2,7 +2,10 @@ package formicarium;
 
 import java.util.Iterator;
 
-public class CompatibilitySet<X extends Rated<?, R>, R> implements RatedSet<X, X, R> {
+public class CompatibilitySet<
+        X extends Rated<? super X, R>,
+        R extends Calc<R>
+        > implements RatedSet<X, X, R> {
     String statistics() {
         return "";
     }
@@ -33,7 +36,7 @@ public class CompatibilitySet<X extends Rated<?, R>, R> implements RatedSet<X, X
     }
 
     @Override
-    public Iterator<X> iterator(Object o) {
+    public Iterator<X> iterator(R r) {
         return null;
     }
 

@@ -2,8 +2,12 @@ package formicarium;
 
 import java.util.function.DoubleUnaryOperator;
 
-public class Numeric implements Calc<Numeric>, Rated<DoubleUnaryOperator, Numeric>  {
-    int t = 0;
+public class Numeric implements Calc<Numeric>, Rated<DoubleUnaryOperator, Numeric>, DoubleUnaryOperator {
+    double t = 0;
+
+    public Numeric(double t) {
+        this.t = t;
+    }
 
     @Override
     public Numeric sum(Numeric numeric) {
@@ -12,11 +16,13 @@ public class Numeric implements Calc<Numeric>, Rated<DoubleUnaryOperator, Numeri
 
     @Override
     public Numeric rated(DoubleUnaryOperator d) {
-        return null;
+        return new Numeric(
+                d.applyAsDouble(t)
+        );
     }
 
     @Override
-    public void setCriterium(DoubleUnaryOperator d) {
+    public void setCriterion(DoubleUnaryOperator d) {
 
     }
 
@@ -33,5 +39,10 @@ public class Numeric implements Calc<Numeric>, Rated<DoubleUnaryOperator, Numeri
     @Override
     public Numeric rated() {
         return this;
+    }
+
+    @Override
+    public double applyAsDouble(double operand) {
+        return 0;
     }
 }

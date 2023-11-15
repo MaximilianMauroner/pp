@@ -16,7 +16,7 @@ public class Arena implements Part {
     }
 
     @Override
-    public void setCriterium(Part p) {
+    public void setCriterion(Part p) {
 
     }
 

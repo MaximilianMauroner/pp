@@ -3,26 +3,30 @@ package formicarium;
 import java.util.Iterator;
 
 
-public class StatSet<X extends Rated<?, R>, P, R> implements RatedSet<X, P, R> {
+public class StatSet<
+        X extends Rated<? super P, R>,
+        P,
+        R extends Calc<R>
+        > implements RatedSet<X, P, R> {
     private MyList<X> xRoot;
     private MyList<P> pRoot;
 
     class MyList<T> {
         private MyList<T> next;
-        private T t;
+        private T value;
 
-        public MyList(T t){
-            this.t = t;
+        public MyList(T value){
+            this.value = value;
         }
 
-        public void add(T t){
+        public void add(T value){
             MyList<T> last = next;
             MyList<T> curr = next.next;
             while(curr != null){
                 last = curr;
                 curr = curr.next;
             }
-            last.next = new MyList<>(t);
+            last.next = new MyList<>(value);
         }
 
     }
@@ -51,17 +55,21 @@ public class StatSet<X extends Rated<?, R>, P, R> implements RatedSet<X, P, R> {
     public Iterator<X> iterator() {
 
         return new Iterator<>() {
-            private MyList<X> next = StatSet.this.xRoot;
+            private MyList<X> current = StatSet.this.xRoot;
 
             @Override
             public boolean hasNext() {
-                return next.next != null;
+                return current != null;
             }
 
             @Override
-            public X next() {
-                next = next.next;
-                return next.t;
+            public X next() throws IllegalStateException {
+                if (!hasNext()) {
+                    throw new IllegalStateException("No more elements");
+                }
+                X t = current.value;
+                current = current.next;
+                return t;
             }
         };
     }
@@ -70,16 +78,28 @@ public class StatSet<X extends Rated<?, R>, P, R> implements RatedSet<X, P, R> {
     public Iterator<X> iterator(P p, R r) {
         return new Iterator<>() {
 
-            private MyList<X> next = StatSet.this.xRoot;
+            private MyList<X> current = StatSet.this.xRoot;
 
             @Override
             public boolean hasNext() {
-                return false;
+                while (current != null && !ratedHelper()) {
+                    current = current.next;
+                }
+                return current != null;
             }
 
             @Override
             public X next() {
-                return null;
+                if (!hasNext()) {
+                    throw new IllegalStateException("No more elements");
+                }
+                return current.value;
+            }
+
+            // Pre: current != null
+            // Post: true, if the rating of value is at least r. false otherwise
+            private boolean ratedHelper() {
+                return current.value.rated(p).atleast(r);
             }
         };
     }
@@ -92,17 +112,20 @@ public class StatSet<X extends Rated<?, R>, P, R> implements RatedSet<X, P, R> {
     @Override
     public Iterator<P> criterions() {
         return new Iterator<>() {
-            private MyList<P> next = StatSet.this.pRoot;
+            private MyList<P> current = StatSet.this.pRoot;
 
             @Override
             public boolean hasNext() {
-                return next.next != null;
+                return current != null;
             }
 
             @Override
-            public P next() {
-                next = next.next;
-                return next.t;
+            public P next() throws IllegalStateException {
+                if (!hasNext()) {
+                    throw new IllegalStateException("No more elements");
+                }
+                current = current.next;
+                return current.value;
             }
         };
     }

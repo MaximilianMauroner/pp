@@ -9,7 +9,7 @@ public class UnitTest {
         StatSet<Part,Arena,Quality> StatSet4 = new StatSet<Part,Arena,Quality>();
         StatSet<Arena,Arena,Quality> StatSet5 = new StatSet<Arena,Arena,Quality>();
         StatSet<Nest,Arena,Quality> StatSet6 = new StatSet<Nest,Arena,Quality>();
-        StatSet<Part,Nest,Quality> StatSet7 = new StatSet<Part,Nest,Quality>();
+        StatSet<Part,Nest,Quality> StatSet7 = new StatSet<Part, Nest,Quality>();
         StatSet<Arena,Nest,Quality> StatSet8 = new StatSet<Arena,Nest,Quality>();
         StatSet<Nest,Nest,Quality> StatSet9 = new StatSet<Nest,Nest,Quality>();
         CompatibilitySet<Numeric,Numeric> compatSet1 = new CompatibilitySet<Numeric,Numeric>();
