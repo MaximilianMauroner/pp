@@ -1,5 +1,7 @@
 package formicarium;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class StatSet<X extends Rated<P, R>, P, R> implements RatedSet<X, P, R> {
@@ -7,6 +9,7 @@ public class StatSet<X extends Rated<P, R>, P, R> implements RatedSet<X, P, R> {
     String statistics() {
         return "";
     }
+
 
     boolean equalsObject(Object o) {
         return false;
