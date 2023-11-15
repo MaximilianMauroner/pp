@@ -2,7 +2,7 @@ package formicarium;
 
 import java.util.Iterator;
 
-public class CompatibilitySet<X, R> implements RatedSet<X, X, R> {
+public class CompatibilitySet<X extends Rated<X, R>, R> implements RatedSet<X, X, R> {
     String statistics() {
         return "";
     }
@@ -13,32 +13,32 @@ public class CompatibilitySet<X, R> implements RatedSet<X, X, R> {
 
 
     @Override
-    public void add(Object o) {
+    public void add(X x) {
 
     }
 
     @Override
-    public void addCriterion(Object o) {
+    public void addCriterion(X x) {
 
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<X> iterator() {
         return null;
     }
 
     @Override
-    public Iterator iterator(Object o, Object o2) {
+    public Iterator<X> iterator(X x, R r) {
         return null;
     }
 
     @Override
-    public Iterator iterator(Object o) {
+    public Iterator<X> iterator(Object o) {
         return null;
     }
 
     @Override
-    public Iterator criterions() {
+    public Iterator<X> criterions() {
         return null;
     }
 }

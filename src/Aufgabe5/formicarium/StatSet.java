@@ -2,7 +2,7 @@ package formicarium;
 
 import java.util.Iterator;
 
-public class StatSet<X, P, R> implements RatedSet {
+public class StatSet<X extends Rated<P, R>, P, R> implements RatedSet<X, P, R> {
 
     String statistics() {
         return "";
@@ -15,32 +15,33 @@ public class StatSet<X, P, R> implements RatedSet {
 
 
     @Override
-    public void add(Object o) {
+    public void add(X x) {
         return;
     }
 
     @Override
-    public void addCriterion(Object o) {
+    public void addCriterion(P p) {
         return;
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<X> iterator() {
+
         return null;
     }
 
     @Override
-    public Iterator iterator(Object o, Object o2) {
+    public Iterator<X> iterator(P p, R r) {
         return null;
     }
 
     @Override
-    public Iterator iterator(Object o) {
+    public Iterator<X> iterator(R r) {
         return null;
     }
 
     @Override
-    public Iterator criterions() {
+    public Iterator<X> criterions() {
         return null;
     }
 

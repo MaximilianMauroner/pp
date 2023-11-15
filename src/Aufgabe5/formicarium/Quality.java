@@ -1,23 +1,23 @@
 package formicarium;
 
-public class Quality<R> implements Calc<R> {
+public class Quality implements Calc<Quality> {
     @Override
     public String toString() {
         return "";
     }
 
     @Override
-    public R sum(R r) {
+    public Quality sum(Quality r) {
         return null;
     }
 
     @Override
-    public R ratio(int i) {
+    public Quality ratio(int i) {
         return null;
     }
 
     @Override
-    public boolean atleast(R r) {
+    public boolean atleast(Quality r) {
         return false;
     }
 }
