@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * ToDo: Write out specification and add subtype relation as stated
  * Eine (möglicherweise leere) Menge von Formicarien
  * oder Bestandteilen von Formicarien oder Messgeräten bzw. Werkzeugen, die zusammen mit Formicarien verwendbar sind, unabhängig davon, ob sie als Teil eines Formicariums angesehen werden oder
  * nicht. Es ist nicht notwendig (aber erlaubt), dass alle Elemente der

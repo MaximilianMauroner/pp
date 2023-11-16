@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * ToDo: Write out specification and add subtype relation as stated
  * Ein zur Haltung von Ameisen vorgesehenes Terrarium mit
  * allen dazu gehörenden Bestandteilen. Formicarien können änderbar
  * (vor allem erweiterbar) sein, aber nicht jedes Formicarium ist änderbar. Die Methode iterator gibt einen neuen Iterator zurück, der

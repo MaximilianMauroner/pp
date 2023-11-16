@@ -1,7 +1,6 @@
 package formicarium;
 
 /**
- * ToDo: Write out specification and add subtype relation as stated
  * Ein mit einem Substrat gefüllter Glas- oder Kunststoffbehälter,
  * in dem sich Ameisen frei bewegen können. Eine Arena alleine (ohne
  * Nest) bietet Ameisenkolonien keine ausreichende Grundlage für ein

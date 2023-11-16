@@ -1,7 +1,6 @@
 package formicarium;
 
 /**
- * ToDo: Write out specification and add subtype relation as stated
  * Ein Bestandteil eines Formicariums, das dafür vorgesehen ist eine
  * Ameisenkönigin zu beherbergen. Für kurze Zeit (wenige Tage, etwa
  * für den Transport) kann das Nest alleine als Formicarium genutzt

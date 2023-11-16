@@ -1,7 +1,6 @@
 package formicarium;
 
 /**
- * ToDo: Write out specification and add subtype relation as stated
  * Objekte dieses Typs dienen zur Beschreibung des Lebensraums von Ameisen, für die der damit verbundene Gegenstand
  * (Formicarium, ein Bestandteil davon, Messgerät, Werkzeug, . . . ) geeignet ist. Die Beschreibung erfolgt über Wertebereiche
  * verschiedener Umweltparameter, abfragbar über Methodenpaare (jeweils für

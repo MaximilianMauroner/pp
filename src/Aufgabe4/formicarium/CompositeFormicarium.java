@@ -69,6 +69,9 @@ public class CompositeFormicarium implements Formicarium {
         return null;
     }
 
+    // Pre: index is a valid index (0 <= index < parts.size())
+    // Post: returns the part at the given index
+    // Note: this method is not part of the specification but is needed for testing the CompositeFormicarium without its iterator
     public FormicariumPart get(int index) {
         return this.parts.get(index);
     }

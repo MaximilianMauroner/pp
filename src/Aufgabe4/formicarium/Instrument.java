@@ -1,7 +1,6 @@
 package formicarium;
 
 /**
- * ToDo: Write out specification and add subtype relation as stated
  * Ein Messgerät oder ein Werkzeug, unabhängig davon, ob
  * es Bestandteil eines Formicariums sein kann oder nicht. Nicht jedes
  * Objekt von Instrument ist zusammen mit Formicarien verwendbar. Das Ergebnis eines Aufrufs der Methode quality besagt,

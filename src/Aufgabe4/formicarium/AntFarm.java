@@ -3,7 +3,6 @@ package formicarium;
 import java.util.Iterator;
 
 /**
- * ToDo: Write out specification and add subtype relation as stated
  * Eine Form eines Ameisennests bestehend aus einem Substrat
  * (z. B. Sand, Kies oder Erde) zwischen zwei Glas- oder Kunststoffplatten, die an den Rändern miteinander verbunden sind. Durch die
  * Platten sind die von den Ameisen ins Substrat gegrabenen Gänge beobachtbar. Je nach Substrat sind solche Ameisenfarmen für

@@ -1,174 +1,91 @@
-/* ToDo: add distinction between the types (and maybe sort them according to hierarchy)
+/*
 Justification of for not implementing sub type relations
 
-AntFarm:
-    - AntFarm:
-    - Arena:
-    - Compatability:
-    - CompositeFormicarium:
-    - Forceps:
-    - Formicarium:
-    - FormicariumItem:
-    - FormicariumPart:
-    - FormicariumSet:
-    - Instrument:
-    - Nest:
-    - Thermometer:
-
-Arena:
-    - AntFarm:
-    - Arena:
-    - Compatability:
-    - CompositeFormicarium:
-    - Forceps:
-    - Formicarium:
-    - FormicariumItem:
-    - FormicariumPart:
-    - FormicariumSet:
-    - Instrument:
-    - Nest:
-    - Thermometer:
+From the task description we can generally derive these groups:
+- Formicarium(s): Formicarium, Nest, AntFarm, CompositeFormicarium
+- Parts: Formicarium, Arena, Thermometer
+- Items (basically everything)
+- Tools: Instrument, Thermometer, Forceps, ...
+- Collections: FormicariumSet
+- Meta-Information: Compatability
 
 Compatability:
-    - AntFarm:
-    - Arena:
-    - Compatability:
-    - CompositeFormicarium:
-    - Forceps:
-    - Formicarium:
-    - FormicariumItem:
-    - FormicariumPart:
-    - FormicariumSet:
-    - Instrument:
-    - Nest:
-    - Thermometer:
-
-CompositeFormicarium:
-    - AntFarm:
-    - Arena:
-    - Compatability:
-    - CompositeFormicarium:
-    - Forceps:
-    - Formicarium:
-    - FormicariumItem:
-    - FormicariumPart:
-    - FormicariumSet:
-    - Instrument:
-    - Nest:
-    - Thermometer:
-
-Forceps:
-    - AntFarm:
-    - Arena:
-    - Compatability:
-    - CompositeFormicarium:
-    - Forceps:
-    - Formicarium:
-    - FormicariumItem:
-    - FormicariumPart:
-    - FormicariumSet:
-    - Instrument:
-    - Nest:
-    - Thermometer:
-
-Formicarium:
-    - AntFarm:
-    - Arena:
-    - Compatability:
-    - CompositeFormicarium:
-    - Forceps:
-    - Formicarium:
-    - FormicariumItem:
-    - FormicariumPart:
-    - FormicariumSet:
-    - Instrument:
-    - Nest:
-    - Thermometer:
-
-FormicariumItem:
-    - AntFarm:
-    - Arena:
-    - Compatability:
-    - CompositeFormicarium:
-    - Forceps:
-    - Formicarium:
-    - FormicariumItem:
-    - FormicariumPart:
-    - FormicariumSet:
-    - Instrument:
-    - Nest:
-    - Thermometer:
-
-FormicariumPart:
-    - AntFarm:
-    - Arena:
-    - Compatability:
-    - CompositeFormicarium:
-    - Forceps:
-    - Formicarium:
-    - FormicariumItem:
-    - FormicariumPart:
-    - FormicariumSet:
-    - Instrument:
-    - Nest:
-    - Thermometer:
+This holds for all other Types. Compatability cannot be a physical object, therefore it is a meta-information.
+Objects may have compatability information but it is in no subtype relationship with any other type.
 
 FormicariumSet:
-    - AntFarm:
-    - Arena:
-    - Compatability:
-    - CompositeFormicarium:
-    - Forceps:
-    - Formicarium:
-    - FormicariumItem:
-    - FormicariumPart:
-    - FormicariumSet:
-    - Instrument:
-    - Nest:
-    - Thermometer:
+This is a collection of items. So no subtype relationship with any other type.
+
+CompositeFormicarium:
+While generally being a collection. The following reasons hold for CompositeFormicarium:
+- A FormicariumPart may be a Formicarium or a Part of one
+- CompositeFormicarium is a Formicarium
+- CompisiteFormicarium holds Parts of Formicariums (so if something is not a Formicarium it also cannot be a CompositeFormicarium)
+- CompositeFormicarium holds Formicariums
+- CompositeFormicarium can hold other CompositeFormicariums
+
+FormicariumItem:
+- Formicarium: Item can be a Formicarium, which means Formicarium is a subtype (therefore not the other way around)
+- Parts: Item can be parts of a Formicarium, which means Parts is a subtype (therefore not the other way around)
+- Items: Subtype relation to itself
+- Tools: Item can be a Tool, which means Tools is a subtype (therefore not the other way around)
 
 Instrument:
-    - AntFarm:
-    - Arena:
-    - Compatability:
-    - CompositeFormicarium:
-    - Forceps:
-    - Formicarium:
-    - FormicariumItem:
-    - FormicariumPart:
-    - FormicariumSet:
-    - Instrument:
-    - Nest:
-    - Thermometer:
+- Formicarium: Instrument represents objects that may be used with a Formicarium but cannot be a Formicarium (so no subtype relation)
+- Parts: Some Instruments are parts but not all of them (so no subtype relation)
+- Items: Instrument is a subtype of Item
+- Tools: Subtype relation to itself
+
+Thermometer
+- Formicarium: A Thermometer may be part of a Formicarium but cannot be a Formicarium (so no subtype relation)
+- Part: Thermometer is a subtype of Part
+- Items: Thermometer is a subtype of Item
+- Tools: Thermometer is a subtype of Instrument
+
+Forceps:
+- Formicarium: A Forceps may be used with a Formicarium but cannot be a Formicarium (so no subtype relation)
+- Parts: Forceps can be used with Formicariums but cannot be a part of it (so no subtype relation)
+- Items: Forceps is a subtype of Item
+- Tools: Forceps is a subtype of Instrument
+
+FormicariumPart:
+- Formicarium: A Part can be a Formicarium, which means Formicarium is a subtype (therefore not the other way around)
+- Parts: Subtype relation to itself
+- Items: Part is a subtype of Item
+- Tools: Some Tools are Parts, which mean they can be subtypes of Part (therefore not the other way around)
+
+Arena:
+- Formicarium: Citation "A Arena alone cannot be a Formicarium" (so no subtype relation)
+- Parts: Arena is a subtype of Part
+- Items: Arena is a subtype of Item
+- Tools: A Arena is part of a Formicarium and not a Tool to be used with one (so no subtype relation)
+
+Formicarium:
+- Formicarium: Subtype relation to itself
+- Parts: Formicarium is a subtype of Part
+- Items: Formicarium is a subtype of Item
+- Tools: Tools may be used with a Formicarium or be part of it but a Formicarium cannot be a Tool (so no subtype relation)
+
+CompositeFormicarium:
+- Formicarium: A CompositeFormicarium is a Formicarium
+- Parts: A CompositeFormicarium is a Part
+- Items: A CompositeFormicarium is an Item
+- Tools: Same reasoning as for Formicarium
 
 Nest:
-    - AntFarm:
-    - Arena:
-    - Compatability:
-    - CompositeFormicarium:
-    - Forceps:
-    - Formicarium:
-    - FormicariumItem:
-    - FormicariumPart:
-    - FormicariumSet:
-    - Instrument:
-    - Nest:
-    - Thermometer:
+- Formicarium: A Nest is a Formicarium
+- Parts: A Nest is a Part
+- Items: A Nest is an Item
+- Tools: Same reasoning as for Formicarium
 
-Thermometer:
-    - AntFarm:
-    - Arena:
-    - Compatability:
-    - CompositeFormicarium:
-    - Forceps:
-    - Formicarium:
-    - FormicariumItem:
-    - FormicariumPart:
-    - FormicariumSet:
-    - Instrument:
-    - Nest:
-    - Thermometer:
+AntFarm:
+- Formicarium: An AntFarm is a Formicarium
+- Parts: An AntFarm is a Part
+- Items: An AntFarm is an Item
+- Tools: Same reasoning as for Formicarium
  */
+
+
 
 import formicarium.*;
 
