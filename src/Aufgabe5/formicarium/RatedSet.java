@@ -3,7 +3,7 @@ package formicarium;
 import java.util.Iterator;
 
 public interface RatedSet<
-        X extends Rated<?, R>,
+        X extends Rated<? super P, R>,
         P,
         R extends Calc<R>
         > extends Iterable<X> {

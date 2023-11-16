@@ -7,7 +7,10 @@ public class Nest implements Part {
 
     @Override
     public Quality rated(Part part) {
-        return null;
+        if (part instanceof Nest) {
+            return new Quality("not applicable");
+        }
+        return part.rated(this);
     }
 
     @Override

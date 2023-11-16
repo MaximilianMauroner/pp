@@ -10,6 +10,7 @@ public class StatSet<
         > implements RatedSet<X, P, R> {
     private MyList<X> xRoot;
     private MyList<P> pRoot;
+    private int calls = 0;
 
     class MyList<T> {
         private MyList<T> next;
@@ -32,11 +33,12 @@ public class StatSet<
     }
 
     String statistics() {
+        // ToDo: Implement this method
         return "";
     }
 
 
-    boolean equalsObject(Object o) {
+    boolean equalsObject(StatSet<X, P, R> o) {
         return false;
     }
 
@@ -71,6 +73,10 @@ public class StatSet<
                 current = current.next;
                 return t;
             }
+
+            public void remove() {
+                // ToDo: Implement this method
+            }
         };
     }
 
@@ -101,12 +107,30 @@ public class StatSet<
             private boolean ratedHelper() {
                 return current.value.rated(p).atleast(r);
             }
+
+            public void remove() {
+                // ToDo: Implement this method
+            }
         };
     }
 
     @Override
     public Iterator<X> iterator(R r) {
-        return null;
+        return new Iterator<X>() {
+            @Override
+            public boolean hasNext() {
+                return false;
+            }
+
+            @Override
+            public X next() {
+                return null;
+            }
+
+            public void remove() {
+                // ToDo: Implement this method
+            }
+        };
     }
 
     @Override
@@ -126,6 +150,10 @@ public class StatSet<
                 }
                 current = current.next;
                 return current.value;
+            }
+
+            public void remove() {
+                // ToDo: Implement this method
             }
         };
     }
