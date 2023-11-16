@@ -85,6 +85,12 @@ AntFarm:
 - Tools: Same reasoning as for Formicarium
  */
 
+/*
+Distribution of work:
+- Maximilian: Tests
+- Lukas: Type implementation
+- Christopher: Comments (Zusicherungen)
+ */
 
 
 import formicarium.*;
