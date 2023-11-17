@@ -1,8 +1,8 @@
 package formicarium;
 
 public class Nest implements Part {
-    double antSize() {
-        return 0;
+    Numeric antSize() {
+        return new Numeric(0);
     }
 
     @Override
@@ -21,5 +21,10 @@ public class Nest implements Part {
     @Override
     public void setCriterion(Part part) {
 
+    }
+
+    @Override
+    public Numeric value() {
+        return antSize();
     }
 }

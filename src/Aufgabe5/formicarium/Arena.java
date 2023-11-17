@@ -1,8 +1,8 @@
 package formicarium;
 
 public class Arena implements Part {
-    double volume() {
-        return 0;
+    Numeric volume() {
+        return new Numeric(0);
     }
 
     @Override
@@ -18,6 +18,11 @@ public class Arena implements Part {
     @Override
     public void setCriterion(Part p) {
 
+    }
+
+    @Override
+    public Numeric value() {
+        return volume();
     }
 
     @Override

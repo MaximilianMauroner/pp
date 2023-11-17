@@ -43,6 +43,6 @@ public class Numeric implements Calc<Numeric>, Rated<DoubleUnaryOperator, Numeri
 
     @Override
     public double applyAsDouble(double operand) {
-        return 0;
+        return t;
     }
 }

@@ -13,7 +13,7 @@ public class StatSet<
     private int calls = 0;
 
     class MyList<T> {
-        private MyList<T> next;
+        private MyList<T> root;
         private T value;
 
         public MyList(T value){
@@ -21,25 +21,49 @@ public class StatSet<
         }
 
         public void add(T value){
-            MyList<T> last = next;
-            MyList<T> curr = next.next;
+            MyList<T> last = root;
+            MyList<T> curr = root.root;
             while(curr != null){
                 last = curr;
-                curr = curr.next;
+                curr = curr.root;
             }
-            last.next = new MyList<>(value);
+            last.root = new MyList<>(value);
         }
 
+        public boolean contains(T value){
+            MyList<T> curr = root;
+            while(curr != null){
+                if(curr.value.equals(value)){
+                    return true;
+                }
+                curr = curr.root;
+            }
+            return false;
+        }
     }
 
-    String statistics() {
+    public String statistics() {
         // ToDo: Implement this method
         return "";
     }
 
 
-    boolean equalsObject(StatSet<X, P, R> o) {
-        return false;
+    public boolean equals(StatSet<X, P, R> o) {
+        Iterator<X> xIterator = o.iterator();
+        Iterator<P> pIterator = o.criterions();
+        while (xIterator.hasNext()) {
+            X x = xIterator.next();
+            if (!this.xRoot.contains(x)) {
+                return false;
+            }
+        }
+        while (pIterator.hasNext()) {
+            P p = pIterator.next();
+            if (!this.pRoot.contains(p)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -70,7 +94,7 @@ public class StatSet<
                     throw new IllegalStateException("No more elements");
                 }
                 X t = current.value;
-                current = current.next;
+                current = current.root;
                 return t;
             }
 
@@ -89,7 +113,7 @@ public class StatSet<
             @Override
             public boolean hasNext() {
                 while (current != null && !ratedHelper()) {
-                    current = current.next;
+                    current = current.root;
                 }
                 return current != null;
             }
@@ -148,7 +172,7 @@ public class StatSet<
                 if (!hasNext()) {
                     throw new IllegalStateException("No more elements");
                 }
-                current = current.next;
+                current = current.root;
                 return current.value;
             }
 
@@ -158,5 +182,9 @@ public class StatSet<
         };
     }
 
-
+    // Pre: x != null && p != null
+    // Post: true, if x or p is contained in this. false if neither x nor p is contained in this
+    protected boolean contains(X x, P p) {
+        return this.xRoot.contains(x) || this.pRoot.contains(p);
+    }
 }
