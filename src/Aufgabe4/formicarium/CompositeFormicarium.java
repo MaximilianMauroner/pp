@@ -1,6 +1,7 @@
 package formicarium;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,10 +39,20 @@ public class CompositeFormicarium implements Formicarium {
         return this.compatibility;
     }
 
+    @Override
+    public FormicariumItem clone() {
+        CompositeFormicarium clone = new CompositeFormicarium((Thermometer) this.thermometer().clone());
+        clone.parts = new ArrayList<>();
+        for (FormicariumPart part : this.parts) {
+            clone.parts.add((FormicariumPart) part.clone());
+        }
+        return clone;
+    }
+
     public void add(FormicariumPart part) {
         try {
             Compatability newCompatibility = part.compatability().compatible(this.compatability());
-            if (!this.parts.contains(part)) {
+            if (!containsIdentical(part)) {
                 this.parts.add(part);
                 this.compatibility = newCompatibility;
             }
@@ -74,5 +85,16 @@ public class CompositeFormicarium implements Formicarium {
     // Note: this method is not part of the specification but is needed for testing the CompositeFormicarium without its iterator
     public FormicariumPart get(int index) {
         return this.parts.get(index);
+    }
+
+    // Pre: part is not null and a valid FormicariumPart object
+    // Post: returns true if the CompositeFormicarium contains an identical part, false otherwise
+    private boolean containsIdentical(FormicariumPart part) {
+        for (FormicariumPart p : this.parts) {
+            if (p == part) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -24,6 +24,21 @@ public class Thermometer implements Instrument, FormicariumPart {
     }
 
     // Pre: -
+    // Post: returns a clone of the Thermometer
+    @Override
+    public FormicariumItem clone() {
+        return new Thermometer(this.quality);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Thermometer thermometer) {
+            return this.quality.equals(thermometer.quality);
+        }
+        return false;
+    }
+
+    // Pre: -
     // Post: returns the quality of the Thermometer
     @Override
     public String quality() {

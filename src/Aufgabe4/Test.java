@@ -157,11 +157,23 @@ public class Test {
         System.out.println("Test FormicariumItemIterator");
 
         testClass(iter2, set.iterator());
-        if (iter2.hasNext()) {
+
+        while (iter2.hasNext()) {
             FormicariumItem item = iter2.next();
-            testEquals(iter2.count() + "", 8 + "");
-            iter2.remove(4);
-            testEquals(iter2.count() + "", 4 + "");
+
+            if (item.equals(antFarm)) {
+                testEquals(iter2.count() + "", 1 + "");
+                iter2.remove(4);
+                testEquals(iter2.count() + "", 1 + "");
+                iter2.remove();
+                testEquals(iter2.count() + "", 0 + "");
+            } else {
+                testEquals(iter2.count() + "", 7 + "");
+                iter2.remove(6);
+                testEquals(iter2.count() + "", 1 + "");
+                iter2.remove();
+                testEquals(iter2.count() + "", 0 + "");
+            }
         }
 
 

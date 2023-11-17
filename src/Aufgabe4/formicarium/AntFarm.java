@@ -80,6 +80,27 @@ public class AntFarm implements Nest {
     }
 
     // Pre: -
+    // Post: returns a clone of the AntFarm
+    @Override
+    public FormicariumItem clone() {
+        return new AntFarm(this.thermometer, this.substrate, this.plateDistance);
+    }
+
+
+    // Pre: -
+    // Post: returns true if the given object is equal to the AntFarm, false otherwise
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof AntFarm other) {
+            boolean thermometerEquals = this.thermometer == null && other.thermometer == null ||
+                    this.thermometer != null && this.thermometer.equals(other.thermometer);
+
+            return this.plateDistance == other.plateDistance && this.substrate.equals(other.substrate) && thermometerEquals;
+        }
+        return false;
+    }
+
+    // Pre: -
     // Post: returns an iterator substrate of the AntFarm
     @Override
     public Iterator<FormicariumPart> iterator() {

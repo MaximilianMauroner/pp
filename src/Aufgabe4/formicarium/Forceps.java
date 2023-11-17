@@ -31,6 +31,21 @@ public class Forceps implements Instrument {
     }
 
     // Pre: -
+    // Post: returns a clone of the Forceps
+    @Override
+    public FormicariumItem clone() {
+        return new Forceps(this.quality, this.minSize, this.maxSize);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Forceps forceps) {
+            return this.quality.equals(forceps.quality) && this.minSize == forceps.minSize && this.maxSize == forceps.maxSize;
+        }
+        return false;
+    }
+
+    // Pre: -
     // Post: returns the quality of the Forceps
     @Override
     public String quality() {

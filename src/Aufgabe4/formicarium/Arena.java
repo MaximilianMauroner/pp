@@ -38,12 +38,27 @@ public class Arena implements FormicariumPart {
         };
 
         int minSize = this.tubeLength / substrateFactor;
-        int maxSize = this.tubeLength / substrateFactor;
+        int maxSize = this.tubeLength * substrateFactor;
         double minTemperature = 4 * substrateFactor;
         double maxTemperature = 8 * substrateFactor;
         double minHumidity = 14 * substrateFactor;
         double maxHumidity = 19 * substrateFactor;
         Time time = Time.values()[substrateFactor - 1];
         return new Compatability(minSize, maxSize, minTemperature, maxTemperature, minHumidity, maxHumidity, time, Time.UNBOUNDED);
+    }
+
+    // Pre: -
+    // Post: returns a clone of the Arena
+    @Override
+    public FormicariumItem clone() {
+        return new AntFarm(this.substrate, this.tubeLength);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Arena arena) {
+            return this.substrate.equals(arena.substrate) && this.tubeLength == arena.tubeLength;
+        }
+        return false;
     }
 }

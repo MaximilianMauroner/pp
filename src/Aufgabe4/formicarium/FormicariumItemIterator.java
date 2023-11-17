@@ -10,18 +10,19 @@ public class FormicariumItemIterator implements Iterator<FormicariumItem> {
     private Set<FormicariumItem> items;
     private List<FormicariumItem> distinctItems;
     private int index = 0;
-    private Class<? extends FormicariumItem> lastReturnedClass;
+    private FormicariumItem lastReturned;
 
     // Pre: items is not null and a valid Set of FormicariumItem objects
     // Post: creates a new FormicariumItemIterator object with the given items
     public FormicariumItemIterator(Set<FormicariumItem> items) {
         this.items = items;
 
-        distinctItems = new ArrayList<>(items.stream()
-                .collect(Collectors.groupingBy(FormicariumItem::getClass,
-                        Collectors.collectingAndThen(Collectors.toList(), list -> list.get(0)))
-                )
-                .values());
+        distinctItems = new ArrayList<>();
+        for (FormicariumItem item : items) {
+             if (!distinctItems.contains(item)) {
+                 distinctItems.add(item);
+             }
+        }
     }
 
     // Pre: -
@@ -40,24 +41,25 @@ public class FormicariumItemIterator implements Iterator<FormicariumItem> {
         }
 
         FormicariumItem item = distinctItems.get(index++);
-        lastReturnedClass = item.getClass();
+        lastReturned = item.clone();
         return item;
     }
 
     // Pre: -
-    // Post: returns the number of elements, of the last returned class
+    // Post: returns the number of elements, equal to the last returned
     public int count() {
-        if (lastReturnedClass == null) {
+        if (lastReturned == null) {
             return 0;
         }
-        return (int) items.stream().filter(item -> item.getClass().equals(lastReturnedClass)).count();
+
+        return (int) items.stream().filter(item -> item.equals(lastReturned)).count();
     }
 
     // Pre: -
     // Post: removes the last returned element
     @Override
     public void remove() {
-        if (count() > 1) {
+        if (count() >= 1) {
             remove(1);
         }
     }
@@ -65,13 +67,18 @@ public class FormicariumItemIterator implements Iterator<FormicariumItem> {
     // Pre: count not negative, count <= count()
     // Post: removes the last returned element count-times
     public void remove(int count) {
-        if (lastReturnedClass == null) {
+        if (lastReturned == null) {
             throw new IllegalStateException("No element to remove");
         }
 
         if (count() >= count) {
             for (int i = 0; i < count; i++) {
-                items.stream().filter(item -> item.getClass().equals(lastReturnedClass)).findFirst().ifPresent(items::remove);
+                items.stream().filter(item -> item.equals(lastReturned)).findFirst().ifPresent(items::remove);
+            }
+
+            if (count() == 0) {
+                distinctItems.remove(lastReturned);
+                index--;
             }
         }
     }

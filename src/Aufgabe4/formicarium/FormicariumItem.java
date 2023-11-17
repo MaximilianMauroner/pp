@@ -9,4 +9,5 @@ package formicarium;
  */
 public interface FormicariumItem {
     Compatability compatability();
+    FormicariumItem clone();
 }
