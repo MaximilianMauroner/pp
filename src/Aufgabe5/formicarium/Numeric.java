@@ -3,46 +3,47 @@ package formicarium;
 import java.util.function.DoubleUnaryOperator;
 
 public class Numeric implements Calc<Numeric>, Rated<DoubleUnaryOperator, Numeric>, DoubleUnaryOperator {
-    double t = 0;
+    double value = 0;
+    DoubleUnaryOperator ratingCriterion;
 
-    public Numeric(double t) {
-        this.t = t;
+    public Numeric(double value) {
+        this.value = value;
     }
 
     @Override
     public Numeric sum(Numeric numeric) {
-        return null;
+        return new Numeric(value + numeric.value);
     }
 
     @Override
     public Numeric rated(DoubleUnaryOperator d) {
         return new Numeric(
-                d.applyAsDouble(t)
+                d.applyAsDouble(value)
         );
     }
 
     @Override
     public void setCriterion(DoubleUnaryOperator d) {
-
+        ratingCriterion = d;
     }
 
     @Override
     public Numeric ratio(int i) {
-        return this;
+        return new Numeric(value / i);
     }
 
     @Override
     public boolean atleast(Numeric numeric) {
-        return false;
+        return this.value >= numeric.value;
     }
 
     @Override
     public Numeric rated() {
-        return this;
+        return rated(ratingCriterion);
     }
 
     @Override
     public double applyAsDouble(double operand) {
-        return t;
+        return value;
     }
 }

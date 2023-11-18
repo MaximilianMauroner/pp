@@ -13,7 +13,7 @@ public class StatSet<
     private int calls = 0;
 
     class MyList<T> {
-        private MyList<T> root;
+        private MyList<T> next;
         private T value;
 
         public MyList(T value){
@@ -21,22 +21,37 @@ public class StatSet<
         }
 
         public void add(T value){
-            MyList<T> last = root;
-            MyList<T> curr = root.root;
+            if (identical(value)) {
+                return;
+            }
+
+            MyList<T> last = next;
+            MyList<T> curr = next.next;
             while(curr != null){
                 last = curr;
-                curr = curr.root;
+                curr = curr.next;
             }
-            last.root = new MyList<>(value);
+            last.next = new MyList<>(value);
         }
 
         public boolean contains(T value){
-            MyList<T> curr = root;
+            MyList<T> curr = next;
             while(curr != null){
                 if(curr.value.equals(value)){
                     return true;
                 }
-                curr = curr.root;
+                curr = curr.next;
+            }
+            return false;
+        }
+
+        public boolean identical(T value){
+            MyList<T> curr = next;
+            while(curr != null){
+                if(curr.value == value){
+                    return true;
+                }
+                curr = curr.next;
             }
             return false;
         }
@@ -94,7 +109,7 @@ public class StatSet<
                     throw new IllegalStateException("No more elements");
                 }
                 X t = current.value;
-                current = current.root;
+                current = current.next;
                 return t;
             }
 
@@ -113,7 +128,7 @@ public class StatSet<
             @Override
             public boolean hasNext() {
                 while (current != null && !ratedHelper()) {
-                    current = current.root;
+                    current = current.next;
                 }
                 return current != null;
             }
@@ -172,7 +187,7 @@ public class StatSet<
                 if (!hasNext()) {
                     throw new IllegalStateException("No more elements");
                 }
-                current = current.root;
+                current = current.next;
                 return current.value;
             }
 

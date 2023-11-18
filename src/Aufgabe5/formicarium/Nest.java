@@ -1,8 +1,15 @@
 package formicarium;
 
 public class Nest implements Part {
+    private double antSize;
+    private Part ratingCriterion;
+
+    public Nest(double antSize) {
+        this.antSize = antSize;
+    }
+
     Numeric antSize() {
-        return new Numeric(0);
+        return new Numeric(antSize);
     }
 
     @Override
@@ -15,12 +22,15 @@ public class Nest implements Part {
 
     @Override
     public Quality rated() {
-        return null;
+        if (ratingCriterion == null) {
+            return new Quality("not applicable");
+        }
+        return rated(ratingCriterion);
     }
 
     @Override
     public void setCriterion(Part part) {
-
+        ratingCriterion = part;
     }
 
     @Override

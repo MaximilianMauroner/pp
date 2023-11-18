@@ -1,8 +1,15 @@
 package formicarium;
 
 public class Arena implements Part {
+    private double volume;
+    private Part ratingCriterion;
+
+    public Arena(double volume) {
+        this.volume = volume;
+    }
+
     Numeric volume() {
-        return new Numeric(0);
+        return new Numeric(volume);
     }
 
     @Override
@@ -12,12 +19,15 @@ public class Arena implements Part {
 
     @Override
     public Quality rated() {
-        return null;
+        if (ratingCriterion == null) {
+            return new Quality("not applicable");
+        }
+        return rated(ratingCriterion);
     }
 
     @Override
     public void setCriterion(Part p) {
-
+        ratingCriterion = p;
     }
 
     @Override
