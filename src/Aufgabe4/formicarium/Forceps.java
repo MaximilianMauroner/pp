@@ -37,6 +37,8 @@ public class Forceps implements Instrument {
         return new Forceps(this.quality, this.minSize, this.maxSize);
     }
 
+    // Pre: o is not null
+    // Post: returns true if the Forceps is equal to the given object, false otherwise
     @Override
     public boolean equals(Object o) {
         if (o instanceof Forceps forceps) {

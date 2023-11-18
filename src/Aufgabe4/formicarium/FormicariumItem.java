@@ -8,6 +8,11 @@ package formicarium;
  * ist, wird dafür der größtmögliche Wertebereich angenommen.
  */
 public interface FormicariumItem {
+    // Pre: -
+    // Post: returns the compatability of the FormicariumItem
     Compatability compatability();
+
+    // Pre: -
+    // Post: returns a clone of the FormicariumItem
     FormicariumItem clone();
 }

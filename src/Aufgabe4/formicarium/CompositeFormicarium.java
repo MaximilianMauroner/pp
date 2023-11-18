@@ -39,6 +39,8 @@ public class CompositeFormicarium implements Formicarium {
         return this.compatibility;
     }
 
+    // Pre: -
+    // Post: returns a deep clone of the CompositeFormicarium
     @Override
     public FormicariumItem clone() {
         CompositeFormicarium clone = new CompositeFormicarium((Thermometer) this.thermometer().clone());
@@ -49,6 +51,18 @@ public class CompositeFormicarium implements Formicarium {
         return clone;
     }
 
+    // Pre: o is not null
+    // Post: returns true if the given object is equal to the CompositeFormicarium, false otherwise
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof CompositeFormicarium formicarium) {
+            return this.parts.equals(formicarium.parts);
+        }
+        return false;
+    }
+
+    // Pre: part is not null
+    // Post: adds the given part to the CompositeFormicarium if it is compatible and not already present
     public void add(FormicariumPart part) {
         try {
             Compatability newCompatibility = part.compatability().compatible(this.compatability());
@@ -87,7 +101,7 @@ public class CompositeFormicarium implements Formicarium {
         return this.parts.get(index);
     }
 
-    // Pre: part is not null and a valid FormicariumPart object
+    // Pre: part is not null and a valid (compatile) FormicariumPart object
     // Post: returns true if the CompositeFormicarium contains an identical part, false otherwise
     private boolean containsIdentical(FormicariumPart part) {
         for (FormicariumPart p : this.parts) {

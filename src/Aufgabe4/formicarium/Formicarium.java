@@ -14,5 +14,7 @@ import java.util.List;
  * Umweltbedingungen beschreibt.
  */
 public interface Formicarium extends FormicariumPart, Iterable<FormicariumPart> {
+    // Pre: -
+    // Post: returns the thermometer of the Formicarium
     Thermometer thermometer();
 }

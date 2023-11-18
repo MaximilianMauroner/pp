@@ -44,14 +44,14 @@ public class AntFarm implements Nest {
     }
 
     // Pre: -
-    // Post: returns the substrate of the AntFarm
+    // Post: returns the thermometer of the AntFarm (if it is a Formicarium), null otherwise
     @Override
     public Thermometer thermometer() {
         return this.thermometer;
     }
 
     // Pre: -
-    // Post: returns the substrate of the AntFarm
+    // Post: returns the compatability of the AntFarm based on its substrate and plateDistance
     @Override
     public Compatability compatability() {
         int substrateFactor = switch (this.substrate) {
@@ -87,7 +87,7 @@ public class AntFarm implements Nest {
     }
 
 
-    // Pre: -
+    // Pre: o is not null
     // Post: returns true if the given object is equal to the AntFarm, false otherwise
     @Override
     public boolean equals(Object o) {
@@ -101,7 +101,7 @@ public class AntFarm implements Nest {
     }
 
     // Pre: -
-    // Post: returns an iterator substrate of the AntFarm
+    // Post: returns an iterator of the AntFarm
     @Override
     public Iterator<FormicariumPart> iterator() {
         return new FormicariumPartIterator(this);

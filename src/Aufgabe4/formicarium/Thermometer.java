@@ -30,6 +30,8 @@ public class Thermometer implements Instrument, FormicariumPart {
         return new Thermometer(this.quality);
     }
 
+    // Pre: o is not null
+    // Post: returns true if the given object is equal to the Thermometer
     @Override
     public boolean equals(Object o) {
         if (o instanceof Thermometer thermometer) {

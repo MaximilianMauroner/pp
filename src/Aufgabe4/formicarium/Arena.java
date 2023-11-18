@@ -27,7 +27,7 @@ public class Arena implements FormicariumPart {
 
 
     // Pre: -
-    // Post: returns the substrate of the Arena
+    // Post: returns the compatability of the Arena based on its substrate and tubeLength
     @Override
     public Compatability compatability() {
         int substrateFactor = switch (this.substrate) {
@@ -54,6 +54,8 @@ public class Arena implements FormicariumPart {
         return new AntFarm(this.substrate, this.tubeLength);
     }
 
+    // Pre: o is not null
+    // Post: returns true if the Arena is equal to the given object, false otherwise
     @Override
     public boolean equals(Object o) {
         if (o instanceof Arena arena) {

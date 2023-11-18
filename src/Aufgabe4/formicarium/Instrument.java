@@ -9,5 +9,7 @@ package formicarium;
  * gelegentliche Verwendung gedacht ist.
  */
 public interface Instrument extends FormicariumItem {
+    // Pre: -
+    // Post: returns the quality of the Instrument
     String quality();
 }

@@ -35,6 +35,9 @@ public class FormicariumSet implements Iterable<FormicariumItem> {
         this.items.add(item);
     }
 
+    // Pre: -
+    // Post: returns the underlying set of items
+    // Note: this method is not part of the specification but is needed for testing the FormicariumSet without its iterator
     public Set<FormicariumItem> getItems() {
         return items;
     }

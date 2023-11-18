@@ -11,5 +11,7 @@ package formicarium;
  * Arena verbundener Behälter
  */
 public interface Nest extends Formicarium {
+    // Pre: -
+    // Post: returns true if the Nest is a Formicarium, false otherwise
     boolean isFormicarium();
 }
