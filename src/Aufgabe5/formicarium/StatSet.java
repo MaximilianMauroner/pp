@@ -56,6 +56,21 @@ public class StatSet<
             }
             return false;
         }
+
+        public boolean remove(T value) {
+            MyList<T> curr = next;
+            MyList<T> last = next;
+            while(curr != null){
+                if(curr.value.equals(value)){
+                    last.next = curr.next;
+                    return true;
+                }
+                last = curr;
+                curr = curr.next;
+            }
+
+            return false;
+        }
     }
 
     class MyStatisticsList<T> {
@@ -117,6 +132,7 @@ public class StatSet<
 
         return new Iterator<>() {
             private MyList<X> current = StatSet.this.xRoot;
+            private MyList<X> last = null;
 
             @Override
             public boolean hasNext() {
@@ -129,12 +145,18 @@ public class StatSet<
                     throw new IllegalStateException("No more elements");
                 }
                 X t = current.value;
+                last = current;
                 current = current.next;
                 return t;
             }
 
             public void remove() {
-                // ToDo: Implement this method
+                if (last == null) {
+                    throw new IllegalStateException("No element to remove");
+                }
+                if (StatSet.this.xRoot.remove(last.value)) {
+                    last = null;
+                }
             }
         };
     }
@@ -143,10 +165,25 @@ public class StatSet<
     public Iterator<X> iterator(P p, R r) {
         return new Iterator<>() {
 
+            {
+                for (X x : StatSet.this) {
+                    if (ratedHelper()) {
+                        if (this.root == null) {
+                            this.root = new MyList<>(x);
+                        } else if (!this.root.contains(x)) {
+                            this.root.add(x);
+                        }
+                    }
+                }
+            }
+
+            private MyList<X> root;
             private MyList<X> current = StatSet.this.xRoot;
+            private MyList<X> last = null;
 
             @Override
             public boolean hasNext() {
+                last = current;
                 while (current != null && !ratedHelper()) {
                     current = current.next;
                 }
@@ -168,7 +205,13 @@ public class StatSet<
             }
 
             public void remove() {
-                // ToDo: Implement this method
+                if (last == null) {
+                    throw new IllegalStateException("No element to remove");
+                }
+
+                if (StatSet.this.xRoot.remove(last.value)) {
+                    last = null;
+                }
             }
         };
     }

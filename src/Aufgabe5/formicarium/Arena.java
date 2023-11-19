@@ -8,8 +8,8 @@ public class Arena implements Part {
         this.volume = volume;
     }
 
-    Numeric volume() {
-        return new Numeric(volume);
+    double volume() {
+        return volume;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class Arena implements Part {
     }
 
     @Override
-    public Numeric value() {
+    public double value() {
         return volume();
     }
 

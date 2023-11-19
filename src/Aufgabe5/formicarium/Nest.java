@@ -8,8 +8,8 @@ public class Nest implements Part {
         this.antSize = antSize;
     }
 
-    Numeric antSize() {
-        return new Numeric(antSize);
+    double antSize() {
+        return antSize;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class Nest implements Part {
     }
 
     @Override
-    public Numeric value() {
+    public double value() {
         return antSize();
     }
 }
