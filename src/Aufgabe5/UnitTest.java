@@ -16,6 +16,10 @@ public class UnitTest {
         CompatibilitySet<Part,Quality> compatSet2 = new CompatibilitySet<Part,Quality>();
         CompatibilitySet<Arena,Quality> compatSet3 = new CompatibilitySet<Arena,Quality>();
         CompatibilitySet<Nest,Quality> compatSet4 = new CompatibilitySet<Nest,Quality>();
+
+
+        // Part p = iter.next();
+        // p.value();
     }
 
 
