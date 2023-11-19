@@ -3,8 +3,8 @@ package formicarium;
 import java.util.function.DoubleUnaryOperator;
 
 public class Numeric implements Calc<Numeric>, Rated<DoubleUnaryOperator, Numeric>, DoubleUnaryOperator {
-    double value;
-    DoubleUnaryOperator ratingCriterion;
+    private double value;
+    private DoubleUnaryOperator ratingCriterion;
 
     public Numeric(double value) {
         this.value = value;

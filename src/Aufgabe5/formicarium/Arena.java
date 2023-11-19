@@ -2,19 +2,33 @@ package formicarium;
 
 public class Arena implements Part {
     private double volume;
+    private String usage;
     private Part ratingCriterion;
 
-    public Arena(double volume) {
+    public Arena(double volume, String usage) {
         this.volume = volume;
+
+        this.usage = switch(usage) {
+            case "professional" -> "professional";
+            case "semi-professional" -> "semi-professional";
+            default -> "hobby";
+        };
     }
 
-    double volume() {
+    public double volume() {
         return volume;
     }
 
     @Override
     public Quality rated(Part p) {
-        return null;
+        int thisRanking = getRanking(this.usage);
+        int otherRanking = getRanking(p.usage());
+
+        if (thisRanking <= otherRanking) {
+            return new Quality(this.usage);
+        } else {
+            return new Quality(p.usage());
+        }
     }
 
     @Override
@@ -39,4 +53,18 @@ public class Arena implements Part {
     public String toString() {
         return "Arena";
     }
+
+    @Override
+    public String usage() {
+        return this.usage;
+    }
+
+    private int getRanking(String quality) {
+        return switch(quality) {
+            case "professional" -> 3;
+            case "semi-professional" -> 2;
+            default -> 1;
+        };
+    }
+
 }
