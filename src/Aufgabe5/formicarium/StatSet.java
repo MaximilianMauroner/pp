@@ -10,6 +10,7 @@ public class StatSet<
         > implements RatedSet<X, P, R> {
     private MyList<X> xRoot;
     private MyList<P> pRoot;
+    private MyStatisticsList<String> statisticsList;
     private int calls = 0;
 
     class MyList<T> {
@@ -55,6 +56,25 @@ public class StatSet<
             }
             return false;
         }
+    }
+
+    class MyStatisticsList<T> {
+        private MyStatisticsList<T> next;
+        private String value;
+//
+//        public MyStatisticsList(T value){
+//            this.value = value;
+//        }
+//
+//        public void add(T value){
+//            MyStatisticsList<T> last = next;
+//            MyStatisticsList<T> curr = next.next;
+//            while(curr != null){
+//                last = curr;
+//                curr = curr.next;
+//            }
+//            last.next = new MyStatisticsList<>(value.toString());
+//        }
     }
 
     public String statistics() {
