@@ -45,11 +45,6 @@ public class Nest implements Part {
     }
 
     @Override
-    public double value() {
-        return antSize();
-    }
-
-    @Override
     public String toString() {
         return "Nest";
     }

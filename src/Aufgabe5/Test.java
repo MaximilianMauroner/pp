@@ -7,9 +7,28 @@ public class Test {
     public static void main(String[] args) {
         System.out.println("Hello World!");
 
-        Part p = new Nest(1.0, "professional");
-        Part p2 = new Nest(1.0, "semi-professional");
-        Quality q = p.rated(p2);
+        Numeric op = new Numeric(5);
+        op.setCriterion(operand -> operand / 5);
+
+        StatSet<Numeric, Numeric, Numeric> StatSet0 = new StatSet<Numeric, Numeric, Numeric>();
+        StatSet0.add(new Numeric(1));
+        StatSet0.add(new Numeric(2));
+        StatSet0.add(new Numeric(3));
+        StatSet0.add(new Numeric(4));
+        StatSet0.add(new Numeric(5));
+        StatSet0.addCriterion(op);
+
+        Iterator<Numeric> iter = StatSet0.iterator(new Numeric(1));
+        while(iter.hasNext()){
+            Numeric t = iter.next();
+            System.out.println(t);
+        }
+
+        Numeric a = new Numeric(1);
+        Numeric b = new Numeric(2);
+
+        Numeric c = a.rated(op);
+
 
 
 //        CompatibilitySet<Numeric,Numeric> lmmmmao = new CompatibilitySet<Numeric,Numeric>();
@@ -41,8 +60,5 @@ public class Test {
 ////        CompatibilitySet<Nest,Quality>
 
     }
-
-
-
 
 }

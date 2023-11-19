@@ -44,6 +44,14 @@ public class Numeric implements Calc<Numeric>, Rated<DoubleUnaryOperator, Numeri
 
     @Override
     public double applyAsDouble(double operand) {
-        return value;
+        if (ratingCriterion == null) {
+            return value; // return default value if no criterion is set
+        }
+        return ratingCriterion.applyAsDouble(operand);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
     }
 }

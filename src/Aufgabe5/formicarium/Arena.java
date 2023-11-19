@@ -50,11 +50,6 @@ public class Arena implements Part {
     }
 
     @Override
-    public double value() {
-        return volume();
-    }
-
-    @Override
     public String toString() {
         return "Arena";
     }
