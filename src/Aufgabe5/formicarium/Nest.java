@@ -40,7 +40,7 @@ public class Nest implements Part {
         return this.usage;
     }
 
-    double antSize() {
+    public double antSize() {
         return antSize;
     }
 
