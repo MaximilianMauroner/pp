@@ -3,11 +3,21 @@ package formicarium;
 import java.util.function.DoubleUnaryOperator;
 
 public class Numeric implements Calc<Numeric>, Rated<DoubleUnaryOperator, Numeric>, DoubleUnaryOperator {
-    double value;
-    DoubleUnaryOperator ratingCriterion;
+    private double value;
+    private DoubleUnaryOperator ratingCriterion;
 
     public Numeric(double value) {
         this.value = value;
+    }
+
+    @Override
+    public Numeric ratio(int i) {
+        return new Numeric(value / i);
+    }
+
+    @Override
+    public boolean atleast(Numeric numeric) {
+        return this.value >= numeric.value;
     }
 
     @Override
@@ -28,22 +38,20 @@ public class Numeric implements Calc<Numeric>, Rated<DoubleUnaryOperator, Numeri
     }
 
     @Override
-    public Numeric ratio(int i) {
-        return new Numeric(value / i);
-    }
-
-    @Override
-    public boolean atleast(Numeric numeric) {
-        return this.value >= numeric.value;
-    }
-
-    @Override
     public Numeric rated() {
         return rated(ratingCriterion);
     }
 
     @Override
     public double applyAsDouble(double operand) {
-        return value;
+        if (ratingCriterion == null) {
+            return value; // return default value if no criterion is set
+        }
+        return ratingCriterion.applyAsDouble(operand);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
     }
 }

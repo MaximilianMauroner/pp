@@ -5,6 +5,10 @@ import java.util.Iterator;
 public class CompatibilitySet<X extends Rated<? super X, R>, R extends Calc<R>> extends StatSet<X, X, R> {
 
     public boolean equals(CompatibilitySet<X, R> o) {
+        if (o == null) {
+            return false;
+        }
+
         Iterator<X> xIterator = o.iterator();
         Iterator<X> pIterator = o.criterions();
         while (xIterator.hasNext()) {

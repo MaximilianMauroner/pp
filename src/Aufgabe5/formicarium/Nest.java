@@ -2,14 +2,16 @@ package formicarium;
 
 public class Nest implements Part {
     private double antSize;
+    private String usage;
     private Part ratingCriterion;
 
-    public Nest(double antSize) {
+    public Nest(double antSize, String usage) {
         this.antSize = antSize;
-    }
-
-    double antSize() {
-        return antSize;
+        this.usage = switch(usage) {
+            case "professional" -> "professional";
+            case "semi-professional" -> "semi-professional";
+            default -> "hobby";
+        };
     }
 
     @Override
@@ -21,6 +23,11 @@ public class Nest implements Part {
     }
 
     @Override
+    public void setCriterion(Part part) {
+        ratingCriterion = part;
+    }
+
+    @Override
     public Quality rated() {
         if (ratingCriterion == null) {
             return new Quality("not applicable");
@@ -29,12 +36,16 @@ public class Nest implements Part {
     }
 
     @Override
-    public void setCriterion(Part part) {
-        ratingCriterion = part;
+    public String usage() {
+        return this.usage;
+    }
+
+    public double antSize() {
+        return antSize;
     }
 
     @Override
-    public double value() {
-        return antSize();
+    public String toString() {
+        return "Nest";
     }
 }
