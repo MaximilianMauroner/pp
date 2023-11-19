@@ -14,16 +14,17 @@ public class Nest implements Part {
         };
     }
 
-    double antSize() {
-        return antSize;
-    }
-
     @Override
     public Quality rated(Part part) {
         if (part instanceof Nest) {
             return new Quality("not applicable");
         }
         return part.rated(this);
+    }
+
+    @Override
+    public void setCriterion(Part part) {
+        ratingCriterion = part;
     }
 
     @Override
@@ -35,17 +36,21 @@ public class Nest implements Part {
     }
 
     @Override
-    public void setCriterion(Part part) {
-        ratingCriterion = part;
-    }
-
-    @Override
     public String usage() {
         return this.usage;
+    }
+
+    double antSize() {
+        return antSize;
     }
 
     @Override
     public double value() {
         return antSize();
+    }
+
+    @Override
+    public String toString() {
+        return "Nest";
     }
 }

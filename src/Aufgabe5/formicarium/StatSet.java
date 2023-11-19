@@ -97,31 +97,6 @@ public class StatSet<
 //        }
     }
 
-    public String statistics() {
-        // ToDo: Implement this method
-        return "";
-    }
-
-
-    public boolean equals(StatSet<X, P, R> o) {
-        Iterator<X> xIterator = o.iterator();
-        Iterator<P> pIterator = o.criterions();
-        while (xIterator.hasNext()) {
-            X x = xIterator.next();
-            if (!this.xRoot.contains(x)) {
-                return false;
-            }
-        }
-        while (pIterator.hasNext()) {
-            P p = pIterator.next();
-            if (!this.pRoot.contains(p)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
     @Override
     public void add(X x) {
         if (xRoot == null) {
@@ -305,6 +280,32 @@ public class StatSet<
                 }
             }
         };
+    }
+
+    public String statistics() {
+        // ToDo: Implement this method
+        return "";
+    }
+
+    public boolean equals(StatSet<X, P, R> o) {
+        if (o == null) {
+            return false;
+        }
+        Iterator<X> xIterator = o.iterator();
+        Iterator<P> pIterator = o.criterions();
+        while (xIterator.hasNext()) {
+            X x = xIterator.next();
+            if (!this.xRoot.contains(x)) {
+                return false;
+            }
+        }
+        while (pIterator.hasNext()) {
+            P p = pIterator.next();
+            if (!this.pRoot.contains(p)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // Pre: x != null && p != null

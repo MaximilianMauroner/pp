@@ -11,6 +11,16 @@ public class Numeric implements Calc<Numeric>, Rated<DoubleUnaryOperator, Numeri
     }
 
     @Override
+    public Numeric ratio(int i) {
+        return new Numeric(value / i);
+    }
+
+    @Override
+    public boolean atleast(Numeric numeric) {
+        return this.value >= numeric.value;
+    }
+
+    @Override
     public Numeric sum(Numeric numeric) {
         return new Numeric(value + numeric.value);
     }
@@ -25,16 +35,6 @@ public class Numeric implements Calc<Numeric>, Rated<DoubleUnaryOperator, Numeri
     @Override
     public void setCriterion(DoubleUnaryOperator d) {
         ratingCriterion = d;
-    }
-
-    @Override
-    public Numeric ratio(int i) {
-        return new Numeric(value / i);
-    }
-
-    @Override
-    public boolean atleast(Numeric numeric) {
-        return this.value >= numeric.value;
     }
 
     @Override

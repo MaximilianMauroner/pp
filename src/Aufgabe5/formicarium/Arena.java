@@ -15,10 +15,6 @@ public class Arena implements Part {
         };
     }
 
-    public double volume() {
-        return volume;
-    }
-
     @Override
     public Quality rated(Part p) {
         int thisRanking = getRanking(this.usage);
@@ -32,6 +28,11 @@ public class Arena implements Part {
     }
 
     @Override
+    public void setCriterion(Part p) {
+        ratingCriterion = p;
+    }
+
+    @Override
     public Quality rated() {
         if (ratingCriterion == null) {
             return new Quality("not applicable");
@@ -40,8 +41,12 @@ public class Arena implements Part {
     }
 
     @Override
-    public void setCriterion(Part p) {
-        ratingCriterion = p;
+    public String usage() {
+        return this.usage;
+    }
+
+    public double volume() {
+        return volume;
     }
 
     @Override
@@ -52,11 +57,6 @@ public class Arena implements Part {
     @Override
     public String toString() {
         return "Arena";
-    }
-
-    @Override
-    public String usage() {
-        return this.usage;
     }
 
     private int getRanking(String quality) {

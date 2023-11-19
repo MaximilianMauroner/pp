@@ -13,11 +13,6 @@ public class Quality implements Calc<Quality> {
     }
 
     @Override
-    public String toString() {
-        return this.quality;
-    }
-
-    @Override
     public Quality sum(Quality r) {
         int thisRanking = getRanking(this.quality);
         int otherRanking = getRanking(r.quality);
@@ -34,6 +29,11 @@ public class Quality implements Calc<Quality> {
         int thisRanking = getRanking(this.quality);
         int otherRanking = getRanking(r.quality);
         return thisRanking >= otherRanking;
+    }
+
+    @Override
+    public String toString() {
+        return this.quality;
     }
 
     private int getRanking(String quality) {
