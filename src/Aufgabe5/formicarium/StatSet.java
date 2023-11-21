@@ -106,8 +106,11 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         statisticsList.add("statistics");
         StringBuilder val = new StringBuilder();
         MyStatisticsList<String> temp = this.statisticsList;
-        while (temp != null) {
-            val.append(temp.value).append("\n");
+        while (temp != null && temp.value != null) {
+            val.append(temp.value);
+            if (temp.next != null) {
+                val.append("\n");
+            }
             temp = temp.next;
         }
         return val.toString();
