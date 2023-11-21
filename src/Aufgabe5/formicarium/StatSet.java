@@ -3,42 +3,38 @@ package formicarium;
 import java.util.Iterator;
 
 
-public class StatSet<
-        X extends Rated<? super P, R>,
-        P,
-        R extends Calc<R>
-        > implements RatedSet<X, P, R> {
+public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implements RatedSet<X, P, R> {
     private MyList<X> xRoot;
     private MyList<P> pRoot;
-    private MyStatisticsList<String> statisticsList;
+    private MyStatisticsList<String> statisticsList = new MyStatisticsList<>();
     private int calls = 0;
 
     class MyList<T> {
         private MyList<T> next;
         private T value;
 
-        public MyList(T value){
+        public MyList(T value) {
             this.value = value;
         }
 
-        public void add(T value){
+        public void add(T value) {
             if (identical(value)) {
                 return;
             }
 
             MyList<T> last = next;
             MyList<T> curr = next.next;
-            while(curr != null){
+            while (curr != null) {
                 last = curr;
                 curr = curr.next;
             }
             last.next = new MyList<>(value);
         }
 
-        public boolean contains(T value){
+        public boolean contains(T value) {
             MyList<T> curr = next;
-            while(curr != null){
-                if(curr.value.equals(value)){
+            while (curr != null) {
+                if (curr.value.equals(value)) {
                     return true;
                 }
                 curr = curr.next;
@@ -46,10 +42,10 @@ public class StatSet<
             return false;
         }
 
-        public boolean identical(T value){
+        public boolean identical(T value) {
             MyList<T> curr = next;
-            while(curr != null){
-                if(curr.value == value){
+            while (curr != null) {
+                if (curr.value == value) {
                     return true;
                 }
                 curr = curr.next;
@@ -60,8 +56,8 @@ public class StatSet<
         public boolean remove(T value) {
             MyList<T> curr = next;
             MyList<T> last = next;
-            while(curr != null){
-                if(curr.value.equals(value)){
+            while (curr != null) {
+                if (curr.value.equals(value)) {
                     last.next = curr.next;
                     return true;
                 }
@@ -76,29 +72,50 @@ public class StatSet<
     class MyStatisticsList<T> {
         private MyStatisticsList<T> next;
         private String value;
-//
-//        public MyStatisticsList(T value){
-//            this.value = value;
-//        }
-//
-//        public void add(T value){
-//            MyStatisticsList<T> last = next;
-//            MyStatisticsList<T> curr = next.next;
-//            while(curr != null){
-//                last = curr;
-//                curr = curr.next;
-//            }
-//            last.next = new MyStatisticsList<>(value.toString());
-//        }
+
+        public MyStatisticsList(T value) {
+            this.value = value.toString();
+            this.next = null;
+        }
+
+        public MyStatisticsList() {
+            this.next = null;
+            this.value = null;
+        }
+
+
+        public void add(T value) {
+            if (this.value == null) {
+                this.value = value.toString();
+            } else if (next == null) {
+                // If the list is empty, add the new value as the next node
+                next = new MyStatisticsList<>(value);
+            } else {
+                MyStatisticsList<T> last = this;
+                MyStatisticsList<T> curr = next;
+                while (curr != null) {
+                    last = curr;
+                    curr = curr.next;
+                }
+                last.next = new MyStatisticsList<>(value);
+            }
+        }
     }
 
     public String statistics() {
-        // ToDo: Implement this method
-        return "";
+        statisticsList.add("statistics");
+        StringBuilder val = new StringBuilder();
+        MyStatisticsList<String> temp = this.statisticsList;
+        while (temp != null) {
+            val.append(temp.value).append("\n");
+            temp = temp.next;
+        }
+        return val.toString();
     }
 
 
     public boolean equals(StatSet<X, P, R> o) {
+        statisticsList.add("equals");
         Iterator<X> xIterator = o.iterator();
         Iterator<P> pIterator = o.criterions();
         while (xIterator.hasNext()) {
@@ -119,17 +136,20 @@ public class StatSet<
 
     @Override
     public void add(X x) {
+        statisticsList.add("add X");
+
         this.xRoot.add(x);
     }
 
     @Override
     public void addCriterion(P p) {
+        statisticsList.add("addCriterion P");
         this.pRoot.add(p);
     }
 
     @Override
     public Iterator<X> iterator() {
-
+        statisticsList.add("iterator X");
         return new Iterator<>() {
             private MyList<X> current = StatSet.this.xRoot;
             private MyList<X> last = null;
@@ -163,6 +183,7 @@ public class StatSet<
 
     @Override
     public Iterator<X> iterator(P p, R r) {
+        statisticsList.add("iterator P R");
         return new Iterator<>() {
 
             {
@@ -218,6 +239,7 @@ public class StatSet<
 
     @Override
     public Iterator<X> iterator(R r) {
+        statisticsList.add("iterator R");
         return new Iterator<X>() {
             @Override
             public boolean hasNext() {
@@ -237,6 +259,8 @@ public class StatSet<
 
     @Override
     public Iterator<P> criterions() {
+        statisticsList.add("criterions P");
+
         return new Iterator<>() {
             private MyList<P> current = StatSet.this.pRoot;
 
@@ -263,6 +287,8 @@ public class StatSet<
     // Pre: x != null && p != null
     // Post: true, if x or p is contained in this. false if neither x nor p is contained in this
     protected boolean contains(X x, P p) {
+        statisticsList.add("contains X P");
+
         return this.xRoot.contains(x) || this.pRoot.contains(p);
     }
 }
