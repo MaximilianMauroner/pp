@@ -1,7 +1,7 @@
 public class Formicarium {
     private String name;
     private String antSpecies;
-    private List<Nest> nestRoot;
+    private MyList<Nest> nestRoot;
 
     public Formicarium(String name, String antSpecies) {
         this.name = name;

@@ -1,9 +1,13 @@
-public class List<T> {
-    private List<T> next;
+public class MyList<T> {
+    private MyList<T> next;
     private T value;
 
-    public List(T value) {
+    public MyList(T value) {
         this.value = value;
+    }
+
+    public MyList() {
+
     }
 
     public void add(T value) {
@@ -11,17 +15,17 @@ public class List<T> {
             return;
         }
 
-        List<T> last = next;
-        List<T> curr = next.next;
+        MyList<T> last = next;
+        MyList<T> curr = next.next;
         while (curr != null) {
             last = curr;
             curr = curr.next;
         }
-        last.next = new List<>(value);
+        last.next = new MyList<>(value);
     }
 
     public boolean contains(T value) {
-        List<T> curr = next;
+        MyList<T> curr = next;
         while (curr != null) {
             if (curr.value.equals(value)) {
                 return true;
@@ -32,7 +36,7 @@ public class List<T> {
     }
 
     public boolean identical(T value) {
-        List<T> curr = next;
+        MyList<T> curr = next;
         while (curr != null) {
             if (curr.value == value) {
                 return true;
@@ -43,8 +47,8 @@ public class List<T> {
     }
 
     public boolean remove(T value) {
-        List<T> curr = next;
-        List<T> last = next;
+        MyList<T> curr = next;
+        MyList<T> last = next;
         while (curr != null) {
             if (curr.value.equals(value)) {
                 last.next = curr.next;

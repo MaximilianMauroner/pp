@@ -1,5 +1,5 @@
 public class Institute {
-    List<Formicarium> formicariumRoot;
+    MyList<Formicarium> formicariumRoot;
 
     public void addFormicarium(Formicarium formicarium) {
     }
