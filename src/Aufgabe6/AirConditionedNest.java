@@ -17,4 +17,9 @@ public class AirConditionedNest implements Nest {
     public double height() {
         return 0;
     }
+
+    @Override
+    public void setFilling(Filling filling) {
+
+    }
 }
