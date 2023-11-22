@@ -2,7 +2,12 @@ package formicarium;
 
 import java.util.Iterator;
 
-
+/*
+ * The StatSet class implements the RatedSet interface. The type parameters are the same as in RatedSet.
+ * In addition to the methods of RatedSet, there is a parameterless method 'statistics' that returns information about the number of all 
+ * previous calls to all methods in this object as a string (each method listed individually), including the calls to the methods in the associated iterators.
+ * Two objects of StatSet are considered equal (equals) if they contain identical entries of any kind, regardless of the order.
+ */
 public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implements RatedSet<X, P, R> {
     private MyList<X> xRoot;
     private MyList<P> pRoot;
@@ -102,6 +107,8 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         }
     }
 
+    // Post: Returns information about the number of all previous calls to all methods in this object as a string (each method listed individually), 
+    // including the calls to the methods in the associated iterators.
     public String statistics() {
         statisticsList.add("statistics");
         StringBuilder val = new StringBuilder();
@@ -136,7 +143,8 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         return true;
     }
 
-
+    // Pre: x is a non-null object of type X.
+    // Post: Ensures that x is an entry in the container. If an identical object already exists in the container, it is not inserted again.
     @Override
     public void add(X x) {
         statisticsList.add("add X");
@@ -144,12 +152,15 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         this.xRoot.add(x);
     }
 
+    // Pre: p is a non-null object of type P.
+    // Post: Works like add, but deals with entries of type P. Identical objects inserted using addCriterion are not allowed to occur multiple times.
     @Override
     public void addCriterion(P p) {
         statisticsList.add("addCriterion P");
         this.pRoot.add(p);
     }
 
+    // Post: Returns an iterator that runs in any order over all entries in the container that were inserted using add.
     @Override
     public Iterator<X> iterator() {
         statisticsList.add("iterator X");
@@ -184,6 +195,9 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         };
     }
 
+    // Pre: p is a non-null object of type P and r is a non-null object of type R.
+    // Post: Returns an iterator that runs in any order over all entries x in the container that were 
+    // inserted using add and for which x.rated(p) delivers a result that is greater than or equal to r.
     @Override
     public Iterator<X> iterator(P p, R r) {
         statisticsList.add("iterator P R");
@@ -240,6 +254,10 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         };
     }
 
+    // Pre: r is a non-null object of type R.
+    // Post: Returns an iterator that runs in any order over all entries x in the container that were 
+    // inserted using add and for which the average of all values determined by x.rated(p) 
+    // (for all entries p in the container inserted using addCriterion) is greater than or equal to r.
     @Override
     public Iterator<X> iterator(R r) {
         statisticsList.add("iterator R");
@@ -260,6 +278,7 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         };
     }
 
+    // Post: Returns an iterator that runs in any order over all entries in the container that were inserted using addCriterion.
     @Override
     public Iterator<P> criterions() {
         statisticsList.add("criterions P");
