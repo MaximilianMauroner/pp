@@ -139,6 +139,11 @@ public class UnitTest {
         testQuality(); //Test 5: Funktionalität von Quality
         testArena(); // Test 5: Funktionalität von Arena
         testNest();// Test 5: Funktionalität von Nest
+
+
+        //Test 6: Statistics
+
+        System.out.println(statSet0.statistics());
     }
 
     private static <X extends Rated<? super P, R>, P, R extends Calc<R>> void testNotNull(StatSet<X, P, R> set) {
