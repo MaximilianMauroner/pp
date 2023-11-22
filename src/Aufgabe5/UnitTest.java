@@ -3,6 +3,14 @@ import formicarium.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+Distribution of Work:
+- Maximilian: Hierarchie, MyList, MyStatisticsList
+- Lukas: Hierarchie, StatSet, CompatibilitySet, Numeric
+- Chrisopher: Hierarchie, UnitTest
+ */
+
+
 public class UnitTest {
     public static void main(String[] args) {
 

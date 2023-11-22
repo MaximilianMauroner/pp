@@ -1,10 +1,13 @@
 package formicarium;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class CompatibilitySet<X extends Rated<? super X, R>, R extends Calc<R>> extends StatSet<X, X, R> {
 
-    public boolean equals(CompatibilitySet<X, R> o) {
+    // Pre: -
+    // Post: returns true if this and o are equal (i.e. contain the same elements no matter in which order or list they are stored)
+    public boolean equals(StatSet<X, X, R> o) {
         if (o == null) {
             return false;
         }
@@ -26,16 +29,22 @@ public class CompatibilitySet<X extends Rated<? super X, R>, R extends Calc<R>> 
         return true;
     }
 
+    // Pre: x != null
+    // Post: returns true if this contains x (either as a criterion or as an element)
     private boolean contains(X x) {
         return super.contains(x, x);
     }
 
+    // Pre: -
+    // Post: returns an iterator over all elements of this that are also in criterions
     public Iterator<X> identical() {
         return new Iterator<>() {
             Iterator<X> iter = CompatibilitySet.this.iterator();
             Iterator<X> criterionIter = CompatibilitySet.this.criterions();
             X next = null;
 
+            // Pre: -
+            // Post: returns true if the iteration has more elements
             @Override
             public boolean hasNext() {
                 while (iter.hasNext()) {
@@ -51,8 +60,13 @@ public class CompatibilitySet<X extends Rated<? super X, R>, R extends Calc<R>> 
                 return false;
             }
 
+            // Pre: -
+            // Post: returns the next element in the iteration
             @Override
             public X next() {
+                if (next == null) {
+                    throw new NoSuchElementException("No more elements");
+                }
                 return next;
             }
         };
