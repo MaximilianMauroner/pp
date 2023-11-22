@@ -65,6 +65,40 @@ public class UnitTest {
         fill(statSet8, arenaList, nestList);
         fill(statSet9, nestList, nestList);
 
+        //Test 0: Statistics
+
+
+        StringBuilder expected0 = prepareStatisticsTest(numericsList, numericsList);
+        StringBuilder expected1 = prepareStatisticsTest(partList, partList);
+        StringBuilder expected2 = prepareStatisticsTest(arenaList, partList);
+        StringBuilder expected3 = prepareStatisticsTest(nestList, partList);
+        StringBuilder expected4 = prepareStatisticsTest(partList, arenaList);
+        StringBuilder expected5 = prepareStatisticsTest(arenaList, arenaList);
+        StringBuilder expected6 = prepareStatisticsTest(nestList, arenaList);
+        StringBuilder expected7 = prepareStatisticsTest(partList, nestList);
+        StringBuilder expected8 = prepareStatisticsTest(arenaList, nestList);
+        StringBuilder expected9 = prepareStatisticsTest(nestList, nestList);
+        expected0.append("statistics");
+        expected1.append("statistics");
+        expected2.append("statistics");
+        expected3.append("statistics");
+        expected4.append("statistics");
+        expected5.append("statistics");
+        expected6.append("statistics");
+        expected7.append("statistics");
+        expected8.append("statistics");
+        expected9.append("statistics");
+        testEquals(statSet0.statistics(), expected0.toString());
+        testEquals(statSet1.statistics(), expected1.toString());
+        testEquals(statSet2.statistics(), expected2.toString());
+        testEquals(statSet3.statistics(), expected3.toString());
+        testEquals(statSet4.statistics(), expected4.toString());
+        testEquals(statSet5.statistics(), expected5.toString());
+        testEquals(statSet6.statistics(), expected6.toString());
+        testEquals(statSet7.statistics(), expected7.toString());
+        testEquals(statSet8.statistics(), expected8.toString());
+        testEquals(statSet9.statistics(), expected9.toString());
+
         //Test 2: Iterator
         StatSet<Part, Arena, Quality> a = new StatSet<>();
         StatSet<Arena, Part, Quality> b = new StatSet<>();
@@ -141,9 +175,23 @@ public class UnitTest {
         testNest();// Test 5: Funktionalität von Nest
 
 
-        //Test 6: Statistics
+        expected0 = prepareStatisticsTest(numericsList, numericsList);
+        expected0.append("statistics\n");
+        expected0.append("iterator X\n");
+        expected0.append("criterions P\n");
+        expected0.append("iterator X\n");
+        expected0.append("criterions P\n");
+        expected0.append("statistics");
+        testEquals(statSet0.statistics(), expected0.toString());
 
-        System.out.println(statSet0.statistics());
+
+    }
+
+    private static <X extends Rated<? super P, R>, P, R extends Calc<R>> StringBuilder prepareStatisticsTest(List<? extends X> listX, List<? extends P> listP) {
+        StringBuilder expected = new StringBuilder();
+        for (var x : listX) expected.append("add X\n");
+        for (var p : listP) expected.append("addCriterion P\n");
+        return expected;
     }
 
     private static <X extends Rated<? super P, R>, P, R extends Calc<R>> void testNotNull(StatSet<X, P, R> set) {
@@ -153,7 +201,6 @@ public class UnitTest {
             System.out.println("Test NOT successful! Expected value: not null / Given value: null");
         }
     }
-
 
     private static void testNumeric() {
         testTrue(new Numeric(1).ratio(5).atleast(new Numeric(0.2)), true);
@@ -383,4 +430,5 @@ public class UnitTest {
             System.out.println("Test NOT successful! Expected value: " + expected.getClass().getSimpleName() + " / Given value: " + given.getClass().getSimpleName());
         }
     }
+
 }
