@@ -11,8 +11,8 @@ public class Formicarium {
 
     public Formicarium(String name, String antSpecies) {
         for (Object formicarium : formicariums) {
-            if (formicarium instanceof Formicarium) {
-                if (((Formicarium) formicarium).name.equals(name)) {
+            if (formicarium instanceof Formicarium t) {
+                if (t.name.equals(name)) {
                     throw new IllegalArgumentException("Name already exists");
                 }
             }
@@ -105,9 +105,9 @@ public class Formicarium {
 
     private Nest getNest(int id, MyList<Nest> list) {
         for (Object nest : list) {
-            if (nest instanceof Nest) {
-                if (((Nest) nest).id() == id) {
-                    return (Nest) nest;
+            if (nest instanceof Nest n) {
+                if (n.id() == id) {
+                    return  n;
                 }
             }
         }
