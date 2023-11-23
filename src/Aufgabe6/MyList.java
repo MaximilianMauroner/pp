@@ -69,7 +69,7 @@ public class MyList<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
+        return new Iterator<>() {
             private MyList<T> curr = next;
 
             @Override

@@ -16,7 +16,6 @@ public class Formicarium {
                     throw new IllegalArgumentException("Name already exists");
                 }
             }
-
         }
         this.name = name;
         this.antSpecies = antSpecies;
@@ -62,32 +61,34 @@ public class Formicarium {
 
     // <editor-fold desc="Statistics">
 
-    public double averageVolume() {
-        return 0;
+    //ToDo: Add statistics
+
+    public String averageVolume() {
+        return Integer.toString(0);
     }
 
-    public double averageHeatedVolume() {
-        return 0;
+    public String averageHeatedVolume() {
+        return "String here";
     }
 
-    public double averageAirConditionedVolume() {
-        return 0;
+    public String averageAirConditionedVolume() {
+        return "String here";
     }
 
-    public double averagePerformance() {
-        return 0;
+    public String averagePerformance() {
+        return "String here";
     }
 
-    public double averageTankVolume() {
-        return 0;
+    public String averageTankVolume() {
+        return "String here";
     }
 
-    public double averageSandClayWeight() {
-        return 0;
+    public String averageSandClayWeight() {
+        return "String here";
     }
 
-    public double averageAeriatedConcreteVolume() {
-        return 0;
+    public String averageAeriatedConcreteVolume() {
+        return "String there";
     }
 
     // </editor-fold>

@@ -15,6 +15,8 @@ public class Institute {
     }
 
     public void print() {
+        // ToDo: Add print of statistics
+        System.out.println(formicariumRoot.toString());
     }
 
 
