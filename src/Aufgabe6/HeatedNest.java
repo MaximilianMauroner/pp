@@ -6,14 +6,16 @@ public class HeatedNest implements Nest {
     private final double height;
     private final int power;
 
-    public HeatedNest(Filling filling, double width, double height, int power) {
-        this.id = calcID();
-        this.filling = filling;
+    public HeatedNest(int id, double width, double height, int power) {
+        if (!checkID()) {
+            throw new IllegalArgumentException("ID already exists");
+        }
+        this.id = id;
         this.width = width;
         this.height = height;
         this.power = power;
+        Nest.nests.add(this);
     }
-
 
     @Override
     public int id() {
@@ -30,10 +32,12 @@ public class HeatedNest implements Nest {
         return this.height;
     }
 
+    @Override
     public int getPower() {
         return this.power;
     }
 
+    @Override
     public double getTankVolume() {
         return 0;
     }

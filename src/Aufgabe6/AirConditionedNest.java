@@ -6,12 +6,15 @@ public class AirConditionedNest implements Nest {
     private final double tankVolume;
 
 
-    public AirConditionedNest(Filling filling, double width, double height, double tankVolume) {
-        this.id = calcID();
-        this.filling = filling;
+    public AirConditionedNest(int id, double width, double height, double tankVolume) {
+        if (!checkID()) {
+            throw new IllegalArgumentException("ID already exists");
+        }
+        this.id = id;
         this.width = width;
         this.height = height;
         this.tankVolume = tankVolume;
+        this.nests.add(this);
     }
 
     @Override
@@ -29,10 +32,12 @@ public class AirConditionedNest implements Nest {
         return this.height;
     }
 
+    @Override
     public int getPower() {
         return 0;
     }
 
+    @Override
     public double getTankVolume() {
         return this.tankVolume;
     }

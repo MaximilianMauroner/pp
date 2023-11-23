@@ -1,7 +1,7 @@
 public interface Nest {
 
     double depth = 2;
-    MyList<Integer> ids = new MyList<>();
+    MyList<Nest> nests = new MyList<>();
 
     int id();
 
@@ -19,28 +19,15 @@ public interface Nest {
     // Post: returns the volume of the water tank if the nest is air-conditioned, otherwise 0
     double getTankVolume();
 
-
-    // Einmaliges Setzen des Gewichts, wenn die Füllung aus einem Sand-Lehmgemisch besteht
-    // maybe in Filling
-
-    // Einmaliges Setzen der Höhe und der Breite bei Füllung mit einer Gasbetonplatte
-    // maybe in Filling
-
-    Filling getFilling();
-
     // Auslesen des Gewichts bei Füllung mit einem Sand-Lehmgemisch.
-    // maybe in Filling
-
     default double getSandClayWeight() {
         return getFilling().weight();
     }
 
     // Auslesen der Höhe und der Breite bei Füllung mit einer Gasbetonplatte.
-    // maybe in Filling
     default double getAereatedConcreteHeight() {
         return getFilling().height();
     }
-
     default double getAereatedConcreteWidth() {
         return getFilling().width();
     }
@@ -49,13 +36,18 @@ public interface Nest {
     void setFilling(Filling filling);
 
 
+    // Helper
+    Filling getFilling();
+
     // "Vermeiden Sie mehrfach vorkommenden Code für gleiche oder ähnliche Programmteile"
-    default int calcID() {
-        int id;
-        do {
-            id = (int)(Math.random() * 1000);
-        } while (ids.contains(id));
-        ids.add(id);
-        return id;
+    default boolean checkID() {
+        for (Object nest : nests) {
+            if (nest instanceof Nest) {
+                if (((Nest) nest).id() == id()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

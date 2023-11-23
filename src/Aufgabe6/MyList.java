@@ -1,4 +1,7 @@
-public class MyList<T> {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class MyList<T> implements Iterable<T> {
     private MyList<T> next;
     private T value;
 
@@ -7,11 +10,14 @@ public class MyList<T> {
     }
 
     public MyList() {
-
     }
 
     public void add(T value) {
-        if (identical(value)) {
+        if (this.value == null) {
+            this.value = value;
+            return;
+        } else if (next == null) {
+            next = new MyList<>(value);
             return;
         }
 
@@ -59,5 +65,27 @@ public class MyList<T> {
         }
 
         return false;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private MyList<T> curr = next;
+
+            @Override
+            public boolean hasNext() {
+                return curr != null;
+            }
+
+            @Override
+            public T next() {
+                if (curr == null) {
+                    throw new NoSuchElementException("No more elements");
+                }
+                T value = curr.value;
+                curr = curr.next;
+                return value;
+            }
+        };
     }
 }
