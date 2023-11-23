@@ -192,6 +192,25 @@ public class Test {
         testEquals(statSet0.statistics(), expected0.toString());
 
 
+        StringBuilder compExpect = prepareStatisticsTest(nestList, nestList);
+        compExpect.append("identical\n");
+        compExpect.append("iterator X\n");
+        compExpect.append("criterions P\n");
+        compExpect.append("identical.hasNext\n");
+        compExpect.append("identical.next\n");
+        compExpect.append("identical.hasNext\n");
+        compExpect.append("identical.next\n");
+        compExpect.append("identical.hasNext\n");
+        compExpect.append("identical.next\n");
+        compExpect.append("identical.hasNext\n");
+        compExpect.append("identical.next\n");
+        compExpect.append("identical.hasNext\n");
+        compExpect.append("identical.next\n");
+        compExpect.append("identical.hasNext\n");
+        compExpect.append("identical.next\n");
+        compExpect.append("identical.hasNext\n");
+        compExpect.append("statistics");
+        testEquals(compatSet4.statistics(), compExpect.toString());
     }
 
     private static <X extends Rated<? super P, R>, P, R extends Calc<R>> StringBuilder prepareStatisticsTest(List<? extends X> listX, List<? extends P> listP) {
