@@ -14,7 +14,7 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
     private MyStatisticsList<String> statisticsList = new MyStatisticsList<>();
     private int calls = 0;
 
-    private class MyList<T> {
+    protected class MyList<T> {
         private MyList<T> next;
         private T value;
 
@@ -112,6 +112,7 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         }
     }
 
+
     // Post: Returns information about the number of all previous calls to all methods in this object as a string (each method listed individually), 
     // including the calls to the methods in the associated iterators.
     public String statistics() {
@@ -135,29 +136,33 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
             return false;
         }
 
-        if (other instanceof StatSet<?, ?, ?>) {
-            StatSet<?, ?, ?> o = (StatSet<?, ?, ?>) other;
+        if (other instanceof StatSet<?, ?, ?> o) {
 
             for (Object x : this) {
                 boolean contained = false;
-                for (Object y : o) {
-                    if (x == y) {
+
+                for (Object oX : o) {
+                    if (x == oX) {
                         contained = true;
                         break;
                     }
                 }
+
                 if (!contained) {
                     return false;
                 }
             }
 
             Iterator<?> pIterator = this.criterions();
+
             while (pIterator.hasNext()) {
                 Object p = pIterator.next();
                 boolean contained = false;
                 Iterator<?> oPIterator = o.criterions();
+
                 while (oPIterator.hasNext()) {
                     Object oP = oPIterator.next();
+
                     if (p == oP) {
                         contained = true;
                         break;
@@ -379,16 +384,11 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         };
     }
 
-
-    // Pre: x != null && p != null
-    // Post: true, if x or p is contained in this. false if neither x nor p is contained in this
-    protected boolean contains(X x, P p) {
-        statisticsList.add("contains X P");
-
-        return this.xRoot.contains(x) || this.pRoot.contains(p);
-    }
-
     protected void addStatistic(String message) {
         statisticsList.add(message);
+    }
+
+    protected boolean contains(X x) {
+        return xRoot.contains(x);
     }
 }

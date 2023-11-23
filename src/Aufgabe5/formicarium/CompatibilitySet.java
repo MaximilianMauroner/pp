@@ -18,17 +18,16 @@ public class CompatibilitySet<X extends Rated<? super X, R>, R extends Calc<R>> 
 
         // this would work even if the other object is a StatSet<X, X, R>
         // but the results of equals would depend on which object the method is called on
-        if (other instanceof CompatibilitySet<?,?>) {
-            StatSet<?, ?, ?> o = (StatSet<?, ?, ?>) other;
+        if (other instanceof CompatibilitySet<?, ?> o) {
 
+            // if the added elements and the criterions are the same (just like in StatSet)
+            if (super.equals(o)) {
+                return true;
+            }
+
+            // if they are mixed up (e.g. not added using the same method)
             for (Object x : this) {
                 boolean contained = false;
-                for (Object y : o) {
-                    if (x == y) {
-                        contained = true;
-                        break;
-                    }
-                }
 
                 Iterator<?> opIterator = o.criterions();
                 while (opIterator.hasNext()) {
@@ -49,17 +48,8 @@ public class CompatibilitySet<X extends Rated<? super X, R>, R extends Calc<R>> 
                 Object p = pIterator.next();
                 boolean contained = false;
 
-                for (Object y : o) {
-                    if (p == y) {
-                        contained = true;
-                        break;
-                    }
-                }
-
-                Iterator<?> opIterator = o.criterions();
-                while (opIterator.hasNext()) {
-                    Object op = opIterator.next();
-                    if (p == op) {
+                for (Object ox : o) {
+                    if (p == ox) {
                         contained = true;
                         break;
                     }
@@ -72,12 +62,6 @@ public class CompatibilitySet<X extends Rated<? super X, R>, R extends Calc<R>> 
             return true;
         }
         return false;
-    }
-
-    // Pre: x != null
-    // Post: returns true if this contains x (either as a criterion or as an element)
-    private boolean contains(X x) {
-        return contains(x, x);
     }
 
     // Pre: -

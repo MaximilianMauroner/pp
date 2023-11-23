@@ -124,10 +124,10 @@ public class Test {
         StatSet<Arena, Arena, Quality> test = new StatSet<>();
         CompatibilitySet<Arena, Quality> test2 = new CompatibilitySet<>();
         test.add(A);
-        test2.addCriterion(A);
+        test2.add(A);
 
         testEquals(test2.equals(test), false);
-        testEquals(test.equals(test2), false);
+        testEquals(test.equals(test2), true);
 
         // Test 4: Funktionalität
         statSet0.forEach(element -> testContains(element, numericsList));
