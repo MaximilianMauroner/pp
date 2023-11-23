@@ -13,8 +13,6 @@ Distribution of Work:
 
 public class Test {
     public static void main(String[] args) {
-
-
         List<Numeric> numericsList = new ArrayList<>();
         numericsList.add(new Numeric(1));
         numericsList.add(new Numeric(2));
@@ -120,6 +118,16 @@ public class Test {
         fill(compatSet2, partList, partList);
         fill(compatSet3, arenaList, arenaList);
         fill(compatSet4, nestList, nestList);
+
+        // Test 3.1: Equals
+        Arena A = new Arena(1, "professional");
+        StatSet<Arena, Arena, Quality> test = new StatSet<>();
+        CompatibilitySet<Arena, Quality> test2 = new CompatibilitySet<>();
+        test.add(A);
+        test2.addCriterion(A);
+
+        testEquals(test2.equals(test), false);
+        testEquals(test.equals(test2), false);
 
         // Test 4: Funktionalität
         statSet0.forEach(element -> testContains(element, numericsList));

@@ -12,28 +12,66 @@ public class CompatibilitySet<X extends Rated<? super X, R>, R extends Calc<R>> 
         if (other == null) {
             return false;
         }
-
-        if (!(other instanceof StatSet)) {
-            return false;
+        if (other == this) {
+            return true;
         }
 
-        CompatibilitySet<X, R> o = (CompatibilitySet<X, R>) other;
+        // this would work even if the other object is a StatSet<X, X, R>
+        // but the results of equals would depend on which object the method is called on
+        if (other instanceof CompatibilitySet<?,?>) {
+            StatSet<?, ?, ?> o = (StatSet<?, ?, ?>) other;
 
-        Iterator<X> xIterator = o.iterator();
-        Iterator<X> pIterator = o.criterions();
-        while (xIterator.hasNext()) {
-            X x = xIterator.next();
-            if (!contains(x)) {
-                return false;
+            for (Object x : this) {
+                boolean contained = false;
+                for (Object y : o) {
+                    if (x == y) {
+                        contained = true;
+                        break;
+                    }
+                }
+
+                Iterator<?> opIterator = o.criterions();
+                while (opIterator.hasNext()) {
+                    Object op = opIterator.next();
+                    if (x == op) {
+                        contained = true;
+                        break;
+                    }
+                }
+
+                if (!contained) {
+                    return false;
+                }
             }
-        }
-        while (pIterator.hasNext()) {
-            X x = pIterator.next();
-            if (!contains(x)) {
-                return false;
+
+            Iterator<?> pIterator = this.criterions();
+            while (pIterator.hasNext()) {
+                Object p = pIterator.next();
+                boolean contained = false;
+
+                for (Object y : o) {
+                    if (p == y) {
+                        contained = true;
+                        break;
+                    }
+                }
+
+                Iterator<?> opIterator = o.criterions();
+                while (opIterator.hasNext()) {
+                    Object op = opIterator.next();
+                    if (p == op) {
+                        contained = true;
+                        break;
+                    }
+                }
+
+                if (!contained) {
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     // Pre: x != null

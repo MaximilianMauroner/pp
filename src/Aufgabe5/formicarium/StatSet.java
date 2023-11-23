@@ -9,8 +9,8 @@ import java.util.Iterator;
  * Two objects of StatSet are considered equal (equals) if they contain identical entries of any kind, regardless of the order.
  */
 public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implements RatedSet<X, P, R> {
-    private MyList<X> xRoot;
-    private MyList<P> pRoot;
+    protected MyList<X> xRoot;
+    protected MyList<P> pRoot;
     private MyStatisticsList<String> statisticsList = new MyStatisticsList<>();
     private int calls = 0;
 
@@ -135,27 +135,43 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
             return false;
         }
 
-        if (!(other instanceof StatSet)) {
-            return false;
-        }
+        if (other instanceof StatSet<?, ?, ?>) {
+            StatSet<?, ?, ?> o = (StatSet<?, ?, ?>) other;
 
-        StatSet<X, P, R> o = (StatSet<X, P, R>) other;
+            for (Object x : this) {
+                boolean contained = false;
+                for (Object y : o) {
+                    if (x == y) {
+                        contained = true;
+                        break;
+                    }
+                }
+                if (!contained) {
+                    return false;
+                }
+            }
 
-        Iterator<X> xIterator = o.iterator();
-        Iterator<P> pIterator = o.criterions();
-        while (xIterator.hasNext()) {
-            X x = xIterator.next();
-            if (!this.xRoot.contains(x)) {
-                return false;
+            Iterator<?> pIterator = this.criterions();
+            while (pIterator.hasNext()) {
+                Object p = pIterator.next();
+                boolean contained = false;
+                Iterator<?> oPIterator = o.criterions();
+                while (oPIterator.hasNext()) {
+                    Object oP = oPIterator.next();
+                    if (p == oP) {
+                        contained = true;
+                        break;
+                    }
+                }
+
+                if (!contained) {
+                    return false;
+                }
             }
+
+            return true;
         }
-        while (pIterator.hasNext()) {
-            P p = pIterator.next();
-            if (!this.pRoot.contains(p)) {
-                return false;
-            }
-        }
-        return true;
+        return false;
     }
 
     // Pre: x is a non-null object of type X.
