@@ -1,8 +1,8 @@
 public class Institute {
 
-    private static MyList<Formicarium> formicariums = Formicarium.getFormicariums();
+    private static final MyList<Formicarium> formicariums = Formicarium.getFormicariums();
 
-    private MyList<Formicarium> formicariumRoot = new MyList<>();
+    private final MyList<Formicarium> formicariumRoot = new MyList<>();
 
     public void addFormicarium(String name) {
         Formicarium formicarium = getFormicarium(name, formicariums);
@@ -14,6 +14,8 @@ public class Institute {
         formicariumRoot.remove(formicarium);
     }
 
+    //Anzeigen aller Formicarien eines Instituts mit allen Informationen
+    //auf dem Bildschirm
     public void print() {
         // ToDo: Add print of statistics
         System.out.println(formicariumRoot.toString());

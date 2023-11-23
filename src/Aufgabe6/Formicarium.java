@@ -3,7 +3,7 @@ import java.util.Iterator;
 
 public class Formicarium {
     private final static MyList<Formicarium> formicariums = new MyList<>();
-    private static MyList<Nest> nests = Nest.nests;
+    private static final MyList<Nest> nests = Nest.nests;
 
     private String name;
     private String antSpecies;
