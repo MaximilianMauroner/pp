@@ -60,7 +60,6 @@ public class Test {
         CompatibilitySet<Arena, Quality> compatSet3 = new CompatibilitySet<>();
         CompatibilitySet<Nest, Quality> compatSet4 = new CompatibilitySet<>();
 
-
         // Test 1: Befüllen der StatSets
         fill(statSet0, numericsList, numericsList);
         fill(statSet1, partList, partList);

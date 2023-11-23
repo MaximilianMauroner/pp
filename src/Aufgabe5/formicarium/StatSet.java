@@ -129,11 +129,18 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
     }
 
 
-    public boolean equals(StatSet<X, P, R> o) {
+    public boolean equals(Object other) {
         statisticsList.add("equals");
-        if (o == null) {
+        if (other == null) {
             return false;
         }
+
+        if (!(other instanceof StatSet)) {
+            return false;
+        }
+
+        StatSet<X, P, R> o = (StatSet<X, P, R>) other;
+
         Iterator<X> xIterator = o.iterator();
         Iterator<P> pIterator = o.criterions();
         while (xIterator.hasNext()) {
@@ -363,5 +370,9 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         statisticsList.add("contains X P");
 
         return this.xRoot.contains(x) || this.pRoot.contains(p);
+    }
+
+    protected void addStatistic(String message) {
+        statisticsList.add(message);
     }
 }
