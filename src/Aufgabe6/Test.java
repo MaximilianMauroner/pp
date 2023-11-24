@@ -1,40 +1,59 @@
 public class Test {
     public static void main(String[] args) {
         initializeNests();
-
-
-        Formicarium formacarium_initialize = new Formicarium("", "");
-        Formicarium formacarium1 = new Formicarium("Nest 1", "Ant Species 1");
-        formacarium1.addNest(0);
-        formacarium1.addNest(1);
-        formacarium1.addNest(2);
-
-        Formicarium formacarium2 = new Formicarium("Nest 2", "Ant Species 2");
-        formacarium2.addNest(0);
-        formacarium2.addNest(3);
-        formacarium2.addNest(4);
-
-        Formicarium formacarium3 = new Formicarium("Nest 3", "Ant Species 3");
-        formacarium3.addNest(0);
-        formacarium3.addNest(5);
-        formacarium3.addNest(6);
-
-        Formicarium formacarium4 = new Formicarium("Nest 4", "Ant Species 4");
-        formacarium4.addNest(0);
-        formacarium4.addNest(7);
-        formacarium4.addNest(8);
+        initializeFormacariums();
 
 
         Institute institute1 = new Institute();
-        institute1.addFormicarium(formacarium1.getName());
-        institute1.addFormicarium(formacarium2.getName());
+        institute1.addFormicarium("Nest 1");
+        institute1.addFormicarium("Nest 2");
 
         Institute institute2 = new Institute();
-        institute2.addFormicarium(formacarium3.getName());
-        institute2.addFormicarium(formacarium4.getName());
+        institute2.addFormicarium("Nest 3");
+        institute2.addFormicarium("Nest 4");
+
+        Institute institute3 = new Institute();
+        institute1.addFormicarium("Nest 5");
+        institute1.addFormicarium("Nest 6");
+
+        Institute institute4 = new Institute();
+        institute2.addFormicarium("Nest 7");
+        institute2.addFormicarium("Nest 8");
 
         testIncludes(institute1.toString(), "Nest 1", "Nest 2");
         testIncludes(institute2.toString(), "Nest 3", "Nest 4");
+        testIncludes(institute3.toString(), "Nest 5", "Nest 6");
+        testIncludes(institute4.toString(), "Nest 7", "Nest 8");
+
+
+        // Test institutes:
+        institute1.removeFormicarium("Nest 1");
+        testIncludes(institute1.toString(), "Nest 2");
+        testIncludesNot(institute1.toString(), "Nest 1");
+
+        institute1.addFormicarium("Nest 9");
+        institute1.addFormicarium("Nest 10");
+        testIncludes(institute1.toString(), "Nest 2", "Nest 9", "Nest 10");
+
+        institute1.removeFormicarium("Nest 2");
+        institute1.removeFormicarium("Nest 9");
+        testIncludes(institute1.toString(), "Nest 10");
+        testIncludesNot(institute1.toString(), "Nest 2", "Nest 9");
+
+
+        // Test formicariums:
+        institute1.addFormicarium("Nest 1");
+        testIncludes(institute1.toString(), "Nest 1");
+        testIncludes(institute1.toString(), "id=1");
+
+        Institute.getFormicarium("Nest 1").addNest(20);
+        Institute.getFormicarium("Nest 1").addNest(21);
+        testIncludes(institute1.toString(), "id=20", "id=21");
+
+        Institute.getFormicarium("Nest 1").removeNest(20);
+        Institute.getFormicarium("Nest 1").removeNest(21);
+        testIncludesNot(institute1.toString(), "id=20", "id=21");
+
 
         System.out.println(institute1);
         System.out.println(institute2);
@@ -51,6 +70,27 @@ public class Test {
         Filling filling7 = new AeratedConcreteFilling(7, 7);
         Filling filling8 = new AeratedConcreteFilling(8, 8);
         Filling filling9 = new AeratedConcreteFilling(9, 9);
+        Filling filling10 = new SandClayFilling(10);
+        Filling filling11 = new SandClayFilling(11);
+        Filling filling12 = new SandClayFilling(12);
+        Filling filling13 = new SandClayFilling(13);
+        Filling filling14 = new AeratedConcreteFilling(14, 14);
+        Filling filling15 = new AeratedConcreteFilling(15, 15);
+        Filling filling16 = new AeratedConcreteFilling(16, 16);
+        Filling filling17 = new AeratedConcreteFilling(17, 17);
+        Filling filling18 = new AeratedConcreteFilling(18, 18);
+        Filling filling19 = new AeratedConcreteFilling(19, 19);
+        Filling filling20 = new SandClayFilling(20);
+        Filling filling21 = new SandClayFilling(21);
+        Filling filling22 = new SandClayFilling(22);
+        Filling filling23 = new SandClayFilling(23);
+        Filling filling24 = new AeratedConcreteFilling(24, 24);
+        Filling filling25 = new AeratedConcreteFilling(25, 25);
+        Filling filling26 = new AeratedConcreteFilling(26, 26);
+        Filling filling27 = new AeratedConcreteFilling(27, 27);
+        Filling filling28 = new AeratedConcreteFilling(28, 28);
+        Filling filling29 = new AeratedConcreteFilling(29, 29);
+
         AirConditionedNest nest0 = new AirConditionedNest(0, 0, 0, 0);
         AirConditionedNest nest1 = new AirConditionedNest(1, 1, 1, 1);
         AirConditionedNest nest2 = new AirConditionedNest(2, 2, 2, 2);
@@ -66,6 +106,22 @@ public class Test {
         AirConditionedNest nest12 = new AirConditionedNest(12, 12, 12, 12);
         AirConditionedNest nest13 = new AirConditionedNest(13, 13, 13, 13);
         AirConditionedNest nest14 = new AirConditionedNest(14, 14, 14, 14);
+        AirConditionedNest nest15 = new AirConditionedNest(15, 15, 15, 15);
+        AirConditionedNest nest16 = new AirConditionedNest(16, 16, 16, 16);
+        AirConditionedNest nest17 = new AirConditionedNest(17, 17, 17, 17);
+        AirConditionedNest nest18 = new AirConditionedNest(18, 18, 18, 18);
+        AirConditionedNest nest19 = new AirConditionedNest(19, 19, 19, 19);
+        AirConditionedNest nest20 = new AirConditionedNest(20, 20, 20, 20);
+        AirConditionedNest nest21 = new AirConditionedNest(21, 21, 21, 21);
+        AirConditionedNest nest22 = new AirConditionedNest(22, 22, 22, 22);
+        AirConditionedNest nest23 = new AirConditionedNest(23, 23, 23, 23);
+        AirConditionedNest nest24 = new AirConditionedNest(24, 24, 24, 24);
+        AirConditionedNest nest25 = new AirConditionedNest(25, 25, 25, 25);
+        AirConditionedNest nest26 = new AirConditionedNest(26, 26, 26, 26);
+        AirConditionedNest nest27 = new AirConditionedNest(27, 27, 27, 27);
+        AirConditionedNest nest28 = new AirConditionedNest(28, 28, 28, 28);
+        AirConditionedNest nest29 = new AirConditionedNest(29, 29, 29, 29);
+
         nest0.setFilling(filling0);
         nest1.setFilling(filling1);
         nest2.setFilling(filling2);
@@ -76,30 +132,76 @@ public class Test {
         nest7.setFilling(filling7);
         nest8.setFilling(filling8);
         nest9.setFilling(filling9);
-        Nest.nests.add(nest0);
-        Nest.nests.add(nest1);
-        Nest.nests.add(nest2);
-        Nest.nests.add(nest3);
-        Nest.nests.add(nest4);
-        Nest.nests.add(nest5);
-        Nest.nests.add(nest6);
-        Nest.nests.add(nest7);
-        Nest.nests.add(nest8);
-        Nest.nests.add(nest9);
-//        HeatedNest nest10 = new HeatedNest(10, 10, 10, 10);
-//        HeatedNest nest20 = new HeatedNest(20, 20, 20, 20);
-//        HeatedNest nest30 = new HeatedNest(30, 30, 30, 30);
-//        HeatedNest nest40 = new HeatedNest(40, 40, 40, 40);
-//        HeatedNest nest50 = new HeatedNest(50, 50, 50, 50);
-//        HeatedNest nest60 = new HeatedNest(60, 60, 60, 60);
-//        Nest.nests.add(nest10);
-//        Nest.nests.add(nest20);
-//        Nest.nests.add(nest30);
-//        Nest.nests.add(nest40);
-//        Nest.nests.add(nest50);
-//        Nest.nests.add(nest60);
+        nest10.setFilling(filling10);
+        nest11.setFilling(filling11);
+        nest12.setFilling(filling12);
+        nest13.setFilling(filling13);
+        nest14.setFilling(filling14);
+        nest15.setFilling(filling15);
+        nest16.setFilling(filling16);
+        nest17.setFilling(filling17);
+        nest18.setFilling(filling18);
+        nest19.setFilling(filling19);
+        nest20.setFilling(filling20);
+        nest21.setFilling(filling21);
+        nest22.setFilling(filling22);
+        nest23.setFilling(filling23);
+        nest24.setFilling(filling24);
+        nest25.setFilling(filling25);
+        nest26.setFilling(filling26);
+        nest27.setFilling(filling27);
+        nest28.setFilling(filling28);
+        nest29.setFilling(filling29);
+        addtoNest(nest0, nest1, nest2, nest3, nest4, nest5, nest6, nest7, nest8, nest9, nest10, nest11, nest12, nest13, nest14, nest15, nest16, nest17, nest18, nest19, nest20, nest21, nest22, nest23, nest24, nest25, nest26, nest27, nest28, nest29);
     }
 
+    private static void initializeFormacariums() {
+        Formicarium formacarium1 = new Formicarium("Nest 1", "Ant Species 1");
+        formacarium1.addNest(1);
+        formacarium1.addNest(2);
+
+        Formicarium formacarium2 = new Formicarium("Nest 2", "Ant Species 2");
+        formacarium2.addNest(3);
+        formacarium2.addNest(4);
+
+        Formicarium formacarium3 = new Formicarium("Nest 3", "Ant Species 3");
+        formacarium3.addNest(5);
+        formacarium3.addNest(6);
+
+        Formicarium formacarium4 = new Formicarium("Nest 4", "Ant Species 4");
+        formacarium4.addNest(7);
+        formacarium4.addNest(8);
+
+        Formicarium formacarium5 = new Formicarium("Nest 5", "Ant Species 5");
+        formacarium5.addNest(9);
+        formacarium5.addNest(10);
+
+        Formicarium formacarium6 = new Formicarium("Nest 6", "Ant Species 6");
+        formacarium6.addNest(11);
+        formacarium6.addNest(12);
+
+        Formicarium formacarium7 = new Formicarium("Nest 7", "Ant Species 7");
+        formacarium7.addNest(13);
+        formacarium7.addNest(14);
+
+        Formicarium formacarium8 = new Formicarium("Nest 8", "Ant Species 8");
+        formacarium8.addNest(15);
+        formacarium8.addNest(16);
+
+        Formicarium formacarium9 = new Formicarium("Nest 9", "Ant Species 9");
+        formacarium9.addNest(17);
+        formacarium9.addNest(18);
+
+        Formicarium formacarium10 = new Formicarium("Nest 10", "Ant Species 10");
+        formacarium10.addNest(19);
+        formacarium10.addNest(20);
+    }
+
+    private static void addtoNest(Nest... nests) {
+        for (Nest nest : nests) {
+            Nest.nests.add(nest);
+        }
+    }
 
     private static void testTrue(boolean given, boolean expected) {
         if (given == expected) {
@@ -112,6 +214,17 @@ public class Test {
     private static void testIncludes(String given, String... expected) {
         for (String e : expected) {
             if (!given.contains(e)) {
+                System.out.println("Test NOT successful! Expected value: ");
+                throw new RuntimeException("Test NOT successful! Expected value: " + e);
+            } else {
+                System.out.println("Successful test");
+            }
+        }
+    }
+
+    private static void testIncludesNot(String given, String... expected) {
+        for (String e : expected) {
+            if (given.contains(e)) {
                 System.out.println("Test NOT successful! Expected value: ");
                 throw new RuntimeException("Test NOT successful! Expected value: " + e);
             } else {
