@@ -93,10 +93,11 @@ public class MyList<T> implements Iterable<T> {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        MyList<T> curr = next;
+        MyList<T> curr = this;
 
         while (curr != null) {
-            sb.append(curr.value.toString());
+            if (curr.value != null)
+                sb.append(curr.value.toString());
             curr = curr.next;
             if (curr != null) {
                 sb.append(", ");

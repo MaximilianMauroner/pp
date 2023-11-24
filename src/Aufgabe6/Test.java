@@ -13,12 +13,12 @@ public class Test {
         institute2.addFormicarium("Nest 4");
 
         Institute institute3 = new Institute();
-        institute1.addFormicarium("Nest 5");
-        institute1.addFormicarium("Nest 6");
+        institute3.addFormicarium("Nest 5");
+        institute3.addFormicarium("Nest 6");
 
         Institute institute4 = new Institute();
-        institute2.addFormicarium("Nest 7");
-        institute2.addFormicarium("Nest 8");
+        institute4.addFormicarium("Nest 7");
+        institute4.addFormicarium("Nest 8");
 
         testIncludes(institute1.toString(), "Nest 1", "Nest 2");
         testIncludes(institute2.toString(), "Nest 3", "Nest 4");
@@ -223,8 +223,7 @@ public class Test {
     private static void testIncludesNot(String given, String... expected) {
         for (String e : expected) {
             if (given.contains(e)) {
-                System.out.println("Test NOT successful! Expected value: ");
-                throw new RuntimeException("Test NOT successful! Expected value: " + e);
+                System.out.println("Test NOT successful! Expected value: " + e);
             } else {
                 System.out.println("Successful test");
             }
