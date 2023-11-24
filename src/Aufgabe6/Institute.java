@@ -17,8 +17,7 @@ public class Institute {
     //Anzeigen aller Formicarien eines Instituts mit allen Informationen
     //auf dem Bildschirm
     public void print() {
-        // ToDo: Add print of statistics
-        System.out.println(formicariumRoot.toString());
+        System.out.println(formicariumRoot);
     }
 
 
