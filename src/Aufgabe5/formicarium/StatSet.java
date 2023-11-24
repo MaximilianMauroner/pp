@@ -64,6 +64,16 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         }
 
         public boolean remove(T value) {
+            if (this.value != null && this.value.equals(value)) {
+                if (this.next == null) {
+                    this.value = null;
+                } else {
+                    this.value = next.value;
+                    this.next = next.next;
+                }
+                return true;
+            }
+
             MyList<T> curr = this;
             MyList<T> next = this.next;
             while (next != null) {
@@ -384,10 +394,14 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         };
     }
 
+    // Pre: -
+    // Post: adds a message to the statistics list
     protected void addStatistic(String message) {
         statisticsList.add(message);
     }
 
+    // Pre: x != null
+    // Post: true, if x is contained in the set. false otherwise
     protected boolean contains(X x) {
         return xRoot.contains(x);
     }
