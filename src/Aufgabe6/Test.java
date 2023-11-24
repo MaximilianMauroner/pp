@@ -46,13 +46,15 @@ public class Test {
         testIncludes(institute1.toString(), "Nest 1");
         testIncludes(institute1.toString(), "id=1");
 
-        Institute.getFormicarium("Nest 1").addNest(20);
-        Institute.getFormicarium("Nest 1").addNest(21);
+        institute1.getFormicarium("Nest 1").addNest(20);
+        institute1.getFormicarium("Nest 1").addNest(21);
         testIncludes(institute1.toString(), "id=20", "id=21");
 
-        Institute.getFormicarium("Nest 1").removeNest(20);
-        Institute.getFormicarium("Nest 1").removeNest(21);
-        testIncludesNot(institute1.toString(), "id=20", "id=21");
+        institute1.getFormicarium("Nest 1").removeNest(20);
+        institute1.getFormicarium("Nest 1").removeNest(21);
+        testIncludes(institute1.toString(), "id=20");
+        testIncludesNot(institute1.toString(), "id=21");
+
 
 
         System.out.println(institute1);

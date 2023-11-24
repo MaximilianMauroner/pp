@@ -34,8 +34,8 @@ public class Institute {
         return null;
     }
 
-    public static Formicarium getFormicarium(String name) {
-        return getFormicarium(name, formicariums);
+    public Formicarium getFormicarium(String name) {
+        return getFormicarium(name, formicariumRoot);
     }
 
     @Override
