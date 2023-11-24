@@ -42,10 +42,10 @@ public interface Nest {
     Filling getFilling();
 
     // "Vermeiden Sie mehrfach vorkommenden Code für gleiche oder ähnliche Programmteile"
-    default boolean checkID() {
-        for (Object nest : nests) {
+    default boolean checkID(int id) {
+        for (Object nest : Nest.nests) {
             if (nest instanceof Nest) {
-                if (((Nest) nest).id() == id()) {
+                if (((Nest) nest).id() == id) {
                     return false;
                 }
             }

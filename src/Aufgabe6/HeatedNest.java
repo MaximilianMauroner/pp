@@ -7,7 +7,7 @@ public class HeatedNest implements Nest {
     private final int power;
 
     public HeatedNest(int id, double width, double height, int power) {
-        if (!checkID()) {
+        if (!checkID(id)) {
             throw new IllegalArgumentException("ID already exists");
         }
         this.id = id;
