@@ -50,7 +50,7 @@ public class Formicarium {
         return "Formicarium{" +
                 "name='" + name + '\'' +
                 ", antSpecies='" + antSpecies + '\'' +
-                ", nestRoot=" + nestRoot +
+                ", nest=" + nestRoot +
                 ", averageVolume=" + averageVolume() +
                 ", averageHeatedVolume=" + averageHeatedVolume() +
                 ", averageAirConditionedVolume=" + averageAirConditionedVolume() +
@@ -152,9 +152,9 @@ public class Formicarium {
             valueTotal += nest.getFilling().weight();
             countTotal++;
         }
-        return "Average sand-clay weight: " + Double.toString(valueTotal / countTotal) + "kg; " +
-                "Average heated sand-clay weight: " + Double.toString(valueHeated / countHeated) + "kg; " +
-                "Average air conditioned sand-clay weight: " + Double.toString(valueAir / countAir) + "kg";
+        return "[Average sand-clay weight: " + Double.toString(valueTotal / countTotal) + "kg, " +
+                "Average heated sand-clay weight: " + Double.toString(valueHeated / countHeated) + "kg, " +
+                "Average air conditioned sand-clay weight: " + Double.toString(valueAir / countAir) + "kg]";
     }
 
     public String averageAeriatedConcreteVolume() {
@@ -176,9 +176,9 @@ public class Formicarium {
             valueTotal += nest.getAereatedConcreteWidth() * nest.getAereatedConcreteHeight() * nest.depth;
             countTotal++;
         }
-        return "Average sand-clay weight: " + Double.toString(valueTotal / countTotal) + "kg; " +
-                "Average heated sand-clay weight: " + Double.toString(valueHeated / countHeated) + "kg; " +
-                "Average air conditioned sand-clay weight: " + Double.toString(valueAir / countAir) + "kg";
+        return "[Average sand-clay weight: " + Double.toString(valueTotal / countTotal) + "kg, " +
+                "Average heated sand-clay weight: " + Double.toString(valueHeated / countHeated) + "kg, " +
+                "Average air conditioned sand-clay weight: " + Double.toString(valueAir / countAir) + "kg]";
 
     }
 

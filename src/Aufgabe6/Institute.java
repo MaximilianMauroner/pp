@@ -35,5 +35,12 @@ public class Institute {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "Institute{" +
+                "formicariums=" + formicariumRoot +
+                '}';
+    }
+
     //</editor-fold>
 }
