@@ -7,14 +7,14 @@ public class AirConditionedNest implements Nest {
 
 
     public AirConditionedNest(int id, double width, double height, double tankVolume) {
-        if (!checkID()) {
+        if (!checkID(id)) {
             throw new IllegalArgumentException("ID already exists");
         }
         this.id = id;
         this.width = width;
         this.height = height;
         this.tankVolume = tankVolume;
-        this.nests.add(this);
+        Nest.nests.add(this);
     }
 
     @Override

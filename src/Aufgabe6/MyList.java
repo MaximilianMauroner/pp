@@ -70,7 +70,7 @@ public class MyList<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {
-            private MyList<T> curr = next;
+            private MyList<T> curr = MyList.this;
 
             @Override
             public boolean hasNext() {
