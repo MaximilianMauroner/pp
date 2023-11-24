@@ -88,4 +88,21 @@ public class MyList<T> implements Iterable<T> {
             }
         };
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        MyList<T> curr = next;
+
+        while (curr != null) {
+            sb.append(curr.value.toString());
+            curr = curr.next;
+            if (curr != null) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 }

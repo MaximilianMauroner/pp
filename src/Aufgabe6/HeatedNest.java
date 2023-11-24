@@ -51,4 +51,17 @@ public class HeatedNest implements Nest {
     public void setFilling(Filling filling) {
         this.filling = filling;
     }
+
+    @Override
+    public String toString() {
+        return "HeatedNest{" +
+                "filling=" + filling +
+                ", id=" + id +
+                ", width=" + width +
+                ", height=" + height +
+                ", depth=" + depth +
+                ", tankVolume=0" +
+                ", power=" + power +
+                '}';
+    }
 }

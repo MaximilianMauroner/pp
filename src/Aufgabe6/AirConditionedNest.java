@@ -52,4 +52,15 @@ public class AirConditionedNest implements Nest {
         this.filling = filling;
     }
 
+    @Override
+    public String toString() {
+        return "AirConditionedNest{" +
+                "filling=" + filling +
+                ", id=" + id +
+                ", width=" + width +
+                ", height=" + height +
+                ", depth=" + depth +
+                ", tankVolume=" + tankVolume +
+                '}';
+    }
 }

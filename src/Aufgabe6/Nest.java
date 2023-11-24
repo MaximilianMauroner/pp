@@ -15,6 +15,8 @@ public interface Nest {
     // Post: returns the power if the nest is heated, otherwise 0
     int getPower();
 
+    String toString();
+
     // Pre: -
     // Post: returns the volume of the water tank if the nest is air-conditioned, otherwise 0
     double getTankVolume();
@@ -50,4 +52,5 @@ public interface Nest {
         }
         return true;
     }
+
 }

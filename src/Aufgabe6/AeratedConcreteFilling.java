@@ -21,4 +21,12 @@ public class AeratedConcreteFilling implements Filling {
     public double height() {
         return height;
     }
+
+    @Override
+    public String toString() {
+        return "AeratedConcreteFilling{" +
+                "width=" + width +
+                ", height=" + height +
+                '}';
+    }
 }
