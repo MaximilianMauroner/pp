@@ -2,88 +2,88 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class MyList<T> implements Iterable<T> {
-    private MyList<T> next;
-    private T value;
 
-    public MyList(T value) {
-        this.value = value;
-    }
+    private Node<T> root;
 
     public MyList() {
+        this.root = null;
+    }
+
+    public MyList(T value) {
+        this.root = new Node<>(value);
     }
 
     public void add(T value) {
-        if (this.value == null) {
-            this.value = value;
-            return;
-        } else if (next == null) {
-            next = new MyList<>(value);
-            return;
+        if (root == null) {
+            root = new Node<>(value);
+        } else {
+            Node<T> node = root;
+            while (node.next != null) {
+                node = node.next;
+            }
+            node.next = new Node<>(value);
         }
-
-        MyList<T> last = next;
-        MyList<T> curr = next.next;
-        while (curr != null) {
-            last = curr;
-            curr = curr.next;
-        }
-        last.next = new MyList<>(value);
     }
 
     public boolean contains(T value) {
-        MyList<T> curr = next;
-        while (curr != null) {
-            if (curr.value.equals(value)) {
+        Node<T> node = root;
+        while (node != null) {
+            if (node.value.equals(value)) {
                 return true;
             }
-            curr = curr.next;
+            node = node.next;
         }
         return false;
     }
 
     public boolean identical(T value) {
-        MyList<T> curr = next;
-        while (curr != null) {
-            if (curr.value == value) {
+        Node<T> node = root;
+        while (node != null) {
+            if (node.value == value) {
                 return true;
             }
-            curr = curr.next;
+            node = node.next;
         }
         return false;
     }
 
-    public boolean remove(T value) {
-        MyList<T> curr = next;
-        MyList<T> last = next;
-        while (curr != null) {
-            if (curr.value.equals(value)) {
-                last.next = curr.next;
-                return true;
-            }
-            last = curr;
-            curr = curr.next;
+    public void remove(T value) {
+        if (root == null) {
+            return;
         }
-
-        return false;
+        if (root.value.equals(value)) {
+            root = root.next;
+            return;
+        }
+        Node<T> node = root;
+        while (node.next != null) {
+            if (node.next.value.equals(value)) {
+                node.next = node.next.next;
+                return;
+            }
+            node = node.next;
+        }
     }
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<>() {
-            private MyList<T> curr = MyList.this;
+        return new Iterator<T>() {
+
+            Node<T> node = root;
 
             @Override
             public boolean hasNext() {
-                return curr != null;
+                return node != null;
             }
 
             @Override
             public T next() {
-                if (curr == null) {
+                if (!hasNext()) {
                     throw new NoSuchElementException("No more elements");
                 }
-                T value = curr.value;
-                curr = curr.next;
+
+                T value = node.value;
+                node = node.next;
                 return value;
             }
         };
@@ -91,19 +91,32 @@ public class MyList<T> implements Iterable<T> {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        MyList<T> curr = this;
-
-        while (curr != null) {
-            if (curr.value != null)
-                sb.append(curr.value.toString());
-            curr = curr.next;
-            if (curr != null) {
-                sb.append(", ");
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        Node<T> node = root;
+        while (node != null) {
+            builder.append(node.value);
+            if (node.next != null) {
+                builder.append(", ");
             }
+            node = node.next;
         }
-        sb.append("]");
-        return sb.toString();
+        builder.append("]");
+        return builder.toString();
+    }
+
+
+    static class Node<T> {
+        T value;
+        Node<T> next;
+
+        public Node(T value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return value.toString();
+        }
     }
 }
