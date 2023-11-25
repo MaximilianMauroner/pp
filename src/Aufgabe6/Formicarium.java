@@ -50,6 +50,13 @@ public class Formicarium {
         return "Formicarium{" +
                 "name='" + name + '\'' +
                 ", antSpecies='" + antSpecies + '\'' +
+                ", nest=" + nestRoot;
+    }
+
+    public String print() {
+        return "Formicarium{" +
+                "name='" + name + '\'' +
+                ", antSpecies='" + antSpecies + '\'' +
                 ", nest=" + nestRoot +
                 ", averageVolume=" + averageVolume() +
                 ", averageHeatedVolume=" + averageHeatedVolume() +
@@ -60,6 +67,7 @@ public class Formicarium {
                 ", averageTankVolume=[" + averageAeriatedConcreteVolume() + "]" +
                 '}';
     }
+
 
     //<editor-fold desc="Ändern der Informationen von Nestern wie oben beschrieben.">
     public void setNestFilling(int id, Filling filling) {

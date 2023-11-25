@@ -17,7 +17,7 @@ public class Institute {
     //Anzeigen aller Formicarien eines Instituts mit allen Informationen
     //auf dem Bildschirm
     public void print() {
-        System.out.println(formicariumRoot);
+        System.out.println("Institute{formicariums=" + formicariumRoot.print() + '}');
     }
 
 

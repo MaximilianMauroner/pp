@@ -105,6 +105,23 @@ public class MyList<T> implements Iterable<T> {
         return builder.toString();
     }
 
+    public String print() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        Node<T> node = root;
+        while (node != null) {
+            if (node.value instanceof Formicarium) {
+                builder.append(((Formicarium) node.value).print());
+                if (node.next != null) {
+                    builder.append(", ");
+                }
+                node = node.next;
+            }
+        }
+        builder.append("]");
+        return builder.toString();
+    }
+
 
     static class Node<T> {
         T value;
