@@ -21,6 +21,27 @@ public class Status {
     private double highTrail;
     private double searchRadiusGrowthFactor;
 
+    /**
+     * Creates a new Status object
+     *
+     * @param width                the width of the simulation window (> 0)
+     * @param height               the height of the simulation window (> 0)
+     * @param scale                the scaling of the simulation window (> 0)
+     * @param simulationTime       the simulation time limit (e.g. how long the simulation will run in ms) (> 0)
+     * @param antCount             the number of ants in the simulation (> 0)
+     * @param antEmptySteps        the number of steps an ant will go on empty points until it changes mode (> 0)
+     * @param antMoveSteps         the number of steps an ant will move until it stops (> 0)
+     * @param antWaitSteps         the number of steps an ant will wait until it moves again (> 0)
+     * @param foodCount            how many food clusters will be generated
+     * @param obstacleCount        how many obstacles will be generated
+     * @param antSpawnRadius       the radius in which ants will spawn around the hive (> 0)
+     * @param foodHiveDistance     the distance between food and hive (> 0)
+     * @param trailDecay           the decay of the trail (0 < trailDecay < 1)
+     * @param lowTrail             the lower bound of the trail (< highTrail)
+     * @param highTrail            the upper bound of the trail (> lowTrail)
+     * @param searchRadiusFactor   the growth factor of the search radius (> 0)
+     * @param minHiveHealth        the minimum health of the hive
+     */
     public Status(int width, int height, int scale, int simulationTime, int antCount, int antEmptySteps, int antMoveSteps, int antWaitSteps, int foodCount,
                   int obstacleCount, int antSpawnRadius, int foodHiveDistance,
                   double trailDecay, double lowTrail, double highTrail, double searchRadiusFactor, double minHiveHealth) {
@@ -169,6 +190,9 @@ public class Status {
         return minHiveHealth;
     }
 
+    /**
+     * Resets the simulation time to 0
+     */
     public void resetSimulationTime() {
         this.simulationTime = 0;
     }

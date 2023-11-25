@@ -30,6 +30,11 @@ public class PathManager {
     private final List<Position> endPositions;
     private final GameState gameState;
 
+    /**
+     * Creates a new PathManager object
+     *
+     * @param gameState the game state object (not null)
+     */
     public PathManager(GameState gameState) {
         paths = new ArrayList<>();
         startPositions = new ArrayList<>();
@@ -195,6 +200,12 @@ public class PathManager {
         public double h;
         public double f;
 
+        /**
+         * Creates a new Node object
+         *
+         * @param position the position of the node in the grid (not null)
+         * @param parent   the parent node
+         */
         public Node(Position position, Node parent) {
             this.position = position;
             this.parent = parent;

@@ -13,11 +13,18 @@ import java.util.HashMap;
  */
 @SuppressWarnings("unchecked")
 public class Simulation {
-    private final String simulationId;  // (client history-condition) needs to be unique and is generated before creating the simulation
+    private final String simulationId;
     private final String simulationName;
 
     private final HashMap<String, Object> data;
 
+
+    /**
+     * Creates a new Simulation object
+     *
+     * @param simulationId   the id of the simulation (should be unique)
+     * @param simulationName the name of the simulation
+     */
     public Simulation(String simulationId, String simulationName) {
         this.simulationId = simulationId;
         this.simulationName = simulationName;

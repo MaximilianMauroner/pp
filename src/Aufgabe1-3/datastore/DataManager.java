@@ -27,6 +27,9 @@ public class DataManager {
     private final DataStore dataStore;
     private Simulation simulation; // (invariant) should be non-null
 
+    /**
+     * Creates a new DataManager object. Private because of the Singleton pattern.
+     */
     private DataManager() {
         dataStore = new DataStore();
     }
