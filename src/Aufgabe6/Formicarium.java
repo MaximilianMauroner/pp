@@ -90,7 +90,7 @@ public class Formicarium {
             value += nest.depth * nest.height() * nest.width();
             count++;
         }
-        return Double.toString(value / count);
+        return Double.toString(count == 0 ? 1 : count);
     }
 
     public String averageHeatedVolume() {
@@ -102,7 +102,7 @@ public class Formicarium {
                 count++;
             }
         }
-        return Double.toString(value / count);
+        return Double.toString(count == 0 ? 1 : count);
     }
 
     public String averageAirConditionedVolume() {
@@ -114,7 +114,7 @@ public class Formicarium {
                 count++;
             }
         }
-        return Double.toString(value / count);
+        return Double.toString(count == 0 ? 1 : count);
 
     }
 
@@ -127,7 +127,7 @@ public class Formicarium {
                 count++;
             }
         }
-        return Double.toString(value / count);
+        return Double.toString(count == 0 ? 1 : count);
     }
 
     public String averageTankVolume() {
@@ -137,7 +137,7 @@ public class Formicarium {
             value += nest.getTankVolume();
             count++;
         }
-        return Double.toString(value / count);
+        return Double.toString(count == 0 ? 1 : count);
 
     }
 
