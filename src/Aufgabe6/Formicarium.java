@@ -1,16 +1,13 @@
-import java.text.Normalizer;
-import java.util.Iterator;
-
 public class Formicarium {
-    private final static MyList<Formicarium> formicariums = new MyList<>();
-    private static final MyList<Nest> nests = Nest.nests;
+    private final static MyList allFormicariums = new MyList();
+    private static final MyList allNests = Nest.allNests;
 
     private String name;
     private String antSpecies;
-    private MyList<Nest> nestRoot;
+    private MyList formicariumNests;
 
     public Formicarium(String name, String antSpecies) {
-        for (Object formicarium : formicariums) {
+        for (Object formicarium : allFormicariums) {
             if (formicarium instanceof Formicarium t) {
                 if (t.name.equals(name)) {
                     throw new IllegalArgumentException("Name already exists");
@@ -19,8 +16,8 @@ public class Formicarium {
         }
         this.name = name;
         this.antSpecies = antSpecies;
-        Formicarium.formicariums.add(this);
-        this.nestRoot = new MyList<>();
+        Formicarium.allFormicariums.add(this);
+        this.formicariumNests = new MyList();
     }
 
     public void setAntSpecies(String antSpecies) {
@@ -36,13 +33,13 @@ public class Formicarium {
     }
 
     public void addNest(int id) {
-        Nest nest = getNest(id, nests);
-        this.nestRoot.add(nest);
+        Nest nest = getNest(id, allNests);
+        this.formicariumNests.add(nest);
     }
 
     public void removeNest(int id) {
-        Nest nest = getNest(id, nestRoot);
-        this.nestRoot.remove(nest);
+        Nest nest = getNest(id, formicariumNests);
+        this.formicariumNests.remove(nest);
     }
 
     @Override
@@ -50,14 +47,14 @@ public class Formicarium {
         return "Formicarium{" +
                 "name='" + name + '\'' +
                 ", antSpecies='" + antSpecies + '\'' +
-                ", nest=" + nestRoot;
+                ", nest=" + formicariumNests;
     }
 
     public String print() {
         return "Formicarium{" +
                 "name='" + name + '\'' +
                 ", antSpecies='" + antSpecies + '\'' +
-                ", nest=" + nestRoot +
+                ", nest=" + formicariumNests +
                 ", averageVolume=" + averageVolume() +
                 ", averageHeatedVolume=" + averageHeatedVolume() +
                 ", averageAirConditionedVolume=" + averageAirConditionedVolume() +
@@ -71,7 +68,7 @@ public class Formicarium {
 
     //<editor-fold desc="Ändern der Informationen von Nestern wie oben beschrieben.">
     public void setNestFilling(int id, Filling filling) {
-        Nest nest = getNest(id, nestRoot);
+        Nest nest = getNest(id, formicariumNests);
         if (nest != null)
             nest.setFilling(filling);
     }
@@ -86,7 +83,8 @@ public class Formicarium {
     public String averageVolume() {
         double value = 0;
         int count = 0;
-        for (Nest nest : nestRoot) {
+        for (Object o : formicariumNests) {
+            Nest nest = (Nest) o;
             value += nest.depth * nest.height() * nest.width();
             count++;
         }
@@ -96,7 +94,8 @@ public class Formicarium {
     public String averageHeatedVolume() {
         double value = 0;
         int count = 0;
-        for (Nest nest : nestRoot) {
+        for (Object o : formicariumNests) {
+            Nest nest = (Nest) o;
             if (nest instanceof HeatedNest) {
                 value += nest.depth * nest.height() * nest.width();
                 count++;
@@ -108,7 +107,8 @@ public class Formicarium {
     public String averageAirConditionedVolume() {
         double value = 0;
         int count = 0;
-        for (Nest nest : nestRoot) {
+        for (Object o : formicariumNests) {
+            Nest nest = (Nest) o;
             if (nest instanceof AirConditionedNest) {
                 value += nest.depth * nest.height() * nest.width();
                 count++;
@@ -121,7 +121,8 @@ public class Formicarium {
     public String averagePerformance() {
         double value = 0;
         int count = 0;
-        for (Nest nest : nestRoot) {
+        for (Object o : formicariumNests) {
+            Nest nest = (Nest) o;
             if (nest instanceof HeatedNest) {
                 value += nest.getPower();
                 count++;
@@ -133,7 +134,8 @@ public class Formicarium {
     public String averageTankVolume() {
         double value = 0;
         int count = 0;
-        for (Nest nest : nestRoot) {
+        for (Object o : formicariumNests) {
+            Nest nest = (Nest) o;
             value += nest.getTankVolume();
             count++;
         }
@@ -148,7 +150,8 @@ public class Formicarium {
         int countAir = 0;
         double valueHeated = 0;
         int countHeated = 0;
-        for (Nest nest : nestRoot) {
+        for (Object o : formicariumNests) {
+            Nest nest = (Nest) o;
             if (nest instanceof HeatedNest) {
                 valueHeated += nest.getFilling().weight();
                 countHeated++;
@@ -172,7 +175,8 @@ public class Formicarium {
         int countAir = 0;
         double valueHeated = 0;
         int countHeated = 0;
-        for (Nest nest : nestRoot) {
+        for (Object o : formicariumNests) {
+            Nest nest = (Nest) o;
             if (nest instanceof HeatedNest) {
                 valueHeated += nest.getAereatedConcreteWidth() * nest.getAereatedConcreteHeight() * nest.depth;
                 countHeated++;
@@ -194,15 +198,15 @@ public class Formicarium {
 
     // <editor-fold desc="Helper">
 
-    public static MyList<Formicarium> getFormicariums() {
-        return formicariums;
+    public static MyList getFormicariums() {
+        return allFormicariums;
     }
 
     public String getName() {
         return name;
     }
 
-    private Nest getNest(int id, MyList<Nest> list) {
+    private Nest getNest(int id, MyList list) {
         for (Object nest : list) {
             if (nest instanceof Nest n) {
                 if (n.id() == id) {

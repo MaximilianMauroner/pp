@@ -1,7 +1,7 @@
 public interface Nest {
 
     double depth = 2;
-    MyList<Nest> nests = new MyList<>();
+    MyList allNests = new MyList();
 
     int id();
 
@@ -43,7 +43,7 @@ public interface Nest {
 
     // "Vermeiden Sie mehrfach vorkommenden Code für gleiche oder ähnliche Programmteile"
     default boolean checkID(int id) {
-        for (Object nest : Nest.nests) {
+        for (Object nest : Nest.allNests) {
             if (nest instanceof Nest) {
                 if (((Nest) nest).id() == id) {
                     return false;

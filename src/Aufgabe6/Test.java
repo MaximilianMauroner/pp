@@ -215,7 +215,7 @@ public class Test {
 
     private static void addtoNest(Nest... nests) {
         for (Nest nest : nests) {
-            Nest.nests.add(nest);
+            Nest.allNests.add(nest);
         }
     }
 

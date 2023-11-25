@@ -14,7 +14,7 @@ public class HeatedNest implements Nest {
         this.width = width;
         this.height = height;
         this.power = power;
-        Nest.nests.add(this);
+        Nest.allNests.add(this);
     }
 
     @Override
