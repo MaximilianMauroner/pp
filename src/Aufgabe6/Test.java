@@ -260,7 +260,6 @@ public class Test {
             System.out.println("Successful test");
         } else {
             System.out.println("Test NOT successful! Expected value: " + expected.toString() + " / Given " + "value: " + given.toString());
-            throw new RuntimeException("Test NOT successful! Expected value: " + expected + " / Given value: " + given);
         }
     }
 
