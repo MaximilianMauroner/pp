@@ -17,8 +17,7 @@ public class Institute {
     //Anzeigen aller Formicarien eines Instituts mit allen Informationen
     //auf dem Bildschirm
     public void print() {
-        // ToDo: Add print of statistics
-        System.out.println(formicariumRoot.toString());
+        System.out.println("Institute{formicariums=" + formicariumRoot.print() + '}');
     }
 
 
@@ -33,6 +32,17 @@ public class Institute {
             }
         }
         return null;
+    }
+
+    public Formicarium getFormicarium(String name) {
+        return getFormicarium(name, formicariumRoot);
+    }
+
+    @Override
+    public String toString() {
+        return "Institute{" +
+                "formicariums=" + formicariumRoot +
+                '}';
     }
 
     //</editor-fold>

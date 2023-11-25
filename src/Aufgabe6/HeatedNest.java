@@ -7,7 +7,7 @@ public class HeatedNest implements Nest {
     private final int power;
 
     public HeatedNest(int id, double width, double height, int power) {
-        if (!checkID()) {
+        if (!checkID(id)) {
             throw new IllegalArgumentException("ID already exists");
         }
         this.id = id;
@@ -50,5 +50,18 @@ public class HeatedNest implements Nest {
     @Override
     public void setFilling(Filling filling) {
         this.filling = filling;
+    }
+
+    @Override
+    public String toString() {
+        return "HeatedNest{" +
+                "filling=" + filling +
+                ", id=" + id +
+                ", width=" + width +
+                ", height=" + height +
+                ", depth=" + depth +
+                ", tankVolume=0" +
+                ", power=" + power +
+                '}';
     }
 }

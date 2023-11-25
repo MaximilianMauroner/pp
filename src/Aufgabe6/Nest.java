@@ -15,6 +15,8 @@ public interface Nest {
     // Post: returns the power if the nest is heated, otherwise 0
     int getPower();
 
+    String toString();
+
     // Pre: -
     // Post: returns the volume of the water tank if the nest is air-conditioned, otherwise 0
     double getTankVolume();
@@ -40,14 +42,15 @@ public interface Nest {
     Filling getFilling();
 
     // "Vermeiden Sie mehrfach vorkommenden Code für gleiche oder ähnliche Programmteile"
-    default boolean checkID() {
-        for (Object nest : nests) {
+    default boolean checkID(int id) {
+        for (Object nest : Nest.nests) {
             if (nest instanceof Nest) {
-                if (((Nest) nest).id() == id()) {
+                if (((Nest) nest).id() == id) {
                     return false;
                 }
             }
         }
         return true;
     }
+
 }

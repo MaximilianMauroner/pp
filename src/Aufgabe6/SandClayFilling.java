@@ -19,4 +19,11 @@ public class SandClayFilling implements Filling {
     public double height() {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "SandClayFilling{" +
+                "weight=" + weight +
+                '}';
+    }
 }

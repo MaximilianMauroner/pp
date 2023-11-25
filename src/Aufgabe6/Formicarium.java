@@ -45,6 +45,29 @@ public class Formicarium {
         this.nestRoot.remove(nest);
     }
 
+    @Override
+    public String toString() {
+        return "Formicarium{" +
+                "name='" + name + '\'' +
+                ", antSpecies='" + antSpecies + '\'' +
+                ", nest=" + nestRoot;
+    }
+
+    public String print() {
+        return "Formicarium{" +
+                "name='" + name + '\'' +
+                ", antSpecies='" + antSpecies + '\'' +
+                ", nest=" + nestRoot +
+                ", averageVolume=" + averageVolume() +
+                ", averageHeatedVolume=" + averageHeatedVolume() +
+                ", averageAirConditionedVolume=" + averageAirConditionedVolume() +
+                ", averagePerformance=" + averagePerformance() +
+                ", averageTankVolume=" + averageTankVolume() +
+                ", averageSandClayWeight=[" + averageSandClayWeight() + "]" +
+                ", averageTankVolume=[" + averageAeriatedConcreteVolume() + "]" +
+                '}';
+    }
+
 
     //<editor-fold desc="Ändern der Informationen von Nestern wie oben beschrieben.">
     public void setNestFilling(int id, Filling filling) {
@@ -56,39 +79,115 @@ public class Formicarium {
     //</editor-fold>
 
 
-
-
-
     // <editor-fold desc="Statistics">
 
     //ToDo: Add statistics
 
     public String averageVolume() {
-        return Integer.toString(0);
+        double value = 0;
+        int count = 0;
+        for (Nest nest : nestRoot) {
+            value += nest.depth * nest.height() * nest.width();
+            count++;
+        }
+        return Double.toString(count == 0 ? 1 : count);
     }
 
     public String averageHeatedVolume() {
-        return "String here";
+        double value = 0;
+        int count = 0;
+        for (Nest nest : nestRoot) {
+            if (nest instanceof HeatedNest) {
+                value += nest.depth * nest.height() * nest.width();
+                count++;
+            }
+        }
+        return Double.toString(count == 0 ? 1 : count);
     }
 
     public String averageAirConditionedVolume() {
-        return "String here";
+        double value = 0;
+        int count = 0;
+        for (Nest nest : nestRoot) {
+            if (nest instanceof AirConditionedNest) {
+                value += nest.depth * nest.height() * nest.width();
+                count++;
+            }
+        }
+        return Double.toString(count == 0 ? 1 : count);
+
     }
 
     public String averagePerformance() {
-        return "String here";
+        double value = 0;
+        int count = 0;
+        for (Nest nest : nestRoot) {
+            if (nest instanceof HeatedNest) {
+                value += nest.getPower();
+                count++;
+            }
+        }
+        return Double.toString(count == 0 ? 1 : count);
     }
 
     public String averageTankVolume() {
-        return "String here";
+        double value = 0;
+        int count = 0;
+        for (Nest nest : nestRoot) {
+            value += nest.getTankVolume();
+            count++;
+        }
+        return Double.toString(count == 0 ? 1 : count);
+
     }
 
     public String averageSandClayWeight() {
-        return "String here";
+        double valueTotal = 0;
+        int countTotal = 0;
+        double valueAir = 0;
+        int countAir = 0;
+        double valueHeated = 0;
+        int countHeated = 0;
+        for (Nest nest : nestRoot) {
+            if (nest instanceof HeatedNest) {
+                valueHeated += nest.getFilling().weight();
+                countHeated++;
+            }
+            if (nest instanceof AirConditionedNest) {
+                valueAir += nest.getFilling().weight();
+                countAir++;
+            }
+            valueTotal += nest.getFilling().weight();
+            countTotal++;
+        }
+        return "[Average sand-clay weight: " + Double.toString(valueTotal / countTotal) + "kg, " +
+                "Average heated sand-clay weight: " + Double.toString(valueHeated / countHeated) + "kg, " +
+                "Average air conditioned sand-clay weight: " + Double.toString(valueAir / countAir) + "kg]";
     }
 
     public String averageAeriatedConcreteVolume() {
-        return "String there";
+        double valueTotal = 0;
+        int countTotal = 0;
+        double valueAir = 0;
+        int countAir = 0;
+        double valueHeated = 0;
+        int countHeated = 0;
+        for (Nest nest : nestRoot) {
+            if (nest instanceof HeatedNest) {
+                valueHeated += nest.getAereatedConcreteWidth() * nest.getAereatedConcreteHeight() * nest.depth;
+                countHeated++;
+            }
+            if (nest instanceof AirConditionedNest) {
+                valueAir += nest.getAereatedConcreteWidth() * nest.getAereatedConcreteHeight() * nest.depth;
+                countAir++;
+            }
+            valueTotal += nest.getAereatedConcreteWidth() * nest.getAereatedConcreteHeight() * nest.depth;
+            countTotal++;
+        }
+        return "[Average sand-clay weight: " + Double.toString(valueTotal / countTotal) + "kg, " +
+                "Average heated sand-clay weight: " + Double.toString(valueHeated / countHeated) + "kg, " +
+                "Average air conditioned sand-clay weight: " + Double.toString(valueAir / countAir) + "kg]";
+
     }
 
     // </editor-fold>
@@ -107,7 +206,7 @@ public class Formicarium {
         for (Object nest : list) {
             if (nest instanceof Nest n) {
                 if (n.id() == id) {
-                    return  n;
+                    return n;
                 }
             }
         }
