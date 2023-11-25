@@ -14,7 +14,7 @@ public class AirConditionedNest implements Nest {
         this.width = width;
         this.height = height;
         this.tankVolume = tankVolume;
-        Nest.nests.add(this);
+        Nest.allNests.add(this);
     }
 
     @Override

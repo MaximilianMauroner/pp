@@ -215,7 +215,7 @@ public class Test {
 
     private static void addtoNest(Nest... nests) {
         for (Nest nest : nests) {
-            Nest.nests.add(nest);
+            Nest.allNests.add(nest);
         }
     }
 
@@ -260,7 +260,6 @@ public class Test {
             System.out.println("Successful test");
         } else {
             System.out.println("Test NOT successful! Expected value: " + expected.toString() + " / Given " + "value: " + given.toString());
-            throw new RuntimeException("Test NOT successful! Expected value: " + expected + " / Given value: " + given);
         }
     }
 

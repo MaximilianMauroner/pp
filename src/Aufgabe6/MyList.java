@@ -1,32 +1,32 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class MyList<T> implements Iterable<T> {
+public class MyList implements Iterable {
 
-    private Node<T> root;
+    private Node root;
 
     public MyList() {
         this.root = null;
     }
 
-    public MyList(T value) {
-        this.root = new Node<>(value);
+    public MyList(Object value) {
+        this.root = new Node(value);
     }
 
-    public void add(T value) {
+    public void add(Object value) {
         if (root == null) {
-            root = new Node<>(value);
+            root = new Node(value);
         } else {
-            Node<T> node = root;
+            Node node = root;
             while (node.next != null) {
                 node = node.next;
             }
-            node.next = new Node<>(value);
+            node.next = new Node(value);
         }
     }
 
-    public boolean contains(T value) {
-        Node<T> node = root;
+    public boolean contains(Object value) {
+        Node node = root;
         while (node != null) {
             if (node.value.equals(value)) {
                 return true;
@@ -36,8 +36,8 @@ public class MyList<T> implements Iterable<T> {
         return false;
     }
 
-    public boolean identical(T value) {
-        Node<T> node = root;
+    public boolean identical(Object value) {
+        Node node = root;
         while (node != null) {
             if (node.value == value) {
                 return true;
@@ -47,7 +47,7 @@ public class MyList<T> implements Iterable<T> {
         return false;
     }
 
-    public void remove(T value) {
+    public void remove(Object value) {
         if (root == null) {
             return;
         }
@@ -55,7 +55,7 @@ public class MyList<T> implements Iterable<T> {
             root = root.next;
             return;
         }
-        Node<T> node = root;
+        Node node = root;
         while (node.next != null) {
             if (node.next.value.equals(value)) {
                 node.next = node.next.next;
@@ -66,10 +66,10 @@ public class MyList<T> implements Iterable<T> {
     }
 
     @Override
-    public Iterator<T> iterator() {
-        return new Iterator<T>() {
+    public Iterator iterator() {
+        return new Iterator() {
 
-            Node<T> node = root;
+            Node node = root;
 
             @Override
             public boolean hasNext() {
@@ -77,12 +77,12 @@ public class MyList<T> implements Iterable<T> {
             }
 
             @Override
-            public T next() {
+            public Object next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException("No more elements");
                 }
 
-                T value = node.value;
+                Object value = node.value;
                 node = node.next;
                 return value;
             }
@@ -93,7 +93,7 @@ public class MyList<T> implements Iterable<T> {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("[");
-        Node<T> node = root;
+        Node node = root;
         while (node != null) {
             builder.append(node.value);
             if (node.next != null) {
@@ -108,7 +108,7 @@ public class MyList<T> implements Iterable<T> {
     public String print() {
         StringBuilder builder = new StringBuilder();
         builder.append("[");
-        Node<T> node = root;
+        Node node = root;
         while (node != null) {
             if (node.value instanceof Formicarium) {
                 builder.append(((Formicarium) node.value).print());
@@ -123,11 +123,11 @@ public class MyList<T> implements Iterable<T> {
     }
 
 
-    static class Node<T> {
-        T value;
-        Node<T> next;
+    static class Node {
+        Object value;
+        Node next;
 
-        public Node(T value) {
+        public Node(Object value) {
             this.value = value;
         }
 
