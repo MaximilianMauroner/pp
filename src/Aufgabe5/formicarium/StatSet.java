@@ -9,12 +9,12 @@ import java.util.Iterator;
  * Two objects of StatSet are considered equal (equals) if they contain identical entries of any kind, regardless of the order.
  */
 public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implements RatedSet<X, P, R> {
-    protected MyList<X> xRoot;
-    protected MyList<P> pRoot;
+    private MyList<X> xRoot;
+    private MyList<P> pRoot;
     private MyStatisticsList<String> statisticsList = new MyStatisticsList<>();
     private int calls = 0;
 
-    protected class MyList<T> {
+    private class MyList<T> {
         private MyList<T> next;
         private T value;
 
@@ -396,13 +396,13 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
 
     // Pre: -
     // Post: adds a message to the statistics list
-    protected void addStatistic(String message) {
+    void addStatistic(String message) {
         statisticsList.add(message);
     }
 
     // Pre: x != null
     // Post: true, if x is contained in the set. false otherwise
-    protected boolean contains(X x) {
+    public boolean contains(X x) {
         return xRoot.contains(x);
     }
 }

@@ -124,10 +124,21 @@ public class Test {
         StatSet<Arena, Arena, Quality> test = new StatSet<>();
         CompatibilitySet<Arena, Quality> test2 = new CompatibilitySet<>();
         test.add(A);
-        test2.add(A);
+        test2.addCriterion(A);
 
-        testEquals(test2.equals(test), false);
-        testEquals(test.equals(test2), true);
+        testEquals(test.equals(test2), false); // StatSet checks if elements and criterions separately are equal
+        testEquals(test2.equals(test), true); // CompatibilitySet checks if elements and criterions are equal no matter how they are stored
+
+        StatSet<Nest, Nest, Quality> test3 = new StatSet<>();
+        CompatibilitySet<Nest, Quality> test4 = new CompatibilitySet<>();
+        fill(test3, nestList, nestList);
+        fill(test4, nestList, nestList);
+
+        testEquals(test3.equals(test4), true);
+        testEquals(test4.equals(test3), true);
+
+        testEquals(statSet3.equals(compatSet3), false);
+        testEquals(compatSet3.equals(statSet3), false);
 
         // Test 4: Funktionalität
         statSet0.forEach(element -> testContains(element, numericsList));

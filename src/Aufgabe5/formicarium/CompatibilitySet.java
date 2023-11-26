@@ -16,9 +16,7 @@ public class CompatibilitySet<X extends Rated<? super X, R>, R extends Calc<R>> 
             return true;
         }
 
-        // this would work even if the other object is a StatSet<X, X, R>
-        // but the results of equals would depend on which object the method is called on
-        if (other instanceof CompatibilitySet<?, ?> o) {
+        if (other instanceof StatSet<?, ?, ?> o) {
 
             // if the added elements and the criterions are the same (just like in StatSet)
             if (super.equals(o)) {
