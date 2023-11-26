@@ -74,6 +74,19 @@ public class Test {
 
         //Test toString():
         testEquals(institute1.toString(), "Institute{formicariums=[Formicarium{name='Nest 10', antSpecies='Ant Species 10', nest=[AirConditionedNest{filling=AeratedConcreteFilling{width=19.0, height=19.0}, id=19, width=19.0, height=19.0, depth=2.0, tankVolume=19.0}, AirConditionedNest{filling=SandClayFilling{weight=20.0}, id=20, width=20.0, height=20.0, depth=2.0, tankVolume=20.0}], Formicarium{name='Nest 1', antSpecies='Ant Species 1', nest=[AirConditionedNest{filling=SandClayFilling{weight=1.0}, id=1, width=1.0, height=1.0, depth=2.0, tankVolume=1.0}, AirConditionedNest{filling=SandClayFilling{weight=2.0}, id=2, width=2.0, height=2.0, depth=2.0, tankVolume=2.0}]]}");
+
+
+        //Test Formicarium Species:
+        testEquals(institute1.getFormicarium("Nest 1").getAntSpecies(), "Ant Species 1");
+        institute1.getFormicarium("Nest 1").removeAntSpecies();
+        testEquals(institute1.getFormicarium("Nest 1").getAntSpecies() == null, true);
+        institute1.getFormicarium("Nest 1").setAntSpecies("Ant Species 1");
+        testEquals(institute1.getFormicarium("Nest 1").getAntSpecies(), "Ant Species 1");
+
+        //Test setNestFilling():
+        testEquals(institute1.getFormicarium("Nest 1").getNest(1).getFilling().toString(), "SandClayFilling{weight=1.0}");
+        institute1.getFormicarium("Nest 1").setNestFilling(1, new AeratedConcreteFilling(1, 1));
+        testEquals(institute1.getFormicarium("Nest 1").getNest(1).getFilling().toString(), "AeratedConcreteFilling{width=1.0, height=1.0}");
     }
 
     private static void initializeNests() {

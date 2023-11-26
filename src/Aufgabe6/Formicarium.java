@@ -217,5 +217,9 @@ public class Formicarium {
         return null;
     }
 
+    public Nest getNest(int id) {
+        return getNest(id, formicariumNests);
+    }
+
     // </editor-fold>
 }
