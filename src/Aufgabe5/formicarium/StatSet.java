@@ -2,14 +2,19 @@ package formicarium;
 
 import java.util.Iterator;
 
-
+/*
+ * The StatSet class implements the RatedSet interface. The type parameters are the same as in RatedSet.
+ * In addition to the methods of RatedSet, there is a parameterless method 'statistics' that returns information about the number of all 
+ * previous calls to all methods in this object as a string (each method listed individually), including the calls to the methods in the associated iterators.
+ * Two objects of StatSet are considered equal (equals) if they contain identical entries of any kind, regardless of the order.
+ */
 public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implements RatedSet<X, P, R> {
     private MyList<X> xRoot;
     private MyList<P> pRoot;
     private MyStatisticsList<String> statisticsList = new MyStatisticsList<>();
     private int calls = 0;
 
-    class MyList<T> {
+    private class MyList<T> {
         private MyList<T> next;
         private T value;
 
@@ -22,19 +27,24 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
                 return;
             }
 
-            MyList<T> last = next;
-            MyList<T> curr = next.next;
-            while (curr != null) {
-                last = curr;
-                curr = curr.next;
+            if (this.value == null) {
+                this.value = value;
+                return;
             }
-            last.next = new MyList<>(value);
+
+            MyList<T> curr = this;
+            MyList<T> next = this.next;
+            while (next != null) {
+                curr = next;
+                next = next.next;
+            }
+            curr.next = new MyList<>(value);
         }
 
         public boolean contains(T value) {
-            MyList<T> curr = next;
+            MyList<T> curr = this;
             while (curr != null) {
-                if (curr.value.equals(value)) {
+                if (curr.value != null && curr.value.equals(value)) {
                     return true;
                 }
                 curr = curr.next;
@@ -43,9 +53,9 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         }
 
         public boolean identical(T value) {
-            MyList<T> curr = next;
+            MyList<T> curr = this;
             while (curr != null) {
-                if (curr.value == value) {
+                if (curr.value != null && curr.value == value) {
                     return true;
                 }
                 curr = curr.next;
@@ -54,22 +64,32 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         }
 
         public boolean remove(T value) {
-            MyList<T> curr = next;
-            MyList<T> last = next;
-            while (curr != null) {
-                if (curr.value.equals(value)) {
-                    last.next = curr.next;
-                    return true;
+            if (this.value != null && this.value.equals(value)) {
+                if (this.next == null) {
+                    this.value = null;
+                } else {
+                    this.value = next.value;
+                    this.next = next.next;
                 }
-                last = curr;
-                curr = curr.next;
+                return true;
             }
 
+            MyList<T> curr = this;
+            MyList<T> next = this.next;
+            while (next != null) {
+                if (curr.value != null && curr.value.equals(value)) {
+                    curr.value = next.value;
+                    curr.next = next.next;
+                    return true;
+                }
+                curr = next;
+                next = next.next;
+            }
             return false;
         }
     }
 
-    class MyStatisticsList<T> {
+    private class MyStatisticsList<T> {
         private MyStatisticsList<T> next;
         private String value;
 
@@ -102,51 +122,99 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
         }
     }
 
+
+    // Post: Returns information about the number of all previous calls to all methods in this object as a string (each method listed individually), 
+    // including the calls to the methods in the associated iterators.
     public String statistics() {
         statisticsList.add("statistics");
         StringBuilder val = new StringBuilder();
         MyStatisticsList<String> temp = this.statisticsList;
-        while (temp != null) {
-            val.append(temp.value).append("\n");
+        while (temp != null && temp.value != null) {
+            val.append(temp.value);
+            if (temp.next != null) {
+                val.append("\n");
+            }
             temp = temp.next;
         }
         return val.toString();
     }
 
 
-    public boolean equals(StatSet<X, P, R> o) {
+    public boolean equals(Object other) {
         statisticsList.add("equals");
-        Iterator<X> xIterator = o.iterator();
-        Iterator<P> pIterator = o.criterions();
-        while (xIterator.hasNext()) {
-            X x = xIterator.next();
-            if (!this.xRoot.contains(x)) {
-                return false;
-            }
+        if (other == null) {
+            return false;
         }
-        while (pIterator.hasNext()) {
-            P p = pIterator.next();
-            if (!this.pRoot.contains(p)) {
-                return false;
+
+        if (other instanceof StatSet<?, ?, ?> o) {
+
+            for (Object x : this) {
+                boolean contained = false;
+
+                for (Object oX : o) {
+                    if (x == oX) {
+                        contained = true;
+                        break;
+                    }
+                }
+
+                if (!contained) {
+                    return false;
+                }
             }
+
+            Iterator<?> pIterator = this.criterions();
+
+            while (pIterator.hasNext()) {
+                Object p = pIterator.next();
+                boolean contained = false;
+                Iterator<?> oPIterator = o.criterions();
+
+                while (oPIterator.hasNext()) {
+                    Object oP = oPIterator.next();
+
+                    if (p == oP) {
+                        contained = true;
+                        break;
+                    }
+                }
+
+                if (!contained) {
+                    return false;
+                }
+            }
+
+            return true;
         }
-        return true;
+        return false;
     }
 
-
+    // Pre: x is a non-null object of type X.
+    // Post: Ensures that x is an entry in the container. If an identical object already exists in the container, it is not inserted again.
     @Override
     public void add(X x) {
         statisticsList.add("add X");
 
+        if (xRoot == null) {
+            xRoot = new MyList<>(x);
+            return;
+        }
         this.xRoot.add(x);
     }
 
+    // Pre: p is a non-null object of type P.
+    // Post: Works like add, but deals with entries of type P. Identical objects inserted using addCriterion are not allowed to occur multiple times.
     @Override
     public void addCriterion(P p) {
         statisticsList.add("addCriterion P");
+        if (pRoot == null) {
+            pRoot = new MyList<>(p);
+            return;
+        }
         this.pRoot.add(p);
     }
 
+    // Post: Returns an iterator that runs in any order over all entries in the container that were inserted using add.
     @Override
     public Iterator<X> iterator() {
         statisticsList.add("iterator X");
@@ -164,23 +232,22 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
                 if (!hasNext()) {
                     throw new IllegalStateException("No more elements");
                 }
-                X t = current.value;
                 last = current;
                 current = current.next;
-                return t;
+                return last.value;
             }
 
             public void remove() {
-                if (last == null) {
-                    throw new IllegalStateException("No element to remove");
-                }
-                if (StatSet.this.xRoot.remove(last.value)) {
+                if (last != null && StatSet.this.xRoot.remove(last.value)) {
                     last = null;
                 }
             }
         };
     }
 
+    // Pre: p is a non-null object of type P and r is a non-null object of type R.
+    // Post: Returns an iterator that runs in any order over all entries x in the container that were 
+    // inserted using add and for which x.rated(p) delivers a result that is greater than or equal to r.
     @Override
     public Iterator<X> iterator(P p, R r) {
         statisticsList.add("iterator P R");
@@ -188,7 +255,7 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
 
             {
                 for (X x : StatSet.this) {
-                    if (ratedHelper()) {
+                    if (ratedHelper(x)) {
                         if (this.root == null) {
                             this.root = new MyList<>(x);
                         } else if (!this.root.contains(x)) {
@@ -199,15 +266,11 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
             }
 
             private MyList<X> root;
-            private MyList<X> current = StatSet.this.xRoot;
+            private MyList<X> current = root;
             private MyList<X> last = null;
 
             @Override
             public boolean hasNext() {
-                last = current;
-                while (current != null && !ratedHelper()) {
-                    current = current.next;
-                }
                 return current != null;
             }
 
@@ -216,53 +279,97 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
                 if (!hasNext()) {
                     throw new IllegalStateException("No more elements");
                 }
-                return current.value;
+
+                last = current;
+                current = current.next;
+                return last.value;
             }
 
             // Pre: current != null
             // Post: true, if the rating of value is at least r. false otherwise
-            private boolean ratedHelper() {
-                return current.value.rated(p).atleast(r);
+            private boolean ratedHelper(X value) {
+                return value.rated(p).atleast(r);
             }
 
             public void remove() {
-                if (last == null) {
-                    throw new IllegalStateException("No element to remove");
-                }
-
-                if (StatSet.this.xRoot.remove(last.value)) {
+                if (last != null && StatSet.this.xRoot.remove(last.value)) {
                     last = null;
                 }
             }
         };
     }
 
+    // Pre: r is a non-null object of type R.
+    // Post: Returns an iterator that runs in any order over all entries x in the container that were 
+    // inserted using add and for which the average of all values determined by x.rated(p) 
+    // (for all entries p in the container inserted using addCriterion) is greater than or equal to r.
     @Override
     public Iterator<X> iterator(R r) {
         statisticsList.add("iterator R");
-        return new Iterator<X>() {
+        return new Iterator<>() {
+
+            {
+                for (X x : StatSet.this) {
+                    R average = null;
+                    int count = 0;
+                    for (Iterator<P> it = StatSet.this.criterions(); it.hasNext(); ) {
+                        P p = it.next();
+                        if (average == null) {
+                            average = x.rated(p);
+                        } else {
+                            average = average.sum(x.rated(p));
+                        }
+                        count++;
+                    }
+
+
+                    if (average != null && average.ratio(count).atleast(r)) {
+                        if (this.root == null) {
+                            this.root = new MyList<>(x);
+                        } else {
+                            this.root.add(x);
+                        }
+                    }
+                }
+            }
+
+            private MyList<X> root;
+            private MyList<X> current = root;
+            private MyList<X> last = null;
+
             @Override
             public boolean hasNext() {
-                return false;
+                return current != null;
             }
 
             @Override
             public X next() {
-                return null;
+                if (!hasNext()) {
+                    throw new IllegalStateException("No more elements");
+                }
+
+                last = current;
+                current = current.next;
+                return last.value;
             }
 
             public void remove() {
-                // ToDo: Implement this method
+                if (last != null && StatSet.this.xRoot.remove(last.value)) {
+                    last = null;
+                }
+
             }
         };
     }
 
+    // Post: Returns an iterator that runs in any order over all entries in the container that were inserted using addCriterion.
     @Override
     public Iterator<P> criterions() {
         statisticsList.add("criterions P");
 
         return new Iterator<>() {
             private MyList<P> current = StatSet.this.pRoot;
+            private MyList<P> last = null;
 
             @Override
             public boolean hasNext() {
@@ -274,21 +381,28 @@ public class StatSet<X extends Rated<? super P, R>, P, R extends Calc<R>> implem
                 if (!hasNext()) {
                     throw new IllegalStateException("No more elements");
                 }
+                last = current;
                 current = current.next;
-                return current.value;
+                return last.value;
             }
 
             public void remove() {
-                // ToDo: Implement this method
+                if (last != null && StatSet.this.pRoot.remove(last.value)) {
+                    last = null;
+                }
             }
         };
     }
 
-    // Pre: x != null && p != null
-    // Post: true, if x or p is contained in this. false if neither x nor p is contained in this
-    protected boolean contains(X x, P p) {
-        statisticsList.add("contains X P");
+    // Pre: -
+    // Post: adds a message to the statistics list
+    void addStatistic(String message) {
+        statisticsList.add(message);
+    }
 
-        return this.xRoot.contains(x) || this.pRoot.contains(p);
+    // Pre: x != null
+    // Post: true, if x is contained in the set. false otherwise
+    public boolean contains(X x) {
+        return xRoot.contains(x);
     }
 }
