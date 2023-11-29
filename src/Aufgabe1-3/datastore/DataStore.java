@@ -32,12 +32,9 @@ public class DataStore {
      * @return the simulation with the given id. If no simulation with that id exists, null will be returned
      */
     public Simulation getSimulation(String simulationId) {
-        for (Simulation simulation : simulationList) {
-            if (simulation.getSimulationId().equals(simulationId)) {
-                return simulation;
-            }
-        }
-        return null;
+        return simulationList.stream().filter(
+                simulation -> simulation.getSimulationId().equals(simulationId)
+        ).findFirst().orElse(null);
     }
 
     /**
@@ -80,10 +77,7 @@ public class DataStore {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (Simulation simulation : simulationList) {
-            stringBuilder.append(simulation.toString());
-            stringBuilder.append("\n");
-        }
+        simulationList.forEach(simulation -> stringBuilder.append(simulation.toString()).append("\n"));
         return stringBuilder.toString();
     }
 

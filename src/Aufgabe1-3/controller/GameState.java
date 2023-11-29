@@ -40,12 +40,10 @@ public class GameState {
      * @param queue queue to which the entities are added (precondition: queue != null)
      */
     public void getNextFrame(BlockingQueue<BufferElement> queue) {
-        for (Point p : points.values()) {
+        points.values().forEach(p -> {
             ArrayList<Entity> entities = new ArrayList<>(p.getEntities());
-            for (Entity e : entities) {
-                e.run(this, status, p, queue);
-            }
-        }
+            entities.forEach(e -> e.run(this, status, p, queue));
+        });
     }
 
     /**

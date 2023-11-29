@@ -158,13 +158,14 @@ public class ClusterGenerator {
             gs.setPoint(p);
         } else {
             List<Entity> entityList = p.getEntities();
-            for (Entity e : entityList) {
+            entityList.forEach(e -> {
                 if (e.getClass() == Ant.class) {
                     ((Ant) e).getColony().getAnts().remove(((Ant) e).getId());
                 } else if (e.getClass() == Hive.class) {
                     ((Hive) e).getColony().getHives().remove(((Hive) e).getId());
                 }
-            }
+            });
+
             entityList.clear();
             p.getEntities().add(newE);
         }

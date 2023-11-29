@@ -167,6 +167,7 @@ public class PathManager {
                     }
                 }
             }
+
         }
 
         while (target.parent != null) {

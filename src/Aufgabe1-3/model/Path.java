@@ -51,9 +51,7 @@ public class Path {
     @Override
     public Path clone() {
         Path clone = new Path();
-        for (Position position : positionList) {
-            clone.addPosition(position);
-        }
+        positionList.forEach(clone::addPosition);
         return clone;
     }
 
@@ -63,11 +61,6 @@ public class Path {
      * @return true if the path contains the given position
      */
     public boolean contains(Position position) {
-        for (Position p : positionList) {
-            if (p.equals(position)) {
-                return true;
-            }
-        }
-        return false;
+        return positionList.contains(position);
     }
 }

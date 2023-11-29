@@ -105,7 +105,8 @@ public class Ant implements Entity {
 
         // filter out positions with obstacles
         List<Position> nearestPositions = oldPoint.getPosition().getPossibleNextPosition(this.direction);
-        for (Iterator<Position> iter = nearestPositions.iterator(); iter.hasNext(); ) {
+        Iterator<Position> iter = nearestPositions.iterator();
+        while (iter.hasNext()) {
             Position pos = iter.next();
             Point point = gameState.getPoint(pos);
             if (point != null && point.hasObstacle()) {
@@ -230,6 +231,7 @@ public class Ant implements Entity {
         for (Position pos : nearestPositions) {
             Point point = gameState.getPoint(pos);
             if (point != null) {
+                // replacing this with a for-each loop would be possible but makes the code even less readable
                 for (Entity e : new ArrayList<>(point.getEntities())) {
                     if (e instanceof Food) {
                         endPosition = pos;
@@ -281,6 +283,7 @@ public class Ant implements Entity {
         for (Position pos : nearestPositions) {
             Point point = gameState.getPoint(pos);
             if (point != null) {
+                // replacing this with a for-each loop would be possible but makes the code even less readable
                 for (Entity e : new ArrayList<>(point.getEntities())) {
                     if (e instanceof Food) {
                         endPosition = pos;
@@ -330,6 +333,7 @@ public class Ant implements Entity {
             Point point = gameState.getPoint(pos);
 
             if (point != null) {
+                // replacing this with a for-each loop would be possible but makes the code even less readable
                 for (Entity e : point.getEntities()) {
                     if (e instanceof Hive hive && hive.getColony().equals(this.colony)) {
                         endPosition = pos;
@@ -360,6 +364,7 @@ public class Ant implements Entity {
             Point point = gameState.getPoint(pos);
 
             if (point != null) {
+                // replacing this with a for-each loop would be possible but makes the code even less readable
                 for (Entity e : point.getEntities()) {
                     if (e instanceof Hive hive && hive.getColony().equals(this.colony)) {
                         endPosition = pos;
@@ -407,16 +412,17 @@ public class Ant implements Entity {
      * @return an array of AntDirections containing the direction to the food, hive, high trail and low trail (in that order)
      */
     private AntDirection[] search(Position currentPosition) {
-        AntDirection food = null;
-        AntDirection hive = null;
-        AntDirection highTrail = null;
-        AntDirection lowTrail = null;
-
-        double highFactor = status.getHighTrail() - Math.random();
-        double highest = 0;
-        double lowFactor = status.getLowTrail() - Math.random();
-        double low = 1;
-        double foodDistance = Parameters.ANT_VIEW_DISTANCE;
+        var ref = new Object() {
+            AntDirection food = null;
+            AntDirection hive = null;
+            AntDirection highTrail = null;
+            AntDirection lowTrail = null;
+            double highFactor = status.getHighTrail() - Math.random();
+            double highest = 0;
+            double lowFactor = status.getLowTrail() - Math.random();
+            double low = 1;
+            double foodDistance = Parameters.ANT_VIEW_DISTANCE;
+        };
 
         int x = currentPosition.getX();
         int y = currentPosition.getY();
@@ -427,29 +433,30 @@ public class Ant implements Entity {
                 if (currentPosition.withinRadius(p, Parameters.ANT_VIEW_DISTANCE)) {
                     if (gameState.hasPosition(p)) {
                         Point point = gameState.getPoint(p);
-                        for (Entity e : point.getEntities()) {
-                            if (e instanceof Food && currentPosition.euclideanDistance(p) < foodDistance) {
-                                foodDistance = currentPosition.euclideanDistance(p);
-                                food = currentPosition.getRelativeChange(p);
+
+                        point.getEntities().forEach(e -> {
+                            if (e instanceof Food && currentPosition.euclideanDistance(p) < ref.foodDistance) {
+                                ref.foodDistance = currentPosition.euclideanDistance(p);
+                                ref.food = currentPosition.getRelativeChange(p);
                             } else if (e instanceof Hive h && h.getColony().equals(this.colony)) {
-                                hive = currentPosition.getRelativeChange(p);
+                                ref.hive = currentPosition.getRelativeChange(p);
                             } else if (e instanceof Trail && ((Trail) e).isNewPath(this)) { // origin so ant doesn't follow own trail
                                 double strength = ((Trail) e).getColonyStrength(this.colony);
-                                if (strength > highFactor && strength > highest) {
-                                    highTrail = currentPosition.getRelativeChange(p);
-                                    highest = strength;
-                                } else if (strength < lowFactor && strength < low) {
-                                    lowTrail = currentPosition.getRelativeChange(p);
-                                    low = strength;
+                                if (strength > ref.highFactor && strength > ref.highest) {
+                                    ref.highTrail = currentPosition.getRelativeChange(p);
+                                    ref.highest = strength;
+                                } else if (strength < ref.lowFactor && strength < ref.low) {
+                                    ref.lowTrail = currentPosition.getRelativeChange(p);
+                                    ref.low = strength;
                                 }
                             }
-                        }
+                        });
                     }
                 }
             }
         }
 
-        return new AntDirection[]{food, hive, highTrail, lowTrail};
+        return new AntDirection[]{ref.food, ref.hive, ref.highTrail, ref.lowTrail};
     }
 
     /**

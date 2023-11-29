@@ -85,14 +85,29 @@ public class Game {
         // generate hive position
         List<Position> hivePositions = new ArrayList<>();
 
-        for (int i = 0; i < Parameters.HIVE_COUNT; i++) {
-            Stream.generate(() -> new Position((int) (Math.random() * status.getWidth()), (int) (Math.random() * status.getHeight())))
+//        for (int i = 0; i < Parameters.HIVE_COUNT; i++) {
+//            Stream.generate(() -> new Position((int) (Math.random() * status.getWidth()), (int) (Math.random() * status.getHeight())))
+//                .filter(hivePosition -> hivePositions.stream().noneMatch(
+//                        existingHivePosition -> Math.abs(existingHivePosition.getX() - hivePosition.getX()) < 2 * Parameters.HIVE_SIZE
+//                                && Math.abs(existingHivePosition.getY() - hivePosition.getY()) < 2 * Parameters.HIVE_SIZE
+//                ))
+//                .findFirst()
+//                .ifPresent(hivePosition -> {
+//                    Colony colony = new Colony(this.gameState);
+//                    colonies.add(colony);
+//                    Hive hive = new Hive(colony, hivePosition);
+//                    hivePositions.add(hivePosition);
+//                    ClusterGenerator.advancedHiveGeneration(hive, hivePosition, Parameters.HIVE_SIZE, gameState);
+//                    pathManager.addStart(hivePosition);
+//                });
+//        }
+
+        Stream.generate(() -> new Position((int) (Math.random() * status.getWidth()), (int) (Math.random() * status.getHeight())))
                 .filter(hivePosition -> hivePositions.stream().noneMatch(
-                        existingHivePosition -> Math.abs(existingHivePosition.getX() - hivePosition.getX()) < 2 * Parameters.HIVE_SIZE
-                                && Math.abs(existingHivePosition.getY() - hivePosition.getY()) < 2 * Parameters.HIVE_SIZE
+                        existingHivePosition -> existingHivePosition.euclideanDistance(hivePosition) < 2 * Parameters.HIVE_SIZE
                 ))
-                .findFirst()
-                .ifPresent(hivePosition -> {
+                .limit(Parameters.HIVE_COUNT)
+                .forEach(hivePosition -> {
                     Colony colony = new Colony(this.gameState);
                     colonies.add(colony);
                     Hive hive = new Hive(colony, hivePosition);
@@ -100,7 +115,6 @@ public class Game {
                     ClusterGenerator.advancedHiveGeneration(hive, hivePosition, Parameters.HIVE_SIZE, gameState);
                     pathManager.addStart(hivePosition);
                 });
-        }
 
 
         // randomly spawn ants around hive

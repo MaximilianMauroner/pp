@@ -238,8 +238,7 @@ public class View extends Thread {
         Collections.sort(elementsToDraw);
         Collections.reverse(elementsToDraw);
 
-
-        for (CanvasElement element : elementsToDraw) {
+        elementsToDraw.forEach(element -> {
             Entity entity = element.entity();
             int x = element.position().getX() * Parameters.SCALE_BY;
             int y = element.position().getY() * Parameters.SCALE_BY;
@@ -259,7 +258,7 @@ public class View extends Thread {
                     case FOODRETRIEVE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_RETRIVE_COLOR);
                 }
             }
-        }
+        });
     }
 
     /**

@@ -83,9 +83,7 @@ public class ColonyTrail {
     public double getStrength() {
         double total = 0;
         if (!this.trailStrengths.isEmpty()) {
-            for (double value : this.trailStrengths.values()) {
-                total += value;
-            }
+            total = this.trailStrengths.values().stream().reduce(0.0, Double::sum);
         }
         if (this.trailStrengths.isEmpty()) {
             return 0;
