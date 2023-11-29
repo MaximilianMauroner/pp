@@ -30,15 +30,15 @@ public class GameplayLoop implements Runnable {
     private final GameState gameState;
     private boolean isRunning = false;
 
-    private BlockingQueue<BufferElement> queue;
-    private CodeDraw cd;
+    private BlockingQueue<BufferElement> queue; // (invariant: queue != null)
+    private CodeDraw cd; // (invariant: cd != null)
 
     /**
      * Creates a new GameplayLoop object.
      *
-     * @param gameState the game state object (not null)
-     * @param queue     the queue that is used to communicate changes to the view (not null)
-     * @param cd        the CodeDraw object that is used to draw the game (not null)
+     * @param gameState the game state object (precondition: gameState != null)
+     * @param queue     the queue that is used to communicate changes to the view (precondition: queue != null)
+     * @param cd        the CodeDraw object that is used to draw the game (precondition: cd != null)
      */
     public GameplayLoop(GameState gameState, BlockingQueue<BufferElement> queue, CodeDraw cd) {
         this.gameState = gameState;

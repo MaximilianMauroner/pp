@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Path {
     private final List<Position> positionList = new ArrayList<>();
-    private double metric = 0; // ToDo: think of a statistically more sound metric
+    private double metric = 0; // (server-controlled history-constraint: only increases)
 
     /**
      * @return list of all positions on the path

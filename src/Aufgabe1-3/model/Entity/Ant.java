@@ -32,15 +32,15 @@ public class Ant implements Entity {
     private final Colony colony;
     private final Position hivePos;
     private AntState currentState;
-    private int emptySteps = 0;
+    private int emptySteps = 0; // (server-controlled history-constraint: 0 <= emptySteps <= status.getAntEmptySteps())
     private AntDirection direction = AntDirection.values()[(int) (Math.random() * AntDirection.values().length)];
-    private GameState gameState;
-    private Status status;
-    private int moveSteps;
-    private int waitSteps;
+    private GameState gameState; // (server-controlled history-constraint: gameState != null)
+    private Status status; // (server-controlled history-constraint: status != null)
+    private int moveSteps; // (server-controlled history-constraint: moveSteps > 0)
+    private int waitSteps; // (server-controlled history-constraint: waitSteps > 0)
     private Position position;
-    private int searchRadius = Parameters.INITIAL_ANT_SEARCH_RADIUS;
-    private int foodCount = 0;
+    private int searchRadius = Parameters.INITIAL_ANT_SEARCH_RADIUS; // (server-controlled history-constraint: doesn't change during runs)
+    private int foodCount = 0; // (server-controlled history-constraint: foodCount >= oldFoodCount)
     private int oldFoodCount = 0;
 
     /**
@@ -64,6 +64,7 @@ public class Ant implements Entity {
         this.position = position;
     }
 
+    @Override
     public Position getPosition() {
         return position;
     }
@@ -165,7 +166,7 @@ public class Ant implements Entity {
     /**
      * Changes the direction of the ant based on the current state
      *
-     * @param position the current position of the ant
+     * @param position the current position of the ant (precondition: position != null)
      */
     public void changeDirection(Position position) {
         AntDirection[] directions = search(position);
@@ -202,9 +203,9 @@ public class Ant implements Entity {
     /**
      * The ant will explore the environment and leave a trail.
      *
-     * @param oldPoint         the point the ant is currently on
-     * @param nearestPositions the possible next positions of the ant
-     * @param endPosition      the position the ant will move to (if no other position is chosen)
+     * @param oldPoint         the point the ant is currently on (precondition: oldPoint != null)
+     * @param nearestPositions the possible next positions of the ant (precondition: nearestPositions != null)
+     * @param endPosition      the position the ant will move to (if no other position is chosen) (precondition: endPosition != null)
      */
     public void explore(Point oldPoint, List<Position> nearestPositions, Position endPosition) {
         // ant prefers empty positions in exploration mode
@@ -269,9 +270,9 @@ public class Ant implements Entity {
     /**
      * The ant will search for food and follow trails.
      *
-     * @param oldPoint         the point the ant is currently on
-     * @param nearestPositions the possible next positions of the ant
-     * @param endPosition      the position the ant will move to (if no other position is chosen)
+     * @param oldPoint         the point the ant is currently on (precondition: oldPoint != null)
+     * @param nearestPositions the possible next positions of the ant (precondition: nearestPositions != null)
+     * @param endPosition      the position the ant will move to (if no other position is chosen) (precondition: endPosition != null)
      */
     public void foodSearch(Point oldPoint, List<Position> nearestPositions, Position endPosition) {
         Point newPoint = null;
@@ -318,9 +319,9 @@ public class Ant implements Entity {
     /**
      * The ant will retrieve food and follow trails
      *
-     * @param oldPoint         the point the ant is currently on
-     * @param nearestPositions the possible next positions of the ant
-     * @param endPosition      the position the ant will move to (if no other position is chosen)
+     * @param oldPoint         the point the ant is currently on (precondition: oldPoint != null)
+     * @param nearestPositions the possible next positions of the ant (precondition: nearestPositions != null)
+     * @param endPosition      the position the ant will move to (if no other position is chosen) (precondition: endPosition != null)
      */
     public void foodRetrieve(Point oldPoint, List<Position> nearestPositions, Position endPosition) {
         Point newPoint = null;
@@ -348,9 +349,9 @@ public class Ant implements Entity {
     /**
      * The ant will return to the hive directly
      *
-     * @param oldPoint         the point the ant is currently on
-     * @param nearestPositions the possible next positions of the ant
-     * @param endPosition      the position the ant will move to (if no other position is chosen)
+     * @param oldPoint         the point the ant is currently on (precondition: oldPoint != null)
+     * @param nearestPositions the possible next positions of the ant (precondition: nearestPositions != null)
+     * @param endPosition      the position the ant will move to (if no other position is chosen) (precondition: endPosition != null)
      */
     public void antReturn(Point oldPoint, List<Position> nearestPositions, Position endPosition) {
         Point newPoint = null;
@@ -454,9 +455,9 @@ public class Ant implements Entity {
     /**
      * Moves the ant to the new position and updates the trail.
      *
-     * @param oldPoint    the point the ant is currently on
+     * @param oldPoint    the point the ant is currently on (precondition: oldPoint != null)
      * @param newPoint    the point the ant will move to
-     * @param endPosition the position the ant will move to (if not overwritten previously by newPoint)
+     * @param endPosition the position the ant will move to (if not overwritten previously by newPoint) (precondition: endPosition != null)
      */
     private void move(Point oldPoint, Point newPoint, Position endPosition) {
         if (newPoint == null && !gameState.hasPosition(endPosition)) {

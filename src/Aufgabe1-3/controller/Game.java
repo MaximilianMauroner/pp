@@ -37,14 +37,19 @@ public class Game {
      */
     private final Status status;
     private final GameBuffer gameBuffer;
-    private View view;
 
     /**
      * Objects of the game
      */
-    private GameState gameState;
-    private PathManager pathManager;
+    private View view; // (invariant: view != null)
+    private GameState gameState; // (invariant: gameState != null)
+    private PathManager pathManager; // (invariant: pathManager != null)
 
+    /**
+     * Creates a new Game object
+     *
+     * @param status the status object (precondition: status != null)
+     */
     public Game(Status status) {
         this.status = status;
         this.gameBuffer = new GameBuffer();
@@ -131,10 +136,6 @@ public class Game {
                 });
     }
 
-    /**
-     * Starts the game without duration limit
-     */
-
 
     /**
      * Starts the game with duration limit
@@ -171,7 +172,7 @@ public class Game {
     /**
      * Calculates a random position within a radius around a given position
      *
-     * @param pos  position around which the random position is calculated
+     * @param pos  position around which the random position is calculated (precondition: is a valid coordinate)
      * @param dist distance to the given position (only distance along one axis, not Euclidean distance)
      */
     private int calculatePosition(int pos, int dist) {

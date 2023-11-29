@@ -108,7 +108,7 @@ public class Trail implements Entity {
     /**
      * Changes the strength of the trail and updates the antId to the most recent ant that created it
      *
-     * @param strength strength to be added
+     * @param strength strength to be added (precondition: strength >= 0)
      * @param antId    ant that created the trail (using ant ids)
      * @param colony   colony of the ant (precondition: colony != null)
      */

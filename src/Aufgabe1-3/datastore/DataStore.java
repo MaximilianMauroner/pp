@@ -19,7 +19,7 @@ public class DataStore {
     /**
      * Adds a simulation to the datastore list
      *
-     * @param simulation the simulation to be added
+     * @param simulation the simulation to be added (precondition: simulation != null)
      */
     public void addSimulation(Simulation simulation) {
         simulationList.add(simulation);

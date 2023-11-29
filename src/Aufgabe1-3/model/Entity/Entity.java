@@ -33,9 +33,9 @@ public interface Entity extends Comparable<Entity> {
     /**
      * Runs the entity's logic
      *
-     * @param gameState the game state of the game
-     * @param status    the status of the game
-     * @param point     the point where the entity is located
+     * @param gameState the game state of the game (precondition: gameState != null)
+     * @param status    the status of the game (precondition: status != null)
+     * @param point     the point where the entity is located (precondition: point != null)
      */
     void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> gameBuffer);
 

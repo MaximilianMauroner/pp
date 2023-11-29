@@ -30,12 +30,12 @@ public class Colony {
     private ConcurrentHashMap<Integer, Hive> hives;
     private ConcurrentHashMap<Integer, Ant> ants;
 
-    private final GameState gameState; //(history-constraint: gameState != null)
+    private final GameState gameState; //(invariant: gameState != null)
 
     /**
      * Initializes new colony object
      *
-     * @param gameState game-state the colony is a part of
+     * @param gameState game-state the colony is a part of (precondition: gameState != null)
      */
     public Colony(GameState gameState) {
         this.hives = new ConcurrentHashMap<>();

@@ -25,7 +25,7 @@ import java.util.Vector;
 public class DataManager {
     private static DataManager instance;
     private final DataStore dataStore;
-    private Simulation simulation; // (invariant) should be non-null
+    private Simulation simulation;
 
     /**
      * Creates a new DataManager object. Private because of the Singleton pattern.
@@ -51,6 +51,7 @@ public class DataManager {
 
     /**
      * Returns the instance of the DataManager without setting the simulation
+     * (client-controlled history-constraint: call getInstance(Simulation simulation) somewhere before to set a simulation)
      *
      * @return the singleton instance of the DataManager
      */

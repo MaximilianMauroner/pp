@@ -33,7 +33,7 @@ public class PathManager {
     /**
      * Creates a new PathManager object
      *
-     * @param gameState the game state object (not null)
+     * @param gameState the game state object (precondition: gameState != null)
      */
     public PathManager(GameState gameState) {
         paths = new ArrayList<>();
@@ -46,7 +46,7 @@ public class PathManager {
     /**
      * Adds a start position from which paths are calculated
      *
-     * @param position the start position
+     * @param position the start position (precondition: position != null)
      */
     public void addStart(Position position) {
         startPositions.add(position);
@@ -55,7 +55,7 @@ public class PathManager {
     /**
      * Adds an end position to which paths are calculated
      *
-     * @param position the end position
+     * @param position the end position (precondition: position != null)
      */
     public void addEnd(Position position) {
         endPositions.add(position);
@@ -63,6 +63,7 @@ public class PathManager {
 
     /**
      * Adds the position to end position and calculates a path from all start positions to the end position
+     * (client-controlled history-constraint: add start position before adding end position)
      *
      * @param position the start position
      */
@@ -84,7 +85,7 @@ public class PathManager {
     }
 
     /**
-     * Removes the position both start and end positions and removes all paths that contain the position
+     * Removes the position from both start and end positions and removes all paths that contain the position
      *
      * @param position the start position
      */
@@ -124,8 +125,8 @@ public class PathManager {
     /**
      * Calculates the optimal path from the start position to the end position using a* algorithm
      *
-     * @param start the start position
-     * @param end   the end position
+     * @param start the start position (precondition: start != null)
+     * @param end   the end position (precondition: end != null)
      * @return the optimal path
      */
     private Path a_star(Position start, Position end) {

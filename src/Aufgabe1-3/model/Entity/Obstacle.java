@@ -21,7 +21,7 @@ import java.util.concurrent.BlockingQueue;
  */
 public class Obstacle implements Entity {
 
-    Position position;
+    private Position position;
 
     @Override
     public void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> queue) {

@@ -25,10 +25,10 @@ public class ClusterGenerator {
     /**
      * Generates a cluster of entities
      *
-     * @param entity   the entity to be generated
-     * @param position the position of the cluster
-     * @param size     the size of the cluster
-     * @param gs       the game state
+     * @param entity   the entity to be generated (precondition: entity != null)
+     * @param position the position of the cluster (precondition: position != null)
+     * @param size     the size of the cluster (precondition: size > 0)
+     * @param gs       the game state (precondition: gs != null)
      */
     public static void generate(Entity entity, Position position, int size, GameState gs) {
         for (int i = -(size / 2); i <= size / 2; i++) {
@@ -45,8 +45,8 @@ public class ClusterGenerator {
      * Generates a cluster of obstacles in a organic way
      * @param entity the entity to be generated (precondition: entity is an obstacle, entity != null)
      * @param position the center of the cluster (precondition: position != null)
-     * @param size the size of the cluster
-     * @param gs the game state
+     * @param size the size of the cluster (precondition: size > 0)
+     * @param gs the game state (precondition: gs != null)
      */
     public static void advancedObstacleGeneration(Entity entity, Position position, int size, GameState gs) {
         Random random = new Random();
@@ -87,8 +87,8 @@ public class ClusterGenerator {
      * Generates a cluster of food sources in an organic way
      * @param entity the entity to be generated (precondition: entity is food, entity != null)
      * @param position the center of the cluster (precondition: position != null)
-     * @param size the size of the cluster
-     * @param gs the game state
+     * @param size the size of the cluster (precondition: size > 0)
+     * @param gs the game state (precondition: gs != null)
      */
     public static void advancedFoodSourceGeneration(Entity entity, Position position, int size, GameState gs) {
         Random random = new Random();
@@ -125,8 +125,8 @@ public class ClusterGenerator {
      * Generates a cluster of hives in an organic way
      * @param entity the entity to be generated (precondition: entity is a hive, entity != null)
      * @param position the center of the cluster (precondition: position != null)
-     * @param size the size of the cluster
-     * @param gs the game state
+     * @param size the size of the cluster (precondition: size > 0)
+     * @param gs the game state (precondition: gs != null)
      */
     public static void advancedHiveGeneration(Entity entity, Position position, int size, GameState gs) {
         Random random = new Random();
@@ -144,10 +144,10 @@ public class ClusterGenerator {
 
     /**
      * Writes an entity to a position in the game state
-     * @param x x-coordinate of the position
-     * @param y y-coordinate of the position
+     * @param x x-coordinate of the position (precondition: 0 <= x < Parameters.WIDTH)
+     * @param y y-coordinate of the position  (precondition: 0 <= y < Parameters.HEIGHT)
      * @param entity the entity to be written (precondition: entity != null)
-     * @param gs the game state
+     * @param gs the game state (precondition: gs != null)
      */
     private static void setPosition(int x, int y, Entity entity, GameState gs) {
         Position pos = new Position(x, y);

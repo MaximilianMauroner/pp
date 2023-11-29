@@ -21,14 +21,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class GameState {
 
-    final ConcurrentHashMap<Position, Point> points;
-    final Status status;
+    private final ConcurrentHashMap<Position, Point> points;
+    private final Status status;
 
     /**
      * Generates the game state with randomized parameters
      *
-     * @param points points of the game containing entities
-     * @param status parameters of the game
+     * @param points points of the game containing entities (precondition: points != null)
+     * @param status parameters of the game (precondition: status != null)
      */
     public GameState(ConcurrentHashMap<Position, Point> points, Status status) {
         this.points = points;
@@ -37,6 +37,7 @@ public class GameState {
 
     /**
      * Runs one iteration of the game
+     * @param queue queue to which the entities are added (precondition: queue != null)
      */
     public void getNextFrame(BlockingQueue<BufferElement> queue) {
         for (Point p : points.values()) {
@@ -67,6 +68,12 @@ public class GameState {
         return null;
     }
 
+    /**
+     * Returns the point at the given position if it exists, otherwise null
+     *
+     * @param x x-coordinate of the point
+     * @param y y-coordinate of the point
+     */
     public Point getPoint(int x, int y) {
         return points.get(new Position(x, y));
     }

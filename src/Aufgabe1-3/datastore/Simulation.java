@@ -13,7 +13,7 @@ import java.util.HashMap;
  */
 @SuppressWarnings("unchecked")
 public class Simulation {
-    private final String simulationId;
+    private final String simulationId; // (client-controlled history-constraint: simulationId is unique, call UUID.randomUUID().toString() to generate a unique id)
     private final String simulationName;
 
     private final HashMap<String, Object> data;
@@ -23,7 +23,7 @@ public class Simulation {
      * Creates a new Simulation object
      *
      * @param simulationId   the id of the simulation (should be unique)
-     * @param simulationName the name of the simulation
+     * @param simulationName the name of the simulation (precondition: simulationName != null)
      */
     public Simulation(String simulationId, String simulationName) {
         this.simulationId = simulationId;

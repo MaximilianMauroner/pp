@@ -15,11 +15,16 @@ import datastore.Simulation;
 public class Status {
     private final int width, height, scale, simulationTimeLimit, antCount, foodCount, obstacleCount;
     private final double minHiveHealth;
-    private int antEmptySteps, antMoveSteps, antWaitSteps, foodHiveDistance, antSpawnRadius, simulationTime;
+    private int antEmptySteps; // (invariant: 1 < antEmptySteps < 40)
+    private int antMoveSteps; // (invariant: 30 < antMoveSteps < 80)
+    private int antWaitSteps; // (invariant: 10 < antWaitSteps < 30)
+    private int foodHiveDistance; // (invariant: 1 < foodHiveDistance < 200)
+    private int antSpawnRadius; // (invariant: 1 < antSpawnRadius < 50)
+    private int simulationTime; // (invariant: >= 0)
     private double trailDecay; // (invariant: 0 < trailDecay < 1)
-    private double lowTrail;
-    private double highTrail;
-    private double searchRadiusGrowthFactor;
+    private double lowTrail; // (invariant: 0 < lowTrail < highTrail)
+    private double highTrail; // (invariant: lowTrail < highTrail < 1)
+    private double searchRadiusGrowthFactor; // (invariant: 1 < searchRadiusGrowthFactor < 2)
 
     /**
      * Creates a new Status object
@@ -40,7 +45,7 @@ public class Status {
      * @param lowTrail             the lower bound of the trail (< highTrail)
      * @param highTrail            the upper bound of the trail (> lowTrail)
      * @param searchRadiusFactor   the growth factor of the search radius (> 0)
-     * @param minHiveHealth        the minimum health of the hive
+     * @param minHiveHealth        the minimum health of the hive (> 0)
      */
     public Status(int width, int height, int scale, int simulationTime, int antCount, int antEmptySteps, int antMoveSteps, int antWaitSteps, int foodCount,
                   int obstacleCount, int antSpawnRadius, int foodHiveDistance,
@@ -212,7 +217,7 @@ public class Status {
         this.foodHiveDistance = (int) randomize(foodHiveDistance, confidence, 1, 200);
         this.trailDecay = randomize(trailDecay, confidence, 0, 1);
         this.lowTrail = randomize(lowTrail, confidence, 0, 1);
-        this.highTrail = randomize(highTrail, confidence, 0, 1);
+        this.highTrail = randomize(highTrail, confidence, (int) lowTrail, 1);
         this.searchRadiusGrowthFactor = randomize(searchRadiusGrowthFactor, confidence, 1, 2);
     }
 
