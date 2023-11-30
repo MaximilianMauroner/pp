@@ -21,8 +21,9 @@ public class Institute {
     public Formicarium assignForm(AntColony antColony) {
 
         Formicarium best = inventory.stream()
-                .filter(form -> form.free())
-                .max((form1, form2) -> {
+                .filter(form -> form.free() && form.accept(antColony) != Compatability.BAD)
+                .min((form1, form2) -> {
+                    System.out.println("here");
                     Compatability comp1 = form1.accept(antColony);
                     Compatability comp2 = form2.accept(antColony);
                     return comp1.compareTo(comp2);
