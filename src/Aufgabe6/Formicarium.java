@@ -1,5 +1,4 @@
 import Annotations.*;
-
 @Invariant(invariant = "name != null && antSpecies != null")
 public class Formicarium {
     private final static MyList allFormicariums = new MyList();
@@ -93,7 +92,8 @@ public class Formicarium {
             value += nest.depth * nest.height() * nest.width();
             count++;
         }
-        return Double.toString(count == 0 ? 1 : count);
+        double res = count > 0 ? value / count : 0;
+        return Double.toString(res);
     }
 
     @PostCondition(condition = "returns the average of heated nests")
@@ -108,10 +108,12 @@ public class Formicarium {
                 count++;
             }
         }
-        return Double.toString(count == 0 ? 1 : count);
+        double res = count > 0 ? value / count : 0;
+        return Double.toString(res);
     }
 
-    @PostCondition(condition = "returns the total count of air conditioned nests")
+    @PostCondition(condition = "returns the average of air conditioned nests")
+    @Author(name = "Christopher Scherling")
     public String averageAirConditionedVolume() {
         double value = 0;
         int count = 0;
@@ -127,7 +129,8 @@ public class Formicarium {
 
     }
 
-    @PostCondition(condition = "returns the total count of heated nests")
+    @PostCondition(condition = "returns the average of heated nests")
+    @Author(name = "Christopher Scherling")
     public String averagePerformance() {
         double value = 0;
         int count = 0;
@@ -138,10 +141,12 @@ public class Formicarium {
                 count++;
             }
         }
-        return Double.toString(count == 0 ? 1 : count);
+        double res = count > 0 ? value / count : 0;
+        return Double.toString(res);
     }
 
-    @PostCondition(condition = "returns the total count of all nests")
+    @PostCondition(condition = "returns the average of all nests")
+    @Author(name = "Christopher Scherling")
     public String averageTankVolume() {
         double value = 0;
         int count = 0;
@@ -176,7 +181,12 @@ public class Formicarium {
             valueTotal += nest.getFilling().weight();
             countTotal++;
         }
-        return "[Average sand-clay weight: " + Double.toString(valueTotal / countTotal) + "kg, " + "Average heated sand-clay weight: " + Double.toString(valueHeated / countHeated) + "kg, " + "Average air conditioned sand-clay weight: " + Double.toString(valueAir / countAir) + "kg]";
+        String kgval =  Double.toString(countTotal > 0 ? valueTotal / countTotal : 0);
+        String heatedval =  Double.toString(countHeated > 0 ? valueHeated / countHeated : 0);
+        String airval =  Double.toString(countAir > 0 ? valueAir / countAir : 0);
+        return "[Average sand-clay weight: " + kgval + "kg, " +
+                "Average heated sand-clay weight: " + heatedval + "kg, " +
+                "Average air conditioned sand-clay weight: " + airval + "kg]";
     }
 
     @PostCondition(condition = "returns the average airated concrete volume")

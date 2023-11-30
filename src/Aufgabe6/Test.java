@@ -94,7 +94,7 @@ public class Test {
         institute1.getFormicarium("Nest 1").setNestFilling(1, new AeratedConcreteFilling(1, 1));
         testEquals(institute1.getFormicarium("Nest 1").getNest(1).getFilling().toString(), "AeratedConcreteFilling{width=1.0, height=1.0}");
 
-        printAnnotations();
+        prettyPrintAnnotations();
     }
 
     private static void initializeNests() {
@@ -300,7 +300,7 @@ public class Test {
         }
     }
 
-    public static void printAnnotations() {
+    public static void prettyPrintAnnotations() {
         handleAnnotations(AeratedConcreteFilling.class);
         handleAnnotations(AirConditionedNest.class);
         handleAnnotations(Filling.class);
@@ -315,6 +315,12 @@ public class Test {
         handleAnnotations(Invariant.class);
         handleAnnotations(PostCondition.class);
         handleAnnotations(PreCondition.class);
+
+        countAuthors();
+    }
+
+    public static void countAuthors(){
+
     }
 
     public static void handleAnnotations(Class<?> clazz) {
@@ -334,6 +340,15 @@ public class Test {
         if (annotation != null) {
             annotations.add("Author:" + annotation.name());
         }
+
+        Arrays.stream(clazz.getMethods()).toList().forEach(method -> {
+            if(!Modifier.isPrivate(method.getModifiers())){
+                Author methodAnnotation = method.getAnnotation(Author.class);
+                if (methodAnnotation != null) {
+                    annotations.add("\n\t Method: " + method.getName() + "\t\t Annotation: " + methodAnnotation.name());
+                }
+            }
+        });
     }
 
     public static void addHistoryAnn(List<String> annotations, Class<?> clazz) {
@@ -365,7 +380,6 @@ public class Test {
                 annotations.add("\n\t Method: " + method.getName() + "\t\t Annotation: " + methodAnnotation.condition());
             }
         });
-
 
     }
 
