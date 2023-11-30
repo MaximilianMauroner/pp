@@ -3,7 +3,6 @@ import Annotations.PostCondition;
 import Annotations.PreCondition;
 
 
-@Author(name = "Test")
 public class AeratedConcreteFilling implements Filling {
     private final double width;
     private final double height;

@@ -1,5 +1,11 @@
+import Annotations.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Test {
     public static void main(String[] args) {
@@ -87,6 +93,8 @@ public class Test {
         testEquals(institute1.getFormicarium("Nest 1").getNest(1).getFilling().toString(), "SandClayFilling{weight=1.0}");
         institute1.getFormicarium("Nest 1").setNestFilling(1, new AeratedConcreteFilling(1, 1));
         testEquals(institute1.getFormicarium("Nest 1").getNest(1).getFilling().toString(), "AeratedConcreteFilling{width=1.0, height=1.0}");
+
+        printAnnotations();
     }
 
     private static void initializeNests() {
@@ -290,5 +298,88 @@ public class Test {
         } else {
             System.out.println("Test NOT successful! Expected value: " + expected.getClass().getSimpleName() + " / Given value: " + given.getClass().getSimpleName());
         }
+    }
+
+    public static void printAnnotations() {
+        handleAnnotations(AeratedConcreteFilling.class);
+        handleAnnotations(AirConditionedNest.class);
+        handleAnnotations(Filling.class);
+        handleAnnotations(Formicarium.class);
+        handleAnnotations(HeatedNest.class);
+        handleAnnotations(Institute.class);
+        handleAnnotations(MyList.class);
+        handleAnnotations(Nest.class);
+        handleAnnotations(SandClayFilling.class);
+        handleAnnotations(Author.class);
+        handleAnnotations(HistoryConstraint.class);
+        handleAnnotations(Invariant.class);
+        handleAnnotations(PostCondition.class);
+        handleAnnotations(PreCondition.class);
+    }
+
+    public static void handleAnnotations(Class<?> clazz) {
+        List<String> annotations = new ArrayList<>();
+        addAuthorAnn(annotations, clazz);
+        addInvariantAnn(annotations, clazz);
+        addPreAnn(annotations, clazz);
+        addPostAnn(annotations, clazz);
+        addHistoryAnn(annotations, clazz);
+        System.out.println("Class:" + clazz.getName() + ": \t annotations:" + annotations);
+
+    }
+
+    public static void addAuthorAnn(List<String> annotations, Class<?> clazz) {
+        Author annotation = clazz.getAnnotation(Author.class);
+
+        if (annotation != null) {
+            annotations.add("Author:" + annotation.name());
+        }
+    }
+
+    public static void addHistoryAnn(List<String> annotations, Class<?> clazz) {
+        HistoryConstraint annotation = clazz.getAnnotation(HistoryConstraint.class);
+
+        if (annotation != null) {
+            annotations.add("History Constraint:" + annotation.constraint());
+        }
+    }
+
+    public static void addInvariantAnn(List<String> annotations, Class<?> clazz) {
+        Invariant annotation = clazz.getAnnotation(Invariant.class);
+
+        if (annotation != null) {
+            annotations.add("Invariant:" + annotation.invariant());
+        }
+    }
+
+    public static void addPreAnn(List<String> annotations, Class<?> clazz) {
+        PreCondition annotation = clazz.getAnnotation(PreCondition.class);
+
+        if (annotation != null) {
+            annotations.add("Precondition:" + annotation.condition());
+        }
+
+        Arrays.stream(clazz.getMethods()).toList().forEach(method -> {
+            PreCondition methodAnnotation = method.getAnnotation(PreCondition.class);
+            if (methodAnnotation != null) {
+                annotations.add("\n\t Method: " + method.getName() + "\t\t Annotation: " + methodAnnotation.condition());
+            }
+        });
+
+
+    }
+
+    public static void addPostAnn(List<String> annotations, Class<?> clazz) {
+        PostCondition annotation = clazz.getAnnotation(PostCondition.class);
+        if (annotation != null) {
+            annotations.add("Postcondition:" + annotation.condition());
+        }
+        Arrays.stream(clazz.getMethods()).toList().forEach(method -> {
+            PostCondition methodAnnotation = method.getAnnotation(PostCondition.class);
+            if (methodAnnotation != null) {
+                annotations.add("\n\t Method: " + method.getName() + "\t\t Annotation: " + methodAnnotation.condition());
+            }
+        });
+
     }
 }
