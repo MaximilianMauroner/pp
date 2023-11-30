@@ -1,5 +1,7 @@
+import Annotations.Author;
 import Annotations.PostCondition;
 
+@Author(name = "Lukas Leskovar")
 public interface Filling {
 
     @PostCondition(condition = "returns weight double")

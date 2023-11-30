@@ -83,9 +83,8 @@ public class Formicarium {
 
     // <editor-fold desc="Statistics">
 
-    //ToDo: Add statistics
-
-    @PostCondition(condition = "returns the total count of nests")
+    @PostCondition(condition = "returns the average of nests")
+    @Author(name = "Christopher Scherling")
     public String averageVolume() {
         double value = 0;
         int count = 0;
@@ -97,8 +96,8 @@ public class Formicarium {
         return Double.toString(count == 0 ? 1 : count);
     }
 
-    @PostCondition(condition = "returns the total count of heated nests")
-
+    @PostCondition(condition = "returns the average of heated nests")
+    @Author(name = "Christopher Scherling")
     public String averageHeatedVolume() {
         double value = 0;
         int count = 0;
@@ -123,7 +122,8 @@ public class Formicarium {
                 count++;
             }
         }
-        return Double.toString(count == 0 ? 1 : count);
+        double res = count > 0 ? value / count : 0;
+        return Double.toString(res);
 
     }
 
@@ -150,11 +150,12 @@ public class Formicarium {
             value += nest.getTankVolume();
             count++;
         }
-        return Double.toString(count == 0 ? 1 : count);
-
+        double res = count > 0 ? value / count : 0;
+        return Double.toString(res);
     }
 
     @PostCondition(condition = "returns the average sand-clay nest weight")
+    @Author(name = "Christopher Scherling")
     public String averageSandClayWeight() {
         double valueTotal = 0;
         int countTotal = 0;
@@ -179,6 +180,7 @@ public class Formicarium {
     }
 
     @PostCondition(condition = "returns the average airated concrete volume")
+    @Author(name = "Christopher Scherling")
     public String averageAeriatedConcreteVolume() {
         double valueTotal = 0;
         int countTotal = 0;
@@ -199,7 +201,13 @@ public class Formicarium {
             valueTotal += nest.getAereatedConcreteWidth() * nest.getAereatedConcreteHeight() * nest.depth;
             countTotal++;
         }
-        return "[Average sand-clay weight: " + Double.toString(valueTotal / countTotal) + "kg, " + "Average heated sand-clay weight: " + Double.toString(valueHeated / countHeated) + "kg, " + "Average air conditioned sand-clay weight: " + Double.toString(valueAir / countAir) + "kg]";
+        String kgval = Double.toString(countTotal > 0 ? valueTotal / countTotal : 0);
+        String heatedval = Double.toString(countHeated > 0 ? valueHeated / countHeated : 0);
+        String airval = Double.toString(countAir > 0 ? valueAir / countAir : 0);
+
+        return "[Average sand-clay weight: " + kgval + "kg, " +
+                "Average heated sand-clay weight: " + heatedval + "kg, " +
+                "Average air conditioned sand-clay weight: " + airval + "kg]";
 
     }
 

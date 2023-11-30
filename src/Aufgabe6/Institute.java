@@ -1,3 +1,5 @@
+import Annotations.Author;
+
 public class Institute {
 
     private static final MyList allFormicariums = Formicarium.getFormicariums();
@@ -16,6 +18,7 @@ public class Institute {
 
     //Anzeigen aller Formicarien eines Instituts mit allen Informationen
     //auf dem Bildschirm
+    @Author(name = "Christopher Scherling")
     public void print() {
         System.out.println("Institute{formicariums=" + instituteFormicariums.print() + '}');
     }
