@@ -17,6 +17,12 @@ public class Position {
     private final int x;
     private final int y;
 
+    /**
+     * Creates a new Position object
+     *
+     * @param x the x coordinate of the position
+     * @param y the y coordinate of the position
+     */
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
@@ -212,5 +218,4 @@ public class Position {
                 ", y=" + y +
                 '}';
     }
-
 }

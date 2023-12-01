@@ -78,12 +78,9 @@ public class Trail implements Entity {
      * @return average strength of all trails (if no trails exist, returns 0)
      */
     public double getStrength() {
-        double total = 0;
-        int size = 0;
-        for (ColonyTrail value : this.colonyStrength.values()) {
-            total += value.getStrength();
-            size += value.getCount();
-        }
+        double total = this.colonyStrength.values().stream().reduce(0.0, (k, v) -> v.getStrength(), Double::sum);
+        int size = this.colonyStrength.values().stream().reduce(0, (k, v) -> v.getCount(), Integer::sum);
+
         if (size == 0) {
             return 0;
         }
@@ -108,7 +105,7 @@ public class Trail implements Entity {
     /**
      * Changes the strength of the trail and updates the antId to the most recent ant that created it
      *
-     * @param strength strength to be added
+     * @param strength strength to be added (precondition: strength >= 0)
      * @param antId    ant that created the trail (using ant ids)
      * @param colony   colony of the ant (precondition: colony != null)
      */
