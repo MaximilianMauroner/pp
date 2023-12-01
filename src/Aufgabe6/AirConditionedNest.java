@@ -9,7 +9,7 @@ public class AirConditionedNest implements Nest {
     private final double tankVolume;
 
 
-    @PreCondition(condition = "id > 0, id doesnt already exist, width > 0, height > 0, tankVolume > 0")
+    @PreCondition(condition = "width > 0, height > 0, tankVolume > 0")
     @PostCondition(condition = "this.id() == id && this.width() == width && this.height() == height && this.getTankVolume() == tankVolume && adds this to allNests")
     @Author(name = "Lukas Leskovar")
     public AirConditionedNest(int id, double width, double height, double tankVolume) {
@@ -30,44 +30,46 @@ public class AirConditionedNest implements Nest {
         return this.id;
     }
 
-    @PostCondition(condition = "returns the width")
+
+    @PostCondition(condition = "returns width")
     @Author(name = "Lukas Leskovar")
     @Override
     public double width() {
         return this.width;
     }
 
-    @PostCondition(condition = "returns the height")
+
+    @PostCondition(condition = "returns height")
     @Author(name = "Lukas Leskovar")
     @Override
     public double height() {
         return this.height;
     }
 
-    @PostCondition(condition = "returns the power, always 0")
+
+    @PostCondition(condition = "returns the power if the nest is heated, otherwise 0")
     @Author(name = "Lukas Leskovar")
     @Override
     public int getPower() {
         return 0;
     }
 
-    @PostCondition(condition = "returns the tankVolume")
+    @PostCondition(condition = "returns the volume of the water tank if the nest is air-conditioned, otherwise 0")
     @Author(name = "Lukas Leskovar")
     @Override
     public double getTankVolume() {
         return this.tankVolume;
     }
 
-    @PostCondition(condition = "returns the filling")
+    @PostCondition(condition = "returns the filling of the nest")
     @Author(name = "Lukas Leskovar")
     @Override
     public Filling getFilling() {
         return this.filling;
     }
 
-
     @PreCondition(condition = "filling != null")
-    @PostCondition(condition = "this.filling() == filling")
+    @PostCondition(condition = "this.filling() == filling, old filling is lost")
     @Author(name = "Lukas Leskovar")
     @Override
     public void setFilling(Filling filling) {

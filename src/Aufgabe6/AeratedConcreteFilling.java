@@ -16,30 +16,30 @@ public class AeratedConcreteFilling implements Filling {
         this.height = height;
     }
 
-    @Override
-    @PostCondition(condition = "returns weight, always 0")
+    @PostCondition(condition = "returns 0 since its not sand-clay")
     @Author(name = "Lukas Leskovar")
+    @Override
     public double weight() {
         return 0;
     }
 
-    @Override
-    @PostCondition(condition = "returns width")
+    @PostCondition(condition = "returns width of the filling since it is concrete")
     @Author(name = "Lukas Leskovar")
+    @Override
     public double width() {
         return width;
     }
 
-    @Override
-    @PostCondition(condition = "returns height")
+    @PostCondition(condition = "returns height of the filling since it is concrete")
     @Author(name = "Lukas Leskovar")
+    @Override
     public double height() {
         return height;
     }
 
-    @Override
-    @PostCondition(condition = "return != null, returns the string representation of the filling")
+    @PostCondition(condition = "returns the string representation of the filling")
     @Author(name = "Christopher Scherling")
+    @Override
     public String toString() {
         return "AeratedConcreteFilling{" + "width=" + width + ", height=" + height + '}';
     }

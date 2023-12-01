@@ -1,18 +1,32 @@
+import Annotations.Author;
+import Annotations.PostCondition;
+import Annotations.PreCondition;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+@Author(name = "Maximilian Mauroner")
 public class MyList implements Iterable {
 
     private Node root;
 
+    @PostCondition(condition = "instantiates a empty new MyList")
+    @Author(name = "Lukas Leskovar")
     public MyList() {
         this.root = null;
     }
 
+    @PreCondition(condition = "value != null")
+    @PostCondition(condition = "instantiates a new MyList with the given value")
+    @Author(name = "Maximilian Mauroner")
     public MyList(Object value) {
         this.root = new Node(value);
     }
 
+
+    @PreCondition(condition = "value != null")
+    @PostCondition(condition = "adds the given value to the MyList")
+    @Author(name = "Maximilian Mauroner")
     public void add(Object value) {
         if (root == null) {
             root = new Node(value);
@@ -25,6 +39,9 @@ public class MyList implements Iterable {
         }
     }
 
+    @PreCondition(condition = "value != null")
+    @PostCondition(condition = "true if the MyList contains an equal value, otherwise false")
+    @Author(name = "Lukas Leskovar")
     public boolean contains(Object value) {
         Node node = root;
         while (node != null) {
@@ -36,6 +53,9 @@ public class MyList implements Iterable {
         return false;
     }
 
+    @PreCondition(condition = "value != null")
+    @PostCondition(condition = "true if the MyList contains an identical value, otherwise false")
+    @Author(name = "Lukas Leskovar")
     public boolean identical(Object value) {
         Node node = root;
         while (node != null) {
@@ -47,6 +67,9 @@ public class MyList implements Iterable {
         return false;
     }
 
+    @PreCondition(condition = "value != null")
+    @PostCondition(condition = "removes the given value from the MyList")
+    @Author(name = "Maximilian Mauroner")
     public void remove(Object value) {
         if (root == null) {
             return;
@@ -65,6 +88,8 @@ public class MyList implements Iterable {
         }
     }
 
+    @PostCondition(condition = "returns a new Iterator for the MyList")
+    @Author(name = "Lukas Leskovar")
     @Override
     public Iterator iterator() {
         return new Iterator() {
@@ -89,6 +114,8 @@ public class MyList implements Iterable {
         };
     }
 
+    @PostCondition(condition = "returns a string representation of the MyList (mainly for debugging)")
+    @Author(name = "Christopher Scherling")
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -105,6 +132,8 @@ public class MyList implements Iterable {
         return builder.toString();
     }
 
+    @PostCondition(condition = "returns a string representation of the MyList")
+    @Author(name = "Christopher Scherling")
     public String print() {
         StringBuilder builder = new StringBuilder();
         builder.append("[");
@@ -123,14 +152,20 @@ public class MyList implements Iterable {
     }
 
 
+    @Author(name = "Lukas Leskovar")
     static class Node {
         Object value;
         Node next;
 
+        @PreCondition(condition = "value != null")
+        @PostCondition(condition = "instantiates a new Node with the given value")
+        @Author(name = "Lukas Leskovar")
         public Node(Object value) {
             this.value = value;
         }
 
+        @PostCondition(condition = "returns a string representation of the Node")
+        @Author(name = "Christopher Scherling")
         @Override
         public String toString() {
             return value.toString();

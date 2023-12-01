@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Author(name = "Christopher Scherling")
 public class Test {
+    @Author(name = "Christopher Scherling")
     public static void main(String[] args) {
         initializeNests();
         initializeFormacariums();
@@ -97,6 +99,7 @@ public class Test {
         prettyPrintAnnotations();
     }
 
+    @Author(name = "Christopher Scherling")
     private static void initializeNests() {
         Filling filling0 = new SandClayFilling(0);
         Filling filling1 = new SandClayFilling(1);
@@ -192,6 +195,7 @@ public class Test {
         nest29.setFilling(filling29);
     }
 
+    @Author(name = "Christopher Scherling")
     private static void initializeFormacariums() {
         Formicarium formacarium1 = new Formicarium("Nest 1", "Ant Species 1");
         formacarium1.addNest(1);
@@ -234,12 +238,14 @@ public class Test {
         formacarium10.addNest(20);
     }
 
+    @Author(name = "Christopher Scherling")
     private static void addtoNest(Nest... nests) {
         for (Nest nest : nests) {
             Nest.allNests.add(nest);
         }
     }
 
+    @Author(name = "Christopher Scherling")
     private static void testTrue(boolean given, boolean expected) {
         if (given == expected) {
             System.out.println("Successful test");
@@ -248,6 +254,7 @@ public class Test {
         }
     }
 
+    @Author(name = "Christopher Scherling")
     private static void testIncludes(String given, String... expected) {
         for (String e : expected) {
             if (!given.contains(e)) {
@@ -258,6 +265,7 @@ public class Test {
         }
     }
 
+    @Author(name = "Christopher Scherling")
     private static void testIncludesNot(String given, String... expected) {
         for (String e : expected) {
             if (given.contains(e)) {
@@ -268,6 +276,7 @@ public class Test {
         }
     }
 
+    @Author(name = "Christopher Scherling")
     public static void testIdentity(Object given, Object expected) {
         if (given == expected) {
             System.out.println("Successful test");
@@ -276,6 +285,7 @@ public class Test {
         }
     }
 
+    @Author(name = "Christopher Scherling")
     public static void testEquals(Object given, Object expected) {
         if (given.equals(expected)) {
             System.out.println("Successful test");
@@ -284,6 +294,7 @@ public class Test {
         }
     }
 
+    @Author(name = "Christopher Scherling")
     public static void testEquals(boolean given, boolean expected) {
         if (given == expected) {
             System.out.println("Successful test");
@@ -292,6 +303,7 @@ public class Test {
         }
     }
 
+    @Author(name = "Christopher Scherling")
     public static void testClass(Object given, Object expected) {
         if (given.getClass() == expected.getClass()) {
             System.out.println("Successful test");
@@ -300,7 +312,9 @@ public class Test {
         }
     }
 
+    @Author(name = "Maximilian Mauroner")
     public static void prettyPrintAnnotations() {
+        handleAnnotations(Test.class);
         handleAnnotations(AeratedConcreteFilling.class);
         handleAnnotations(AirConditionedNest.class);
         handleAnnotations(Filling.class);
@@ -319,10 +333,12 @@ public class Test {
         countAuthors();
     }
 
+    @Author(name = "Maximilian Mauroner")
     public static void countAuthors(){
 
     }
 
+    @Author(name = "Maximilian Mauroner")
     public static void handleAnnotations(Class<?> clazz) {
         List<String> annotations = new ArrayList<>();
         addAuthorAnn(annotations, clazz);
@@ -334,6 +350,7 @@ public class Test {
 
     }
 
+    @Author(name = "Maximilian Mauroner")
     public static void addAuthorAnn(List<String> annotations, Class<?> clazz) {
         Author annotation = clazz.getAnnotation(Author.class);
 
@@ -351,6 +368,7 @@ public class Test {
         });
     }
 
+    @Author(name = "Maximilian Mauroner")
     public static void addHistoryAnn(List<String> annotations, Class<?> clazz) {
         HistoryConstraint annotation = clazz.getAnnotation(HistoryConstraint.class);
 
@@ -359,6 +377,7 @@ public class Test {
         }
     }
 
+    @Author(name = "Maximilian Mauroner")
     public static void addInvariantAnn(List<String> annotations, Class<?> clazz) {
         Invariant annotation = clazz.getAnnotation(Invariant.class);
 
@@ -367,6 +386,7 @@ public class Test {
         }
     }
 
+    @Author(name = "Maximilian Mauroner")
     public static void addPreAnn(List<String> annotations, Class<?> clazz) {
         PreCondition annotation = clazz.getAnnotation(PreCondition.class);
 
@@ -383,6 +403,7 @@ public class Test {
 
     }
 
+    @Author(name = "Maximilian Mauroner")
     public static void addPostAnn(List<String> annotations, Class<?> clazz) {
         PostCondition annotation = clazz.getAnnotation(PostCondition.class);
         if (annotation != null) {

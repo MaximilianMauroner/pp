@@ -1,4 +1,5 @@
 import Annotations.*;
+@Author(name = "Lukas Leskovar")
 @Invariant(invariant = "name != null && antSpecies != null")
 public class Formicarium {
     private final static MyList allFormicariums = new MyList();
@@ -11,6 +12,7 @@ public class Formicarium {
 
     @PreCondition(condition = "name != null && antSpecies != null")
     @PostCondition(condition = "this.name.equals(name) && this.antSpecies.equals(antSpecies)")
+    @Author(name = "Lukas Leskovar")
     public Formicarium(String name, String antSpecies) {
         for (Object formicarium : allFormicariums) {
             if (formicarium instanceof Formicarium t) {
@@ -27,24 +29,28 @@ public class Formicarium {
 
     @PreCondition(condition = "antSpecies != null")
     @PostCondition(condition = "this.antSpecies.equals(antSpecies)")
+    @Author(name = "Lukas Leskovar")
     public void setAntSpecies(String antSpecies) {
         this.antSpecies = antSpecies;
     }
 
     @PreCondition(condition = "true")
     @PostCondition(condition = "result.equals(this.antSpecies)")
+    @Author(name = "Lukas Leskovar")
     public String getAntSpecies() {
         return antSpecies;
     }
 
     @PreCondition(condition = "true")
     @PostCondition(condition = "this.antSpecies == null")
+    @Author(name = "Lukas Leskovar")
     public void removeAntSpecies() {
         antSpecies = null;
     }
 
     @PreCondition(condition = "id >= 0")
     @PostCondition(condition = "this.formicariumNests.contains(getNest(id, allNests))")
+    @Author(name = "Lukas Leskovar")
     public void addNest(int id) {
         Nest nest = getNest(id, allNests);
         this.formicariumNests.add(nest);
@@ -52,18 +58,21 @@ public class Formicarium {
 
     @PreCondition(condition = "id >= 0, id exists")
     @PostCondition(condition = "!this.formicariumNests.contains(getNest(id, formicariumNests))")
+    @Author(name = "Lukas Leskovar")
     public void removeNest(int id) {
         Nest nest = getNest(id, formicariumNests);
         this.formicariumNests.remove(nest);
     }
 
-    @Override
     @PostCondition(condition = "result != null")
+    @Author(name = "Christopher Scherling")
+    @Override
     public String toString() {
         return "Formicarium{" + "name='" + name + '\'' + ", antSpecies='" + antSpecies + '\'' + ", nest=" + formicariumNests;
     }
 
     @PostCondition(condition = "returns information about the fornicarium")
+    @Author(name = "Christopher Scherling")
     public String print() {
         return "Formicarium{" + "name='" + name + '\'' + ", antSpecies='" + antSpecies + '\'' + ", nest=" + formicariumNests + ", averageVolume=" + averageVolume() + ", averageHeatedVolume=" + averageHeatedVolume() + ", averageAirConditionedVolume=" + averageAirConditionedVolume() + ", averagePerformance=" + averagePerformance() + ", averageTankVolume=" + averageTankVolume() + ", averageSandClayWeight=[" + averageSandClayWeight() + "]" + ", averageTankVolume=[" + averageAeriatedConcreteVolume() + "]" + '}';
     }
@@ -72,6 +81,7 @@ public class Formicarium {
     //<editor-fold desc="Ändern der Informationen von Nestern wie oben beschrieben.">
     @PreCondition(condition = "id >= 0, id exists, filling != null")
     @PostCondition(condition = "the filling of the nest(id) is set to filling")
+    @Author(name = "Lukas Leskovar")
     public void setNestFilling(int id, Filling filling) {
         Nest nest = getNest(id, formicariumNests);
         if (nest != null) nest.setFilling(filling);
@@ -226,17 +236,20 @@ public class Formicarium {
     // <editor-fold desc="Helper">
 
     @PostCondition(condition = "returns all formicariums")
+    @Author(name = "Christopher Scherling")
     public static MyList getFormicariums() {
         return allFormicariums;
     }
 
 
     @PostCondition(condition = "returns the name of the formicarium")
+    @Author(name = "Lukas Leskovar")
     public String getName() {
         return name;
     }
 
     @PostCondition(condition = "returns the id of the nest if it exists in list, else null")
+    @Author(name = "Lukas Leskovar")
     private Nest getNest(int id, MyList list) {
         for (Object nest : list) {
             if (nest instanceof Nest n) {
@@ -249,6 +262,7 @@ public class Formicarium {
     }
 
     @PostCondition(condition = "returns the nest with the id if it exists in the formicarium, else null")
+    @Author(name = "Lukas Leskovar")
     public Nest getNest(int id) {
         return getNest(id, formicariumNests);
     }
