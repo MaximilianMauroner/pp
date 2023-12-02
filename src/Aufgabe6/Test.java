@@ -3,9 +3,7 @@ import Annotations.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Author(name = "Christopher Scherling")
 public class Test {
@@ -314,107 +312,218 @@ public class Test {
 
     @Author(name = "Maximilian Mauroner")
     public static void prettyPrintAnnotations() {
-        handleAnnotations(Test.class);
-        handleAnnotations(AeratedConcreteFilling.class);
-        handleAnnotations(AirConditionedNest.class);
-        handleAnnotations(Filling.class);
-        handleAnnotations(Formicarium.class);
-        handleAnnotations(HeatedNest.class);
-        handleAnnotations(Institute.class);
-        handleAnnotations(MyList.class);
-        handleAnnotations(Nest.class);
-        handleAnnotations(SandClayFilling.class);
-        handleAnnotations(Author.class);
-        handleAnnotations(HistoryConstraint.class);
-        handleAnnotations(Invariant.class);
-        handleAnnotations(PostCondition.class);
-        handleAnnotations(PreCondition.class);
-
-        countAuthors();
+        System.out.println("\n\n\nSTART ANNOTATIONS INFO\n");
+        List<Class<?>> l = getClasses();
+        listFiles(l);
+        mainMembers(l);
+        nonPrivate(l);
+        listMembers(l);
+        listAssurances(l);
+        System.out.println("\nEND ANNOTATIONS INFO\n\n\n");
     }
 
     @Author(name = "Maximilian Mauroner")
-    public static void countAuthors(){
-
-    }
-
-    @Author(name = "Maximilian Mauroner")
-    public static void handleAnnotations(Class<?> clazz) {
-        List<String> annotations = new ArrayList<>();
-        addAuthorAnn(annotations, clazz);
-        addInvariantAnn(annotations, clazz);
-        addPreAnn(annotations, clazz);
-        addPostAnn(annotations, clazz);
-        addHistoryAnn(annotations, clazz);
-        System.out.println("Class:" + clazz.getName() + ": \t annotations:" + annotations);
-
-    }
-
-    @Author(name = "Maximilian Mauroner")
-    public static void addAuthorAnn(List<String> annotations, Class<?> clazz) {
-        Author annotation = clazz.getAnnotation(Author.class);
-
-        if (annotation != null) {
-            annotations.add("Author:" + annotation.name());
-        }
-
-        Arrays.stream(clazz.getMethods()).toList().forEach(method -> {
-            if(!Modifier.isPrivate(method.getModifiers())){
-                Author methodAnnotation = method.getAnnotation(Author.class);
-                if (methodAnnotation != null) {
-                    annotations.add("\n\t Method: " + method.getName() + "\t\t Annotation: " + methodAnnotation.name());
+    public static void listAssurances(List<Class<?>> classList) {
+        System.out.println("Für jedes Gruppenmitglied die Anzahl der Zusicherungen in den Klassen und Interfaces (samt Inhalten), " +
+                "für die dieses Gruppenmitglied hauptverantwortlich ist (als eine einzige ganze Zahl).");
+        HashMap<String, Integer> count = new HashMap<>();
+        HashMap<String, StringBuilder> content = new HashMap<>();
+        for (Class<?> clazz : classList) {
+            Invariant invariant = clazz.getAnnotation(Invariant.class);
+            HistoryConstraint history = clazz.getAnnotation(HistoryConstraint.class);
+            Author a = clazz.getAnnotation(Author.class);
+            if (a == null) continue;
+            if (invariant != null) {
+                if (content.containsKey(a.name())) {
+                    StringBuilder s = content.get(a.name());
+                    s.append("\t\tInvariant: ").append(invariant.invariant()).append("\n");
+                    content.put(a.name(), s);
+                    count.put(a.name(), count.get(a.name()) + 1);
+                } else {
+                    StringBuilder s = new StringBuilder();
+                    s.append("\tClass: ").append(clazz.getSimpleName()).append("\n");
+                    s.append("\t\tInvariant: ").append(invariant.invariant()).append("\n");
+                    content.put(a.name(), s);
+                    count.put(a.name(), 1);
                 }
             }
+            if (history != null) {
+                if (content.containsKey(a.name())) {
+                    StringBuilder s = content.get(a.name());
+                    s.append("\t\tHistory Constraint: ").append(history.constraint()).append("\n");
+                    content.put(a.name(), s);
+                    count.put(a.name(), count.get(a.name()) + 1);
+                } else {
+                    StringBuilder s = new StringBuilder();
+                    s.append("\tClass: ").append(clazz.getSimpleName()).append("\n");
+                    s.append("\t\tHistory Constraint: ").append(history.constraint()).append("\n");
+                    content.put(a.name(), s);
+                    count.put(a.name(), 1);
+                }
+            }
+        }
+        count.forEach((key, value) -> {
+            System.out.println("\n\tMember: " + key + " has " + value + " assurances with content:");
+            System.out.println(content.get(key));
         });
     }
 
     @Author(name = "Maximilian Mauroner")
-    public static void addHistoryAnn(List<String> annotations, Class<?> clazz) {
-        HistoryConstraint annotation = clazz.getAnnotation(HistoryConstraint.class);
+    public static void listMembers(List<Class<?>> classList) {
+        HashMap<String, Integer> members = new HashMap<>();
+        HashMap<String, Integer> methodMembers = new HashMap<>();
 
-        if (annotation != null) {
-            annotations.add("History Constraint:" + annotation.constraint());
+        for (Class<?> clazz : classList) {
+            Author a = clazz.getAnnotation(Author.class);
+            if (a != null) {
+                if (members.containsKey(a.name())) {
+                    int val = members.get(a.name()) + 1;
+                    members.put(a.name(), val);
+                } else {
+                    members.put(a.name(), 1);
+                }
+            }
+            for (var method : clazz.getMethods()) {
+                Author ma = method.getAnnotation(Author.class);
+                if (ma != null) {
+                    if (methodMembers.containsKey(ma.name())) {
+                        int val = methodMembers.get(ma.name()) + 1;
+                        methodMembers.put(ma.name(), val);
+                    } else {
+                        methodMembers.put(ma.name(), 1);
+                    }
+                }
+            }
         }
+        members.forEach((key, value) -> {
+            System.out.println("Member: " + key + " has " + value + " classes that he is responsible for");
+        });
+        System.out.println("\n");
+        methodMembers.forEach((key, value) -> {
+            System.out.println("Member: " + key + " has " + value + " methods that he is responsible for");
+        });
+        System.out.println("\n");
     }
 
     @Author(name = "Maximilian Mauroner")
-    public static void addInvariantAnn(List<String> annotations, Class<?> clazz) {
-        Invariant annotation = clazz.getAnnotation(Invariant.class);
-
-        if (annotation != null) {
-            annotations.add("Invariant:" + annotation.invariant());
-        }
+    public static void nonPrivate(List<Class<?>> classList) {
+        System.out.println("Für jede Klasse und jedes Interface die Signaturen aller darin enthaltenen nicht-privaten Methoden und Konstruktoren " +
+                "sowie alle dafür geltenden Zusicherungen " +
+                "(getrennt nach Vor- und Nachbedingungen auf Methoden und Konstruktoren, sowie Invarianten und HistoryConstraints auf Klassen und Interfaces), " +
+                "einschließlich der Zusicherungen, die aus Obertypen übernommen („geerbt“) wurden.");
+        classList.forEach(clazz -> {
+            getInherited(0, clazz);
+        });
+        System.out.println("\n");
     }
 
     @Author(name = "Maximilian Mauroner")
-    public static void addPreAnn(List<String> annotations, Class<?> clazz) {
-        PreCondition annotation = clazz.getAnnotation(PreCondition.class);
-
-        if (annotation != null) {
-            annotations.add("Precondition:" + annotation.condition());
+    public static void getInherited(int level, Class<?> clazz) {
+        StringBuilder s = new StringBuilder();
+        StringBuilder baseT = new StringBuilder();
+        baseT.append("\t".repeat(Math.max(0, level)));
+        s.append(baseT);
+        if (level == 0) {
+            if (clazz.isInterface()) s.append("Interface: ");
+            else s.append("Class: ");
+        } else {
+            if (clazz.isInterface()) s.append("Inherited from Interface: ");
+            else s.append("Inherited from Class: ");
         }
-
-        Arrays.stream(clazz.getMethods()).toList().forEach(method -> {
-            PreCondition methodAnnotation = method.getAnnotation(PreCondition.class);
-            if (methodAnnotation != null) {
-                annotations.add("\n\t Method: " + method.getName() + "\t\t Annotation: " + methodAnnotation.condition());
+        s.append(clazz.getSimpleName()).append("\n");
+        Arrays.stream(clazz.getConstructors()).toList().forEach(constructor -> {
+            HistoryConstraint history = constructor.getAnnotation(HistoryConstraint.class);
+            Invariant invariant = constructor.getAnnotation(Invariant.class);
+            if (history != null)
+                s.append(baseT).append("History Constraint: ").append(history.constraint()).append("\n");
+            if (invariant != null) s.append(baseT).append("Invariant : ").append(invariant.invariant()).append("\n");
+            if (!Modifier.isPrivate(constructor.getModifiers())) {
+                PreCondition pre = constructor.getAnnotation(PreCondition.class);
+                PostCondition post = constructor.getAnnotation(PostCondition.class);
+                boolean hasAnnotation = pre != null || post != null;
+                if (hasAnnotation) s.append(baseT).append("\tConstructor: \n");
+                if (pre != null) s.append(baseT).append("\t\tPrecondition: ").append(pre.condition()).append("\n");
+                if (post != null) s.append(baseT).append("\t\tPostcondition: ").append(post.condition()).append("\n");
             }
         });
 
+        Arrays.stream(clazz.getMethods()).filter(method -> !Modifier.isPrivate(method.getModifiers())).toList().forEach(method -> {
+            PreCondition pre = method.getAnnotation(PreCondition.class);
+            PostCondition post = method.getAnnotation(PostCondition.class);
+            boolean hasAnnotation = pre != null || post != null;
+            if (hasAnnotation) s.append(baseT).append("\tMethod: ").append(method.getName()).append("\n");
+            if (pre != null) s.append(baseT).append("\t\tPrecondition: ").append(pre.condition()).append("\n");
+            if (post != null) s.append(baseT).append("\t\tPostcondition: ").append(post.condition()).append("\n");
+        });
+        System.out.println(s);
+        Arrays.stream(clazz.getInterfaces()).toList().forEach(inter -> {
+            getInherited(level + 1, inter);
+        });
     }
 
     @Author(name = "Maximilian Mauroner")
-    public static void addPostAnn(List<String> annotations, Class<?> clazz) {
-        PostCondition annotation = clazz.getAnnotation(PostCondition.class);
-        if (annotation != null) {
-            annotations.add("Postcondition:" + annotation.condition());
-        }
-        Arrays.stream(clazz.getMethods()).toList().forEach(method -> {
-            PostCondition methodAnnotation = method.getAnnotation(PostCondition.class);
-            if (methodAnnotation != null) {
-                annotations.add("\n\t Method: " + method.getName() + "\t\t Annotation: " + methodAnnotation.condition());
-            }
-        });
+    public static void mainMembers(List<Class<?>> classList) {
+        System.out.println("Eine Zuordnung zwischen den Namen aller zur Lösung dieser Aufgabe selbst definierten Klassen, " + "Interfaces und Annotationen zum Namen jeweils eines Gruppenmitglieds, " + "das für die Entwicklung der Einheit hauptverantwortlich ist.");
+        classList.forEach(clazz -> {
+            int maxVal = 0;
+            String maxKey = "";
+            HashMap<String, Integer> memberCount = new HashMap<>();
 
+            for (var method : clazz.getMethods()) {
+                Author a = method.getAnnotation(Author.class);
+                if (a != null) {
+                    if (memberCount.containsKey(a.name())) {
+                        int val = memberCount.get(a.name()) + 1;
+                        maxKey = val > maxVal ? a.name() : maxKey;
+                        maxVal = Math.max(val, maxVal);
+                        memberCount.put(a.name(), val);
+                    } else {
+                        memberCount.put(a.name(), 1);
+                    }
+                }
+            }
+            if (maxVal == 0) {
+                Author a = clazz.getAnnotation(Author.class);
+                if (a != null) {
+                    maxKey = a.name();
+                }
+            }
+            System.out.println("\tClass " + clazz.getSimpleName() + " was mostly written by " + maxKey);
+        });
+        System.out.println("\n");
+    }
+
+    @Author(name = "Maximilian Mauroner")
+
+    public static void listFiles(List<Class<?>> classList) {
+        StringBuilder s = new StringBuilder();
+        s.append("Namen aller zur Lösung dieser Aufgabe selbst definierten Klassen,Interfaces und Annotationen.\n");
+
+        classList.forEach(clazz -> {
+            s.append(clazz.getSimpleName()).append("\n");
+        });
+        System.out.println(s);
+    }
+
+    @Author(name = "Maximilian Mauroner")
+
+    public static List<Class<?>> getClasses() {
+        List<Class<?>> t = new ArrayList<>();
+        t.add(Test.class);
+        t.add(AeratedConcreteFilling.class);
+        t.add(AirConditionedNest.class);
+        t.add(Filling.class);
+        t.add(Formicarium.class);
+        t.add(HeatedNest.class);
+        t.add(Institute.class);
+        t.add(MyList.class);
+        t.add(Nest.class);
+        t.add(SandClayFilling.class);
+        t.add(Author.class);
+        t.add(HistoryConstraint.class);
+        t.add(Invariant.class);
+        t.add(PostCondition.class);
+        t.add(PreCondition.class);
+        return t;
     }
 }
