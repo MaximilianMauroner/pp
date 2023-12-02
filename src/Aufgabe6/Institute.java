@@ -2,6 +2,7 @@ import Annotations.Author;
 import Annotations.PostCondition;
 import Annotations.PreCondition;
 
+@Author(name = "Christopher Scherling")
 public class Institute {
 
     private static final MyList allFormicariums = Formicarium.getFormicariums();

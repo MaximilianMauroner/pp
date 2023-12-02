@@ -1,5 +1,5 @@
 import Annotations.*;
-@Author(name = "Lukas Leskovar")
+@Author(name = "Christopher Scherling")
 @Invariant(invariant = "name != null && antSpecies != null")
 public class Formicarium {
     private final static MyList allFormicariums = new MyList();
