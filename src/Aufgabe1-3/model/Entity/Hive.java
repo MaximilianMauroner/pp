@@ -26,16 +26,16 @@ import java.util.concurrent.BlockingQueue;
 public class Hive implements Entity {
 
     private final int id = HelperFunctions.generateRandomId();
-    private final Colony colony; //(history-constraint: colony != null)
-    private int health = 1000000;
+    private final Colony colony;
+    private int health = 1000000; // (server-controlled history-constraint: health > 0)
     private Position position;
 
 
     /**
      * Initializes new hive object
      *
-     * @param colony   colony the hive is a part of
-     * @param position position of the hive
+     * @param colony   colony the hive is a part of (precondition: colony != null)
+     * @param position position of the hive (precondition: position != null)
      */
     public Hive(Colony colony, Position position) {
         this.colony = colony;
@@ -105,6 +105,10 @@ public class Hive implements Entity {
         this.position = position;
     }
 
+
+    /**
+     * @return the id of the hive
+     */
     public int getId() {
         return this.id;
     }
