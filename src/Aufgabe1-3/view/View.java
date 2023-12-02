@@ -35,6 +35,12 @@ public class View extends Thread {
 
     private BlockingQueue<BufferElement> bufferQueue;
 
+    /**
+     * Creates a new View object.
+     *
+     * @param width  width of the canvas (> 0)
+     * @param height height of the canvas (> 0)
+     */
     public View(int width, int height) {
         this.width = width * Parameters.SCALE_BY;
         this.height = height * Parameters.SCALE_BY;
@@ -42,6 +48,14 @@ public class View extends Thread {
         cd.setTitle("Ants colony simulation");
     }
 
+
+    /**
+     * Creates a new View object.
+     *
+     * @param width       width of the canvas (> 0)
+     * @param height      height of the canvas (> 0)
+     * @param bufferQueue the queue that is used to communicate changes to the view (not null)
+     */
     public View(int width, int height, BlockingQueue<BufferElement> bufferQueue) {
         this.width = width * Parameters.SCALE_BY;
         this.height = height * Parameters.SCALE_BY;
@@ -50,6 +64,12 @@ public class View extends Thread {
         this.bufferQueue = bufferQueue;
     }
 
+    /**
+     * Creates a new View object.
+     *
+     * @param cd          the CodeDraw object that is used to draw the game (not null)
+     * @param bufferQueue the queue that is used to communicate changes to the view (not null)
+     */
     public View(CodeDraw cd, BlockingQueue<BufferElement> bufferQueue) {
         this.width = cd.getWidth();
         this.height = cd.getHeight();
@@ -112,6 +132,19 @@ public class View extends Thread {
         setPixels(width / 2, height / 2, width, height, width, BACKGROUND_COLOR, cd);
     }
 
+    /**
+     * setPixels in a square around the given coordinates
+     * In essence this is a square with the size "size" around the coordinates (x,y)
+     * If it doesn't fit on the canvas, it won't be drawn
+     *
+     * @param x     x coordinate of the center.
+     * @param y     y coordinate of the center.
+     * @param width width of the canvas (> 0)
+     * @param height height of the canvas (> 0)
+     * @param size  size of the square (> 0)
+     * @param color color of the square (not null)
+     * @param cd    the CodeDraw object that is used to draw the game (not null)
+     */
     private static void setPixels(int x, int y, int width, int height, int size, Color color, CodeDraw cd) {
         if (x + size < 0 || x - size > width || y + size < 0 || y - size > height) return;
 
@@ -145,6 +178,9 @@ public class View extends Thread {
         cd.show();
     }
 
+    /**
+     * Starts the view loop. The view loop will run until isRunning is set to false.
+     */
     public void run() {
         while (running) {
             try {
@@ -155,10 +191,21 @@ public class View extends Thread {
         }
     }
 
+    /**
+     * Sets the running state of the view loop.
+     *
+     * @param running true if the view loop should be running, false otherwise
+     */
     public void setRunning(boolean running) {
         this.running = running;
     }
 
+    /**
+     * draw is the actual method to draw the given gameState on the canvas. The settings can be found in the Parameters class.
+     * The function draw() will draw the Buffer Element on the canvas.
+     *
+     * @param element BufferElement to draw on the canvas. (not null)
+     */
     public void draw(BufferElement element) {
         Position pos = element.getPosition();
         Entity entity = element.getEntity();
@@ -191,8 +238,7 @@ public class View extends Thread {
         Collections.sort(elementsToDraw);
         Collections.reverse(elementsToDraw);
 
-
-        for (CanvasElement element : elementsToDraw) {
+        elementsToDraw.forEach(element -> {
             Entity entity = element.entity();
             int x = element.position().getX() * Parameters.SCALE_BY;
             int y = element.position().getY() * Parameters.SCALE_BY;
@@ -212,7 +258,7 @@ public class View extends Thread {
                     case FOODRETRIEVE -> setPixels(x, y, Parameters.SCALE_BY, Parameters.ANT_RETRIVE_COLOR);
                 }
             }
-        }
+        });
     }
 
     /**

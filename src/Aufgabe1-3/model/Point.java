@@ -21,17 +21,17 @@ import java.util.List;
  */
 public class Point {
     private final List<Entity> entities;
-    private final Position position; // (client-side history-constraint: position != null)
+    private final Position position;
 
 
-    private int hasObstacle = -1;
-    private int hasHive = -1;
+    private int hasObstacle = -1; // (server-controlled history-constraint: -1 if no obstacle is stored, otherwise may change to any number >= 0)
+    private int hasHive = -1; // (server-controlled history-constraint: -1 if no hive is stored, otherwise may change to any number >= 0)
 
-    private int hasTrail = -1;
+    private int hasTrail = -1; // (server-controlled history-constraint: -1 if no trail is stored, otherwise may change to any number >= 0)
 
     /**
      * Initialize new point with a position and a list of entities
-     * @param position position of the point
+     * @param position position of the point (precondition: position is not null)
      * @param entities list of entities on the point (precondition: entities is not null)
      */
     public Point(Position position, List<Entity> entities) {

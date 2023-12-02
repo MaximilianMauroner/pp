@@ -30,12 +30,12 @@ public class Colony {
     private ConcurrentHashMap<Integer, Hive> hives;
     private ConcurrentHashMap<Integer, Ant> ants;
 
-    private final GameState gameState; //(history-constraint: gameState != null)
+    private final GameState gameState; //(invariant: gameState != null)
 
     /**
      * Initializes new colony object
      *
-     * @param gameState game-state the colony is a part of
+     * @param gameState game-state the colony is a part of (precondition: gameState != null)
      */
     public Colony(GameState gameState) {
         this.hives = new ConcurrentHashMap<>();
@@ -91,14 +91,16 @@ public class Colony {
      * @param gs game-state the colony is a part of (precondition: gs != null)
      */
     public void removeColony(GameState gs) {
-        for (Hive hive : this.hives.values()) {
+        this.hives.values().forEach(hive -> {
             Point p = gs.getPoint(hive.getPosition());
             p.removeEntity(hive);
-        }
-        for (Ant ant : this.ants.values()) {
+        });
+
+        this.ants.values().forEach(ant -> {
             Point p = gs.getPoint(ant.getPosition());
             p.removeEntity(ant);
-        }
+        });
+
         this.hives = new ConcurrentHashMap<>();
         this.ants = new ConcurrentHashMap<>();
         System.out.println("Remove Colony");
@@ -188,12 +190,10 @@ public class Colony {
      * @return the central point of the colony
      */
     public Position getCentralHivePoint() {
-        int x = 0;
-        int y = 0;
-        for (Hive hive : this.hives.values()) {
-            x += hive.getPosition().getX();
-            y += hive.getPosition().getY();
-        }
+
+        int x = this.hives.values().stream().reduce(0, (k, v) -> v.getPosition().getX(), Integer::sum);
+        int y = this.hives.values().stream().reduce(0, (k, v) -> v.getPosition().getY(), Integer::sum);
+
         x /= this.hives.size();
         y /= this.hives.size();
         return new Position(x, y);
