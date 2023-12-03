@@ -27,7 +27,7 @@ public class Hive implements Entity {
 
     private final int id = HelperFunctions.generateRandomId();
     private final Colony colony;
-    private int health = 1000000; // (server-controlled history-constraint: health > 0)
+    private int health = 1000000; // (invariant: health > 0)
     private Position position;
 
 
@@ -67,6 +67,14 @@ public class Hive implements Entity {
         this.colony.addFood();
     }
 
+    /**
+     * Runs the hive's logic
+     *
+     * @param gameState the game state of the game (precondition: gameState != null)
+     * @param status    the status of the game (precondition: status != null)
+     * @param point     the point where the entity is located (precondition: point != null)
+     * @param queue the buffer to which the entity is added (precondition: gameBuffer != null)
+     */
     @Override
     //here we check if the hive has gotten any food recently,
     // if it has, it should increase in size
@@ -85,21 +93,35 @@ public class Hive implements Entity {
         GameBuffer.add(queue, this, point.getPosition());
     }
 
+    /**
+     * @return a clone of the hive
+     */
     @Override
     public Hive clone() {
         return new Hive(this.colony, this.position);
     }
 
+    /**
+     * @return the viewing priority of the hive
+     */
     @Override
     public int getPriority() {
         return model.Parameters.HIVE_PRIORITY;
     }
 
+    /**
+     * @return the position of the hive
+     */
     @Override
     public Position getPosition() {
         return position;
     }
 
+    /**
+     * Sets the position of the hive
+     *
+     * @param position the position to be set (precondition: position != null)
+     */
     @Override
     public void setPosition(Position position) {
         this.position = position;

@@ -46,7 +46,7 @@ public class Position {
     /**
      * Calculates the direction to the given position (e.g. position the ant object moves to)
      *
-     * @param p the position to which the direction is calculated
+     * @param p the position to which the direction is calculated (precondition: p != null)
      */
     public AntDirection getRelativeChange(Position p) {
         if (x == p.getX() && y > p.getY()) {
@@ -198,6 +198,11 @@ public class Position {
         return new Position(x, y);
     }
 
+    /**
+     * Checks if the given object is equal to the position
+     * @param obj object to be checked (precondition: obj != null)
+     * @return true if the given object is equal to the position
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Position p) {
@@ -206,11 +211,19 @@ public class Position {
         return false;
     }
 
+    /**
+     * Calculates the hashcode of the position
+     * @return the hashcode of the position
+     */
     @Override
     public int hashCode() {
         return Integer.hashCode(x) + Integer.hashCode(y);
     }
 
+    /**
+     * Returns a string representation of the position
+     * @return a string representation of the position
+     */
     @Override
     public String toString() {
         return "Position{" +

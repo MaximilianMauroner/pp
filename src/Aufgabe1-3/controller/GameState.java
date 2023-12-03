@@ -89,7 +89,7 @@ public class GameState {
     /**
      * Checks wether a given point exists
      *
-     * @param position position of the point to be checked
+     * @param position position of the point to be checked (precondition: position != null)
      * @return true if the point exists, false otherwise
      */
     public boolean hasPosition(Position position) {

@@ -65,7 +65,7 @@ public class PathManager {
      * Adds the position to end position and calculates a path from all start positions to the end position
      * (client-controlled history-constraint: add start position before adding end position)
      *
-     * @param position the start position
+     * @param position the start position (precondition: position != null)
      */
     public void registerNewPaths(Position position) {
         endPositions.add(position);
@@ -77,7 +77,7 @@ public class PathManager {
     /**
      * Removes the position from end position and removes all paths that contain the position
      *
-     * @param position the end position
+     * @param position the end position (precondition: position != null)
      */
     public void deregisterPaths(Position position) {
         endPositions.remove(position);
@@ -87,7 +87,7 @@ public class PathManager {
     /**
      * Removes the position from both start and end positions and removes all paths that contain the position
      *
-     * @param position the start position
+     * @param position the start position (precondition: position != null)
      */
     public void removePosition(Position position) {
         startPositions.remove(position);
@@ -217,8 +217,8 @@ public class PathManager {
         /**
          * Calculates the A* distance metric between two nodes
          *
-         * @param n1 the first node
-         * @param n2 the second node
+         * @param n1 the first node (precondition: n1 != null)
+         * @param n2 the second node (precondition: n2 != null)
          * @return the distance between the two nodes
          */
         public static int getDistance(Node n1, Node n2) {
@@ -231,6 +231,11 @@ public class PathManager {
                 return 14 * dx + 10 * (dy - dx);
         }
 
+        /**
+         * Returns true if the node is equal to the given object
+         * @param o the object to be compared to (precondition: o != null)
+         * @return true if the node is equal to the given object
+         */
         @Override
         public boolean equals(Object o) {
             if (o instanceof Node) {
@@ -240,6 +245,11 @@ public class PathManager {
             return false;
         }
 
+        /**
+         * Compares the node to another node (given their f-value)
+         * @param o the node to be compared to (precondition: o != null)
+         * @return the relation between the two nodes
+         */
         @Override
         public int compareTo(Node o) {
             return Double.compare(this.f, o.f);

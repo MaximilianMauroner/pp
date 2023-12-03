@@ -28,7 +28,7 @@ public class DataStore {
     /**
      * Returns the simulation with the given id
      *
-     * @param simulationId the id of the simulation
+     * @param simulationId the id of the simulation to be returned (precondition: simulationId != null)
      * @return the simulation with the given id. If no simulation with that id exists, null will be returned
      */
     public Simulation getSimulation(String simulationId) {
@@ -48,7 +48,7 @@ public class DataStore {
     /**
      * Removes the simulation with the given id if there is a simulation with that id
      *
-     * @param simulationId the id of the simulation to be removed
+     * @param simulationId the id of the simulation to be removed (precondition: simulationId != null)
      */
     public void removeSimulation(String simulationId) {
         //STYLE: Funktionale Programmierung (es wird hier eine Lambda-Funktion verwendet)
@@ -58,7 +58,7 @@ public class DataStore {
     /**
      * Removes the given simulation if it is in the simulation list
      *
-     * @param simulation the simulation to be removed
+     * @param simulation the simulation to be removed (precondition: simulation != null)
      */
     public void removeSimulation(Simulation simulation) {
         simulationList.remove(simulation);

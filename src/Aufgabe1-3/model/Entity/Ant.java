@@ -32,12 +32,12 @@ public class Ant implements Entity {
     private final Colony colony;
     private final Position hivePos;
     private AntState currentState;
-    private int emptySteps = 0; // (server-controlled history-constraint: 0 <= emptySteps <= status.getAntEmptySteps())
+    private int emptySteps = 0; // (invariant: 0 <= emptySteps <= status.getAntEmptySteps())
     private AntDirection direction = AntDirection.values()[(int) (Math.random() * AntDirection.values().length)];
-    private GameState gameState; // (server-controlled history-constraint: gameState != null)
-    private Status status; // (server-controlled history-constraint: status != null)
-    private int moveSteps; // (server-controlled history-constraint: moveSteps > 0)
-    private int waitSteps; // (server-controlled history-constraint: waitSteps > 0)
+    private GameState gameState; // (invariant: gameState != null)
+    private Status status; // (invariant: status != null)
+    private int moveSteps; // (invariant: moveSteps > 0)
+    private int waitSteps; // (invariant: waitSteps > 0)
     private Position position;
     private int searchRadius = Parameters.INITIAL_ANT_SEARCH_RADIUS; // (server-controlled history-constraint: doesn't change during runs)
     private int foodCount = 0; // (server-controlled history-constraint: foodCount >= oldFoodCount)
@@ -46,11 +46,11 @@ public class Ant implements Entity {
     /**
      * Initializes new ant object
      *
-     * @param currentState the current state of the ant
-     * @param gameState    the game state the ant is a part of
-     * @param status       the status of the current simulation
-     * @param colony       the ants colony
-     * @param position     the position of the ant
+     * @param currentState the current state of the ant (precondition: currentState != null)
+     * @param gameState    the game state the ant is a part of (precondition: gameState != null)
+     * @param status       the status of the current simulation (precondition: status != null)
+     * @param colony       the ants colony (precondition: colony != null)
+     * @param position     the position of the ant (precondition: position != null)
      */
     public Ant(AntState currentState, GameState gameState, Status status, Colony colony, Position position) {
         this.currentState = currentState;
@@ -64,11 +64,19 @@ public class Ant implements Entity {
         this.position = position;
     }
 
+    /**
+     * @return the position of the ant
+     */
     @Override
     public Position getPosition() {
         return position;
     }
 
+    /**
+     * Sets the position of the ant
+     *
+     * @param position the new position of the ant (precondition: position != null)
+     */
     @Override
     public void setPosition(Position position) {
         this.position = position;
@@ -96,7 +104,12 @@ public class Ant implements Entity {
     }
 
     /**
-     * Starts the State Logic of the Ant. The Ant will move to the next Point.
+     * Runs the ant's logic
+     *
+     * @param gameState the game state of the game (precondition: gameState != null)
+     * @param status    the status of the game (precondition: status != null)
+     * @param oldPoint the point where the entity is located (precondition: point != null)
+     * @param queue the buffer to which the entity is added (precondition: gameBuffer != null)
      */
     @Override
     public void run(GameState gameState, Status status, Point oldPoint, BlockingQueue<BufferElement> queue) {
@@ -385,6 +398,9 @@ public class Ant implements Entity {
         move(oldPoint, newPoint, endPosition);
     }
 
+    /**
+     * @return a clone of the ant
+     */
     @Override
     public Entity clone() {
         return new Ant(this.currentState, this.gameState, this.status, this.colony, this.position);
@@ -400,6 +416,9 @@ public class Ant implements Entity {
         return new Ant(this.currentState, this.gameState, this.status, newColony, this.position);
     }
 
+    /**
+     * @return the view priority of the ant
+     */
     @Override
     public int getPriority() {
         return Parameters.ANT_PRIORITY;

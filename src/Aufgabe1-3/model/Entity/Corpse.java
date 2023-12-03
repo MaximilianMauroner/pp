@@ -26,6 +26,14 @@ public class Corpse implements Entity {
 
     private Position position;
 
+    /**
+     * Runs the corpse's logic
+     *
+     * @param gameState the game state of the game (precondition: gameState != null)
+     * @param status    the status of the game (precondition: status != null)
+     * @param point     the point where the entity is located (precondition: point != null)
+     * @param queue the buffer to which the entity is added (precondition: gameBuffer != null)
+     */
     @Override
     public void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> queue) {
         this.strength *= (float) status.getTrailDecay();
@@ -38,20 +46,35 @@ public class Corpse implements Entity {
         GameBuffer.add(queue, this, point.getPosition());
     }
 
+    /**
+     * @return a clone of the corpse
+     */
     @Override
     public Entity clone() {
         return new Corpse();
     }
 
+    /**
+     * @return the viewing priority of the corpse
+     */
+    @Override
     public int getPriority() {
         return Parameters.CORPSE_PRIORITY;
     }
 
+    /**
+     * @return the position of the corpse
+     */
     @Override
     public Position getPosition() {
         return this.position;
     }
 
+    /**
+     * Sets the position of the corpse
+     *
+     * @param position the position to be set (precondition: position != null)
+     */
     @Override
     public void setPosition(Position position) {
         this.position = position;

@@ -154,7 +154,7 @@ public class Game {
     /**
      * Starts the game with duration limit
      *
-     * @param duration duration of the game in milliseconds
+     * @param duration duration of the game in milliseconds (precondition: duration >= 0)
      */
     public void start(int duration) {
         BlockingQueue<BufferElement> buffer = new LinkedBlockingQueue<>();

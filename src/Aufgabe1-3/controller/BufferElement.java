@@ -60,6 +60,11 @@ public class BufferElement {
         this.entity = entity;
     }
 
+    /**
+     * Returns true if the buffer element is equal to the given object
+     * @param o the object to be compared to (precondition: o != null)
+     * @return true if the buffer element is equal to the given object
+     */
     @Override
     public boolean equals(Object o) {
         if (o != null && o.getClass() == this.getClass()) {

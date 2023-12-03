@@ -206,7 +206,7 @@ public class Status {
     /**
      * Randomizes the values of parameters that affect game behavior
      *
-     * @param confidence randomize values within interval of confidence in percent (precondition: confidence >= 0)
+     * @param confidence randomize values within interval of confidence in percent (precondition: 0 <= confidence <= 1>)
      *                   (e.g. if confidence is 0.1, then the value will be randomized within 10% of the original value)
      */
     public void randomize(double confidence) {

@@ -66,6 +66,7 @@ public class DataManager {
     /**
      * Checks whether the simulation contains a field with the given key
      *
+     * @param key identifier of the data-field (precondition: key != null)
      * @return boolean for "is the key in the simulation"
      */
     public boolean containsField(String key) {
@@ -75,7 +76,7 @@ public class DataManager {
     /**
      * Adds a simple field (e.g. a number) to the simulation. If field already exists under key, it will be overwritten.
      *
-     * @param key   identifier of the data-field
+     * @param key   identifier of the data-field (precondition: key != null)
      * @param value value of the data-field
      */
     public void addSimpleField(String key, Object value) {
@@ -86,7 +87,7 @@ public class DataManager {
     /**
      * Returns the value of a simple field (e.g. a number) in the simulation
      *
-     * @param key identifier of the data-field
+     * @param key identifier of the data-field (precondition: key != null)
      * @return value of the data-field under that identifier. if the simulation is null, then null will be returned
      */
     public Object getSimpleField(String key) {
@@ -99,7 +100,7 @@ public class DataManager {
     /**
      * Increments a simple field (e.g. a number) in the simulation. If the field does not exist under the key, it will be created.
      *
-     * @param key identifier of the data-field
+     * @param key identifier of the data-field (precondition: key != null)
      */
     public void incrementSimpleField(String key) {
         if (simulation != null) {
@@ -115,7 +116,7 @@ public class DataManager {
     /**
      * Decrements a simple field (e.g. a number) in the simulation. If the field does not exist under the key, it will be created.
      *
-     * @param key identifier of the data-field
+     * @param key identifier of the data-field (precondition: key != null)
      */
     public void decrementSimpleField(String key) {
         if (simulation != null) {
@@ -132,7 +133,7 @@ public class DataManager {
      * Adds a complex field (e.g. a vector) to the simulation. If field already exists under key, it will be overwritten.
      * Complex fields contain multiple values which can be summarized by instances of the Operation interface.
      *
-     * @param key   identifier of the data-field
+     * @param key   identifier of the data-field (precondition: key != null)
      * @param value first value to be added to the data-field
      */
     public void addComplexField(String key, Object value) {
@@ -147,7 +148,7 @@ public class DataManager {
      * Adds a value to a complex field (e.g. a vector) in the simulation. If field does not exist under key, it will be created.
      * Complex fields contain multiple values which can be summarized by instances of the Operation interface.
      *
-     * @param key   identifier of the data-field
+     * @param key   identifier of the data-field (precondition: key != null)
      * @param value value to be added to the data-field
      */
     public void updateComplexField(String key, Object value) {
@@ -166,7 +167,7 @@ public class DataManager {
      * Summarizes a complex field (e.g. a vector) in the simulation. It will save the result under the complex fields key plus the operation.
      * Complex fields contain multiple values which can be summarized by instances of the Operation interface.
      *
-     * @param key       identifier of the data-field
+     * @param key       identifier of the data-field (precondition: key != null)
      * @param operation operation to be used to summarize the values
      */
     public void summarizeComplexField(String key, Operation operation) {

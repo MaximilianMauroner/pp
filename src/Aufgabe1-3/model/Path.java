@@ -26,7 +26,7 @@ public class Path {
 
     /**
      * Adds a position to the path
-     * @param position position to be added to the path
+     * @param position position to be added to the path (precondition: position != null)
      */
     public void addPosition(Position position) {
         positionList.add(position);
@@ -48,6 +48,9 @@ public class Path {
         return metric / positionList.size();
     }
 
+    /**
+     * @return a clone of the path
+     */
     @Override
     public Path clone() {
         Path clone = new Path();
@@ -57,7 +60,7 @@ public class Path {
 
     /**
      * Checks whether the path contains the given position
-     * @param position position to be checked
+     * @param position position to be checked (precondition: position != null)
      * @return true if the path contains the given position
      */
     public boolean contains(Position position) {

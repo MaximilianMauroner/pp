@@ -36,6 +36,7 @@ public interface Entity extends Comparable<Entity> {
      * @param gameState the game state of the game (precondition: gameState != null)
      * @param status    the status of the game (precondition: status != null)
      * @param point     the point where the entity is located (precondition: point != null)
+     * @param gameBuffer the buffer to which the entity is added (precondition: gameBuffer != null)
      */
     void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> gameBuffer);
 
@@ -54,7 +55,7 @@ public interface Entity extends Comparable<Entity> {
     /**
      * Compares the viewing priority of two entities
      *
-     * @param o the entity to be compared to
+     * @param o the entity to be compared to (precondition: o != null)
      * @return 0 if the priorities are equal, 1 if the priority of the other entity is higher, -1 if the priority of this entity is higher
      */
     @Override

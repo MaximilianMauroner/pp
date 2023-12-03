@@ -35,7 +35,7 @@ public class ColonyTrail {
     /**
      * Decays the trails
      *
-     * @param status status of the simulation
+     * @param status status of the simulation (precondition: status != null)
      */
     public void decayTrails(Status status) {
         // here as well

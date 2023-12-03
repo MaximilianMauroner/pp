@@ -22,7 +22,7 @@ public class Simulation {
     /**
      * Creates a new Simulation object
      *
-     * @param simulationId   the id of the simulation (should be unique)
+     * @param simulationId   the id of the simulation (should be unique) (precondition: simulationId != null)
      * @param simulationName the name of the simulation (precondition: simulationName != null)
      */
     public Simulation(String simulationId, String simulationName) {
@@ -52,7 +52,7 @@ public class Simulation {
     /**
      * Adds a value to the simulations data map. If the key already exists, the value will be overwritten
      *
-     * @param key   the identifier of the value
+     * @param key   the identifier of the value (precondition: key != null)
      * @param value the value to be added
      */
     public void addData(String key, Object value) {
@@ -62,7 +62,7 @@ public class Simulation {
     /**
      * Returns the value of the given key
      *
-     * @param key the identifier of the value
+     * @param key the identifier of the value (precondition: key != null)
      * @return the value of the given key. If no key exists or the objects stored at that key is null, null will be returned
      */
     public Object getData(String key) {
@@ -78,6 +78,9 @@ public class Simulation {
         return (HashMap<String, Object>) this.data.clone();
     }
 
+    /**
+     * @return the simulation data as a string
+     */
     @Override
     public String toString() {
         return "Simulation{" +

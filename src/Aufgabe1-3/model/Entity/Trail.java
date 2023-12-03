@@ -146,6 +146,11 @@ public class Trail implements Entity {
 
     /**
      * Performs the trails decay
+     *
+     * @param gameState the game state of the game (precondition: gameState != null)
+     * @param status    the status of the game (precondition: status != null)
+     * @param point     the point where the entity is located (precondition: point != null)
+     * @param queue the buffer to which the entity is added (precondition: gameBuffer != null)
      */
     @Override
     public void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> queue) {
@@ -162,22 +167,36 @@ public class Trail implements Entity {
         GameBuffer.add(queue, this, point.getPosition());
     }
 
+    /**
+     * @return a clone of the trail
+     */
     @Override
     public Entity clone() {
         ConcurrentHashMap<Integer, ColonyTrail> t = new ConcurrentHashMap<>(this.colonyStrength);
         return new Trail(t);
     }
 
+    /**
+     * @return the viewing priority of the trail
+     */
     @Override
     public int getPriority() {
         return Parameters.TRAIL_PRIORITY;
     }
 
+    /**
+     * @return the position of the trail
+     */
     @Override
     public Position getPosition() {
         return this.position;
     }
 
+    /**
+     * Sets the position of the trail
+     *
+     * @param position the position to be set (precondition: position != null)
+     */
     @Override
     public void setPosition(Position position) {
         this.position = position;

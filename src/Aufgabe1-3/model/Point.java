@@ -42,8 +42,8 @@ public class Point {
 
     /**
      * Initialize new point with a position and a single entity
-     * @param position position of the point
-     * @param entity entity on the point
+     * @param position position of the point (precondition: position is not null)
+     * @param entity entity on the point (precondition: entity is not null)
      */
     public Point(Position position, Entity entity) {
         this.position = position;
@@ -115,8 +115,8 @@ public class Point {
     /**
      * Adds a trail with more than one trail object to surrounding points within a specified radius
      *
-     * @param gameState game-state to get the point objects
-     * @param ant       ant so the ant can be associated with the trail
+     * @param gameState game-state to get the point objects (precondition: gameState != null)
+     * @param ant       ant so the ant can be associated with the trail (precondition: ant != null)
      */
     public void addTrail(GameState gameState, Ant ant) {
         int radius = Math.ceilDiv(Parameters.TRAIL_SIZE, 2);

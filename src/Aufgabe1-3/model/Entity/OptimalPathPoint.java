@@ -32,7 +32,12 @@ public class OptimalPathPoint implements Entity {
     }
 
     /**
-     * Runs the optimal path point
+     * Runs the pathpoint's logic
+     *
+     * @param gameState the game state of the game (precondition: gameState != null)
+     * @param status    the status of the game (precondition: status != null)
+     * @param point     the point where the entity is located (precondition: point != null)
+     * @param queue the buffer to which the entity is added (precondition: gameBuffer != null)
      */
     @Override
     public void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> queue) {
@@ -43,21 +48,35 @@ public class OptimalPathPoint implements Entity {
         GameBuffer.add(queue, this, point.getPosition());
     }
 
+    /**
+     * @return a clone of the pathpoint
+     */
     @Override
     public Entity clone() {
         return new OptimalPathPoint(path);
     }
 
+    /**
+     * @return the viewing priority of the pathpoint
+     */
     @Override
     public int getPriority() {
         return model.Parameters.OPTIMAL_PATH_PRIORITY;
     }
 
+    /**
+     * @return the position of the pathpoint
+     */
     @Override
     public Position getPosition() {
         return this.position;
     }
 
+    /**
+     * Sets the position of the pathpoint
+     *
+     * @param position the position to be set (precondition: position != null)
+     */
     @Override
     public void setPosition(Position position) {
         this.position = position;
