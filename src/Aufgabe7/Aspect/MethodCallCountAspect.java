@@ -1,0 +1,89 @@
+package Aspect;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+
+import java.util.HashMap;
+
+@Aspect
+public class MethodCallCountAspect {
+    private static final HashMap<String, Integer> visitorCallCount = new HashMap<>();
+    private static final HashMap<String, Integer> assignFormCallCount = new HashMap<>();
+
+    /**
+     * Counts the calls of all methods in the package Formicarium and Colony and saves them in a HashMap
+     * The HashMap is structured as follows:
+     * Key: Method name
+     * Value: Number of calls
+     */
+    @Before("execution(public * Formicarium.*.*(..))")
+    public void visitorPatternCallCount(JoinPoint joinPoint) {
+        String methodName = joinPoint.getStaticPart().getSignature() + joinPoint.getSignature().getName();
+        visitorCallCount.put(methodName, visitorCallCount.getOrDefault(methodName, 0) + 1);
+    }
+
+    /**
+     * Counts the calls of all methods in the package Institute and saves them in a HashMap
+     * The HashMap is structured as follows:
+     * Key: Method name
+     * Value: Number of calls
+     */
+    @Before("execution(public * Institute.assignForm(..))")
+    public void countMethodCallAssignForm(JoinPoint joinPoint) {
+        String methodName = joinPoint.getStaticPart().getSignature() + joinPoint.getSignature().getName();
+        assignFormCallCount.put(methodName, assignFormCallCount.getOrDefault(methodName, 0) + 1);
+    }
+
+    // Getter for the HashMaps
+    public static HashMap<String, Integer> getVisitorCallCount() {
+        return visitorCallCount;
+    }
+
+    /**
+     * Returns the number of calls of all visitor patterns
+     *
+     * @param className  Name of the class
+     * @param methodName Name of the method
+     * @return HashMap<String, Integer> of calls of the method
+     */
+    public static HashMap<String, Integer> getMethodCallCount(String className, String methodName) {
+        HashMap<String, Integer> methodCallCount = new HashMap<>();
+        MethodCallCountAspect.getVisitorCallCount().entrySet().stream().filter(entry -> (entry.getKey()).contains(className) && entry.getKey().contains(methodName)).forEach(entry -> methodCallCount.put(entry.getKey(), entry.getValue()));
+        return methodCallCount;
+    }
+
+
+    // Getter for the HashMaps
+    public static HashMap<String, Integer> getAssignFormCallCount() {
+        return assignFormCallCount;
+    }
+
+    /**
+     * Returns the number of calls of the .assignForm method
+     *
+     * @param className  Name of the class
+     * @param methodName Name of the method
+     * @return HashMap<String, Integer> of calls of the method
+     */
+    public static HashMap<String, Integer> getAssignFormCallCount(String className, String methodName) {
+        HashMap<String, Integer> methodCallCount = new HashMap<>();
+        MethodCallCountAspect.getAssignFormCallCount().entrySet().stream().filter(entry -> (entry.getKey()).contains(className) && entry.getKey().contains(methodName)).forEach(entry -> methodCallCount.put(entry.getKey(), entry.getValue()));
+        return methodCallCount;
+    }
+
+    /**
+     * Returns the number of calls of all methods in the package Formicarium and Colony as a readable String
+     *
+     * @return all calls in a readable String format
+     */
+    public static String exportAsString() {
+        return exportAsString(assignFormCallCount) + "\n" + exportAsString(visitorCallCount);
+    }
+
+    private static String exportAsString(HashMap<String, Integer> map) {
+        StringBuilder sb = new StringBuilder();
+        map.forEach((key, value) -> sb.append(key, key.indexOf(" ") + 1, key.lastIndexOf(")") + 1).append(": ").append(value).append("\n"));
+        return sb.toString();
+    }
+}

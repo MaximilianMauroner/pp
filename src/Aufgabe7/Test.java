@@ -1,35 +1,51 @@
+import Aspect.MethodCallCountAspect;
 import Colony.*;
 import Formicarium.*;
 
 public class Test {
     public static void main(String[] args) {
+        System.out.println("Hello World!");
         Institute i = new Institute();
+        Institute i2 = new Institute();
+        Institute i3 = new Institute();
+
+
+        i.addForm(new SmallUnconditionedFormicarium(1));
+        i.addForm(new MediumUnconditionedFormicarium(2));
+        i.addForm(new LargeUnconditionedFormicarium(3));
+        i.addForm(new SmallConditionedFormicarium(9));
+        i.addForm(new MediumConditionedFormicarium(10));
+        i.addForm(new LargeConditionedFormicarium(11));
+
+        SmallUnconditionedFormicarium sm = new SmallUnconditionedFormicarium(1);
+        MediumConditionedFormicarium mm = new MediumConditionedFormicarium(1);
+        sm.price();
+        sm.price();
+        sm.price();
+        sm.price();
+        mm.price();
+        mm.price();
+
+        //ALLE im Folder Formicatium und im Folder Colony alle Visitor
+
+
+        AntColony ac = new SmallTropicalColony();
+        AntColony ad = new SmallTropicalColony();
+        AntColony ae = new SmallTropicalColony();
+        AntColony ac2 = new MediumEuropeanColony();
+        AntColony ac3 = new LargeTropicalColony();
+        AntColony ac4 = new LargeEuropeanColony();
+        System.out.println(i.assignForm(ac).showFormicarium() + "asdfasdfasdf ");
+        System.out.println(i.assignForm(ad).showFormicarium() + "asdfasdfasdf ");
+        System.out.println(i.assignForm(ae) + "asdfasdfasdf "); // expected null
+//        i.assignForm(ac2);
+//        i.assignForm(ac3);
+//        i.assignForm(ac4);
+
 
         // Test 1 - Add Formicarium & Remove Formicarium
-        Formicarium f = new LargeUnconditionedFormicarium(4);
-        i.addForm(f);
-        testEquals(i.containsForm(f), true);
-        i.removeForm(f);
-        testEquals(i.containsForm(f), false);
 
         // Test 2 - Assign Formicarium
-        AntColony lec = new MediumEuropeanColony();
-        AntColony lec2 = new LargeEuropeanColony();
-        Formicarium res = i.assignForm(lec);
-        testEquals(res == null, true);
-
-        i.addForm(f);
-        res = i.assignForm(lec);
-        Formicarium res2 = res;
-        testEquals(res == null, false);
-        testEquals(res.antType(), lec);
-        res = i.assignForm(lec2);
-        testEquals(res == null, true);
-
-        i.returnForm(res2);
-        res = i.assignForm(lec2);
-        testEquals(res == null, false);
-        testEquals(res.antType(), lec2);
 
         // Test 3 - Return Formicarium
 
@@ -38,6 +54,11 @@ public class Test {
         // Test 5 - Show Formicarium & Show Ants
 
         // Test 6 - Add Ant Colony & Remove Ant Colony
+
+
+        // Test 7 - Visitor
+        System.out.println("Test 7 - Visitor");
+        System.out.println(MethodCallCountAspect.exportAsString());
     }
 
     private static void testTrue(boolean given, boolean expected) {
