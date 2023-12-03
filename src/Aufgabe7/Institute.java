@@ -2,28 +2,38 @@ import Colony.AntColony;
 import Colony.Compatability;
 import Formicarium.Formicarium;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Institute {
 
     private final List<Formicarium> inventory = new ArrayList<>();
-    private final List<AntColony> antColonies = new ArrayList<>();
+    private final HashMap<AntColony, Formicarium> antColonies = new HashMap<>();
 
     public void addForm(Formicarium form) {
         this.inventory.add(form);
     }
 
+    public boolean containsForm(Formicarium formicarium) {
+        return this.inventory.contains(formicarium) || this.antColonies.containsValue(formicarium);
+    }
+
     public void removeForm(Formicarium form) {
+        AntColony colony = form.antType();
+        if (colony != null) {
+            this.antColonies.put(colony, null);
+            form.setAntType(null);
+        }
         this.inventory.remove(form);
     }
 
     public Formicarium assignForm(AntColony antColony) {
 
         Formicarium best = inventory.stream()
-                .filter(form -> form.free() && form.accept(antColony) != Compatability.BAD)
+                .filter(form -> form.accept(antColony) != Compatability.BAD)
                 .min((form1, form2) -> {
-                    System.out.println("here");
                     Compatability comp1 = form1.accept(antColony);
                     Compatability comp2 = form2.accept(antColony);
                     return comp1.compareTo(comp2);
@@ -32,28 +42,36 @@ public class Institute {
 
         if (best != null) {
             best.setAntType(antColony);
-            antColonies.add(antColony);
+            antColonies.put(antColony, best);
+            inventory.remove(best);
         }
         return best;
     }
 
     public void returnForm(Formicarium form) {
-        if (inventory.contains(form)) {
+        if (antColonies.containsValue(form)) {
+            AntColony colony = form.antType();
             form.setAntType(null);
+            antColonies.put(colony, null);
+            inventory.add(form);
         }
     }
 
     public double priceFree() {
-        return inventory.stream().filter(Formicarium::free).mapToInt(Formicarium::price).sum();
+        return inventory.stream().mapToInt(Formicarium::price).sum();
     }
 
     public double priceOccupied() {
-        return inventory.stream().filter(form -> !form.free()).mapToInt(Formicarium::price).sum();
+        return antColonies.values().stream().mapToDouble(Formicarium::price).sum();
     }
 
     public String showFormicarium() {
         StringBuilder sb = new StringBuilder();
-        inventory.forEach(form -> sb.append(form.showFormicarium()));
+
+        List<Formicarium> li = new ArrayList<Formicarium>(antColonies.values().stream().toList());
+        li.addAll(inventory);
+
+        li.forEach(form -> sb.append(form.showFormicarium()));
         return sb.toString();
     }
 
@@ -61,8 +79,7 @@ public class Institute {
         StringBuilder sb = new StringBuilder();
         sb.append("Ant Colonies: [ \n");
 
-        antColonies.forEach(antColony -> {
-            Formicarium form = inventory.stream().filter(formicarium -> formicarium.antType() == antColony).findFirst().orElse(null);
+        antColonies.forEach((antColony, form) -> {
 
             sb.append(antColony.showAntColony());
             sb.append("Formicarium: ");
@@ -79,10 +96,15 @@ public class Institute {
     }
 
     public void addAntColony(AntColony antColony) {
-        this.antColonies.add(antColony);
+        this.antColonies.put(antColony, null);
     }
 
     public void removeAntColony(AntColony antColony) {
-        this.antColonies.remove(antColony);
+        Formicarium form = this.antColonies.get(antColony);
+        if (form != null) {
+            form.setAntType(null);
+            this.inventory.add(form);
+            this.antColonies.remove(antColony);
+        }
     }
 }

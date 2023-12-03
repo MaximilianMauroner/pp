@@ -18,19 +18,22 @@ import java.util.concurrent.BlockingQueue;
  */
 
 public class OptimalPathPoint implements Entity {
-    private final Path path; //(history-constraint: path != null)
+    private final Path path;
 
     private Position position;
 
     /**
      * Initializes new optimal path point
      *
-     * @param path the path it is associated with
+     * @param path the path it is associated with (precondition: path != null)
      */
     public OptimalPathPoint(Path path) {
         this.path = path;
     }
 
+    /**
+     * Runs the optimal path point
+     */
     @Override
     public void run(GameState gameState, Status status, Point point, BlockingQueue<BufferElement> queue) {
         this.path.addPointMetric(point.getTrail());

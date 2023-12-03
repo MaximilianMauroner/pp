@@ -55,7 +55,6 @@ public class ColonyTrail {
      * @return true if the trail is new
      */
     public boolean isNewPath(int origin) {
-//        TODO: use a constant to replace 0.1
         return !(this.trailStrengths.containsKey(origin) && this.trailStrengths.get(origin) > 0.1);
     }
 
@@ -84,9 +83,7 @@ public class ColonyTrail {
     public double getStrength() {
         double total = 0;
         if (!this.trailStrengths.isEmpty()) {
-            for (double value : this.trailStrengths.values()) {
-                total += value;
-            }
+            total = this.trailStrengths.values().stream().reduce(0.0, Double::sum);
         }
         if (this.trailStrengths.isEmpty()) {
             return 0;
