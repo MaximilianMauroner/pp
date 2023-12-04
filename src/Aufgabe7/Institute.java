@@ -6,6 +6,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class Institute {
 
@@ -62,7 +63,7 @@ public class Institute {
     }
 
     public double priceOccupied() {
-        return antColonies.values().stream().mapToDouble(Formicarium::price).sum();
+        return antColonies.values().stream().filter(Objects::nonNull).mapToDouble(Formicarium::price).sum();
     }
 
     public String showFormicarium() {
@@ -71,7 +72,7 @@ public class Institute {
         List<Formicarium> li = new ArrayList<Formicarium>(antColonies.values().stream().toList());
         li.addAll(inventory);
 
-        li.forEach(form -> sb.append(form.showFormicarium()));
+        li.stream().filter(Objects::nonNull).forEach(form -> sb.append(form.showFormicarium()));
         return sb.toString();
     }
 
@@ -99,11 +100,17 @@ public class Institute {
         this.antColonies.put(antColony, null);
     }
 
+    public boolean containsAnt(AntColony antColony) {
+        return this.antColonies.containsKey(antColony);
+    }
+
     public void removeAntColony(AntColony antColony) {
-        Formicarium form = this.antColonies.get(antColony);
-        if (form != null) {
-            form.setAntType(null);
-            this.inventory.add(form);
+        if (this.antColonies.containsKey(antColony)) {
+            Formicarium form = this.antColonies.get(antColony);
+            if (form != null) {
+                form.setAntType(null);
+                this.inventory.add(form);
+            }
             this.antColonies.remove(antColony);
         }
     }
