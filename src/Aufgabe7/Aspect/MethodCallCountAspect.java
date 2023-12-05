@@ -9,6 +9,7 @@ import java.util.HashMap;
 @Aspect
 public class MethodCallCountAspect {
     private static final HashMap<String, Integer> visitorCallCount = new HashMap<>();
+    private static final HashMap<String, Integer> antCallCount = new HashMap<>();
     private static final HashMap<String, Integer> assignFormCallCount = new HashMap<>();
 
     /**
@@ -21,6 +22,12 @@ public class MethodCallCountAspect {
     public void visitorPatternCallCount(JoinPoint joinPoint) {
         String methodName = joinPoint.getStaticPart().getSignature() + joinPoint.getSignature().getName();
         visitorCallCount.put(methodName, visitorCallCount.getOrDefault(methodName, 0) + 1);
+    }
+
+    @Before("execution(public * Colony.*.*(..))")
+    public void antPatternCallCount(JoinPoint joinPoint) {
+        String methodName = joinPoint.getStaticPart().getSignature() + joinPoint.getSignature().getName();
+        antCallCount.put(methodName, antCallCount.getOrDefault(methodName, 0) + 1);
     }
 
     /**
