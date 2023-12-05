@@ -85,7 +85,10 @@ public class MethodCallCountAspect {
      * @return all calls in a readable String format
      */
     public static String exportAsString() {
-        return exportAsString(assignFormCallCount) + "\n" + exportAsString(visitorCallCount);
+        StringBuilder s = new StringBuilder();
+        s.append(exportAsString(assignFormCallCount));
+        s.append(exportAsString(visitorCallCount));
+        return s.toString();
     }
 
     private static String exportAsString(HashMap<String, Integer> map) {
