@@ -47,6 +47,28 @@ public class MethodCallCountAspect {
         return visitorCallCount;
     }
 
+    public static HashMap<String, Integer> getAssignFormCallCount() {
+        return assignFormCallCount;
+    }
+
+    public static HashMap<String, Integer> getAntCallCount() {
+        return antCallCount;
+    }
+
+
+    /**
+     * Returns the number of calls of all visitor patterns
+     *
+     * @param className  Name of the class
+     * @param methodName Name of the method
+     * @return HashMap<String, Integer> of calls of the method
+     */
+    public static HashMap<String, Integer> getAntCallCount(String className, String methodName) {
+        HashMap<String, Integer> antCallCount = new HashMap<>();
+        MethodCallCountAspect.getAntCallCount().entrySet().stream().filter(entry -> (entry.getKey()).contains(className) && entry.getKey().contains(methodName)).forEach(entry -> MethodCallCountAspect.antCallCount.put(entry.getKey(), entry.getValue()));
+        return antCallCount;
+    }
+
     /**
      * Returns the number of calls of all visitor patterns
      *
@@ -62,9 +84,6 @@ public class MethodCallCountAspect {
 
 
     // Getter for the HashMaps
-    public static HashMap<String, Integer> getAssignFormCallCount() {
-        return assignFormCallCount;
-    }
 
     /**
      * Returns the number of calls of the .assignForm method
@@ -88,6 +107,7 @@ public class MethodCallCountAspect {
         StringBuilder s = new StringBuilder();
         s.append(exportAsString(assignFormCallCount));
         s.append(exportAsString(visitorCallCount));
+        s.append(exportAsString(antCallCount));
         return s.toString();
     }
 
