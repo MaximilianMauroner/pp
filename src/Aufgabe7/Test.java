@@ -114,9 +114,9 @@ public class Test {
         // only needs to be tested once
         if (instance == 1) {
             System.out.println("Test 7 - Visitor");
-            String expectedBefore = "Institute.assignForm(AntColony): 30\nFormicarium.LargeConditionedFormicarium.accept(AntColony): 6\nFormicarium.MediumConditionedFormicarium.antType(): 6\nFormicarium.LargeUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.MediumConditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeUnconditionedFormicarium.antType(): 7\nFormicarium.MediumConditionedFormicarium.setAntType(AntColony): 4\nFormicarium.MediumUnconditionedFormicarium.antType(): 6\nFormicarium.SmallUnconditionedFormicarium.setAntType(AntColony): 2\nFormicarium.MediumUnconditionedFormicarium.setAntType(AntColony): 4\nFormicarium.MediumUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeConditionedFormicarium.antType(): 6\nFormicarium.SmallUnconditionedFormicarium.antType(): 6\nFormicarium.LargeUnconditionedFormicarium.setAntType(AntColony): 4\nFormicarium.SmallUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeConditionedFormicarium.setAntType(AntColony): 4\n".formatted();
+            String expectedBefore = "Institute.assignForm(AntColony): 30\nFormicarium.LargeConditionedFormicarium.accept(AntColony): 6\nFormicarium.MediumConditionedFormicarium.antType(): 6\nFormicarium.LargeUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.MediumConditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeUnconditionedFormicarium.antType(): 7\nFormicarium.MediumConditionedFormicarium.setAntType(AntColony): 4\nFormicarium.MediumUnconditionedFormicarium.antType(): 6\nFormicarium.SmallUnconditionedFormicarium.setAntType(AntColony): 2\nFormicarium.MediumUnconditionedFormicarium.setAntType(AntColony): 4\nFormicarium.MediumUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeConditionedFormicarium.antType(): 6\nFormicarium.SmallUnconditionedFormicarium.antType(): 6\nFormicarium.LargeUnconditionedFormicarium.setAntType(AntColony): 4\nFormicarium.SmallUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeConditionedFormicarium.setAntType(AntColony): 4\n";
             testEquals(before, expectedBefore);
-            String expectedAfter = "Institute.assignForm(AntColony): 36\nFormicarium.LargeConditionedFormicarium.accept(AntColony): 6\nFormicarium.MediumConditionedFormicarium.antType(): 6\nFormicarium.LargeUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.SmallConditionedFormicarium.accept(AntColony): 6\nFormicarium.MediumConditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeUnconditionedFormicarium.antType(): 7\nFormicarium.MediumConditionedFormicarium.setAntType(AntColony): 4\nFormicarium.MediumUnconditionedFormicarium.antType(): 6\nFormicarium.SmallUnconditionedFormicarium.setAntType(AntColony): 2\nFormicarium.MediumUnconditionedFormicarium.setAntType(AntColony): 4\nFormicarium.SmallConditionedFormicarium.antType(): 6\nFormicarium.MediumUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeConditionedFormicarium.antType(): 6\nFormicarium.SmallConditionedFormicarium.setAntType(AntColony): 2\nFormicarium.SmallUnconditionedFormicarium.antType(): 6\nFormicarium.LargeUnconditionedFormicarium.setAntType(AntColony): 4\nFormicarium.SmallUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeConditionedFormicarium.setAntType(AntColony): 4\n".formatted();
+            String expectedAfter = "Institute.assignForm(AntColony): 36\nFormicarium.LargeConditionedFormicarium.accept(AntColony): 6\nFormicarium.MediumConditionedFormicarium.antType(): 6\nFormicarium.LargeUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.SmallConditionedFormicarium.accept(AntColony): 6\nFormicarium.MediumConditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeUnconditionedFormicarium.antType(): 7\nFormicarium.MediumConditionedFormicarium.setAntType(AntColony): 4\nFormicarium.MediumUnconditionedFormicarium.antType(): 6\nFormicarium.SmallUnconditionedFormicarium.setAntType(AntColony): 2\nFormicarium.MediumUnconditionedFormicarium.setAntType(AntColony): 4\nFormicarium.SmallConditionedFormicarium.antType(): 6\nFormicarium.MediumUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeConditionedFormicarium.antType(): 6\nFormicarium.SmallConditionedFormicarium.setAntType(AntColony): 2\nFormicarium.SmallUnconditionedFormicarium.antType(): 6\nFormicarium.LargeUnconditionedFormicarium.setAntType(AntColony): 4\nFormicarium.SmallUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeConditionedFormicarium.setAntType(AntColony): 4\n";
             testEquals(after, expectedAfter);
         }
 
@@ -127,22 +127,6 @@ public class Test {
         Formicarium res = i.assignForm(ac);
         i.removeForm(f);
         testEquals(res == null, expected);
-    }
-
-    private static void testTrue(boolean given, boolean expected) {
-        if (given == expected) {
-            System.out.println("Successful test");
-        } else {
-            System.out.println("Test NOT successful! Expected value: " + expected + " / Given value: " + given);
-        }
-    }
-
-    public static void testIdentity(Object given, Object expected) {
-        if (given == expected) {
-            System.out.println("Successful test");
-        } else {
-            System.out.println("Test NOT successful! Expected value: " + expected + " / Given value: " + given);
-        }
     }
 
     public static void testEquals(Object given, Object expected) {
@@ -159,22 +143,6 @@ public class Test {
             System.out.println("Successful test");
         } else {
             System.out.println("Test NOT successful! Expected value: " + expected + " / Given " + "value: " + given);
-        }
-    }
-
-    public static void testEquals(int given, int expected) {
-        if (given == expected) {
-            System.out.println("Successful test");
-        } else {
-            System.out.println("Test NOT successful! Expected value: " + expected + " / Given " + "value: " + given);
-        }
-    }
-
-    public static void testClass(Object given, Object expected) {
-        if (given.getClass() == expected.getClass()) {
-            System.out.println("Successful test");
-        } else {
-            System.out.println("Test NOT successful! Expected value: " + expected.getClass().getSimpleName() + " / Given value: " + given.getClass().getSimpleName());
         }
     }
 }
