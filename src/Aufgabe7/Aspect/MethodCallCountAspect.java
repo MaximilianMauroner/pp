@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 @Aspect
 public class MethodCallCountAspect {
+    private static final HashMap<String, Integer> elementCallCount = new HashMap<>();
     private static final HashMap<String, Integer> visitorCallCount = new HashMap<>();
-    private static final HashMap<String, Integer> antCallCount = new HashMap<>();
     private static final HashMap<String, Integer> assignFormCallCount = new HashMap<>();
 
     /**
@@ -19,15 +19,15 @@ public class MethodCallCountAspect {
      * Value: Number of calls
      */
     @Before("execution(public * Formicarium.*.*(..))")
-    public void visitorPatternCallCount(JoinPoint joinPoint) {
+    public void elementPatternCallCount(JoinPoint joinPoint) {
         String methodName = joinPoint.getStaticPart().getSignature() + joinPoint.getSignature().getName();
-        visitorCallCount.put(methodName, visitorCallCount.getOrDefault(methodName, 0) + 1);
+        elementCallCount.put(methodName, elementCallCount.getOrDefault(methodName, 0) + 1);
     }
 
     @Before("execution(public * Colony.*.*(..))")
-    public void antPatternCallCount(JoinPoint joinPoint) {
+    public void visitorPatternCallCount(JoinPoint joinPoint) {
         String methodName = joinPoint.getStaticPart().getSignature() + joinPoint.getSignature().getName();
-        antCallCount.put(methodName, antCallCount.getOrDefault(methodName, 0) + 1);
+        visitorCallCount.put(methodName, visitorCallCount.getOrDefault(methodName, 0) + 1);
     }
 
     /**
@@ -43,16 +43,16 @@ public class MethodCallCountAspect {
     }
 
     // Getter for the HashMaps
-    public static HashMap<String, Integer> getVisitorCallCount() {
-        return visitorCallCount;
+    public static HashMap<String, Integer> getElementCallCount() {
+        return elementCallCount;
     }
 
     public static HashMap<String, Integer> getAssignFormCallCount() {
         return assignFormCallCount;
     }
 
-    public static HashMap<String, Integer> getAntCallCount() {
-        return antCallCount;
+    public static HashMap<String, Integer> getVisitorCallCount() {
+        return visitorCallCount;
     }
 
 
@@ -63,9 +63,9 @@ public class MethodCallCountAspect {
      * @param methodName Name of the method
      * @return HashMap<String, Integer> of calls of the method
      */
-    public static HashMap<String, Integer> getAntCallCount(String className, String methodName) {
+    public static HashMap<String, Integer> getVisitorCallCount(String className, String methodName) {
         HashMap<String, Integer> antCallCount = new HashMap<>();
-        MethodCallCountAspect.getAntCallCount().entrySet().stream().filter(entry -> (entry.getKey()).contains(className) && entry.getKey().contains(methodName)).forEach(entry -> MethodCallCountAspect.antCallCount.put(entry.getKey(), entry.getValue()));
+        MethodCallCountAspect.getVisitorCallCount().entrySet().stream().filter(entry -> (entry.getKey()).contains(className) && entry.getKey().contains(methodName)).forEach(entry -> MethodCallCountAspect.visitorCallCount.put(entry.getKey(), entry.getValue()));
         return antCallCount;
     }
 
@@ -76,9 +76,9 @@ public class MethodCallCountAspect {
      * @param methodName Name of the method
      * @return HashMap<String, Integer> of calls of the method
      */
-    public static HashMap<String, Integer> getMethodCallCount(String className, String methodName) {
+    public static HashMap<String, Integer> getElementCallCount(String className, String methodName) {
         HashMap<String, Integer> methodCallCount = new HashMap<>();
-        MethodCallCountAspect.getVisitorCallCount().entrySet().stream().filter(entry -> (entry.getKey()).contains(className) && entry.getKey().contains(methodName)).forEach(entry -> methodCallCount.put(entry.getKey(), entry.getValue()));
+        MethodCallCountAspect.getElementCallCount().entrySet().stream().filter(entry -> (entry.getKey()).contains(className) && entry.getKey().contains(methodName)).forEach(entry -> methodCallCount.put(entry.getKey(), entry.getValue()));
         return methodCallCount;
     }
 
@@ -106,8 +106,8 @@ public class MethodCallCountAspect {
     public static String exportAsString() {
         StringBuilder s = new StringBuilder();
         s.append(exportAsString(assignFormCallCount));
+        s.append(exportAsString(elementCallCount));
         s.append(exportAsString(visitorCallCount));
-        s.append(exportAsString(antCallCount));
         return s.toString();
     }
 

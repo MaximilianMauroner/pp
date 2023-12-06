@@ -114,9 +114,86 @@ public class Test {
         // only needs to be tested once
         if (instance == 1) {
             System.out.println("Test 7 - Visitor");
-            String expectedBefore = "Institute.assignForm(AntColony): 30\nFormicarium.LargeConditionedFormicarium.accept(AntColony): 6\nFormicarium.MediumConditionedFormicarium.antType(): 6\nFormicarium.LargeUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.MediumConditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeUnconditionedFormicarium.antType(): 7\nFormicarium.MediumConditionedFormicarium.setAntType(AntColony): 4\nFormicarium.MediumUnconditionedFormicarium.antType(): 6\nFormicarium.SmallUnconditionedFormicarium.setAntType(AntColony): 2\nFormicarium.MediumUnconditionedFormicarium.setAntType(AntColony): 4\nFormicarium.MediumUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeConditionedFormicarium.antType(): 6\nFormicarium.SmallUnconditionedFormicarium.antType(): 6\nFormicarium.LargeUnconditionedFormicarium.setAntType(AntColony): 4\nFormicarium.SmallUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeConditionedFormicarium.setAntType(AntColony): 4\n";
+            String expectedBefore = "Institute.assignForm(AntColony): 30\n" +
+                    "Formicarium.LargeConditionedFormicarium.accept(AntColony): 6\n" +
+                    "Formicarium.MediumConditionedFormicarium.antType(): 6\n" +
+                    "Formicarium.LargeUnconditionedFormicarium.accept(AntColony): 6\n" +
+                    "Formicarium.MediumConditionedFormicarium.accept(AntColony): 6\n" +
+                    "Formicarium.LargeUnconditionedFormicarium.antType(): 7\n" +
+                    "Formicarium.MediumConditionedFormicarium.setAntType(AntColony): 4\n" +
+                    "Formicarium.MediumUnconditionedFormicarium.antType(): 6\n" +
+                    "Formicarium.SmallUnconditionedFormicarium.setAntType(AntColony): 2\n" +
+                    "Formicarium.MediumUnconditionedFormicarium.setAntType(AntColony): 4\n" +
+                    "Formicarium.MediumUnconditionedFormicarium.accept(AntColony): 6\n" +
+                    "Formicarium.LargeConditionedFormicarium.antType(): 6\n" +
+                    "Formicarium.SmallUnconditionedFormicarium.antType(): 6\n" +
+                    "Formicarium.LargeUnconditionedFormicarium.setAntType(AntColony): 4\n" +
+                    "Formicarium.SmallUnconditionedFormicarium.accept(AntColony): 6\n" +
+                    "Formicarium.LargeConditionedFormicarium.setAntType(AntColony): 4\n" +
+                    "Colony.SmallEuropeanColony.visitMediumUnconditionedFormicarium(MediumUnconditionedFormicarium): 1\n" +
+                    "Colony.EuropeanColony.visitLargeConditionedFormicarium(LargeConditionedFormicarium): 3\n" +
+                    "Colony.SmallTropicalColony.visitLargeConditionedFormicarium(LargeConditionedFormicarium): 1\n" +
+                    "Colony.LargeTropicalColony.visitMediumConditionedFormicarium(MediumConditionedFormicarium): 1\n" +
+                    "Colony.SmallEuropeanColony.visitLargeUnconditionedFormicarium(LargeUnconditionedFormicarium): 1\n" +
+                    "Colony.LargeEuropeanColony.visitMediumUnconditionedFormicarium(MediumUnconditionedFormicarium): 1\n" +
+                    "Colony.MediumEuropeanColony.visitLargeUnconditionedFormicarium(LargeUnconditionedFormicarium): 1\n" +
+                    "Colony.SmallEuropeanColony.visitSmallUnconditionedFormicarium(SmallUnconditionedFormicarium): 1\n" +
+                    "Colony.TropicalColony.visitMediumUnconditionedFormicarium(MediumUnconditionedFormicarium): 3\n" +
+                    "Colony.LargeEuropeanColony.visitSmallUnconditionedFormicarium(SmallUnconditionedFormicarium): 1\n" +
+                    "Colony.TropicalColony.visitSmallUnconditionedFormicarium(SmallUnconditionedFormicarium): 3\n" +
+                    "Colony.MediumEuropeanColony.visitSmallUnconditionedFormicarium(SmallUnconditionedFormicarium): 1\n" +
+                    "Colony.TropicalColony.visitLargeUnconditionedFormicarium(LargeUnconditionedFormicarium): 3\n" +
+                    "Colony.EuropeanColony.visitMediumConditionedFormicarium(MediumConditionedFormicarium): 3\n" +
+                    "Colony.MediumTropicalColony.visitMediumConditionedFormicarium(MediumConditionedFormicarium): 1\n" +
+                    "Colony.LargeEuropeanColony.visitLargeUnconditionedFormicarium(LargeUnconditionedFormicarium): 1\n" +
+                    "Colony.LargeTropicalColony.visitLargeConditionedFormicarium(LargeConditionedFormicarium): 1\n" +
+                    "Colony.SmallTropicalColony.visitMediumConditionedFormicarium(MediumConditionedFormicarium): 1\n" +
+                    "Colony.MediumEuropeanColony.visitMediumUnconditionedFormicarium(MediumUnconditionedFormicarium): 1\n" +
+                    "Colony.MediumTropicalColony.visitLargeConditionedFormicarium(LargeConditionedFormicarium): 1\n";
             testEquals(before, expectedBefore);
-            String expectedAfter = "Institute.assignForm(AntColony): 36\nFormicarium.LargeConditionedFormicarium.accept(AntColony): 6\nFormicarium.MediumConditionedFormicarium.antType(): 6\nFormicarium.LargeUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.SmallConditionedFormicarium.accept(AntColony): 6\nFormicarium.MediumConditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeUnconditionedFormicarium.antType(): 7\nFormicarium.MediumConditionedFormicarium.setAntType(AntColony): 4\nFormicarium.MediumUnconditionedFormicarium.antType(): 6\nFormicarium.SmallUnconditionedFormicarium.setAntType(AntColony): 2\nFormicarium.MediumUnconditionedFormicarium.setAntType(AntColony): 4\nFormicarium.SmallConditionedFormicarium.antType(): 6\nFormicarium.MediumUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeConditionedFormicarium.antType(): 6\nFormicarium.SmallConditionedFormicarium.setAntType(AntColony): 2\nFormicarium.SmallUnconditionedFormicarium.antType(): 6\nFormicarium.LargeUnconditionedFormicarium.setAntType(AntColony): 4\nFormicarium.SmallUnconditionedFormicarium.accept(AntColony): 6\nFormicarium.LargeConditionedFormicarium.setAntType(AntColony): 4\n";
+            String expectedAfter = "Institute.assignForm(AntColony): 36\n" +
+                    "Formicarium.LargeConditionedFormicarium.accept(AntColony): 6\n" +
+                    "Formicarium.MediumConditionedFormicarium.antType(): 6\n" +
+                    "Formicarium.LargeUnconditionedFormicarium.accept(AntColony): 6\n" +
+                    "Formicarium.SmallConditionedFormicarium.accept(AntColony): 6\n" +
+                    "Formicarium.MediumConditionedFormicarium.accept(AntColony): 6\n" +
+                    "Formicarium.LargeUnconditionedFormicarium.antType(): 7\n" +
+                    "Formicarium.MediumConditionedFormicarium.setAntType(AntColony): 4\n" +
+                    "Formicarium.MediumUnconditionedFormicarium.antType(): 6\n" +
+                    "Formicarium.SmallUnconditionedFormicarium.setAntType(AntColony): 2\n" +
+                    "Formicarium.MediumUnconditionedFormicarium.setAntType(AntColony): 4\n" +
+                    "Formicarium.SmallConditionedFormicarium.antType(): 6\n" +
+                    "Formicarium.MediumUnconditionedFormicarium.accept(AntColony): 6\n" +
+                    "Formicarium.LargeConditionedFormicarium.antType(): 6\n" +
+                    "Formicarium.SmallConditionedFormicarium.setAntType(AntColony): 2\n" +
+                    "Formicarium.SmallUnconditionedFormicarium.antType(): 6\n" +
+                    "Formicarium.LargeUnconditionedFormicarium.setAntType(AntColony): 4\n" +
+                    "Formicarium.SmallUnconditionedFormicarium.accept(AntColony): 6\n" +
+                    "Formicarium.LargeConditionedFormicarium.setAntType(AntColony): 4\n" +
+                    "Colony.SmallEuropeanColony.visitMediumUnconditionedFormicarium(MediumUnconditionedFormicarium): 1\n" +
+                    "Colony.EuropeanColony.visitLargeConditionedFormicarium(LargeConditionedFormicarium): 3\n" +
+                    "Colony.SmallTropicalColony.visitLargeConditionedFormicarium(LargeConditionedFormicarium): 1\n" +
+                    "Colony.LargeTropicalColony.visitMediumConditionedFormicarium(MediumConditionedFormicarium): 1\n" +
+                    "Colony.SmallEuropeanColony.visitLargeUnconditionedFormicarium(LargeUnconditionedFormicarium): 1\n" +
+                    "Colony.LargeEuropeanColony.visitMediumUnconditionedFormicarium(MediumUnconditionedFormicarium): 1\n" +
+                    "Colony.MediumEuropeanColony.visitLargeUnconditionedFormicarium(LargeUnconditionedFormicarium): 1\n" +
+                    "Colony.SmallEuropeanColony.visitSmallUnconditionedFormicarium(SmallUnconditionedFormicarium): 1\n" +
+                    "Colony.TropicalColony.visitMediumUnconditionedFormicarium(MediumUnconditionedFormicarium): 3\n" +
+                    "Colony.LargeTropicalColony.visitSmallConditionedFormicarium(SmallConditionedFormicarium): 1\n" +
+                    "Colony.LargeEuropeanColony.visitSmallUnconditionedFormicarium(SmallUnconditionedFormicarium): 1\n" +
+                    "Colony.TropicalColony.visitSmallUnconditionedFormicarium(SmallUnconditionedFormicarium): 3\n" +
+                    "Colony.EuropeanColony.visitSmallConditionedFormicarium(SmallConditionedFormicarium): 3\n" +
+                    "Colony.SmallTropicalColony.visitSmallConditionedFormicarium(SmallConditionedFormicarium): 1\n" +
+                    "Colony.MediumEuropeanColony.visitSmallUnconditionedFormicarium(SmallUnconditionedFormicarium): 1\n" +
+                    "Colony.TropicalColony.visitLargeUnconditionedFormicarium(LargeUnconditionedFormicarium): 3\n" +
+                    "Colony.EuropeanColony.visitMediumConditionedFormicarium(MediumConditionedFormicarium): 3\n" +
+                    "Colony.MediumTropicalColony.visitMediumConditionedFormicarium(MediumConditionedFormicarium): 1\n" +
+                    "Colony.LargeEuropeanColony.visitLargeUnconditionedFormicarium(LargeUnconditionedFormicarium): 1\n" +
+                    "Colony.LargeTropicalColony.visitLargeConditionedFormicarium(LargeConditionedFormicarium): 1\n" +
+                    "Colony.SmallTropicalColony.visitMediumConditionedFormicarium(MediumConditionedFormicarium): 1\n" +
+                    "Colony.MediumEuropeanColony.visitMediumUnconditionedFormicarium(MediumUnconditionedFormicarium): 1\n" +
+                    "Colony.MediumTropicalColony.visitSmallConditionedFormicarium(SmallConditionedFormicarium): 1\n" +
+                    "Colony.MediumTropicalColony.visitLargeConditionedFormicarium(LargeConditionedFormicarium): 1\n";
             testEquals(after, expectedAfter);
         }
 
