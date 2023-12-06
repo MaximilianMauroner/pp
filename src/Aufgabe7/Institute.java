@@ -13,14 +13,20 @@ public class Institute {
     private final List<Formicarium> inventory = new ArrayList<>();
     private final HashMap<AntColony, Formicarium> antColonies = new HashMap<>();
 
+    // Pre: form != null
+    // Post: adds the Formicarium to the inventory
     public void addForm(Formicarium form) {
         this.inventory.add(form);
     }
 
+    // Pre: form != null
+    // Post: returns true if the inventory contains the Formicarium or if the Formicarium is assigned to an AntColony
     public boolean containsForm(Formicarium formicarium) {
         return this.inventory.contains(formicarium) || this.antColonies.containsValue(formicarium);
     }
 
+    // Pre: form != null
+    // Post: removes the Formicarium from the inventory and removes the assignment from the AntColony
     public void removeForm(Formicarium form) {
         AntColony colony = form.antType();
         if (colony != null) {
@@ -30,6 +36,8 @@ public class Institute {
         this.inventory.remove(form);
     }
 
+    // Pre: antColony != null
+    // Post: returns the Formicarium fitting the AntColony with the best Compatability (null if none, first if multiple)
     public Formicarium assignForm(AntColony antColony) {
 
         Formicarium best = inventory.stream()
@@ -49,6 +57,8 @@ public class Institute {
         return best;
     }
 
+    // Pre: form != null
+    // Post: removes the assignment from the AntColony and adds the Formicarium back to the inventory
     public void returnForm(Formicarium form) {
         if (antColonies.containsValue(form)) {
             AntColony colony = form.antType();
@@ -58,14 +68,20 @@ public class Institute {
         }
     }
 
+    // Pre:
+    // Post: returns the price of all Formicaria in the inventory
     public double priceFree() {
         return inventory.stream().mapToInt(Formicarium::price).sum();
     }
 
+    // Pre:
+    // Post: returns the price of all Formicaria assigned to an AntColony
     public double priceOccupied() {
         return antColonies.values().stream().filter(Objects::nonNull).mapToDouble(Formicarium::price).sum();
     }
 
+    // Pre:
+    // Post: returns a String representation of the inventory
     public String showFormicarium() {
         StringBuilder sb = new StringBuilder();
 
@@ -76,6 +92,8 @@ public class Institute {
         return sb.toString();
     }
 
+    // Pre:
+    // Post: returns a String representation of the AntColonies and their assigned Formicaria
     public String showAnts() {
         StringBuilder sb = new StringBuilder();
         sb.append("Ant Colonies: [ \n");
@@ -96,14 +114,21 @@ public class Institute {
         return sb.toString();
     }
 
+    // Pre: antColony != null
+    // Post: adds the AntColony to the Institute (if not already in it)
     public void addAntColony(AntColony antColony) {
-        this.antColonies.put(antColony, null);
+        if (!this.antColonies.containsKey(antColony))
+            this.antColonies.put(antColony, null);
     }
 
+    // Pre: antColony != null
+    // Post: returns true if the AntColony is in the Institute
     public boolean containsAnt(AntColony antColony) {
         return this.antColonies.containsKey(antColony);
     }
 
+    // Pre: antColony != null
+    // Post: removes the AntColony from the Institute (frees the Formicarium if assigned)
     public void removeAntColony(AntColony antColony) {
         if (this.antColonies.containsKey(antColony)) {
             Formicarium form = this.antColonies.get(antColony);

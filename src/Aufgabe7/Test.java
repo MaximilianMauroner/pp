@@ -105,15 +105,21 @@ public class Test {
         testEquals(ac1.showAntColony(), "Ant Colony: Large European Colony");
 
         System.out.println("Test 6 - Add Ant Colony & Remove Ant Colony");
-        i.addAntColony(ac1);
-        testEquals(i.containsAnt(ac1), true);
         i.removeAntColony(ac1);
         testEquals(i.containsAnt(ac1), false);
+        i.addAntColony(ac1);
+        testEquals(i.containsAnt(ac1), true);
+
+        System.out.println("Test 7 - return Formicarium");
+        Formicarium f = i.assignForm(ac1);
+        testEquals(f.antType(), ac1);
+        i.returnForm(f);
+        testEquals(f.antType() == null, true);
 
 
         // only needs to be tested once
         if (instance == 1) {
-            System.out.println("Test 7 - Visitor");
+            System.out.println("Test 8 - Visitor");
             String expectedBefore = "Institute.assignForm(AntColony): 30\n" +
                     "Formicarium.LargeConditionedFormicarium.accept(AntColony): 6\n" +
                     "Formicarium.MediumConditionedFormicarium.antType(): 6\n" +
