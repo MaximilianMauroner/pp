@@ -32,13 +32,22 @@ public class Test {
                 int i = adjacency.keySet().stream().toList().indexOf(node);
                 int j = adjacency.keySet().stream().toList().indexOf(neighbor);
 
-                Distance dist = new Distance(i, j, node.distance(neighbor, (Node a, Node b) ->
-                        Math.abs(a.x() - b.x()) + Math.abs(a.y() - b.y())
-                ));
+                Distance dist = new Distance(i, j, node.distance(neighbor, new Metric()));
                 distances.add(dist);
                 intensities.add(new Intensity(i, j, 0));
             });
         });
 
+//        positions p = ants.foreach(ant
+//                ant.move()
+//                return ant.positon()
+//        ).collect()
+//
+//        List<Ant> a0;
+//        List<Ant> a1 = a0.foreach(ant -> Movement.move(ant) ant.move()).collect();
+//        ant.move(Movement)
+//        ants
+//
+//        adjacency.
     }
 }
