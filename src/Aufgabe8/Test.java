@@ -1,9 +1,6 @@
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 public class Test {
     public static void main(String[] args) {
@@ -32,6 +29,8 @@ public class Test {
         // i = 0, j = 1
         // j -> i (i, j)
 
+        Graph graph = new Graph(nodes, adjacency);
+
         // initialize distance list
         List<Distance> distances = new ArrayList<>();
 
@@ -43,7 +42,7 @@ public class Test {
                 int i = adjacency.keySet().stream().toList().indexOf(node);
                 int j = adjacency.keySet().stream().toList().indexOf(neighbor);
 
-                Distance dist = new Distance(i, j, node.distance(neighbor, new Metric()));
+                Distance dist = new Distance(i, j, node.distance(neighbor, new ManhattanMetric()));
                 distances.add(dist);
                 intensities.add(new Intensity(i, j, 0));
             });
