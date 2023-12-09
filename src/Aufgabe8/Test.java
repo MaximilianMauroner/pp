@@ -20,6 +20,16 @@ public class Test {
             nodes.get(3), List.of(nodes.get(4)),
             nodes.get(4), null
         );
+        // (0,1) (1, 2) (2,3)
+        //(0, (1, 2, 3))
+
+        // kleinerer Index zuerst
+        // i = 0, j = 1
+        // i -> j (i, j)
+        // i = 0, j = 1
+        // j -> i (i, j)
+
+        Graph graph = new Graph(nodes, adjacency);
 
         // initialize distance list
         List<Distance> distances = new ArrayList<>();
@@ -32,13 +42,34 @@ public class Test {
                 int i = adjacency.keySet().stream().toList().indexOf(node);
                 int j = adjacency.keySet().stream().toList().indexOf(neighbor);
 
-                Distance dist = new Distance(i, j, node.distance(neighbor, (Node a, Node b) ->
-                        Math.abs(a.x() - b.x()) + Math.abs(a.y() - b.y())
-                ));
+                Distance dist = new Distance(i, j, node.distance(neighbor, new ManhattanMetric()));
                 distances.add(dist);
                 intensities.add(new Intensity(i, j, 0));
             });
         });
 
+//        List<Iteration> iterations;
+//        Stream.iterate(0, i -> i + 1)
+//                .limit(10)
+//                .map(i -> {
+//
+//                    Iteration next = iterations.get(i).next();
+//                    iterations.add(next);
+//                })
+//                .toList();
+
+
+
+//        positions p = ants.foreach(ant
+//                ant.move()
+//                return ant.positon()
+//        ).collect()
+//
+//        List<Ant> a0;
+//        List<Ant> a1 = a0.foreach(ant -> Movement.move(ant) ant.move()).collect();
+//        ant.move(Movement)
+//        ants
+//
+//        adjacency.
     }
 }
