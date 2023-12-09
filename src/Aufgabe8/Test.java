@@ -52,7 +52,7 @@ public class Test {
 //        Stream.iterate(0, i -> i + 1)
 //                .limit(10)
 //                .map(i -> {
-//                    
+//
 //                    Iteration next = iterations.get(i).next();
 //                    iterations.add(next);
 //                })
