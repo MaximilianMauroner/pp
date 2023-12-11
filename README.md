@@ -20,9 +20,21 @@ directory
 
 ## Compile
 
+### Normal javac 
+
+Just use the standard IntelliJ compile configuration or run the following command in the corresponding directory. 
+For Aufgabe1-3 it looks like this:
 ```
 javac -cp lib/CodeDraw.jar -d out  model/*.java view/*.java controller/*.java Test.java
 ```
+
+### AspectJ Compiler
+1) Download AspectJ Compiler from https://www.eclipse.org/aspectj/
+2) Install the AspectJ Plugin in IntelliJ
+3) Go to Settings -> Build, Execution, Deployment -> Compiler -> Java Compiler and set the Project Compiler to AspectJ
+4) Set the path to aspectjtools.jar in the settings
+
+Command line instructions will be added later
 
 ## Run
 
