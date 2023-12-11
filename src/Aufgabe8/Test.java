@@ -1,13 +1,10 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class Test {
     public static long SEED = new Random().nextLong();
 
     public static void main(String[] args) {
-
+/*
         // initialize node list
         List<Node> nodes = new ArrayList<>();
         nodes.add(new Node(1, 2));
@@ -75,31 +72,36 @@ public class Test {
 //
 //        adjacency.
 
-
+/**/
         Test.SEED = 42;
-        Graph g = new Graph(15);
+        Graph g = new Graph(5);
         assertBool(g.hasCycle(), true);
-        // remove cycle
-        hasCycle(g);
 
-        Graph g2 = new Graph(15);
+
+        Graph g2 = new Graph(50);
         assertBool(g2.hasCycle(), true);
-        // remove cycle
-        hasCycle(g2);
 
-        Graph g3 = new Graph(15);
+
+        Graph g3 = new Graph(100);
         assertBool(g3.hasCycle(), true);
-        // remove cycle
-        hasCycle(g3);
+
+        g.removeCycle();
+        hasNoCycles(g);
+
+        g2.removeCycle();
+        hasNoCycles(g2);
+
+        g3.removeCycle();
+        hasNoCycles(g3);
     }
 
     private static void assertBool(boolean b, boolean expected) {
         if (b != expected) throw new RuntimeException("Expected false, but was true");
-        else System.out.println("Successful test");
+        else System.out.println("Successful test: assert bool");
     }
 
-    private static void hasCycle(Graph g) {
+    private static void hasNoCycles(Graph g) {
         if (g.hasCycle()) throw new RuntimeException("Graph has a cycle");
-        else System.out.println("Successful test");
+        else System.out.println("Successful test: has no cycles");
     }
 }

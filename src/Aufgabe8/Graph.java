@@ -1,5 +1,8 @@
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 /**
@@ -23,12 +26,11 @@ public class Graph {
 
     public final List<Node> nodes;
     public final Map<Node, List<Node>> adjacency;
-    public final List<Distance> distances;
+    public final List<Distance> distances = new ArrayList<>();
 
     public Graph(List<Node> nodes, Map<Node, List<Node>> adjacency) {
         this.nodes = nodes;
         this.adjacency = adjacency;
-        this.distances = new ArrayList<>();
 
         calculateDistances();
     }
@@ -47,38 +49,34 @@ public class Graph {
             throw new IllegalArgumentException("Node count must be at least 3 to form a cycle");
         }
 
-        // Initialize nodes and adjacency list
-        nodes = new ArrayList<>(cycleLength);
-        adjacency = new HashMap<>();
-        distances = new ArrayList<>();
+        // Initialize nodes
+        nodes = IntStream.range(0, cycleLength)
+                .mapToObj(i -> new Node(i, i))
+                .collect(Collectors.toList());
 
-        // Create nodes
-        for (int i = 0; i < cycleLength; i++) {
-            Node node = new Node(i, i); // or any other logic to create nodes
-            nodes.add(node);
-            adjacency.put(node, new ArrayList<>());
-        }
+        // Initialize adjacency list
+        adjacency = nodes.stream().collect(
+                Collectors.toMap(
+                        Function.identity(), node -> new ArrayList<>()
+                ));
 
         // Form a basic cycle
-        for (int i = 0; i < cycleLength; i++) {
-            Node current = nodes.get(i);
-            Node next = nodes.get((i + 1) % cycleLength);
-            adjacency.get(current).add(next);
-        }
+        IntStream.range(0, cycleLength)
+                .forEach(i -> adjacency.get(nodes.get(i)).add(nodes.get((i + 1) % cycleLength)));
+
 
         // Randomly add additional edges
         int additionalEdges = random.nextInt(cycleLength * (cycleLength - 1) / 2); // This is a mathematical formula used to calculate the maximum number of edges in a complete graph
-        for (int i = 0; i < additionalEdges; i++) {
+        IntStream.range(0, additionalEdges).forEach(i -> {
             int fromIndex = random.nextInt(cycleLength);
             int toIndex = random.nextInt(cycleLength);
             Node from = nodes.get(fromIndex);
             Node to = nodes.get(toIndex);
 
-            // Avoid loops and duplicate edges
             if (from != to && !adjacency.get(from).contains(to)) {
                 adjacency.get(from).add(to);
             }
-        }
+        });
 
 
         calculateDistances();
@@ -89,14 +87,14 @@ public class Graph {
 
         BiFunction<Node, Node, Double> distanceMetric = (a, b) -> Math.hypot(a.x() - b.x(), a.y() - b.y());
 
-        for (Node node : nodes) {
+        nodes.forEach((node) -> {
             List<Node> adjacentNodes = adjacency.get(node);
-            for (Node adjacent : adjacentNodes) {
+            adjacentNodes.forEach((adjacent) -> {
                 double distance = node.distance(adjacent, distanceMetric);
                 sb.append(String.format("[%d|%d] - [%d|%d]: %.2f\n",
                         node.x(), node.y(), adjacent.x(), adjacent.y(), distance));
-            }
-        }
+            });
+        });
 
         return sb.toString();
     }
@@ -120,17 +118,22 @@ public class Graph {
      * @IMPORTANT: THIS METHOD IS ONLY USED FOR THE TESTCASES
      */
     public boolean hasCycle() {
+        //Old Code: TODO: Remove once the new code is tested
+//        Set<Node> visited = new HashSet<>();
+//
+//        for (Node node : nodes) {
+//            if (!visited.contains(node)) {
+//                if (hasCycleDFS(node, visited, null)) {
+//                    return true;
+//                }
+//            }
+//        }
+//
+//        return false;
+
         Set<Node> visited = new HashSet<>();
+        return nodes.stream().anyMatch(node -> !visited.contains(node) && hasCycleDFS(node, visited, null));
 
-        for (Node node : nodes) {
-            if (!visited.contains(node)) {
-                if (hasCycleDFS(node, visited, null)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -142,20 +145,75 @@ public class Graph {
      * @return {@code true} if a cycle is found in the graph, {@code false} otherwise.
      */
     private boolean hasCycleDFS(Node node, Set<Node> visited, Node parent) {
+        //Old Code: TODO: Remove once the new code is tested
+
+//        visited.add(node);
+//
+//        for (Node adjacent : adjacency.get(node)) {
+//            if (!visited.contains(adjacent)) {
+//                if (hasCycleDFS(adjacent, visited, node)) {
+//                    return true;
+//                }
+//            } else if (adjacent != parent) {
+//                // If an adjacent is visited and not parent of current vertex,
+//                // then there is a cycle.
+//                return true;
+//            }
+//        }
+//
+//        return false;
+
         visited.add(node);
 
-        for (Node adjacent : adjacency.get(node)) {
-            if (!visited.contains(adjacent)) {
-                if (hasCycleDFS(adjacent, visited, node)) {
-                    return true;
-                }
-            } else if (adjacent != parent) {
-                // If an adjacent is visited and not parent of current vertex,
-                // then there is a cycle.
-                return true;
-            }
-        }
+        return adjacency.get(node).stream().anyMatch(adjacent ->
+                !visited.contains(adjacent) ? hasCycleDFS(adjacent, visited, node)
+                        : adjacent != parent);
+    }
 
-        return false;
+    /**
+     * Removes all cycles from the graph.
+     * This method converts the graph into a tree by removing edges that
+     * lead to already visited nodes.
+     */
+    public void removeCycle() {
+        Set<Node> visited = new HashSet<>();
+        nodes.forEach(node -> removeCycleDFS(node, visited, null));
+    }
+
+    /**
+     * Recursive helper method to perform DFS and remove edges leading to visited nodes.
+     *
+     * @param node    the current node in the DFS.
+     * @param visited a set of nodes that have been visited in the DFS.
+     * @param parent  the parent node of the current node in the DFS tree.
+     */
+    private void removeCycleDFS(Node node, Set<Node> visited, Node parent) {
+        //Old Code: TODO: Remove once the new code is tested
+//        visited.add(node);
+//
+//        Iterator<Node> iterator = adjacency.get(node).iterator();
+//
+//        while (iterator.hasNext()) {
+//            Node adjacent = iterator.next();
+//            if (!visited.contains(adjacent)) {
+//                removeCycleDFS(adjacent, visited, node);
+//            } else if (adjacent != parent) {
+//                // If an adjacent is visited and not parent of current vertex,
+//                // remove the edge to break the cycle.
+//                iterator.remove();
+//            }
+//        }
+
+        visited.add(node);
+
+        List<Node> adjacentNodes = new ArrayList<>(adjacency.get(node));
+        adjacentNodes.stream()
+                .filter(adjacent -> !visited.contains(adjacent))
+                .forEach(adjacent -> removeCycleDFS(adjacent, visited, node));
+
+        // Retain only those edges that do not lead to a cycle
+        adjacency.put(node, adjacentNodes.stream()
+                .filter(adjacent -> !visited.contains(adjacent) || adjacent == parent)
+                .collect(Collectors.toList()));
     }
 }
