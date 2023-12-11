@@ -86,13 +86,17 @@ public class Test {
         assertBool(g3.hasCycle(), true);
 
         g.removeCycle();
-        hasNoCycles(g);
-
         g2.removeCycle();
-        hasNoCycles(g2);
-
         g3.removeCycle();
-        hasNoCycles(g3);
+
+        assertHasNoCycles(g);
+        assertHasNoCycles(g2);
+        assertHasNoCycles(g3);
+
+        assertBool(g.hasCycle(), false);
+        assertBool(g2.hasCycle(), false);
+        assertBool(g3.hasCycle(), false);
+
     }
 
     private static void assertBool(boolean b, boolean expected) {
@@ -100,7 +104,7 @@ public class Test {
         else System.out.println("Successful test: assert bool");
     }
 
-    private static void hasNoCycles(Graph g) {
+    private static void assertHasNoCycles(Graph g) {
         if (g.hasCycle()) throw new RuntimeException("Graph has a cycle");
         else System.out.println("Successful test: has no cycles");
     }
