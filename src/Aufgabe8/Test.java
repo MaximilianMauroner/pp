@@ -1,9 +1,10 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 public class Test {
+    public static long SEED = new Random().nextLong();
+
     public static void main(String[] args) {
+/*
         // initialize node list
         List<Node> nodes = new ArrayList<>();
         nodes.add(new Node(1, 2));
@@ -14,11 +15,11 @@ public class Test {
 
         // set adjacency (basically set a directed acyclic graph)
         Map<Node, List<Node>> adjacency = Map.of(
-            nodes.get(0), List.of(nodes.get(1), nodes.get(2)),
-            nodes.get(1), List.of(nodes.get(2), nodes.get(3)),
-            nodes.get(2), List.of(nodes.get(3), nodes.get(4)),
-            nodes.get(3), List.of(nodes.get(4)),
-            nodes.get(4), null
+                nodes.get(0), List.of(nodes.get(1), nodes.get(2)),
+                nodes.get(1), List.of(nodes.get(2), nodes.get(3)),
+                nodes.get(2), List.of(nodes.get(3), nodes.get(4)),
+                nodes.get(3), List.of(nodes.get(4)),
+                nodes.get(4), null
         );
         // (0,1) (1, 2) (2,3)
         //(0, (1, 2, 3))
@@ -59,7 +60,6 @@ public class Test {
 //                .toList();
 
 
-
 //        positions p = ants.foreach(ant
 //                ant.move()
 //                return ant.positon()
@@ -71,5 +71,41 @@ public class Test {
 //        ants
 //
 //        adjacency.
+
+/**/
+        Test.SEED = 42;
+        Graph g = new Graph(5);
+        assertBool(g.hasCycle(), true);
+
+
+        Graph g2 = new Graph(50);
+        assertBool(g2.hasCycle(), true);
+
+
+        Graph g3 = new Graph(100);
+        assertBool(g3.hasCycle(), true);
+
+        g.removeCycle();
+        g2.removeCycle();
+        g3.removeCycle();
+
+        assertHasNoCycles(g);
+        assertHasNoCycles(g2);
+        assertHasNoCycles(g3);
+
+        assertBool(g.hasCycle(), false);
+        assertBool(g2.hasCycle(), false);
+        assertBool(g3.hasCycle(), false);
+
+    }
+
+    private static void assertBool(boolean b, boolean expected) {
+        if (b != expected) throw new RuntimeException("Expected false, but was true");
+        else System.out.println("Successful test: assert bool");
+    }
+
+    private static void assertHasNoCycles(Graph g) {
+        if (g.hasCycle()) throw new RuntimeException("Graph has a cycle");
+        else System.out.println("Successful test: has no cycles");
     }
 }
