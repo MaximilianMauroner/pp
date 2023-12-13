@@ -40,44 +40,36 @@ public class Graph {
      * the graph is cyclic and then adds additional random edges between nodes to increase complexity.<br>
      * It avoids creating duplicate edges or self-loops.
      *
-     * @param cycleLength the number of nodes in the cycle; must be at least 3.
-     * @throws IllegalArgumentException if cycleLength is less than 3.
+     * @param numNodes the number of nodes in the cycle; must be at least 3.
+     * @throws IllegalArgumentException if numNodes is less than 3.
      */
-    public Graph(int cycleLength) {
-        Random random = new Random(Test.SEED);
-        if (cycleLength < 3) {
+    public Graph(int numNodes) {
+        if (numNodes < 3) {
             throw new IllegalArgumentException("Node count must be at least 3 to form a cycle");
         }
 
         // Initialize nodes
-        nodes = IntStream.range(0, cycleLength)
+        nodes = IntStream.range(0, numNodes)
                 .mapToObj(i -> new Node(i, i))
                 .collect(Collectors.toList());
 
-        // Initialize adjacency list
+        // Initialize the adjacency list
         adjacency = nodes.stream().collect(
                 Collectors.toMap(
                         Function.identity(), node -> new ArrayList<>()
                 ));
 
-        // Form a basic cycle
-        IntStream.range(0, cycleLength)
-                .forEach(i -> adjacency.get(nodes.get(i)).add(nodes.get((i + 1) % cycleLength)));
+        // Connect each node to every other node using streams
+        IntStream.range(0, numNodes)
+                .forEach(i -> {
+                    Node currentNode = nodes.get(i);
+                    List<Node> currentAdjacencyList = adjacency.get(currentNode);
 
-
-        // Randomly add additional edges
-        int additionalEdges = random.nextInt(cycleLength * (cycleLength - 1) / 2); // This is a mathematical formula used to calculate the maximum number of edges in a complete graph
-        IntStream.range(0, additionalEdges).forEach(i -> {
-            int fromIndex = random.nextInt(cycleLength);
-            int toIndex = random.nextInt(cycleLength);
-            Node from = nodes.get(fromIndex);
-            Node to = nodes.get(toIndex);
-
-            if (from != to && !adjacency.get(from).contains(to)) {
-                adjacency.get(from).add(to);
-            }
-        });
-
+                    IntStream.range(0, numNodes)
+                            .filter(j -> i != j)
+                            .mapToObj(nodes::get)
+                            .forEach(currentAdjacencyList::add);
+                });
 
         calculateDistances();
     }
