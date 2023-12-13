@@ -32,6 +32,9 @@ public class Test {
         // j -> i (i, j)
 
         Graph graph = new Graph(nodes, adjacency);
+
+        Double test = new GreedyHeuristic().apply(graph, null);
+
         Iteration t = new Iteration(graph, 2);
         Iteration t_next = t.get();
 

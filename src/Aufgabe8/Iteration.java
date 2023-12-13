@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 public class Iteration implements Supplier<Iteration> {
 
     public Iteration(Graph graph, int antCount) {
-        this.graph = graph;
+        Iteration.graph = graph;
         this.ants = Stream.iterate(0, i -> i + 1)
                 .limit(antCount)
                 .map(i -> {
@@ -17,28 +17,26 @@ public class Iteration implements Supplier<Iteration> {
                 })
                 .toList();
 
-        intensitiesStack.push(
-                graph.distances.stream()
-                        .map(distance -> new Intensity(distance.i, distance.j, 0))
-                        .toList()
-        );
+        intensities = graph.distances.stream()
+                .map(distance -> new Intensity(distance.i, distance.j, 0))
+                .toList();
 
-        L_greedy = 100.0; // TODO
+        L_greedy = 100.0;
     }
 
-    public Iteration(Iteration iteration, List<Intensity> intensities) {
-        this.graph = iteration.graph;
-        this.ants = iteration.ants;
-        this.intensitiesStack.push(intensities);
-        this.L_greedy = iteration.L_greedy;
+    public Iteration(List<Ant> ants, List<Intensity> intensities, List<Integer> path, Double L_global_best) {
+        this.ants = ants;
+        this.intensities = intensities;
+        this.global_best_path = path;
+        this.L_global_best = L_global_best;
     }
 
-    public final Graph graph;
+    public static Graph graph;
     public final List<Ant> ants;
-    public final Stack<List<Intensity>> intensitiesStack = new Stack<>();
+    public final List<Intensity> intensities;
     public Double L_global_best;
     public List<Integer> global_best_path;
-    public final Double L_greedy;
+    public static Double L_greedy;
 
     @Override
     public Iteration get() {
@@ -73,7 +71,7 @@ public class Iteration implements Supplier<Iteration> {
                 .map(ant -> ant.node.stream().toList())
                 .findFirst().orElse(global_best_path);
         
-        List<Intensity> updatedIntensities = intensitiesStack.peek().stream()
+        List<Intensity> updatedIntensities = intensities.stream()
                 .map(intensity -> {
                     double delta_tau_ij = path.contains(intensity.i) ? 1 / L_gb_next : 0;
                     return new Intensity(intensity.i, intensity.j, (1 - Test.RHO) * intensity.intensity + Test.RHO * delta_tau_ij);
@@ -82,14 +80,8 @@ public class Iteration implements Supplier<Iteration> {
         
         
         List<Ant> ants_next = ants.stream().map(ant -> new Ant(ant.ID, ant.node.peek())).toList();
-        Stack<List<Intensity>> intensitiesStack_next = new Stack<>();
-        intensitiesStack_next.push(updatedIntensities);
 
-        return new Iteration(this,
-                intensitiesStack.peek().stream()
-                        .map(new IntensityUpdater())
-                        .toList()
-        );
+        return new Iteration(ants_next, updatedIntensities, path, L_gb_next);
     }
 
 //    private <T> List<T> fill() {
