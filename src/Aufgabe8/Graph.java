@@ -101,8 +101,8 @@ public class Graph {
 
     private void calculateDistances() {
         adjacency.forEach((node, neighbors) -> neighbors.forEach((neighbor) -> {
-            int i = adjacency.keySet().stream().toList().indexOf(node);
-            int j = adjacency.keySet().stream().toList().indexOf(neighbor);
+            int i = nodes.indexOf(node);
+            int j = nodes.indexOf(neighbor);
 
             Distance dist = new Distance(i, j, node.distance(neighbor, new ManhattanMetric()));
 

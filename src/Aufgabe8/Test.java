@@ -1,10 +1,11 @@
-import java.util.Random;
+import java.util.*;
 
 public class Test {
     public static long SEED = new Random().nextLong();
+    public static double RHO = 0.1;
 
     public static void main(String[] args) {
-/*
+
         // initialize node list
         List<Node> nodes = new ArrayList<>();
         nodes.add(new Node(1, 2));
@@ -19,7 +20,7 @@ public class Test {
                 nodes.get(1), List.of(nodes.get(2), nodes.get(3)),
                 nodes.get(2), List.of(nodes.get(3), nodes.get(4)),
                 nodes.get(3), List.of(nodes.get(4)),
-                nodes.get(4), null
+                nodes.get(4), List.of()
         );
         // (0,1) (1, 2) (2,3)
         //(0, (1, 2, 3))
@@ -31,6 +32,9 @@ public class Test {
         // j -> i (i, j)
 
         Graph graph = new Graph(nodes, adjacency);
+        Iteration t = new Iteration(graph, 2);
+        Iteration t_next = t.get();
+
 
         // initialize distance list
         List<Distance> distances = new ArrayList<>();
@@ -60,6 +64,7 @@ public class Test {
 //                .toList();
 
 
+
 //        positions p = ants.foreach(ant
 //                ant.move()
 //                return ant.positon()
@@ -72,7 +77,6 @@ public class Test {
 //
 //        adjacency.
 
-/**/
         Test.SEED = 42;
         Graph g = new Graph(5);
         assertBool(g.hasCycle(), true);

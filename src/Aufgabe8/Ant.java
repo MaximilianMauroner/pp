@@ -12,8 +12,9 @@ public class Ant {
 
     public Double L_local;
 
-    public void move(Iteration iter, BiFunction<Iteration, Ant, Integer> selector) {
-        int nextNode = selector.apply(iter, this);
-        node.push(nextNode);
+    public Double move(Iteration iter, BiFunction<Iteration, Ant, Integer> selector) {
+//        int nextNode = selector.apply(iter, this);
+//        node.push(nextNode);
+        return 1.0;
     }
 }
