@@ -10,8 +10,6 @@ public class Ant {
     public final int ID;
     public final Stack<Integer> node = new Stack<>();
 
-    public Double L_local;
-
     // until I figure something out this part is procedural
     public Double move(Iteration iter, BiFunction<Iteration, Ant, Integer> selector) {
 //        int nextNode = selector.apply(iter, this);
