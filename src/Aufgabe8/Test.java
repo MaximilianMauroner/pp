@@ -75,20 +75,21 @@ public class Test {
         IntStream.range(3, 100).forEach(i -> {
             System.out.println("\nTesting with " + i + " nodes");
             Graph g = new Graph(i);
-            assertBool(g.hasCycle(), true);
+
+            assertHasCycles(g);
+            System.out.println("Removing cycles...");
             g.removeCycle();
             assertHasNoCycles(g);
-            assertBool(g.hasCycle(), false); //Check if the algorithm for removing and detecting is correct
         });
     }
 
-    private static void assertBool(boolean b, boolean expected) {
-        if (b != expected) throw new RuntimeException("Expected false, but was true");
-        else System.out.println("Successful test: assert bool");
+    private static void assertHasCycles(Graph g) {
+        if (!g.hasCycle()) throw new RuntimeException("Graph has no cycle");
+        else System.out.println("Successful test: Graph has at least one cycle");
     }
 
     private static void assertHasNoCycles(Graph g) {
-        if (g.hasCycle()) throw new RuntimeException("Graph has a cycle");
-        else System.out.println("Successful test: has no cycles");
+        if (g.hasCycle()) throw new RuntimeException("Graph has at least one cycle");
+        else System.out.println("Successful test: Graph has no cycle");
     }
 }
