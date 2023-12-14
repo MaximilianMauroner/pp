@@ -6,8 +6,8 @@ public class JoinChanges implements BiFunction<List<Intensity>, List<Intensity>,
     public List<Intensity> apply(List<Intensity> intensities, List<Intensity> changeList) {
         return intensities.stream()
                 .map(intensity -> changeList.stream()
-                            .filter(change -> change.i == intensity.i && change.j == intensity.j)
-                            .reduce((a, b) -> b).orElse(intensity)
+                        .filter(change -> change.i == intensity.i && change.j == intensity.j)
+                        .reduce((a, b) -> b).orElse(intensity)
                 ).toList();
     }
 }

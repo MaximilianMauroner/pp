@@ -4,13 +4,12 @@ import java.util.function.BiFunction;
 public class Ant {
     public Ant(int ID, int node) {
         this.ID = ID;
-        this.node.push(node);
+        this.visited.push(node);
     }
 
     public final int ID;
-    public final Stack<Integer> node = new Stack<>();
+    public final Stack<Integer> visited = new Stack<>();
 
-    // until I figure something out this part is procedural
     public Double move(Iteration iter, BiFunction<Iteration, Ant, Integer> selector) {
 //        int nextNode = selector.apply(iter, this);
 //        node.push(nextNode);

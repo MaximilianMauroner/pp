@@ -2,6 +2,10 @@ import java.util.*;
 
 public class Test {
     public static long SEED = new Random().nextLong();
+    public static int M = 25;
+    public static double Q0 = 0.9;
+    public static double ALPHA = 1.0;
+    public static double BETA = 2.0;
     public static double RHO = 0.1;
 
     public static void main(String[] args) {
@@ -53,7 +57,7 @@ public class Test {
 
         Double test = new GreedyHeuristic().apply(graph, null);
 
-        Iteration t = new Iteration(graph, 2);
+        Iteration t = new Iteration(graph, 2, new GreedyHeuristic());
         Iteration t_next = t.get();
 
 

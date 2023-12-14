@@ -1,6 +1,6 @@
 public class Intensity {
     public Intensity(int i, int j, double intensity) {
-        if (j > i) {
+        if (j < i) {
             this.i = j;
             this.j = i;
         } else {

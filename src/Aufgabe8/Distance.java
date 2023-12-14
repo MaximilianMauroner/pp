@@ -1,6 +1,6 @@
 public class Distance {
     public Distance(int i, int j, int distance) {
-        if (j > i) {
+        if (j < i) {
             this.i = j;
             this.j = i;
         } else {

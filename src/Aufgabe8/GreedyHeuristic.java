@@ -1,48 +1,46 @@
 import java.util.Comparator;
-import java.util.List;
 import java.util.function.BiFunction;
+import java.util.List;
 import java.util.stream.IntStream;
 
-public class GreedyHeuristic implements BiFunction<Graph, GreedyHeuristic, Double> {
-    private List<Integer> visitedNodes;
-    private Double distance;
+public class GreedyHeuristic implements Heuristic {
 
     @Override
-    public Double apply(Graph graph, GreedyHeuristic greedyNodeSelector) {
-        // ToDo: fix
+    public Double apply(Graph graph, List<Integer> visitedNodes) {
+        if (visitedNodes == null) {
+            return apply(graph, List.of(0));
+        }
 
-        if (greedyNodeSelector == null) {
-            visitedNodes = List.of(0);
-            distance = 0.0;
+        int currentNode = visitedNodes.getLast();
+
+        if (visitedNodes.size() == graph.nodes.size()) {
+            return graph.distances.stream()
+                    .filter(distance -> distance.i == 0 && distance.j == currentNode)
+                    .mapToDouble(distance -> distance.distance)
+                    .findFirst().orElse(0);
         } else {
-            List<Integer> prevVisitedNodes = greedyNodeSelector.visitedNodes;
-            int currentNode = prevVisitedNodes.get(prevVisitedNodes.size() - 1);
-
             Distance minDistance = graph.distances.stream()
                     .filter(distance -> distance.i == currentNode || distance.j == currentNode)
-                    .filter(distance -> !prevVisitedNodes.contains(distance.i) || !prevVisitedNodes.contains(distance.j))
-                    .min(Comparator.comparingDouble(distance2 -> distance2.distance))
+                    .filter(distance -> !visitedNodes.contains(distance.i) || !visitedNodes.contains(distance.j))
+                    .min(Comparator.comparingDouble(distance -> distance.distance))
                     .orElse(null);
 
             if (minDistance == null) {
-                return greedyNodeSelector.distance + graph.distances.stream()
-                        .filter(distance -> distance.i == 0 && distance.j == currentNode)
-                        .map(distance -> distance.distance)
-                        .findFirst().orElse(0);
+                return apply(graph, visitedNodes);
             }
 
             int nextNode = minDistance.i == currentNode ? minDistance.j : minDistance.i;
-            visitedNodes = IntStream.range(0, prevVisitedNodes.size() + 1)
+
+            List<Integer> newVisitedNodes = IntStream.range(0, visitedNodes.size() + 1)
                     .mapToObj(i -> {
-                        if (i == prevVisitedNodes.size()) {
+                        if (i == visitedNodes.size()) {
                             return nextNode;
                         }
-                        return prevVisitedNodes.get(i);
+                        return visitedNodes.get(i);
                     }).toList();
 
-            distance = greedyNodeSelector.distance + minDistance.distance;
+            return minDistance.distance + apply(graph, newVisitedNodes);
         }
 
-        return new GreedyHeuristic().apply(graph, this);
     }
 }
