@@ -31,6 +31,16 @@ public class Test {
         // i = 0, j = 1
         // j -> i (i, j)
 
+        List<Intensity> ints = List.of(
+                new Intensity(0, 1, 0.0),
+                new Intensity(0, 2, 0.0),
+                new Intensity(1, 2, 0.0),
+                new Intensity(1, 3, 0.0),
+                new Intensity(2, 3, 0.0),
+                new Intensity(2, 4, 0.0),
+                new Intensity(3, 4, 0.0)
+        );
+
         Graph graph = new Graph(nodes, adjacency);
 
         Double test = new GreedyHeuristic().apply(graph, null);

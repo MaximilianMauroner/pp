@@ -21,7 +21,7 @@ public class Iteration implements Supplier<Iteration> {
                 .map(distance -> new Intensity(distance.i, distance.j, 0))
                 .toList();
 
-        L_greedy = 100.0;
+        L_greedy = new GreedyHeuristic().apply(graph, null);
     }
 
     public Iteration(List<Ant> ants, List<Intensity> intensities, List<Integer> path, Double L_global_best) {
@@ -34,6 +34,7 @@ public class Iteration implements Supplier<Iteration> {
     public static Graph graph;
     public final List<Ant> ants;
     public final List<Intensity> intensities;
+    public final List<Intensity> changeBuffer = new ArrayList<>();
     public Double L_global_best;
     public List<Integer> global_best_path;
     public static Double L_greedy;
@@ -51,7 +52,8 @@ public class Iteration implements Supplier<Iteration> {
 //                            ant -> ant.move(this, new NodeSelector())
 //                    );
 //                });
-        List<Double> L_locals = IntStream.range(0, 0)
+
+        List<Double> L_locals = IntStream.range(0, graph.nodes.size())
                 .mapToObj(i ->
                     // for all ants the distance they moved in this step
                      ants.stream()
@@ -65,7 +67,11 @@ public class Iteration implements Supplier<Iteration> {
                         Arrays.asList(new Double[ants.size()])
         );
 
-        Double L_gb_next = L_locals.stream().min(Double::compareTo).orElse(L_global_best);
+        Double L_gb_next = L_locals.stream()
+                .filter(l -> l > L_global_best)
+                .min(Double::compareTo)
+                .orElse(L_global_best);
+
         List<Integer> path = ants.stream()
                 .filter(ant -> ant.L_local.equals(L_gb_next))
                 .map(ant -> ant.node.stream().toList())
