@@ -1,8 +1,6 @@
-import java.util.Random;
+import java.util.stream.IntStream;
 
 public class Test {
-    public static long SEED = new Random().nextLong();
-
     public static void main(String[] args) {
 /*
         // initialize node list
@@ -73,30 +71,15 @@ public class Test {
 //        adjacency.
 
 /**/
-        Test.SEED = 42;
-        Graph g = new Graph(5);
-        assertBool(g.hasCycle(), true);
 
-
-        Graph g2 = new Graph(50);
-        assertBool(g2.hasCycle(), true);
-
-
-        Graph g3 = new Graph(100);
-        assertBool(g3.hasCycle(), true);
-
-        g.removeCycle();
-        g2.removeCycle();
-        g3.removeCycle();
-
-        assertHasNoCycles(g);
-        assertHasNoCycles(g2);
-        assertHasNoCycles(g3);
-
-        assertBool(g.hasCycle(), false);
-        assertBool(g2.hasCycle(), false);
-        assertBool(g3.hasCycle(), false);
-
+        IntStream.range(3, 100).forEach(i -> {
+            System.out.println("\nTesting with " + i + " nodes");
+            Graph g = new Graph(i);
+            assertBool(g.hasCycle(), true);
+            g.removeCycle();
+            assertHasNoCycles(g);
+            assertBool(g.hasCycle(), false); //Check if the algorithm for removing and detecting is correct
+        });
     }
 
     private static void assertBool(boolean b, boolean expected) {
