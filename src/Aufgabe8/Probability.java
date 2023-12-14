@@ -1,13 +1,13 @@
 import java.util.function.Function;
 
-public class Probability implements Function<ProbabilityRecord, Double> {
+public class Probability implements Function<ProbabilityRecord, ProbabilityRecord> {
 
     @Override
-    public Double apply(ProbabilityRecord probabilityRecord) {
+    public ProbabilityRecord apply(ProbabilityRecord probabilityRecord) {
         double edgeVal = Math.pow(probabilityRecord.edgeIJ_PheromoneStrength.intensity,
                 probabilityRecord.pheromoneInfluenceOnNextCitySelection);
-        double cityVal =  Math.pow(
-                (1/(double)probabilityRecord.cityIJDistanceInfluence.distance),
+        double cityVal = Math.pow(
+                (1 / (double) probabilityRecord.cityIJDistanceInfluence.distance),
                 probabilityRecord.cityDistanceInfluence);
 
 
@@ -20,9 +20,20 @@ public class Probability implements Function<ProbabilityRecord, Double> {
         double restCityVal = probabilityRecord
                 .cityILDistanceInfluence
                 .stream()
-                .mapToDouble(val -> Math.pow((1/(double)val.distance),
+                .mapToDouble(val -> Math.pow((1 / (double) val.distance),
                         probabilityRecord.cityDistanceInfluence)).sum();
 
-        return  (edgeVal * cityVal)/(restEdgeVal * restCityVal);
+
+        double probability = (edgeVal * cityVal) / (restEdgeVal * restCityVal);
+        return new ProbabilityRecord(
+                probabilityRecord.edgeIJ_PheromoneStrength,
+                probabilityRecord.cityIJDistanceInfluence,
+                probabilityRecord.pheromoneInfluenceOnNextCitySelection,
+                probabilityRecord.cityDistanceInfluence,
+                probabilityRecord.edgeIL_PheromoneStrength,
+                probabilityRecord.cityILDistanceInfluence,
+                probabilityRecord.nextNode,
+                probability
+        );
     }
 }
