@@ -6,18 +6,15 @@ import java.util.stream.IntStream;
 public class GreedyHeuristic implements Heuristic {
 
     @Override
-    public Double apply(Graph graph, List<Integer> visitedNodes) {
+    public List<Integer> apply(Graph graph, List<Integer> visitedNodes) {
         if (visitedNodes == null) {
             return apply(graph, List.of(0));
         }
 
         int currentNode = visitedNodes.getLast();
 
-        if (visitedNodes.size() == graph.nodes.size()) {
-            return graph.distances.stream()
-                    .filter(distance -> distance.i == 0 && distance.j == currentNode)
-                    .mapToDouble(distance -> distance.distance)
-                    .findFirst().orElse(0);
+        if (visitedNodes.size() == graph.nodes.size() + 1) {
+            return visitedNodes;
         } else {
             Distance minDistance = graph.distances.stream()
                     .filter(distance -> distance.i == currentNode || distance.j == currentNode)
@@ -25,11 +22,13 @@ public class GreedyHeuristic implements Heuristic {
                     .min(Comparator.comparingDouble(distance -> distance.distance))
                     .orElse(null);
 
+            int nextNode;
             if (minDistance == null) {
-                return apply(graph, visitedNodes);
+                nextNode = 0;
+            }  else {
+                nextNode = minDistance.i == currentNode ? minDistance.j : minDistance.i;
             }
 
-            int nextNode = minDistance.i == currentNode ? minDistance.j : minDistance.i;
 
             List<Integer> newVisitedNodes = IntStream.range(0, visitedNodes.size() + 1)
                     .mapToObj(i -> {
@@ -39,7 +38,7 @@ public class GreedyHeuristic implements Heuristic {
                         return visitedNodes.get(i);
                     }).toList();
 
-            return minDistance.distance + apply(graph, newVisitedNodes);
+            return apply(graph, newVisitedNodes);
         }
 
     }

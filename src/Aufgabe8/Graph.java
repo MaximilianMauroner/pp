@@ -3,6 +3,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 /**
@@ -18,12 +19,6 @@ import java.util.stream.IntStream;
  * <p>
  */
 public class Graph {
-    public static void main(String[] args) {
-        Graph graph = new Graph(15);
-        System.out.println(graph);
-    }
-
-
     public final List<Node> nodes;
     public final Map<Node, List<Node>> adjacency;
     public final List<Distance> distances = new ArrayList<>();
@@ -49,9 +44,28 @@ public class Graph {
         }
 
         // Initialize nodes
-        nodes = IntStream.range(0, numNodes)
-                .mapToObj(i -> new Node(i, i))
-                .collect(Collectors.toList());
+
+//        nodes = IntStream.range(0, numNodes)
+//                .mapToObj(i -> {
+//                    // get random coordinates in a grid of (numNodes x numNodes)
+//                    int x = (int) (Math.random() * numNodes);
+//                    int y = (int) (Math.random() * numNodes);
+//
+//                    return new Node(x, y);
+//                })
+//                .collect(Collectors.toList());
+
+        Random random = new Random(Test.SEED);
+
+        nodes = Stream.iterate(0, i -> i + 1)
+                .map(i -> {
+                    int x = (int) (random.nextDouble() * numNodes);
+                    int y = (int) (random.nextDouble() * numNodes);
+
+                    return new Node(x, y);
+                }).distinct()
+                .limit(numNodes)
+                .toList();
 
         // Initialize the adjacency list
         adjacency = nodes.stream().collect(
@@ -66,7 +80,7 @@ public class Graph {
                     List<Node> currentAdjacencyList = adjacency.get(currentNode);
 
                     IntStream.range(0, numNodes)
-                            .filter(j -> i != j)
+                            .filter(j -> i < j)
                             .mapToObj(nodes::get)
                             .forEach(currentAdjacencyList::add);
                 });
@@ -77,12 +91,12 @@ public class Graph {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        BiFunction<Node, Node, Double> distanceMetric = (a, b) -> Math.hypot(a.x() - b.x(), a.y() - b.y());
+        //BiFunction<Node, Node, Double> distanceMetric = (a, b) -> Math.hypot(a.x() - b.x(), a.y() - b.y());
 
         nodes.forEach((node) -> {
             List<Node> adjacentNodes = adjacency.get(node);
             adjacentNodes.forEach((adjacent) -> {
-                double distance = node.distance(adjacent, distanceMetric);
+                double distance = node.distance(adjacent, new ManhattanMetric());
                 sb.append(String.format("[%d|%d] - [%d|%d]: %.2f\n",
                         node.x(), node.y(), adjacent.x(), adjacent.y(), distance));
             });

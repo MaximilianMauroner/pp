@@ -15,11 +15,25 @@ public class Iteration implements Supplier<Iteration> {
                 })
                 .toList();
 
-        intensities = graph.distances.stream()
-                .map(distance -> new Intensity(distance.i, distance.j, 0))
-                .toList();
+        List<Integer> greedy_path = greedy.apply(graph, null);
+        L_greedy = IntStream.range(0, greedy_path.size() - 1)
+                .mapToDouble(i -> {
+                    int first = greedy_path.get(i);
+                    int second = greedy_path.get(i + 1);
 
-        L_greedy = greedy.apply(graph, null);
+                    return graph.distances.stream()
+                            .filter(distance -> (distance.i == first || distance.i == second) && (distance.j == first || distance.j == second))
+                            .map(distance -> distance.distance)
+                            .findFirst().orElse(0);
+                }).sum();
+
+        global_best_path = greedy_path;
+        L_global_best = L_greedy;
+        tau_0 = 1 / (graph.nodes.size() * L_greedy);
+
+        intensities = graph.distances.stream()
+                .map(distance -> new Intensity(distance.i, distance.j, 0.1))
+                .toList();
     }
 
     public Iteration(List<Ant> ants, List<Intensity> intensities, List<Integer> path, Double L_global_best) {
@@ -37,13 +51,15 @@ public class Iteration implements Supplier<Iteration> {
     public List<Integer> global_best_path;
     public static Double L_greedy;
 
+    public static Double tau_0;
+
     @Override
     public Iteration get() {
         List<Double> L_locals = IntStream.range(0, graph.nodes.size())
                 .mapToObj(i ->
                     // for all ants the distance they moved in this step
                      ants.stream()
-                            .map(ant -> ant.move(this, new NodeSelector()))
+                            .map(ant -> ant.move(this))
                             .toList()
                 ).toList()
                 // for all ants sum up the distance they moved in this iteration
@@ -54,7 +70,7 @@ public class Iteration implements Supplier<Iteration> {
         );
 
         Double L_gb_next = L_locals.stream()
-                .filter(l -> l > L_global_best)
+                .filter(l -> l < L_global_best)
                 .min(Double::compareTo)
                 .orElse(L_global_best);
 
@@ -64,7 +80,8 @@ public class Iteration implements Supplier<Iteration> {
                 .findFirst().orElse(global_best_path);
 
 
-        List<Intensity> updatedIntensities = intensities.stream()
+        // ToDo: rework this does not work
+        List<Intensity> updatedIntensities = new JoinChanges().apply(intensities, changeBuffer).stream()
                 .map(intensity -> {
                     double delta_tau_ij = path.contains(intensity.i) ? 1 / L_gb_next : 0;
                     return new Intensity(intensity.i, intensity.j, (1 - Test.RHO) * intensity.intensity + Test.RHO * delta_tau_ij);

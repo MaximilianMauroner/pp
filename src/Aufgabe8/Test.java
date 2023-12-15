@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Test {
     public static long SEED = new Random().nextLong();
@@ -8,6 +10,29 @@ public class Test {
     public static double BETA = 2.0;
     public static double RHO = 0.1;
 
+    public static void main(String[] args) {
+        Test.SEED = 42;
+        Graph graph = new Graph(5);
+
+        List<Integer> L_greedy = new GreedyHeuristic().apply(graph, null);
+
+
+        // Get start time
+        long start = System.currentTimeMillis();
+
+        Iteration t = new Iteration(graph, M, new GreedyHeuristic());
+
+        for (int i = 0; i < 100; i++) {
+            t = t.get();
+        }
+
+        // Get end time
+        long end = System.currentTimeMillis();
+
+        System.out.println("Execution time: " + (end - start) + "ms");
+    }
+
+    /*
     public static void main(String[] args) {
 
         // initialize node list
@@ -103,7 +128,6 @@ public class Test {
 //        adjacency.
 
 
-/**/
 
         Test.SEED = 42;
         Graph g = new Graph(5);
@@ -123,6 +147,8 @@ public class Test {
             assertHasNoCycles(g);
         });
     }
+
+    */
 
     private static void assertHasCycles(Graph g) {
         if (!g.hasCycle()) throw new RuntimeException("Graph has no cycle");

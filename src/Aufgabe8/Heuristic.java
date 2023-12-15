@@ -1,5 +1,5 @@
 import java.util.List;
 import java.util.function.BiFunction;
 
-public interface Heuristic extends BiFunction<Graph, List<Integer>, Double> {
+public interface Heuristic extends BiFunction<Graph, List<Integer>, List<Integer>> {
 }
