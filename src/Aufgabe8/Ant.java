@@ -37,11 +37,6 @@ public class Ant {
         } else if (Math.random() < Test.Q0) {
             MaxChoice maxChoice = new MaxChoice(intensities, Iteration.graph.distances);
 
-            // ToDo: remove this is just for debugging
-//            List<Double> choice = IntStream.range(0, Iteration.graph.nodes.size())
-//                    .mapToObj(a -> maxChoice.apply(current, a))
-//                    .toList();
-
             myRandomItem = IntStream.range(0, Iteration.graph.nodes.size())
                     .filter(a -> !visited.contains(a))
                     .reduce((a, b) -> maxChoice.apply(current, a) > maxChoice.apply(current, b) ? a : b)
