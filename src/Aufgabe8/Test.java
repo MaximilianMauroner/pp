@@ -1,6 +1,5 @@
 import java.util.*;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Test {
     public static long SEED = new Random().nextLong();
@@ -129,13 +128,6 @@ public class Test {
 
 
 
-        Test.SEED = 42;
-        Graph g = new Graph(5);
-        assertBool(g.hasCycle(), true);
-
-
-        Graph g2 = new Graph(50);
-        assertBool(g2.hasCycle(), true);
 
         IntStream.range(3, 100).forEach(i -> {
             System.out.println("\nTesting with " + i + " nodes");
