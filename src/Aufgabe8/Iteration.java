@@ -32,7 +32,7 @@ public class Iteration implements Supplier<Iteration> {
         tau_0 = 1 / (graph.nodes.size() * L_greedy);
 
         intensities = graph.distances.stream()
-                .map(distance -> new Intensity(distance.i, distance.j, 0.1))
+                .map(distance -> new Intensity(distance.i, distance.j, 1))
                 .toList();
     }
 
@@ -74,16 +74,22 @@ public class Iteration implements Supplier<Iteration> {
                 .min(Double::compareTo)
                 .orElse(L_global_best);
 
+        System.out.println("L_gb_next: " + L_gb_next);
+
+
         List<Integer> path = IntStream.range(0, ants.size())
                 .filter(i -> i == L_locals.indexOf(L_gb_next))
                 .mapToObj(i -> ants.get(i).visited.stream().toList())
                 .findFirst().orElse(global_best_path);
 
+        Map<Integer, Integer> edges = IntStream.range(0, path.size() - 1)
+                .mapToObj(i -> Map.entry(path.get(i), path.get(i + 1)))
+                .collect(HashMap::new, (m, v) -> m.put(v.getKey(), v.getValue()), HashMap::putAll);
 
-        // ToDo: rework this does not work
         List<Intensity> updatedIntensities = new JoinChanges().apply(intensities, changeBuffer).stream()
                 .map(intensity -> {
-                    double delta_tau_ij = path.contains(intensity.i) ? 1 / L_gb_next : 0;
+                    boolean contains = edges.get(intensity.i) == intensity.j || edges.get(intensity.j) == intensity.i;
+                    double delta_tau_ij = contains ? 1 / L_gb_next : 0;
                     return new Intensity(intensity.i, intensity.j, (1 - Test.RHO) * intensity.intensity + Test.RHO * delta_tau_ij);
                 })
                 .toList();

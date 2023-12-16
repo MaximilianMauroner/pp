@@ -121,6 +121,10 @@ public class Ant {
             iter.changeBuffer.add(intensity);
         }
 
-        return (double) Iteration.graph.distances.get(myRandomItem).distance;
+        return (double) Iteration.graph.distances.stream()
+                .filter(distance -> (distance.i == current || distance.j == current)
+                        && (distance.i == myRandomItem || distance.j == myRandomItem))
+                .map(distance -> distance.distance)
+                .findFirst().orElse(0);
     }
 }

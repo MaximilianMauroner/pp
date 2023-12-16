@@ -29,6 +29,21 @@ public class Test {
         long end = System.currentTimeMillis();
 
         System.out.println("Execution time: " + (end - start) + "ms");
+
+        System.out.println("L_global_best: " + t.L_global_best);
+        final Iteration t_f = t;
+        Map<Integer, Integer> edges = IntStream.range(0, t_f.global_best_path.size() - 1)
+                .mapToObj(i -> Map.entry(t_f.global_best_path.get(i), t_f.global_best_path.get(i + 1)))
+                .collect(HashMap::new, (m, v) -> m.put(v.getKey(), v.getValue()), HashMap::putAll);
+
+        edges.forEach((i, j) -> {
+            System.out.print(i + " -> " + j + ": ");
+            double dist = Objects.requireNonNull(graph.distances.stream()
+                    .filter(distance -> (distance.i == i || distance.i == j) && (distance.j == i || distance.j == j))
+                    .findFirst().orElse(null)).distance;
+            System.out.println(dist);
+        });
+
     }
 
     /*
