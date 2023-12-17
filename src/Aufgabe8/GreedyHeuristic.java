@@ -40,6 +40,5 @@ public class GreedyHeuristic implements Heuristic {
 
             return apply(graph, newVisitedNodes);
         }
-
     }
 }

@@ -1,69 +1,61 @@
 import java.util.List;
-import java.util.Objects;
 import java.util.Stack;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
+import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 
-public class Ant {
-    public Ant(int ID, int node) {
-        this.ID = ID;
+public class Ant implements BiFunction<IterationRecord, List<Intensity>, Double> {
+    public Ant(int node) {
         this.visited.push(node);
     }
 
-    public final int ID;
     public final Stack<Integer> visited = new Stack<>();
 
-    public Double move(Iteration iter) {
+    public Double apply(IterationRecord iter, List<Intensity> changeBuffer) {
 
         Integer current = visited.peek();
 
+//        List<Distance> neighborDist = iter.graph.distances.stream()
+//                .filter(distance -> distance.i == current || distance.j == current)
+//                .filter(distance -> !visited.contains(distance.i) || !visited.contains(distance.j))
+//                .toList();
 
-        List<Distance> neighborDist = Iteration.graph.distances.stream()
-                .filter(distance -> distance.i == current || distance.j == current)
-                .filter(distance -> !visited.contains(distance.i) || !visited.contains(distance.j))
-                .toList();
+        List<Intensity> intensities = Iteration.joinChanges(iter.intensities, changeBuffer, new JoinChanges());
+//        List<Intensity> neighborIntensity = intensities.stream()
+//                .filter(intensity -> intensity.i == current || intensity.j == current)
+//                .filter(intensity -> !visited.contains(intensity.i) || !visited.contains(intensity.j))
+//                .toList();
 
-        List<Intensity> intensities = new JoinChanges().apply(iter.intensities, iter.changeBuffer);
-        List<Intensity> neighborIntensity = intensities.stream()
-                .filter(intensity -> intensity.i == current || intensity.j == current)
-                .filter(intensity -> !visited.contains(intensity.i) || !visited.contains(intensity.j))
-                .toList();
 
         int myRandomItem;
 
-        if (visited.size() == Iteration.graph.nodes.size()) {
+        if (visited.size() == iter.graph.nodes.size()) {
             myRandomItem = visited.getFirst();
         } else if (Math.random() < Test.Q0) {
-            MaxChoice maxChoice = new MaxChoice(intensities, Iteration.graph.distances);
+            Choice choice = new Choice(intensities, iter.graph.distances, current, 1, 1);
 
-            myRandomItem = IntStream.range(0, Iteration.graph.nodes.size())
+            myRandomItem = IntStream.range(0, iter.graph.nodes.size())
                     .filter(a -> !visited.contains(a))
-                    .reduce((a, b) -> maxChoice.apply(current, a) > maxChoice.apply(current, b) ? a : b)
+                    .reduce((a, b) -> choice.apply(a) > choice.apply(b) ? a : b)
                     .orElse(visited.getFirst());
         } else {
-            double sumOfAll = IntStream.range(0, neighborIntensity.size())
-                    .mapToDouble(i -> {
-                        double intensity = neighborIntensity.get(i).intensity;
-                        double distance = neighborDist.get(i).distance;
+            Choice choice = new Choice(intensities, iter.graph.distances, current, iter.ALPHA, iter.BETA);
 
-                        return Math.pow(intensity, Test.ALPHA) * Math.pow(1 / distance, Test.BETA);
+            double sumOfAll = IntStream.range(0, iter.graph.nodes.size())
+                    .mapToDouble(i -> {
+                        if (visited.contains(i)) {
+                            return 0.0;
+                        }
+
+                        return choice.apply(i);
                     }).sum();
 
-            List<Double> probabilities = IntStream.range(0, Iteration.graph.nodes.size())
+            List<Double> probabilities = IntStream.range(0, iter.graph.nodes.size())
                     .mapToObj(i -> {
                         if (visited.contains(i)) {
                             return 0.0;
                         }
 
-                        int neighborIndex = IntStream.range(0, neighborIntensity.size())
-                                .filter(idx -> neighborIntensity.get(idx).i == i || neighborIntensity.get(idx).j == i)
-                                .findFirst().orElse(-1);
-
-                        double intensity = neighborIntensity.get(neighborIndex).intensity;
-                        double distance = neighborDist.get(neighborIndex).distance;
-
-                        return Math.pow(intensity, Test.ALPHA) * Math.pow(1 / distance, Test.BETA) / sumOfAll;
+                        return choice.apply(i) / sumOfAll;
                     }).toList();
 
             myRandomItem = new SampleFromProbabilties().apply(probabilities);
@@ -117,14 +109,14 @@ public class Ant {
 
         if (oldIntensity != null) {
             Intensity intensity = new Intensity(current, myRandomItem,
-                    (1 - Test.RHO) * oldIntensity.intensity + Test.RHO * Iteration.tau_0);
-            iter.changeBuffer.add(intensity);
+                    (1 - iter.RHO) * oldIntensity.intensity + iter.RHO * iter.tau_0);
+            changeBuffer.add(intensity);
         }
 
-        return (double) Iteration.graph.distances.stream()
+        return (double) iter.graph.distances.stream()
                 .filter(distance -> (distance.i == current || distance.j == current)
                         && (distance.i == myRandomItem || distance.j == myRandomItem))
                 .map(distance -> distance.distance)
-                .findFirst().orElse(0);
+                .findFirst().orElse(0.0);
     }
 }

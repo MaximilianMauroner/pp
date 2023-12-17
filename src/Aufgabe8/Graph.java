@@ -23,11 +23,11 @@ public class Graph {
     public final Map<Node, List<Node>> adjacency;
     public final List<Distance> distances = new ArrayList<>();
 
-    public Graph(List<Node> nodes, Map<Node, List<Node>> adjacency) {
+    public Graph(List<Node> nodes, Map<Node, List<Node>> adjacency, Metric metric) {
         this.nodes = nodes;
         this.adjacency = adjacency;
 
-        calculateDistances();
+        calculateDistances(metric);
     }
 
     /**
@@ -38,7 +38,7 @@ public class Graph {
      * @param numNodes the number of nodes in the cycle; must be at least 3.
      * @throws IllegalArgumentException if numNodes is less than 3.
      */
-    public Graph(int numNodes) {
+    public Graph(int numNodes, Metric metric) {
         if (numNodes < 3) {
             throw new IllegalArgumentException("Node count must be at least 3 to form a cycle");
         }
@@ -85,7 +85,7 @@ public class Graph {
                             .forEach(currentAdjacencyList::add);
                 });
 
-        calculateDistances();
+        calculateDistances(metric);
     }
 
     public String toString() {
@@ -105,12 +105,12 @@ public class Graph {
         return sb.toString();
     }
 
-    private void calculateDistances() {
+    private void calculateDistances(Metric metric) {
         adjacency.forEach((node, neighbors) -> neighbors.forEach((neighbor) -> {
             int i = nodes.indexOf(node);
             int j = nodes.indexOf(neighbor);
 
-            Distance dist = new Distance(i, j, node.distance(neighbor, new ManhattanMetric()));
+            Distance dist = new Distance(i, j, node.distance(neighbor, metric));
 
             distances.add(dist);
         }));
