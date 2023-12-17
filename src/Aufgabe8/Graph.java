@@ -45,16 +45,6 @@ public class Graph {
 
         // Initialize nodes
 
-//        nodes = IntStream.range(0, numNodes)
-//                .mapToObj(i -> {
-//                    // get random coordinates in a grid of (numNodes x numNodes)
-//                    int x = (int) (Math.random() * numNodes);
-//                    int y = (int) (Math.random() * numNodes);
-//
-//                    return new Node(x, y);
-//                })
-//                .collect(Collectors.toList());
-
         Random random = new Random(Test.SEED);
 
         nodes = Stream.iterate(0, i -> i + 1)
@@ -124,19 +114,6 @@ public class Graph {
      * @IMPORTANT: THIS METHOD IS ONLY USED FOR THE TESTCASES
      */
     public boolean hasCycle() {
-        //Old Code: TODO: Remove once the new code is tested
-//        Set<Node> visited = new HashSet<>();
-//
-//        for (Node node : nodes) {
-//            if (!visited.contains(node)) {
-//                if (hasCycleDFS(node, visited, null)) {
-//                    return true;
-//                }
-//            }
-//        }
-//
-//        return false;
-
         Set<Node> visited = new HashSet<>();
         return nodes.stream().anyMatch(node -> !visited.contains(node) && hasCycleDFS(node, visited, null));
 
@@ -149,26 +126,9 @@ public class Graph {
      * @param visited a set of nodes that have been visited in the DFS.
      * @param parent  the parent node of the current node in the DFS tree.
      * @return {@code true} if a cycle is found in the graph, {@code false} otherwise.
+     * @IMPORTANT: THIS METHOD IS ONLY USED FOR THE TESTCASES
      */
     private boolean hasCycleDFS(Node node, Set<Node> visited, Node parent) {
-        //Old Code: TODO: Remove once the new code is tested
-
-//        visited.add(node);
-//
-//        for (Node adjacent : adjacency.get(node)) {
-//            if (!visited.contains(adjacent)) {
-//                if (hasCycleDFS(adjacent, visited, node)) {
-//                    return true;
-//                }
-//            } else if (adjacent != parent) {
-//                // If an adjacent is visited and not parent of current vertex,
-//                // then there is a cycle.
-//                return true;
-//            }
-//        }
-//
-//        return false;
-
         visited.add(node);
 
         return adjacency.get(node).stream().anyMatch(adjacent ->
@@ -180,6 +140,7 @@ public class Graph {
      * Removes all cycles from the graph.
      * This method converts the graph into a tree by removing edges that
      * lead to already visited nodes.
+     * @IMPORTANT: THIS METHOD IS ONLY USED FOR THE TESTCASES
      */
     public void removeCycle() {
         Set<Node> visited = new HashSet<>();
@@ -192,24 +153,9 @@ public class Graph {
      * @param node    the current node in the DFS.
      * @param visited a set of nodes that have been visited in the DFS.
      * @param parent  the parent node of the current node in the DFS tree.
+     * @IMPORTANT: THIS METHOD IS ONLY USED FOR THE TESTCASES
      */
     private void removeCycleDFS(Node node, Set<Node> visited, Node parent) {
-        //Old Code: TODO: Remove once the new code is tested
-//        visited.add(node);
-//
-//        Iterator<Node> iterator = adjacency.get(node).iterator();
-//
-//        while (iterator.hasNext()) {
-//            Node adjacent = iterator.next();
-//            if (!visited.contains(adjacent)) {
-//                removeCycleDFS(adjacent, visited, node);
-//            } else if (adjacent != parent) {
-//                // If an adjacent is visited and not parent of current vertex,
-//                // remove the edge to break the cycle.
-//                iterator.remove();
-//            }
-//        }
-
         visited.add(node);
 
         List<Node> adjacentNodes = new ArrayList<>(adjacency.get(node));

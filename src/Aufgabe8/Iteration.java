@@ -7,48 +7,41 @@ import java.util.stream.Stream;
 public class Iteration {
 
     public static IterationRecord apply(IterationRecord t) {
-        Graph graph = t.graph;
-        List<Ant> ants = t.ants;
-        List<Intensity> intensities = t.intensities;
         List<Intensity> changeBuffer = new ArrayList<>();
-        List<Integer> global_best_path = t.global_best_path;
-        Double L_global_best = t.L_global_best;
 
-        List<Double> L_locals = IntStream.range(0, graph.nodes.size())
+        List<Double> L_locals = IntStream.range(0, t.graph.nodes.size())
                 .mapToObj(i ->
                     // for all ants the distance they moved in this step
-                     ants.stream()
-                            .map(ant -> {
-                                int index = ants.indexOf(ant);
-                                return ant.apply(t, changeBuffer);
-                            })
-                            .toList()
-                ).toList()
+                     t.ants.stream()
+                            .map(ant -> ant.apply(t, changeBuffer)
+                            ).toList()
+                )
                 // for all ants sum up the distance they moved in this iteration
-                .stream().reduce((List<Double> a, List<Double> b) -> IntStream.range(0, ants.size())
+                .reduce((List<Double> a, List<Double> b) -> IntStream.range(0, t.ants.size())
                         .mapToObj(i -> a.get(i) + b.get(i)).toList()
                 ).orElse(
-                        Arrays.asList(new Double[ants.size()])
+                        Arrays.asList(new Double[t.ants.size()])
         );
 
         Double L_gb_next = L_locals.stream()
-                .filter(l -> l < L_global_best)
+                .filter(l -> l < t.L_global_best)
                 .min(Double::compareTo)
-                .orElse(L_global_best);
+                .orElse(t.L_global_best);
 
         if (Test.LIVE_OUTPUT)
             System.out.println("Iteration: " + t.iteration + ": " + L_gb_next);
 
-        List<Integer> path = IntStream.range(0, ants.size())
+        List<Integer> path = IntStream.range(0, t.ants.size())
                 .filter(i -> i == L_locals.indexOf(L_gb_next))
-                .mapToObj(i -> ants.get(i).visited.stream().toList())
-                .findFirst().orElse(global_best_path);
+                .mapToObj(i -> t.ants.get(i).visited.stream().toList())
+                .findFirst().orElse(t.global_best_path);
 
         Map<Integer, Integer> edges = IntStream.range(0, path.size() - 1)
                 .mapToObj(i -> Map.entry(path.get(i), path.get(i + 1)))
                 .collect(HashMap::new, (m, v) -> m.put(v.getKey(), v.getValue()), HashMap::putAll);
 
-        List<Intensity> updatedIntensities = joinChanges(intensities, changeBuffer, new JoinChanges()).stream()
+
+        List<Intensity> updatedIntensities = joinChanges(t.intensities, changeBuffer, new JoinChanges()).stream()
                 .map(intensity -> {
                     boolean contains = edges.get(intensity.i) == intensity.j || edges.get(intensity.j) == intensity.i;
                     double delta_tau_ij = contains ? 1 / L_gb_next : 0;
@@ -57,10 +50,10 @@ public class Iteration {
                 .toList();
         
         
-        List<Ant> ants_next = ants.stream().map(ant -> new Ant(ant.visited.peek())).toList();
+        List<Ant> ants_next = t.ants.stream().map(ant -> new Ant(ant.visited.peek())).toList();
 
         return new IterationRecord(t.iteration + 1,
-                graph, ants_next,
+                t.graph, ants_next,
                 updatedIntensities, L_gb_next, path, t.tau_0, t.Q0, t.ALPHA, t.BETA, t.RHO);
     }
 

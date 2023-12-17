@@ -3,9 +3,15 @@ import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+/*
+Maximilian Mauroner: Probability, Ant
+Lukas Leskovar: Iteration, Ant
+Christopher Scherling: Graph
+ */
+
 public class Test {
     public static long SEED = new Random().nextLong();
-    public static int N = 5;
+    public static int N = 30;
     public static int ITERATIONS = 100;
     public static int M = 25;
     public static double Q0 = 0.9;
