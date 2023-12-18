@@ -45,7 +45,7 @@ public class Iteration {
                 .map(intensity -> {
                     boolean contains = edges.get(intensity.i) == intensity.j || edges.get(intensity.j) == intensity.i;
                     double delta_tau_ij = contains ? 1 / L_gb_next : 0;
-                    return new Intensity(intensity.i, intensity.j, (1 - Test.RHO) * intensity.intensity + Test.RHO * delta_tau_ij);
+                    return new Intensity(intensity.i, intensity.j, (1 - t.RHO) * intensity.intensity + t.RHO * delta_tau_ij);
                 })
                 .toList();
         

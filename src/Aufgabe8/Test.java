@@ -11,7 +11,7 @@ Christopher Scherling: Graph
 
 public class Test {
     public static long SEED = new Random().nextLong();
-    public static int N = 30;
+    public static int N = 40;
     public static int ITERATIONS = 100;
     public static int M = 25;
     public static double Q0 = 0.9;
@@ -19,7 +19,7 @@ public class Test {
     public static double BETA = 2.0;
     public static double RHO = 0.1;
 
-    public static boolean LIVE_OUTPUT = false;
+    public static boolean LIVE_OUTPUT = true;
 
     public static void main(String[] args) {
         System.out.println("Seed: " + SEED + " \n" + "N: " + N + " \n"
@@ -166,19 +166,17 @@ public class Test {
         List<Intensity> testIntensities2 = List.of(
                 new Intensity(0, 1, 1.0),
                 new Intensity(0, 2, 2.0),
-                new Intensity(0, 3, 3.0)
-        );
-        List<Distance> testDistances = List.of(
-                new Distance(0, 1, 3.0),
-                new Distance(0, 2, 2.0),
-                new Distance(0, 3, 1.0)
+                new Intensity(1, 2, 3.0)
         );
 
-        Choice choice = new Choice(testIntensities2, testDistances, 0, 1, 1);
-        testEquals(choice.apply(3), 3.0);
+        Test.SEED = 42;
+        Graph g2 = new Graph(3, new ManhattanMetric());
 
-        choice = new Choice(testIntensities2, testDistances, 0, 2, 2);
-        testEquals(choice.apply(1), 1 / 9.0);
+        Choice choice = new Choice(testIntensities2, g2, 0, 1, 1);
+        testEquals(choice.apply(3), 1.0);
+
+        choice = new Choice(testIntensities2, g2, 0, 2, 2);
+        testEquals(choice.apply(1), 0.0625);
 
 
         System.out.println("Testing Ant: ");

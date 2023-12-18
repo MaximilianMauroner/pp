@@ -21,14 +21,15 @@ public class Ant implements BiFunction<IterationRecord, List<Intensity>, Double>
         if (visited.size() == iter.graph.nodes.size()) {
             myRandomItem = visited.getFirst();
         } else if (Math.random() < iter.Q0) {
-            Choice choice = new Choice(intensities, iter.graph.distances, current, 1, 1);
+            Choice choice = new Choice(intensities, iter.graph, current, 1, 1);
 
             myRandomItem = IntStream.range(0, iter.graph.nodes.size())
                     .filter(a -> !visited.contains(a))
                     .reduce((a, b) -> choice.apply(a) > choice.apply(b) ? a : b)
                     .orElse(visited.getFirst());
+
         } else {
-            Choice choice = new Choice(intensities, iter.graph.distances, current, iter.ALPHA, iter.BETA);
+            Choice choice = new Choice(intensities, iter.graph, current, iter.ALPHA, iter.BETA);
 
             double sumOfAll = IntStream.range(0, iter.graph.nodes.size())
                     .filter(i -> !visited.contains(i))
@@ -47,13 +48,10 @@ public class Ant implements BiFunction<IterationRecord, List<Intensity>, Double>
         }
         visited.push(myRandomItem);
 
-        int edgeIndex = intensities.stream()
-                .filter(intensity -> (intensity.i == current || intensity.j == current)
-                        && (intensity.i == myRandomItem || intensity.j == myRandomItem))
-                .map(intensities::indexOf)
-                .findFirst().orElse(-1);
 
-        if (edgeIndex != -1) {
+        int edgeIndex = Graph.getIndex(current, myRandomItem, iter.graph.nodes.size());
+
+        if (edgeIndex >= 0 && edgeIndex < intensities.size()) {
             changeBuffer.add(
                     new Intensity(current, myRandomItem,
                             (1 - iter.RHO) * intensities.get(edgeIndex).intensity + iter.RHO * iter.tau_0

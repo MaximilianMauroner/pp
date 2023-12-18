@@ -168,4 +168,23 @@ public class Graph {
                 .filter(adjacent -> !visited.contains(adjacent) || adjacent == parent)
                 .collect(Collectors.toList()));
     }
+
+
+    public static int getIndex(int i, int j, int n) {
+        int u;
+        int v;
+
+        if (i < j) {
+            u = i;
+            v = j;
+        } else {
+            u = j;
+            v = i;
+        }
+
+
+        return IntStream.rangeClosed(0, u - 1)
+                .map(k -> n - k - 1)
+                .sum() + v - u - 1;
+    }
 }
