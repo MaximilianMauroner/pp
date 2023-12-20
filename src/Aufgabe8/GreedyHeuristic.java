@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.BiFunction;
 import java.util.List;
@@ -16,7 +17,7 @@ public class GreedyHeuristic implements Heuristic {
         if (visitedNodes.size() == graph.nodes.size() + 1) {
             return visitedNodes;
         } else {
-            Distance minDistance = graph.distances.stream()
+            Distance minDistance = Arrays.stream(graph.distances)
                     .filter(distance -> distance.i == currentNode || distance.j == currentNode)
                     .filter(distance -> !visitedNodes.contains(distance.i) || !visitedNodes.contains(distance.j))
                     .min(Comparator.comparingDouble(distance -> distance.distance))

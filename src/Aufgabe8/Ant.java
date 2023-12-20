@@ -14,13 +14,13 @@ public class Ant implements BiFunction<IterationRecord, List<Intensity>, Double>
 
         Integer current = visited.peek();
 
-        List<Intensity> intensities = Iteration.joinChanges(iter.intensities, changeBuffer, new JoinChanges());
+        Intensity[] intensities = Iteration.joinChanges(iter.intensities, changeBuffer, new JoinChanges());
 
         int myRandomItem;
 
         if (visited.size() == iter.graph.nodes.size()) {
             myRandomItem = visited.getFirst();
-        } else if (Math.random() < iter.Q0) {
+        } else if (Math.random() < iter.Q_0) {
             Choice choice = new Choice(intensities, iter.graph, current, 1, 1);
 
             myRandomItem = IntStream.range(0, iter.graph.nodes.size())
@@ -51,14 +51,14 @@ public class Ant implements BiFunction<IterationRecord, List<Intensity>, Double>
 
         int edgeIndex = Graph.getIndex(current, myRandomItem, iter.graph.nodes.size());
 
-        if (edgeIndex >= 0 && edgeIndex < intensities.size()) {
+        if (edgeIndex >= 0 && edgeIndex < intensities.length) {
             changeBuffer.add(
                     new Intensity(current, myRandomItem,
-                            (1 - iter.RHO) * intensities.get(edgeIndex).intensity + iter.RHO * iter.tau_0
+                            (1 - iter.RHO) * intensities[edgeIndex].intensity + iter.RHO * iter.tau_0
                     )
             );
 
-            return iter.graph.distances.get(edgeIndex).distance;
+            return iter.graph.distances[edgeIndex].distance;
         }
 
         return 0.0;

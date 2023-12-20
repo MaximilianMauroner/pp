@@ -8,7 +8,7 @@ public class SampleFromProbabilties implements Function<List<Double>, Integer> {
     public Integer apply(List<Double> probabilities) {
         List<Double> cumulativeProbabilities = new ArrayList<>();
 
-        // Calculate cumulative probabilities using streams
+        // Calculate cumulative probabilities
         probabilities.stream()
                 .reduce(0.0, (sum, probability) -> {
                     cumulativeProbabilities.add(sum + probability);
@@ -17,7 +17,7 @@ public class SampleFromProbabilties implements Function<List<Double>, Integer> {
 
         double randomValue = Math.random();
 
-        // Find the index corresponding to the random number in cumulative probabilities using streams
+        // Find the index corresponding to the random number in cumulative probabilities
         return IntStream.range(0, cumulativeProbabilities.size())
                 .filter(i -> randomValue <= cumulativeProbabilities.get(i))
                 .findFirst()

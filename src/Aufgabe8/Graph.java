@@ -21,11 +21,12 @@ import java.util.stream.Stream;
 public class Graph {
     public final List<Node> nodes;
     public final Map<Node, List<Node>> adjacency;
-    public final List<Distance> distances = new ArrayList<>();
+    public final Distance[] distances;
 
     public Graph(List<Node> nodes, Map<Node, List<Node>> adjacency, Metric metric) {
         this.nodes = nodes;
         this.adjacency = adjacency;
+        this.distances = new Distance[nodes.size() * (nodes.size() - 1) / 2];
 
         calculateDistances(metric);
     }
@@ -75,6 +76,7 @@ public class Graph {
                             .forEach(currentAdjacencyList::add);
                 });
 
+        this.distances = new Distance[nodes.size() * (nodes.size() - 1) / 2];
         calculateDistances(metric);
     }
 
@@ -99,10 +101,11 @@ public class Graph {
         adjacency.forEach((node, neighbors) -> neighbors.forEach((neighbor) -> {
             int i = nodes.indexOf(node);
             int j = nodes.indexOf(neighbor);
+            int edgeIndex = getIndex(i, j, nodes.size());
 
             Distance dist = new Distance(i, j, node.distance(neighbor, metric));
 
-            distances.add(dist);
+            distances[edgeIndex] = dist;
         }));
     }
 

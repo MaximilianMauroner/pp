@@ -11,21 +11,21 @@ Christopher Scherling: Graph
 
 public class Test {
     public static long SEED = new Random().nextLong();
-    public static int N = 40;
+    public static int N = 50;
     public static int ITERATIONS = 100;
     public static int M = 25;
-    public static double Q0 = 0.9;
+    public static double Q_0 = 0.9;
     public static double ALPHA = 1.0;
     public static double BETA = 2.0;
     public static double RHO = 0.1;
 
-    public static boolean LIVE_OUTPUT = true;
+    public static boolean LIVE_OUTPUT = false;
 
     public static void main(String[] args) {
         System.out.println("Seed: " + SEED + " \n" + "N: " + N + " \n"
                 + "Iterations: " + ITERATIONS + " \n"
                 + "M: " + M + " \n"
-                + "Q0: " + Q0 + " \n"
+                + "Q0: " + Q_0 + " \n"
                 + "ALPHA: " + ALPHA + " \n"
                 + "BETA: " + BETA + " \n"
                 + "RHO: " + RHO + " \n"
@@ -50,7 +50,8 @@ public class Test {
                     int first = greedy_path.get(i);
                     int second = greedy_path.get(i + 1);
 
-                    return graph.distances.stream()
+
+                    return Arrays.stream(graph.distances)
                             .filter(distance -> (distance.i == first || distance.i == second) && (distance.j == first || distance.j == second))
                             .map(distance -> distance.distance)
                             .findFirst().orElse(0.0);
@@ -59,11 +60,11 @@ public class Test {
 
         double tau_0 = 1 / (graph.nodes.size() * L_greedy);
 
-        List<Intensity> intensities = graph.distances.stream()
-                .map(distance -> new Intensity(distance.i, distance.j, L_greedy))
-                .toList();
+        Intensity[] intensities = Arrays.stream(graph.distances)
+                .map(distance -> new Intensity(distance.i, distance.j, 1 / L_greedy))
+                .toArray(Intensity[]::new);
 
-        IterationRecord t0 = new IterationRecord(0, graph, ants, intensities, L_greedy, greedy_path, tau_0, Q0, ALPHA, BETA, RHO);
+        IterationRecord t0 = new IterationRecord(0, graph, ants, intensities, L_greedy, greedy_path, tau_0, Q_0, ALPHA, BETA, RHO);
 
         // start iterations
         System.out.println("Starting iterations...");
@@ -91,7 +92,7 @@ public class Test {
                 .toList();
 
         edges.forEach(edge -> {
-            double dist = graph.distances.stream()
+            double dist = Arrays.stream(graph.distances)
                     .filter(distance -> (distance.i == edge.getKey() || distance.i == edge.getValue())
                             && (distance.j == edge.getKey() || distance.j == edge.getValue()))
                     .map(distance -> distance.distance)
@@ -129,11 +130,11 @@ public class Test {
         testEquals(greedyPath, List.of(0, 2, 3, 1, 4, 0));
 
         System.out.println("Testing JoinChanges: ");
-        List<Intensity> testIntensities = List.of(
+        Intensity[] testIntensities = {
                 new Intensity(0, 1, 1.0),
                 new Intensity(0, 2, 2.0),
                 new Intensity(0, 3, 3.0)
-        );
+        };
         List<Intensity> testChanges = List.of(
                 new Intensity(0, 1, 0.0),
                 new Intensity(0, 2, 0.0),
@@ -141,7 +142,7 @@ public class Test {
                 new Intensity(0, 1, 4.0)
         );
         testEquals(
-                Iteration.joinChanges(testIntensities, testChanges, new JoinChanges()).stream()
+                Arrays.stream(Iteration.joinChanges(testIntensities, testChanges, new JoinChanges()))
                         .map(intensity -> intensity.intensity)
                         .toList(), List.of(4.0, 0.0, 0.0)
         );
@@ -163,11 +164,11 @@ public class Test {
 
 
         System.out.println("Testing Choice: ");
-        List<Intensity> testIntensities2 = List.of(
-                new Intensity(0, 1, 1.0),
-                new Intensity(0, 2, 2.0),
-                new Intensity(1, 2, 3.0)
-        );
+        Intensity[] testIntensities2 = {
+            new Intensity(0, 1, 1.0),
+            new Intensity(0, 2, 2.0),
+            new Intensity(1, 2, 3.0)
+        };
 
         Test.SEED = 42;
         Graph g2 = new Graph(3, new ManhattanMetric());
@@ -182,7 +183,7 @@ public class Test {
         System.out.println("Testing Ant: ");
         Ant ant = new Ant(0);
 
-        List<Intensity> testIntensities3 = List.of(
+        Intensity[] testIntensities3 = {
                 new Intensity(0, 1, 1.0),
                 new Intensity(0, 2, 2.0),
                 new Intensity(0, 3, 3.0),
@@ -193,7 +194,7 @@ public class Test {
                 new Intensity(2, 3, 8.0),
                 new Intensity(2, 4, 9.0),
                 new Intensity(3, 4, 10.0)
-        );
+        };
         IterationRecord t = new IterationRecord(0, g, null, testIntensities3, 0.0, null, 0, 1, ALPHA, BETA, RHO);
         ant.apply(t, new ArrayList<>());
 

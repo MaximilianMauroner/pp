@@ -1,8 +1,5 @@
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Iteration {
 
@@ -41,23 +38,23 @@ public class Iteration {
                 .collect(HashMap::new, (m, v) -> m.put(v.getKey(), v.getValue()), HashMap::putAll);
 
 
-        List<Intensity> updatedIntensities = joinChanges(t.intensities, changeBuffer, new JoinChanges()).stream()
+        Intensity[] updatedIntensities = Arrays.stream(joinChanges(t.intensities, changeBuffer, new JoinChanges()))
                 .map(intensity -> {
                     boolean contains = edges.get(intensity.i) == intensity.j || edges.get(intensity.j) == intensity.i;
                     double delta_tau_ij = contains ? 1 / L_gb_next : 0;
                     return new Intensity(intensity.i, intensity.j, (1 - t.RHO) * intensity.intensity + t.RHO * delta_tau_ij);
                 })
-                .toList();
+                .toArray(Intensity[]::new);
         
         
         List<Ant> ants_next = t.ants.stream().map(ant -> new Ant(ant.visited.peek())).toList();
 
         return new IterationRecord(t.iteration + 1,
                 t.graph, ants_next,
-                updatedIntensities, L_gb_next, path, t.tau_0, t.Q0, t.ALPHA, t.BETA, t.RHO);
+                updatedIntensities, L_gb_next, path, t.tau_0, t.Q_0, t.ALPHA, t.BETA, t.RHO);
     }
 
-    static List<Intensity> joinChanges(List<Intensity> intensities, List<Intensity> changeBuffer, JoinChanges joinChanges) {
+    static Intensity[] joinChanges(Intensity[] intensities, List<Intensity> changeBuffer, JoinChanges joinChanges) {
         return joinChanges.apply(intensities, changeBuffer);
     }
 
