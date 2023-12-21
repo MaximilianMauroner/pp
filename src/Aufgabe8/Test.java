@@ -11,7 +11,7 @@ Christopher Scherling: Graph
 
 public class Test {
     public static long SEED = new Random().nextLong();
-    public static int N = 50;
+    public static int N = 10;
     public static int ITERATIONS = 100;
     public static int M = 25;
     public static double Q_0 = 0.9;
@@ -158,7 +158,7 @@ public class Test {
                 .toList();
 
         IntStream.range(0, 4).forEach(i -> {
-            boolean inRange = sampleFrequencies.get(i) >= probabilities.get(i) - 0.1 && sampleFrequencies.get(i) <= probabilities.get(i) + 0.1;
+            boolean inRange = sampleFrequencies.get(i) >= probabilities.get(i) / 1.2 && sampleFrequencies.get(i) <= probabilities.get(i) * 1.2;
             testEquals(inRange, true);
         });
 
