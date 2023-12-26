@@ -4,15 +4,15 @@ import java.util.stream.Stream;
 
 public class MapGenerator {
 
-    public static Character[][] generate(int size, int leafs) {
+    public static Character[][] generate(int size, int leafs, Hive hive) {
         Character[][] map = IntStream.range(0, size)
                 .mapToObj(i -> IntStream.range(0, size)
                         .mapToObj(j -> ' ')
                         .toArray(Character[]::new))
                 .toArray(Character[][]::new);
 
-        double hiveX = getRandomCoordinate(size);
-        double hiveY = getRandomCoordinate(size);
+        double hiveX = hive.getX();
+        double hiveY = hive.getY();
 
         map[(int) Math.floor(hiveX)][(int) Math.floor(hiveY)] = 'O';
         map[(int) Math.floor(hiveX)][(int) Math.ceil(hiveY)] = 'O';
@@ -26,9 +26,5 @@ public class MapGenerator {
 
 
         return map;
-    }
-
-    private static double getRandomCoordinate(int num) {
-        return (Math.random() * num);
     }
 }

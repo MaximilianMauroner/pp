@@ -6,7 +6,9 @@ public class Arena {
 
             System.out.println("ANTS: " + params.get("ANTS"));
 
-            Character[][] arena = MapGenerator.generate(params.get("SIZE"), params.get("LEAFS"));
+            Hive hive = new Hive();
+
+            Character[][] arena = MapGenerator.generate(params.get("SIZE"), params.get("LEAFS"), hive);
             for (Character[] row : arena) {
                 for (char c : row) {
                     System.out.print(c);
