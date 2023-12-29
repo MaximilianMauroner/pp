@@ -23,5 +23,7 @@ public class Ant implements Runnable {
 }
 enum  Direction {
     LEFT,
-    RIGHT
+    RIGHT,
+    UP,
+
 };
