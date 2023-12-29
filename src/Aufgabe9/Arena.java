@@ -2,6 +2,7 @@ public class Arena {
     public static void main(String[] args) {
         try {
             String[] inputPattern = {"ANTS", "LEAFS", "SIZE", "WAITSTEPS"};
+            args = new String[]{"1", "10", "40", "5"};
             Parameters params = Parameters.getInstance(args, inputPattern);
 
             System.out.println("ANTS: " + params.get("ANTS"));
@@ -9,32 +10,40 @@ public class Arena {
             Hive hive = new Hive();
 
             Map map = new Map(params.get("SIZE"), params.get("LEAFS"), hive);
+//            map.print();
+
+//            Runnable rs[] = new Runnable[20000];
+//            for (int i = 0; i < rs.length; i++) {
+//                final int finalI = i;
+//                rs[i] = new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Transaction t = new Transaction(map);
+//                        t.setValueByID(1, 1, Integer.toString(finalI).charAt(0));
+//                        t.setValueByID(2, 2, Integer.toString(finalI).charAt(0));
+//                        char x  = t.getValueByID(3, 3);
+//                        try {
+//                            int sleepTimer =(int) (Math.random() * 100);
+//                            Thread.sleep(sleepTimer);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                        t.commit();
+//                    }
+//                };
+//            }
+//            for (int i = 0; i < rs.length; i++) {
+//                rs[i].run();
+//            }
+
+            Ant a = new Ant(map, 100, map.getPositions()[10][10], Ant.Direction.NORTH);
+
+            System.out.println("--------------------");
             map.print();
 
-            Runnable rs[] = new Runnable[20000];
-            for (int i = 0; i < rs.length; i++) {
-                final int finalI = i;
-                rs[i] = new Runnable() {
-                    @Override
-                    public void run() {
-                        Transaction t = new Transaction(map);
-                        t.setValueByID(1, 1, Integer.toString(finalI).charAt(0));
-                        t.setValueByID(2, 2, Integer.toString(finalI).charAt(0));
-                        char x  = t.getValueByID(3, 3);
-                        try {
-                            int sleepTimer =(int) (Math.random() * 100);
-                            Thread.sleep(sleepTimer);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        t.commit();
-                    }
-                };
-            }
-            for (int i = 0; i < rs.length; i++) {
-                rs[i].run();
-            }
+            a.move(Ant.RelativeDirection.RIGHT);
 
+            System.out.println("--------------------");
             map.print();
 
 
