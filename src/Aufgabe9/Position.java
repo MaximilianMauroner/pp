@@ -1,5 +1,6 @@
 public class Position {
 
+    private char type = ' ';
     private final int x;
     private final int y;
 
@@ -8,9 +9,16 @@ public class Position {
         this.y = y;
     }
 
+    public Position(char type, int x, int y) {
+        this.type = type;
+        this.x = x;
+        this.y = y;
+    }
+
     public Position(Position position) {
-        this.x = position.getX();
-        this.y = position.getY();
+        this.type = position.type;
+        this.x = position.x;
+        this.y = position.y;
     }
 
     public Position() {
@@ -23,6 +31,14 @@ public class Position {
             this.x = 0;
             this.y = 0;
         }
+    }
+
+    public void setType(char type) {
+        this.type = type;
+    }
+
+    public char getType() {
+        return type;
     }
 
     public int getX() {

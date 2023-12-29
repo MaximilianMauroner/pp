@@ -1,7 +1,9 @@
 public class Ant implements Runnable {
+    private final Map map;
     private final int wait;
 
-    public Ant(int wait) {
+    public Ant(Map map, int wait) {
+        this.map = map;
         this.wait = wait;
     }
 
