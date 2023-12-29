@@ -1,6 +1,7 @@
 public class Ant implements Runnable {
     private final Map map;
     private final int wait;
+    private Direction direction;
 
     public Ant(Map map, int wait) {
         this.map = map;
@@ -20,3 +21,7 @@ public class Ant implements Runnable {
         }
     }
 }
+enum  Direction {
+    LEFT,
+    RIGHT
+};

@@ -48,4 +48,28 @@ public class Map {
 
         return map;
     }
+
+    public Position getPosition(int x, int y, Transaction t) {
+        Position p = t.getPositionByID(x,y);
+        return p;
+    }
+
+    public void setPosition(int x, int y, Position p, Transaction t) {
+         t.setPositionByID(x,y,p);
+    }
+
+    //     T.setValueByID(i % 100, i);
+//                        T.getValueByID(i % 100);
+//                        if (i % 20 == 0) T.commit();
+
+
+
+    public void print() {
+        for (Position[] row : positions) {
+            for (Position c : row) {
+                System.out.print(c.getType());
+            }
+            System.out.println();
+        }
+    }
 }
