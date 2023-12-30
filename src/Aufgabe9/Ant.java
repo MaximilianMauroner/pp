@@ -1,218 +1,216 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Vector;
+import java.util.stream.IntStream;
+import Ant.*;
+
 public class Ant implements Runnable {
     private final Map map;
     private final int wait;
+    private final boolean isLeadAnt;
+
+    private int waitSteps = 0;
+    private int steps = 0;
 
     private Head head;
     private Tail tail;
+
+    private Transaction t;
 
     public Ant(Map map, int wait, Position init, Direction direction) {
         this.map = map;
         this.wait = wait;
         this.head = new Head(init.getX(), init.getY(), direction);
         this.tail = new Tail(head);
+        this.isLeadAnt = false;
+        t = new Transaction(map);
         writePositions();
+        t.commit();
     }
 
-    public void move(RelativeDirection newRelDir) {
-        clearPositions();
-        this.head.move(newRelDir);
-        this.tail.move(head);
+    public Ant(Map map, int wait, Position init, Direction direction, boolean isLeadAnt) {
+        this.map = map;
+        this.wait = wait;
+        this.head = new Head(init.getX(), init.getY(), direction);
+        this.tail = new Tail(head);
+        this.isLeadAnt = isLeadAnt;
+        t = new Transaction(map);
         writePositions();
+        t.commit();
+    }
+
+    private boolean move(RelativeDirection newRelDir) {
+        Head newHead = this.head.move(newRelDir);
+        Tail newTail = new Tail(newHead);
+
+        if (newHead.getX() < 0 || newHead.getX() >= map.getSize() || newHead.getY() < 0 || newHead.getY() >= map.getSize() ||
+                newTail.getX() < 0 || newTail.getX() >= map.getSize() || newTail.getY() < 0 || newTail.getY() >= map.getSize()
+        ) {
+            return false;
+        }
+        clearPositions();
+
+        this.head = newHead;
+        this.tail = newTail;
+
+        writePositions();
+        return true;
+    }
+
+    public String getPosition(){
+        return head.getX() + " : " + head.getY() + " : " +tail.getX() + " : " + tail.getY();
     }
 
     public void clearPositions() {
-        Transaction t = new Transaction(map);
-        t.setValueByID(head.x, head.y, ' ');
-        t.setValueByID(tail.x, tail.y, ' ');
-        t.commit();
+        t.setValueByID(head.getX(), head.getY(), ' ');
+        t.setValueByID(tail.getX(), tail.getY(), ' ');
     }
 
     public void writePositions() {
-        Transaction t = new Transaction(map);
-        t.setValueByID(head.x, head.y, head.getHeadDirection());
-        t.setValueByID(tail.x, tail.y, '+');
-        t.commit();
+        t.setValueByID(head.getX(), head.getY(), head.getHeadDirection());
+        t.setValueByID(tail.getX(), tail.getY(), '+');
     }
 
     @Override
     public void run() {
         while (true) {
             // ToDo: Do something
+            this.t = new Transaction(map);
+            List<Position> positions = getPossiblePositions();
+            List<Double> probabilities = positions.stream().filter(Objects::nonNull).mapToDouble(p -> {
+                return switch (p.getType()) {
+                    case 'X' -> 1;
+                    case 'O', '+', 'A', 'V', '<', '>' -> 0;
+                    case ' ' -> 0.01;
+                    default -> Character.getNumericValue(p.getType()) / 9;
+                };
+            }).collect(Vector::new, Vector::add, Vector::addAll);
+            int index = new SampleFromProbabilties().apply(probabilities);
+            if(index != -1){
+                Position newPosition = positions.get(index);
+                RelativeDirection newRelDir = getRelativeDirection(newPosition);
+
+                boolean moved = move(newRelDir);
+                if (moved) {
+                    steps++;
+                }
+            } else {
+                waitSteps++;
+            }
+            t.commit();
+
 
             try {
-                Thread.sleep((int) (Math.random() * wait));
+                Thread.sleep((int) (Math.random() * wait + 3000));
+                if(isLeadAnt){
+//                    map.printPositions();
+                    map.print();
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    enum Direction {
-        NORTH,
-        EAST,
-        SOUTH,
-        WEST
-    }
+    private List<Position> getPossiblePositions() {
 
-    enum RelativeDirection {
-        LEFT,
-        DIAGONAL_LEFT,
-        RIGHT,
-        DIAGONAL_RIGHT,
-        STRAIGHT,
-    }
+        //int[] aOffsets = new int[]{-2, -1, -1, 0, 0, 1, 1, 2};
+        //int[] bOffsets = new int[]{0, 0, -1, -1, -2, -1, 0, 0};
+        int[] aOffsets = new int[]{-2, -1, 0, 1, 2};
+        int[] bOffsets = new int[]{0, -1, -2, -1, 0};
 
-    class Head {
-        private Direction direction;
+        int[] xOffsets = new int[5];
+        int[] yOffsets = new int[5];
 
-        private int x;
-        private int y;
-
-        public Head(int x, int y, Direction direction) {
-            this.x = x;
-            this.y = y;
-            this.direction = direction;
-        }
-
-        public void move(RelativeDirection newRelDir) {
-            int multiplier = newRelDir == RelativeDirection.STRAIGHT
-                    || newRelDir == RelativeDirection.LEFT
-                    || newRelDir == RelativeDirection.RIGHT ? 2 : 1;
-            switch (newRelDir) {
-                case LEFT -> {
-                    switch (direction) {
-                        case NORTH -> {
-                            x -= multiplier;
-                            direction = Direction.WEST;
-                        }
-                        case SOUTH -> {
-                            x += multiplier;
-                            direction = Direction.EAST;
-                        }
-                        case EAST -> {
-                            y += multiplier;
-                            direction = Direction.NORTH;
-                        }
-                        case WEST -> {
-                            y -= multiplier;
-                            direction = Direction.SOUTH;
-                        }
-                    }
-                }
-                case RIGHT -> {
-                    switch (direction) {
-                        case NORTH -> {
-                            x += multiplier;
-                            direction = Direction.EAST;
-                        }
-                        case SOUTH -> {
-                            x -= multiplier;
-                            direction = Direction.WEST;
-                        }
-                        case EAST -> {
-                            y -= multiplier;
-                            direction = Direction.SOUTH;
-                        }
-                        case WEST -> {
-                            y += multiplier;
-                            direction = Direction.NORTH;
-                        }
-                    }
-                }
-                case DIAGONAL_LEFT -> {
-                    switch (direction) {
-                        case NORTH -> {
-                            x -= multiplier;
-                            y -= multiplier;
-                        }
-                        case SOUTH -> {
-                            x += multiplier;
-                            y += multiplier;
-                        }
-                        case EAST -> {
-                            x += multiplier;
-                            y -= multiplier;
-                        }
-                        case WEST -> {
-                            x -= multiplier;
-                            y += multiplier;
-                        }
-                    }
-                }
-                case DIAGONAL_RIGHT -> {
-                    switch (direction) {
-                        case NORTH -> {
-                            x += multiplier;
-                            y -= multiplier;
-                        }
-                        case SOUTH -> {
-                            x -= multiplier;
-                            y += multiplier;
-                        }
-                        case EAST -> {
-                            x += multiplier;
-                            y += multiplier;
-                        }
-                        case WEST -> {
-                            x -= multiplier;
-                            y -= multiplier;
-                        }
-                    }
-                }
-                case STRAIGHT -> {
-                    switch (direction) {
-                        case NORTH -> y -= multiplier;
-                        case SOUTH -> y += multiplier;
-                        case EAST -> x += multiplier;
-                        case WEST -> x -= multiplier;
-                    }
-                }
+        switch (head.getDirection()) {
+            case NORTH -> {
+                xOffsets = aOffsets;
+                yOffsets = bOffsets;
+            }
+            case SOUTH -> {
+                xOffsets = Arrays.stream(aOffsets).map(i -> -i).toArray();
+                yOffsets = Arrays.stream(bOffsets).map(i -> -i).toArray();
+            }
+            case EAST -> {
+                xOffsets = Arrays.stream(bOffsets).map(i -> -i).toArray();
+                yOffsets = aOffsets;
+            }
+            case WEST -> {
+                xOffsets = bOffsets;
+                yOffsets = Arrays.stream(aOffsets).map(i -> -i).toArray();
             }
         }
 
-        public char getHeadDirection() {
-            return switch (direction) {
-                case EAST -> '>';
-                case WEST -> '<';
-                case NORTH -> 'A';
-                case SOUTH -> 'V';
-            };
-        }
+        int[] finalXOffsets = xOffsets;
+        int[] finalYOffsets = yOffsets;
+
+        return IntStream.range(0, 5)
+                .mapToObj(i -> {
+                    int x = head.getX() + finalXOffsets[i];
+                    int y = head.getY() + finalYOffsets[i];
+
+                    if (x < 0 || x >= map.getSize() || y < 0 || y >= map.getSize()) {
+                        return null;
+                    }
+                    Transaction t = new Transaction(map);
+                    Position p = map.getPosition(x, y, t);
+                    t.commit();
+                    return p;
+                }).filter(Objects::nonNull).toList();
     }
 
-    class Tail {
-        private int x;
-        private int y;
+    private RelativeDirection getRelativeDirection(Position newPosition) {
+        int dx = newPosition.getX()  - head.getX();
+        int dy = newPosition.getY() - head.getY();
 
-        public Tail(Head h) {
-            calcNewPos(h);
-        }
-
-        public void move(Head h) {
-            calcNewPos(h);
-        }
-
-        public void calcNewPos(Head h) {
-            switch (h.direction) {
-                case NORTH -> {
-                    x = h.x;
-                    y = h.y + 1;
+        RelativeDirection rd = RelativeDirection.STRAIGHT;
+            switch (head.getDirection()) {
+                case NORTH ->  {
+                    if(dx > 0 && dy == 0) {
+                        rd = RelativeDirection.RIGHT;
+                    } else if(dx < 0 && dy == 0) {
+                        rd = RelativeDirection.LEFT;
+                    } else if(dx > 0 && dy < 0) {
+                        rd = RelativeDirection.DIAGONAL_RIGHT;
+                    } else if(dx < 0 && dy < 0) {
+                        rd = RelativeDirection.DIAGONAL_LEFT;
+                    }
                 }
                 case SOUTH -> {
-                    x = h.x;
-                    y = h.y - 1;
+                    if(dx > 0 && dy == 0) {
+                        rd = RelativeDirection.LEFT;
+                    } else if(dx < 0 && dy == 0) {
+                        rd = RelativeDirection.RIGHT;
+                    } else if(dx > 0 && dy < 0) {
+                        rd = RelativeDirection.DIAGONAL_LEFT;
+                    } else if(dx < 0 && dy < 0) {
+                        rd = RelativeDirection.DIAGONAL_RIGHT;
+                    }
                 }
-                case EAST -> {
-                    x = h.x - 1;
-                    y = h.y;
+                case EAST ->  {
+                    if(dy > 0 && dx == 0) {
+                        rd = RelativeDirection.RIGHT;
+                    } else if(dy < 0 && dx == 0) {
+                        rd = RelativeDirection.LEFT;
+                    } else if(dy > 0 && dx > 0) {
+                        rd = RelativeDirection.DIAGONAL_RIGHT;
+                    } else if(dy < 0 && dx > 0) {
+                        rd = RelativeDirection.DIAGONAL_LEFT;
+                    }
                 }
                 case WEST -> {
-                    x = h.x + 1;
-                    y = h.y;
+                    if(dy > 0 && dx == 0) {
+                        rd = RelativeDirection.LEFT;
+                    } else if(dy < 0 && dx == 0) {
+                        rd = RelativeDirection.RIGHT;
+                    } else if(dy > 0 && dx < 0) {
+                        rd = RelativeDirection.DIAGONAL_LEFT;
+                    } else if(dy < 0 && dx < 0) {
+                        rd = RelativeDirection.DIAGONAL_RIGHT;
+                    }
                 }
             }
-        }
+        return rd;
     }
-
-
 };

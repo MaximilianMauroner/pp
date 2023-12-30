@@ -28,7 +28,7 @@ public class Map {
     public static Position[][] generate(int size, int leafs, Hive hive) {
         Position[][] map = IntStream.range(0, size)
                 .mapToObj(i -> IntStream.range(0, size)
-                        .mapToObj(j -> new Position(i, j))
+                        .mapToObj(j -> new Position(j, i))
                         .toArray(Position[]::new))
                 .toArray(Position[][]::new);
 
@@ -50,12 +50,17 @@ public class Map {
     }
 
     public Position getPosition(int x, int y, Transaction t) {
-        Position p = t.getPositionByID(x,y);
-        return p;
+        if (x < 0 || x >= positions.length || y < 0 || y >= positions.length) {
+            return null;
+        }
+
+        return t.getPositionByID(x,y);
     }
 
     public void setPosition(int x, int y, Position p, Transaction t) {
-         t.setPositionByID(x,y,p);
+        if (x < 0 || x >= positions.length || y < 0 || y >= positions.length)
+            return;
+        t.setPositionByID(x,y,p);
     }
 
     //     T.setValueByID(i % 100, i);
