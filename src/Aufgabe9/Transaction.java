@@ -19,7 +19,7 @@ public class Transaction {
     private void attainLock(int x, int y) {
         final ReentrantLock lock = map.getLocks()[y][x];
         if(lock.isLocked()){
-            System.out.println("X:" +x+ " Y:" +y +" is Locked:" + lock.isLocked());
+//            System.out.println("X:" +x+ " Y:" +y +" is Locked:" + lock.isLocked());
         }
         lock.lock();
         locks.get().add(lock);

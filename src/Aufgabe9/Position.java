@@ -52,5 +52,4 @@ public class Position {
     public static double getRandomCoordinate(int num) {
         return (Math.random() * num);
     }
-
 }

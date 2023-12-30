@@ -1,8 +1,9 @@
+import Ant.*;
 public class Arena {
     public static void main(String[] args) {
         try {
             String[] inputPattern = {"ANTS", "LEAFS", "SIZE", "WAITSTEPS"};
-            args = new String[]{"1", "10", "40", "5"};
+            args = new String[]{"5", "10", "15", "5"};
             Parameters params = Parameters.getInstance(args, inputPattern);
 
             System.out.println("ANTS: " + params.get("ANTS"));
@@ -36,15 +37,31 @@ public class Arena {
 //                rs[i].run();
 //            }
 
-            Ant a = new Ant(map, 100, map.getPositions()[10][10], Ant.Direction.NORTH);
+            Ant[] ants =new Ant[params.get("ANTS")];
+            Thread[] threads = new Thread[ants.length];
 
-            System.out.println("--------------------");
+            for (int i = 0; i < ants.length; i++) {
+                ants[i] = new Ant(map, 10, map.getPositions()[i][i], Direction.WEST,i == 0);
+                threads[i] =  new Thread(ants[i]);
+
+            }
             map.print();
 
-            a.move(Ant.RelativeDirection.RIGHT);
+            for (int i = 0; i < ants.length; i++) {
+                threads[i].start();
+            }
 
-            System.out.println("--------------------");
-            map.print();
+
+
+//            System.out.println("--------------------");
+////            map.print();
+//            System.out.println(a.getPosition());
+//            for (int i = 0; i < 4; i++) {
+//                System.out.println(a.getPosition());
+//            }
+//
+//            System.out.println("--------------------");
+//            map.print();
 
 
         } catch (IllegalArgumentException e) {

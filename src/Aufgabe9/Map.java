@@ -17,6 +17,10 @@ public class Map {
         }
     }
 
+    public int getSize(){
+        return this.positions.length;
+    }
+
     public Position[][] getPositions() {
         return positions;
     }
@@ -41,9 +45,9 @@ public class Map {
         map[(int) Math.ceil(hiveX)][(int) Math.ceil(hiveY)].setType('O');
 
         Stream.generate(Position::new)
-                .filter(position -> map[position.getX()][position.getY()].getType() != 'O')
+                .filter(position -> map[position.getY()][position.getX()].getType() != 'O')
                 .limit(leafs)
-                .forEach(position -> map[position.getX()][position.getY()].setType('X'));
+                .forEach(position -> map[position.getY()][position.getX()].setType('X'));
 
 
         return map;
@@ -63,18 +67,29 @@ public class Map {
         t.setPositionByID(x,y,p);
     }
 
-    //     T.setValueByID(i % 100, i);
-//                        T.getValueByID(i % 100);
-//                        if (i % 20 == 0) T.commit();
 
 
 
     public void print() {
+        System.out.println("-------------------------");
         for (Position[] row : positions) {
             for (Position c : row) {
                 System.out.print(c.getType());
             }
             System.out.println();
+        }
+        System.out.println("-------------------------");
+    }
+
+    public void printPositions(){
+        for (Position[] row : positions) {
+            for (Position c : row) {
+                switch(c.getType()) {
+                    case '+', 'A', 'V', '<', '>' ->
+                            System.out.println("x:" + c.getX() + "\ty:" + c.getY() + "\t" + c.getType());
+                    default -> System.out.print("");
+                }
+            }
         }
     }
 }
