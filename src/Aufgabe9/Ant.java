@@ -14,20 +14,23 @@ public class Ant implements Runnable {
     }
 
     public void move(RelativeDirection newRelDir) {
+        clearPositions();
         this.head.move(newRelDir);
         this.tail.move(head);
         writePositions();
     }
 
+    public void clearPositions() {
+        Transaction t = new Transaction(map);
+        t.setValueByID(head.x, head.y, ' ');
+        t.setValueByID(tail.x, tail.y, ' ');
+        t.commit();
+    }
+
     public void writePositions() {
         Transaction t = new Transaction(map);
-        int headX = head.x;
-        int headY = head.y;
-        int tailX = tail.x;
-        int tailY = tail.y;
-
-        t.setValueByID(headX, headY, head.getHeadDirection());
-        t.setValueByID(tailX, tailY, '+');
+        t.setValueByID(head.x, head.y, head.getHeadDirection());
+        t.setValueByID(tail.x, tail.y, '+');
         t.commit();
     }
 
@@ -72,7 +75,9 @@ public class Ant implements Runnable {
         }
 
         public void move(RelativeDirection newRelDir) {
-            int multiplier = newRelDir.equals(RelativeDirection.STRAIGHT) ? 2 : 1;
+            int multiplier = newRelDir == RelativeDirection.STRAIGHT
+                    || newRelDir == RelativeDirection.LEFT
+                    || newRelDir == RelativeDirection.RIGHT ? 2 : 1;
             switch (newRelDir) {
                 case LEFT -> {
                     switch (direction) {
