@@ -31,4 +31,8 @@ public class Parameters {
         return parameters.get(key.toUpperCase());
     }
 
+    public void set(String key, Integer value) {
+        parameters.put(key.toUpperCase(), value);
+    }
+
 }

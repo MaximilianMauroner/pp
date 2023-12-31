@@ -1,14 +1,25 @@
 import Ant.*;
+
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
+
 public class Arena {
     public static void main(String[] args) {
         try {
             String[] inputPattern = {"ANTS", "LEAFS", "SIZE", "WAITSTEPS"};
-            args = new String[]{"5", "10", "15", "5"};
+            args = new String[]{"50", "10", "250", "5"};
+
             Parameters params = Parameters.getInstance(args, inputPattern);
+            params.set("LEAF_MIN_AREA", 1);
+            params.set("LEAF_MAX_AREA", 10);
 
             System.out.println("ANTS: " + params.get("ANTS"));
 
-            Hive hive = new Hive();
+            // start Nest Process
+            ProcessBuilder builder = new ProcessBuilder("java", "Nest");
+            Process nestProcess = builder.start();
+
+            Hive hive = new Hive(new ObjectOutputStream(nestProcess.getOutputStream()));
 
             Map map = new Map(params.get("SIZE"), params.get("LEAFS"), hive);
 //            map.print();

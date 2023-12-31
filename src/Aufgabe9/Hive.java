@@ -1,8 +1,12 @@
+import java.io.*;
+
 public class Hive {
     private final double hiveX;
     private final double hiveY;
+    private final ObjectOutputStream stream;
 
-    public Hive() {
+    public Hive(ObjectOutputStream stream) {
+        this.stream = stream;
         Parameters parameters = Parameters.getInstance();
         if (parameters != null) {
             int size = parameters.get("SIZE");
@@ -20,6 +24,19 @@ public class Hive {
 
     public double getY() {
         return hiveY;
+    }
+
+    public void receiveFood(Leaf leaf) {
+        System.out.println("Received " + leaf.getArea() + " units of food");
+        synchronized (stream) {
+            try {
+                // TODO: send leaf to nest
+                stream.writeObject(leaf);
+                stream.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

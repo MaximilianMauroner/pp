@@ -102,7 +102,7 @@ public class Ant implements Runnable {
 
 
             try {
-                Thread.sleep((int) (Math.random() * wait + 3000));
+                Thread.sleep((int) (Math.random() * wait));
                 if(isLeadAnt){
 //                    map.printPositions();
                     map.print();
