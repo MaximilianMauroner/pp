@@ -6,13 +6,13 @@ public class Map {
     private final Position[][] positions;
     private final ReentrantLock[][] locks;
 
-    public Map(int size, int leafs, Hive hive) {
-        this.positions = Map.generate(size, leafs, hive);
-        this.locks = new ReentrantLock[size][size];
+    public Map(int width, int height, int leafs, Hive hive) {
+        this.positions = Map.generate(width, height, leafs, hive);
+        this.locks = new ReentrantLock[height][width];
 
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                locks[i][j] = new ReentrantLock();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                locks[j][i] = new ReentrantLock();
             }
         }
     }
@@ -29,9 +29,9 @@ public class Map {
         return locks;
     }
 
-    public static Position[][] generate(int size, int leafs, Hive hive) {
-        Position[][] map = IntStream.range(0, size)
-                .mapToObj(i -> IntStream.range(0, size)
+    public static Position[][] generate(int width, int height, int leafs, Hive hive) {
+        Position[][] map = IntStream.range(0, height)
+                .mapToObj(i -> IntStream.range(0, width)
                         .mapToObj(j -> new Position(j, i))
                         .toArray(Position[]::new))
                 .toArray(Position[][]::new);

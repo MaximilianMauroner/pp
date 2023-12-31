@@ -6,12 +6,17 @@ import java.io.ObjectOutputStream;
 public class Arena {
     public static void main(String[] args) {
         try {
-            String[] inputPattern = {"ANTS", "LEAFS", "SIZE", "WAITSTEPS"};
-            args = new String[]{"50", "10", "250", "5"};
+            String[] inputPattern = {"ANTS", "LEAFS", "WIDTH", "HEIGHT", "WAITSTEPS"};
+            args = new String[]{"5", "10", "50", "40", "5"};
 
             Parameters params = Parameters.getInstance(args, inputPattern);
             params.set("LEAF_MIN_AREA", 1);
             params.set("LEAF_MAX_AREA", 10);
+            params.bound("ANTS", 1, 100);
+            params.bound("LEAFS", 1, 100);
+            params.bound("WIDTH", 10, 80);
+            params.bound("HEIGHT", 10, 80);
+
 
             System.out.println("ANTS: " + params.get("ANTS"));
 
@@ -21,7 +26,7 @@ public class Arena {
 
             Hive hive = new Hive(new ObjectOutputStream(nestProcess.getOutputStream()));
 
-            Map map = new Map(params.get("SIZE"), params.get("LEAFS"), hive);
+            Map map = new Map(params.get("WIDTH"), params.get("HEIGHT"), params.get("LEAFS"), hive);
 //            map.print();
 
 //            Runnable rs[] = new Runnable[20000];

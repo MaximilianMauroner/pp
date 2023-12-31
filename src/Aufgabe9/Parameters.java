@@ -35,4 +35,12 @@ public class Parameters {
         parameters.put(key.toUpperCase(), value);
     }
 
+    public void bound(String key, Integer min, Integer max) {
+        if (parameters.get(key.toUpperCase()) < min) {
+            parameters.put(key.toUpperCase(), min);
+        } else if (parameters.get(key.toUpperCase()) > max) {
+            parameters.put(key.toUpperCase(), max);
+        }
+    }
+
 }

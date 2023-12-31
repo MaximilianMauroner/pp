@@ -23,13 +23,17 @@ public class Position {
 
     public Position() {
         Parameters parameters = Parameters.getInstance();
-        if (parameters != null) {
-            int size = parameters.get("SIZE");
-            this.x = (int) getRandomCoordinate(size);
-            this.y = (int) getRandomCoordinate(size);
-        } else {
-            this.x = 0;
-            this.y = 0;
+
+        int width = 0;
+        int height = 0;
+        try {
+            width = parameters.get("WIDTH");
+            height = parameters.get("HEIGHT");
+        } catch(NullPointerException e) {
+            System.out.println("Parameters not initialized");
+        } finally {
+            this.x = (int) getRandomCoordinate(width);
+            this.y = (int) getRandomCoordinate(height);
         }
     }
 
