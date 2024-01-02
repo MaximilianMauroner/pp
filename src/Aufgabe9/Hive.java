@@ -38,7 +38,7 @@ public class Hive {
                 // TODO: send leaf to nest
                 stream.writeObject(leaf);
                 stream.flush();
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

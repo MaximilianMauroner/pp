@@ -1,8 +1,6 @@
 import Ant.*;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -14,6 +12,7 @@ public class Arena {
     static Thread[] threads;
     static Ant[] ants;
     static Path path = Path.of("./test.out");
+    static Process nestProcess;
 
     public static void main(String[] args) {
         try {
@@ -33,7 +32,8 @@ public class Arena {
 
             // start Nest Process
             ProcessBuilder builder = new ProcessBuilder("java", "Nest");
-            Process nestProcess = builder.start();
+            builder.directory(new File("./out/production/pp/"));
+            nestProcess = builder.start();
 
             Hive hive = new Hive(new ObjectOutputStream(nestProcess.getOutputStream()));
 

@@ -10,13 +10,14 @@ import java.util.List;
 
 public class Nest {
     public static void main(String[] args) {
+
         try {
             InputStream input = System.in;
             BufferedInputStream bufferedInput = new BufferedInputStream(input);
             ObjectInputStream stream = new ObjectInputStream(bufferedInput);
 
             List<Leaf> leafs = new ArrayList<>();
-            Path path = Path.of("./test.out");
+            Path path = Path.of("/Users/lessi/PP/pp/test.out");
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
@@ -27,6 +28,7 @@ public class Nest {
                     List<String> lines = leafs.stream().map(Leaf::getArea).map(String::valueOf).toList();
                     Files.write(path, lines, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
 
+                    System.out.println("Nest stopped");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
