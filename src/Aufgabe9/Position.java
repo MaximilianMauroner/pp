@@ -56,4 +56,13 @@ public class Position {
     public static double getRandomCoordinate(int num) {
         return (Math.random() * num);
     }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+               "type=" + type +
+               ", x=" + x +
+               ", y=" + y +
+               '}';
+    }
 }

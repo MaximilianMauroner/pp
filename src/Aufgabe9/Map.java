@@ -1,3 +1,4 @@
+import javax.xml.crypto.dsig.TransformService;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -5,6 +6,7 @@ import java.util.stream.Stream;
 public class Map {
     private final Position[][] positions;
     private final ReentrantLock[][] locks;
+    private final ReentrantLock mapLock = new ReentrantLock();
 
     public Map(int width, int height, int leafs, Hive hive) {
         this.positions = Map.generate(width, height, leafs, hive);
@@ -15,18 +17,6 @@ public class Map {
                 locks[j][i] = new ReentrantLock();
             }
         }
-    }
-
-    public int getSize(){
-        return this.positions.length;
-    }
-
-    public Position[][] getPositions() {
-        return positions;
-    }
-
-    public ReentrantLock[][] getLocks() {
-        return locks;
     }
 
     public static Position[][] generate(int width, int height, int leafs, Hive hive) {
@@ -53,22 +43,37 @@ public class Map {
         return map;
     }
 
+    public int getWidth() {
+        return this.positions[0].length;
+    }
+
+    public int getHeigth() {
+        return this.positions.length;
+    }
+
+    public Position[][] getPositions() {
+        return positions;
+    }
+
+    public ReentrantLock[][] getLocks() {
+        return locks;
+    }
+
     public Position getPosition(int x, int y, Transaction t) {
-        if (x < 0 || x >= positions.length || y < 0 || y >= positions.length) {
+        if (x < 0 || x >= this.getWidth() || y < 0 || y >= this.getHeigth()) {
             return null;
         }
 
-        return t.getPositionByID(x,y);
+        return t.getPositionByID(x, y);
     }
 
-    public void setPosition(int x, int y, Position p, Transaction t) {
-        if (x < 0 || x >= positions.length || y < 0 || y >= positions.length)
-            return;
-        t.setPositionByID(x,y,p);
+    public Position tryGetPosition(int x, int y, Transaction t) {
+        if (x < 0 || x >= this.getWidth() || y < 0 || y >= this.getHeigth()) {
+            return null;
+        }
+
+        return t.tryGetPositionByID(x, y);
     }
-
-
-
 
     public void print() {
         System.out.println("-------------------------");
@@ -81,10 +86,11 @@ public class Map {
         System.out.println("-------------------------");
     }
 
-    public void printPositions(){
+
+    public void printPositions() {
         for (Position[] row : positions) {
             for (Position c : row) {
-                switch(c.getType()) {
+                switch (c.getType()) {
                     case '+', 'A', 'V', '<', '>' ->
                             System.out.println("x:" + c.getX() + "\ty:" + c.getY() + "\t" + c.getType());
                     default -> System.out.print("");

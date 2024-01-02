@@ -15,8 +15,9 @@ public class SampleFromProbabilties implements Function<List<Double>, Integer> {
                     cumulativeProbabilities.add(sum + probability);
                     return sum + probability;
                 });
-
-        double randomValue = Math.random() * cumulativeProbabilities.get(cumulativeProbabilities.size() - 1);
+        int size = cumulativeProbabilities.size();
+        if (size == 0) return -1;
+        double randomValue = Math.random() * cumulativeProbabilities.get(size - 1);
 
         // Find the index corresponding to the random number in cumulative probabilities
         return IntStream.range(0, cumulativeProbabilities.size())

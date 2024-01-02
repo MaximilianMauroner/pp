@@ -1,9 +1,20 @@
 import Ant.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+import java.util.List;
 
 public class Arena {
+
+    static Thread[] threads;
+    static Ant[] ants;
+    static Path path = Path.of("./test.out");
+
     public static void main(String[] args) {
         try {
             String[] inputPattern = {"ANTS", "LEAFS", "WIDTH", "HEIGHT", "WAITSTEPS"};
@@ -27,63 +38,41 @@ public class Arena {
             Hive hive = new Hive(new ObjectOutputStream(nestProcess.getOutputStream()));
 
             Map map = new Map(params.get("WIDTH"), params.get("HEIGHT"), params.get("LEAFS"), hive);
-//            map.print();
 
-//            Runnable rs[] = new Runnable[20000];
-//            for (int i = 0; i < rs.length; i++) {
-//                final int finalI = i;
-//                rs[i] = new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Transaction t = new Transaction(map);
-//                        t.setValueByID(1, 1, Integer.toString(finalI).charAt(0));
-//                        t.setValueByID(2, 2, Integer.toString(finalI).charAt(0));
-//                        char x  = t.getValueByID(3, 3);
-//                        try {
-//                            int sleepTimer =(int) (Math.random() * 100);
-//                            Thread.sleep(sleepTimer);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                        t.commit();
-//                    }
-//                };
-//            }
-//            for (int i = 0; i < rs.length; i++) {
-//                rs[i].run();
-//            }
-
-            Ant[] ants =new Ant[params.get("ANTS")];
-            Thread[] threads = new Thread[ants.length];
+            Arena.ants = new Ant[params.get("ANTS")];
+            Arena.threads = new Thread[ants.length];
 
             for (int i = 0; i < ants.length; i++) {
-                ants[i] = new Ant(map, 10, map.getPositions()[i][i], Direction.WEST,i == 0);
-                threads[i] =  new Thread(ants[i]);
+                ants[i] = new Ant(map, 10, map.getPositions()[i][i], Direction.WEST, i == ants.length - 1);
+                threads[i] = new Thread(ants[i]);
 
             }
-            map.print();
+//            map.print();
 
             for (int i = 0; i < ants.length; i++) {
                 threads[i].start();
             }
 
 
-
-//            System.out.println("--------------------");
-////            map.print();
-//            System.out.println(a.getPosition());
-//            for (int i = 0; i < 4; i++) {
-//                System.out.println(a.getPosition());
-//            }
-//
-//            System.out.println("--------------------");
-//            map.print();
-
-
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void stop() {
+        List<String> lines = Arrays.stream(ants).map(Ant::print).toList();
+
+        try {
+            Files.write(path, lines, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Stopping ants: ");
+        for (Thread thread : Arena.threads) {
+            thread.interrupt();
         }
     }
 }
