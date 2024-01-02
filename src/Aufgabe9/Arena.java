@@ -1,6 +1,9 @@
 import Ant.*;
 
-import java.io.*;
+import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -12,12 +15,11 @@ public class Arena {
     static Thread[] threads;
     static Ant[] ants;
     static Path path = Path.of("./test.out");
-    static Process nestProcess;
 
     public static void main(String[] args) {
         try {
             String[] inputPattern = {"ANTS", "LEAFS", "WIDTH", "HEIGHT", "WAITSTEPS"};
-            args = new String[]{"5", "10", "50", "40", "5"};
+            args = new String[]{"5", "1", "20", "20", "5"};
 
             Parameters params = Parameters.getInstance(args, inputPattern);
             params.set("LEAF_MIN_AREA", 1);
@@ -32,8 +34,7 @@ public class Arena {
 
             // start Nest Process
             ProcessBuilder builder = new ProcessBuilder("java", "Nest");
-            builder.directory(new File("./out/production/pp/"));
-            nestProcess = builder.start();
+            Process nestProcess = builder.start();
 
             Hive hive = new Hive(new ObjectOutputStream(nestProcess.getOutputStream()));
 
@@ -43,7 +44,7 @@ public class Arena {
             Arena.threads = new Thread[ants.length];
 
             for (int i = 0; i < ants.length; i++) {
-                ants[i] = new Ant(map, 10, map.getPositions()[i][i], Direction.WEST, i == ants.length - 1);
+                ants[i] = new Ant(map, 10, map.getPositions().get(new Point(i, i)), Direction.WEST, i == ants.length - 1);
                 threads[i] = new Thread(ants[i]);
 
             }
