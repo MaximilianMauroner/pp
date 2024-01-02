@@ -17,7 +17,7 @@ public class Arena {
     public static void main(String[] args) {
         try {
             String[] inputPattern = {"ANTS", "LEAFS", "WIDTH", "HEIGHT", "WAITSTEPS"};
-            args = new String[]{"5", "10", "50", "40", "5"};
+            args = new String[]{"3", "10", "50", "40", "5"};
 
             Parameters params = Parameters.getInstance(args, inputPattern);
             params.set("LEAF_MIN_AREA", 1);

@@ -1,16 +1,20 @@
 import javax.xml.crypto.dsig.TransformService;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Map {
+
     private final Position[][] positions;
     private final ReentrantLock[][] locks;
     private final ReentrantLock mapLock = new ReentrantLock();
+    AtomicBoolean isMapLocked = new AtomicBoolean(false);
 
     public Map(int width, int height, int leafs, Hive hive) {
         this.positions = Map.generate(width, height, leafs, hive);
         this.locks = new ReentrantLock[height][width];
+
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -43,6 +47,18 @@ public class Map {
         return map;
     }
 
+    public void lockMap() {
+        isMapLocked.set(true);
+    }
+
+    public boolean isLocked() {
+        return isMapLocked.get();
+    }
+
+    public void unlockMap() {
+        isMapLocked.set(false);
+    }
+
     public int getWidth() {
         return this.positions[0].length;
     }
@@ -67,15 +83,8 @@ public class Map {
         return t.getPositionByID(x, y);
     }
 
-    public Position tryGetPosition(int x, int y, Transaction t) {
-        if (x < 0 || x >= this.getWidth() || y < 0 || y >= this.getHeigth()) {
-            return null;
-        }
-
-        return t.tryGetPositionByID(x, y);
-    }
-
     public void print() {
+        this.lockMap();
         System.out.println("-------------------------");
         for (Position[] row : positions) {
             for (Position c : row) {
@@ -84,6 +93,7 @@ public class Map {
             System.out.println();
         }
         System.out.println("-------------------------");
+        this.unlockMap();
     }
 
 
@@ -97,5 +107,17 @@ public class Map {
                 }
             }
         }
+    }
+
+    public int getLocksCount() {
+        int count = 0;
+        for (int i = 0; i < this.getHeigth(); i++) {
+            for (int j = 0; j < this.getWidth(); j++) {
+                if (this.locks[i][j].isLocked()) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 }

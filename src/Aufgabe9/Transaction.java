@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -6,14 +7,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 
 public class Transaction {
+    public static java.util.List<Transaction> transactionList = new ArrayList<>();
     private Map map;
-
-    private ThreadLocal<HashMap<Point, ReentrantLock>> lockPosition = new ThreadLocal<HashMap<Point, ReentrantLock>>() {
-        @Override
-        protected HashMap<Point, ReentrantLock> initialValue() {
-            return new HashMap<>();
-        }
-    };
     private ThreadLocal<Set<ReentrantLock>> locks = new ThreadLocal<Set<ReentrantLock>>() {
         @Override
         protected Set<ReentrantLock> initialValue() {
@@ -22,6 +17,7 @@ public class Transaction {
     };
 
     public Transaction(Map map) {
+        Transaction.transactionList.add(this);
         this.map = map;
     }
 
@@ -29,14 +25,12 @@ public class Transaction {
         final ReentrantLock lock = map.getLocks()[y][x];
         lock.lock();
         locks.get().add(lock);
-        lockPosition.get().put(new Point(x, y), lock);
     }
 
     private boolean tryAttainLock(int x, int y) {
         final ReentrantLock lock = map.getLocks()[y][x];
         if (lock.tryLock()) {
             locks.get().add(lock);
-            lockPosition.get().put(new Point(x, y), lock);
             return true;
         }
         return false;
@@ -44,20 +38,20 @@ public class Transaction {
 
     private void releaseLock(ReentrantLock lock) {
         final Set<ReentrantLock> lockSet = locks.get();
-
         if (!lockSet.contains(lock)) {
             throw new IllegalStateException("Locked");
         }
         lockSet.remove(lock);
         lock.unlock();
+        //System.out.println("release lock");
     }
 
     private void releaseLocks() {
-        final Set<ReentrantLock> lockSet = new HashSet<ReentrantLock>(locks.get());
+        final Set<ReentrantLock> lockSet = new HashSet<>(locks.get());
+        //System.out.println(lockSet.size());
         for (ReentrantLock reentrantLock : lockSet) {
             releaseLock(reentrantLock);
         }
-        lockPosition.get().clear();
     }
 
     public void setValueByID(int x, int y, char value) {
@@ -75,21 +69,8 @@ public class Transaction {
         return map.getPositions()[y][x];
     }
 
-    public Position tryGetPositionByID(int x, int y) {
-        if (tryAttainLock(x, y))
-            return map.getPositions()[y][x];
-        return null;
-    }
-
-    public void unsafeRelease(Position p) {
-        Point point = new Point(p.getX(), p.getY());
-        if (!lockPosition.get().containsKey(point)) return;
-        ReentrantLock t = lockPosition.get().get(point);
-        locks.get().remove(t);
-        map.getLocks()[p.getY()][p.getX()].unlock();
-    }
-
     void commit() {
         releaseLocks();
+        Transaction.transactionList.remove(this);
     }
 }

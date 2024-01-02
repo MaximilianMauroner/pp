@@ -1,9 +1,11 @@
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.IntStream;
 
 import Ant.*;
 
 public class Ant implements Runnable {
+
     private final Map map;
     private final int wait;
     private final boolean isLeadAnt;
@@ -64,13 +66,20 @@ public class Ant implements Runnable {
         ) {
             return false;
         }
+
+//        concurrent get positions
+        Position hp = this.map.getPosition(newHead.getX(), newHead.getY(), t);
+        Position tp = this.map.getPosition(newTail.getX(), newTail.getY(), t);
+        if (this.isInvalidNextPosition(hp) || this.isInvalidNextPosition(tp)) {
+            return false;
+        }
+
         clearPositions(t);
 
         this.head = newHead;
         this.tail = newTail;
 
         writePositions(t);
-
         return true;
     }
 
@@ -103,8 +112,11 @@ public class Ant implements Runnable {
         while (true) {
 //            TOOD if found leaf increase increasePheromoneLevel
             if (!skipNextMove) {
-                Transaction t = new Transaction(map);
-                List<Position> positions = getPossiblePositions(t);
+                if (this.map.isLocked()) {
+                    continue;
+                }
+                List<Position> positions = getPossiblePositions();
+
                 List<Double> probabilities = positions.stream().mapToDouble(p ->
                         switch (p.getType()) {
                             case 'X' -> 1;
@@ -116,9 +128,12 @@ public class Ant implements Runnable {
                 int index = new SampleFromProbabilties().apply(probabilities);
                 if (index != -1) {
                     Position newPosition = positions.get(index);
+                    Transaction t = new Transaction(map);
                     RelativeDirection newRelDir = getRelativeDirection(newPosition);
                     boolean moved = move(newRelDir, t);
 //                    this.increasePheromoneLevel();
+                    t.commit();
+                    //System.out.println("Locks:" + this.map.getLocksCount());
                     if (moved) {
                         steps++;
                     }
@@ -126,7 +141,6 @@ public class Ant implements Runnable {
                     waitSteps--;
                     this.skipNextMove = true;
                 }
-                t.commit();
             } else {
                 this.skipNextMove = false;
             }
@@ -146,7 +160,7 @@ public class Ant implements Runnable {
         }
     }
 
-    private List<Position> getPossiblePositions(Transaction t) {
+    private List<Position> getPossiblePositions() {
 
         //int[] aOffsets = new int[]{-2, -1, -1, 0, 0, 1, 1, 2};
         //int[] bOffsets = new int[]{0, 0, -1, -1, -2, -1, 0, 0};
@@ -177,39 +191,18 @@ public class Ant implements Runnable {
 
         int[] finalXOffsets = xOffsets;
         int[] finalYOffsets = yOffsets;
-        List<Position> positionList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            int x = head.getX() + finalXOffsets[i];
-            int y = head.getY() + finalYOffsets[i];
 
-            if (x < 0 || x >= map.getWidth() || y < 0 || y >= map.getHeigth()) {
-                continue;
-            }
-            Position p = map.tryGetPosition(x, y, t);
-            if(p == null) continue;
-            if (this.isInvalidNextPosition(p)) {
-                t.unsafeRelease(p);
-            };
-            positionList.add(p);
-        }
-        if (positionList.size() == 0) {
-            for (int i = 0; i < 5; i++) {
-                int x = head.getX() + finalXOffsets[i];
-                int y = head.getY() + finalYOffsets[i];
+        return IntStream.range(0, 5)
+                .mapToObj(i -> {
+                    int x = head.getX() + finalXOffsets[i];
+                    int y = head.getY() + finalYOffsets[i];
 
-                if (x < 0 || x >= map.getWidth() || y < 0 || y >= map.getHeigth()) {
-                    continue;
-                }
-                Position p = map.getPosition(x, y, t);
-                if(p == null) continue;
-                if (this.isInvalidNextPosition(p)) {
-                    t.unsafeRelease(p);
-                };
-                positionList.add(p);
-            }
-        }
-        return positionList;
+                    if (x < 0 || x >= map.getWidth() || y < 0 || y >= map.getHeigth()) {
+                        return null;
+                    }
+                    return map.getPositions()[y][x];
 
+                }).filter(Objects::nonNull).toList();
     }
 
     private RelativeDirection getRelativeDirection(Position newPosition) {
