@@ -2,6 +2,8 @@ package Ant;
 
 public class Head {
     private Ant.Direction direction;
+
+    private char oldType = ' ';
     private int x;
     private int y;
 
@@ -16,6 +18,14 @@ public class Head {
 
     public Direction getDirection() {
         return direction;
+    }
+
+    public char getOldType() {
+        return oldType;
+    }
+
+    public void setOldType(char oldType) {
+        this.oldType = oldType;
     }
 
     public Head(int x, int y, Ant.Direction direction) {

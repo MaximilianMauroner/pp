@@ -4,12 +4,22 @@ public class Tail {
     private int x;
     private int y;
 
+    private char oldType = ' ';
+
     public int getX() {
         return x;
     }
 
     public int getY() {
         return y;
+    }
+
+    public char getOldType() {
+        return oldType;
+    }
+
+    public void setOldType(char oldType) {
+        this.oldType = oldType;
     }
 
     public Tail(Head h) {

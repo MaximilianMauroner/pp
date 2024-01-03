@@ -7,7 +7,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 
 public class Transaction {
-    public static java.util.List<Transaction> transactionList = new ArrayList<>();
     private Map map;
     private ThreadLocal<Set<ReentrantLock>> locks = new ThreadLocal<Set<ReentrantLock>>() {
         @Override
@@ -17,11 +16,13 @@ public class Transaction {
     };
 
     public Transaction(Map map) {
-        Transaction.transactionList.add(this);
         this.map = map;
     }
 
     private void attainLock(int x, int y) {
+        if (locks.get().contains(map.getLocks()[y][x])) {
+            return;
+        }
         final ReentrantLock lock = map.getLocks()[y][x];
         lock.lock();
         locks.get().add(lock);
@@ -71,6 +72,5 @@ public class Transaction {
 
     void commit() {
         releaseLocks();
-        Transaction.transactionList.remove(this);
     }
 }

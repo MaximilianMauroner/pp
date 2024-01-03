@@ -15,6 +15,8 @@ public class Leaf implements Serializable {
         return area;
     }
 
-    // ToDO: serialize and deserialize
+    public String toString() {
+        return "{Leaf: " + this.hashCode() + " Area: " + area + "}";
+    }
 
 }

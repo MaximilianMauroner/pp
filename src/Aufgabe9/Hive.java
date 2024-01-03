@@ -32,10 +32,10 @@ public class Hive {
     }
 
     public void receiveFood(Leaf leaf) {
-        System.out.println("Received " + leaf.getArea() + " units of food");
+        System.out.println("Arena " + Arena.hashCode + ": Received " + leaf.getArea() + " units of food");
         synchronized (stream) {
             try {
-                // TODO: send leaf to nest
+                // send leaf to nest
                 stream.writeObject(leaf);
                 stream.flush();
             } catch (IOException e) {

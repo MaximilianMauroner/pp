@@ -48,6 +48,7 @@ public class Map {
     }
 
     public void lockMap() {
+        mapLock.lock();
         isMapLocked.set(true);
     }
 
@@ -57,6 +58,7 @@ public class Map {
 
     public void unlockMap() {
         isMapLocked.set(false);
+        mapLock.unlock();
     }
 
     public int getWidth() {
@@ -85,7 +87,8 @@ public class Map {
 
     public void print() {
         this.lockMap();
-        System.out.println("-------------------------");
+        System.out.println("Arena "+ Arena.hashCode +
+                "\n-------------------------");
         for (Position[] row : positions) {
             for (Position c : row) {
                 System.out.print(c.getType());

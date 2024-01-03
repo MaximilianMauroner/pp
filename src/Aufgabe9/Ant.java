@@ -7,10 +7,10 @@ import Ant.*;
 public class Ant implements Runnable {
 
     private final Map map;
-    private final int wait;
+    private final Hive hive;
     private final boolean isLeadAnt;
 
-    private int waitSteps = 64;
+    private int waitSteps = Parameters.getInstance().get("WAITSTEPS");
     private boolean skipNextMove = false;
     private int steps = 0;
 
@@ -19,10 +19,12 @@ public class Ant implements Runnable {
     private Head head;
     private Tail tail;
 
+    private Leaf leaf;
 
-    public Ant(Map map, int wait, Position init, Direction direction) {
+
+    public Ant(Map map, Hive hive, Position init, Direction direction) {
         this.map = map;
-        this.wait = wait;
+        this.hive = hive;
         this.head = new Head(init.getX(), init.getY(), direction);
         this.tail = new Tail(head);
         this.isLeadAnt = false;
@@ -31,9 +33,9 @@ public class Ant implements Runnable {
         t.commit();
     }
 
-    public Ant(Map map, int wait, Position init, Direction direction, boolean isLeadAnt) {
+    public Ant(Map map, Hive hive, Position init, Direction direction, boolean isLeadAnt) {
         this.map = map;
-        this.wait = wait;
+        this.hive = hive;
         this.head = new Head(init.getX(), init.getY(), direction);
         this.tail = new Tail(head);
         this.isLeadAnt = isLeadAnt;
@@ -43,18 +45,21 @@ public class Ant implements Runnable {
     }
 
     public String print() {
-        return "Wait: " +
-               (64 - waitSteps) +
-               " Steps: " +
-               steps +
-               "Head: x=" +
-               head.getX() +
-               ", y=" +
-               head.getY() +
-               "Tail: x=" +
-               tail.getX() +
-               ", y=" +
-               tail.getY();
+        return "{Ant: " +
+                this.hashCode() +
+                " Wait: " +
+                (64 - waitSteps) +
+                " Steps: " +
+                steps +
+                " Head: x=" +
+                head.getX() +
+                ", y=" +
+                head.getY() +
+                " Tail: x=" +
+                tail.getX() +
+                ", y=" +
+                tail.getY() +
+                "}";
     }
 
     private boolean move(RelativeDirection newRelDir, Transaction t) {
@@ -88,15 +93,24 @@ public class Ant implements Runnable {
     }
 
     public void clearPositions(Transaction t) {
+        char oldHead = head.getOldType();
+        char oldTail = tail.getOldType();
+
         char level = ' ';
         if (this.pheromoneLevel > 0) {
             level = String.valueOf(this.pheromoneLevel).charAt(0);
         }
-        t.setValueByID(head.getX(), head.getY(), level);
-        t.setValueByID(tail.getX(), tail.getY(), level);
+        oldHead = oldHead == ' ' ? level : oldHead;
+        oldTail = oldTail == ' ' ? level : oldTail;
+        t.setValueByID(head.getX(), head.getY(), oldHead);
+        t.setValueByID(tail.getX(), tail.getY(), oldTail);
     }
 
     public void writePositions(Transaction t) {
+        char newHead = t.getPositionByID(head.getX(), head.getY()).getType();
+        char newTail = t.getPositionByID(tail.getX(), tail.getY()).getType();
+        head.setOldType(newHead);
+        tail.setOldType(newTail);
         t.setValueByID(head.getX(), head.getY(), head.getHeadDirection());
         t.setValueByID(tail.getX(), tail.getY(), '+');
     }
@@ -109,7 +123,7 @@ public class Ant implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
 //            TOOD if found leaf increase increasePheromoneLevel
             if (!skipNextMove) {
                 if (this.map.isLocked()) {
@@ -117,25 +131,57 @@ public class Ant implements Runnable {
                 }
                 List<Position> positions = getPossiblePositions();
 
-                List<Double> probabilities = positions.stream().mapToDouble(p ->
-                        switch (p.getType()) {
-                            case 'X' -> 1;
-                            case 'O' -> 0;
-                            case ' ' -> 0.01;
-                            default -> Character.getNumericValue(p.getType()) / 9;
+                int index;
+
+                if (this.leaf == null) {
+                    List<Double> probabilities = positions.stream().mapToDouble(p ->
+                            switch (p.getType()) {
+                                case 'X' -> {
+                                    this.leaf = new Leaf();
+                                    yield 1;
+                                }
+                                case 'O' -> 0;
+                                case ' ' -> Math.random() * 0.01;
+                                default -> Character.getNumericValue(p.getType()) / 9;
+                            }
+                    ).collect(Vector::new, Vector::add, Vector::addAll);
+                    index = new SampleFromProbabilties().apply(probabilities);
+                } else {
+                    List<Double> distances = positions.stream()
+                            .mapToDouble(p -> {
+                                double dx = p.getX() - hive.getX();
+                                double dy = p.getY() - hive.getY();
+                                return Math.sqrt(dx * dx + dy * dy);
+                            }).collect(Vector::new, Vector::add, Vector::addAll);
+
+                    try {
+                        index = distances.indexOf(Collections.min(distances));
+
+                        if (positions.get(index).getType() == 'O') {
+                            this.hive.receiveFood(this.leaf);
+                            this.leaf = null;
+                        } else if (isInvalidNextPosition(positions.get(index))) {
+                            index = -1;
                         }
-                ).collect(Vector::new, Vector::add, Vector::addAll);
-                int index = new SampleFromProbabilties().apply(probabilities);
+                    } catch (NoSuchElementException e) {
+                        index = -1;
+                    }
+                }
+
+
                 if (index != -1) {
                     Position newPosition = positions.get(index);
                     Transaction t = new Transaction(map);
                     RelativeDirection newRelDir = getRelativeDirection(newPosition);
                     boolean moved = move(newRelDir, t);
-//                    this.increasePheromoneLevel();
+                    this.increasePheromoneLevel();
                     t.commit();
                     //System.out.println("Locks:" + this.map.getLocksCount());
                     if (moved) {
                         steps++;
+                    } else {
+                        waitSteps--;
+                        this.skipNextMove = true;
                     }
                 } else {
                     waitSteps--;
@@ -144,18 +190,21 @@ public class Ant implements Runnable {
             } else {
                 this.skipNextMove = false;
             }
-            if (waitSteps == 0) {
+            if (waitSteps <= 0) {
                 Arena.stop();
             }
 
 
             try {
-                Thread.sleep((int) (Math.random() * wait));
+                int min_wait = 5;
+                int max_wait = 50;
+                Thread.sleep((int) (Math.random() * (max_wait - min_wait) + min_wait));
                 if (isLeadAnt) {
                     map.print();
                 }
             } catch (InterruptedException e) {
-                System.out.println("Ant " + this.hashCode() + " stopped");
+                System.out.println("Arena " + Arena.hashCode + ": Ant " + this.hashCode() + " stopped");
+                return;
             }
         }
     }
@@ -166,41 +215,65 @@ public class Ant implements Runnable {
         //int[] bOffsets = new int[]{0, 0, -1, -1, -2, -1, 0, 0};
         int[] aOffsets = new int[]{-2, -1, 0, 1, 2};
         int[] bOffsets = new int[]{0, -1, -2, -1, 0};
+        int[] cOffsets = new int[]{-1, -1, 0, 1, 1};
+        int[] dOffsets = new int[]{-1, -1, -2, -1, -1};
 
-        int[] xOffsets = new int[5];
-        int[] yOffsets = new int[5];
+        int[] xHeads = new int[5];
+        int[] yHeads = new int[5];
+        int[] xTails = new int[5];
+        int[] yTails = new int[5];
 
         switch (head.getDirection()) {
             case NORTH -> {
-                xOffsets = aOffsets;
-                yOffsets = bOffsets;
+                xHeads = aOffsets;
+                yHeads = bOffsets;
+                xTails = cOffsets;
+                yTails = dOffsets;
             }
             case SOUTH -> {
-                xOffsets = Arrays.stream(aOffsets).map(i -> -i).toArray();
-                yOffsets = Arrays.stream(bOffsets).map(i -> -i).toArray();
+                xHeads = Arrays.stream(aOffsets).map(i -> -i).toArray();
+                yHeads = Arrays.stream(bOffsets).map(i -> -i).toArray();
+                xTails = Arrays.stream(cOffsets).map(i -> -i).toArray();
+                yTails = Arrays.stream(dOffsets).map(i -> -i).toArray();
             }
             case EAST -> {
-                xOffsets = Arrays.stream(bOffsets).map(i -> -i).toArray();
-                yOffsets = aOffsets;
+                xHeads = Arrays.stream(bOffsets).map(i -> -i).toArray();
+                yHeads = aOffsets;
+                xTails = Arrays.stream(dOffsets).map(i -> -i).toArray();
+                yTails = cOffsets;
             }
             case WEST -> {
-                xOffsets = bOffsets;
-                yOffsets = Arrays.stream(aOffsets).map(i -> -i).toArray();
+                xHeads = bOffsets;
+                yHeads = Arrays.stream(aOffsets).map(i -> -i).toArray();
+                xTails = dOffsets;
+                yTails = Arrays.stream(cOffsets).map(i -> -i).toArray();
             }
         }
 
-        int[] finalXOffsets = xOffsets;
-        int[] finalYOffsets = yOffsets;
+        int[] finalXHeads = xHeads;
+        int[] finalYHeads = yHeads;
+        int[] finalXTails = xTails;
+        int[] finalYTails = yTails;
 
         return IntStream.range(0, 5)
                 .mapToObj(i -> {
-                    int x = head.getX() + finalXOffsets[i];
-                    int y = head.getY() + finalYOffsets[i];
+                    int hx = head.getX() + finalXHeads[i];
+                    int hy = head.getY() + finalYHeads[i];
+                    int tx = tail.getX() + finalXTails[i];
+                    int ty = tail.getY() + finalYTails[i];
 
-                    if (x < 0 || x >= map.getWidth() || y < 0 || y >= map.getHeigth()) {
+                    if (hx < 0 || hx >= map.getWidth() || hy < 0 || hy >= map.getHeigth()
+                        || tx < 0 || tx >= map.getWidth() || ty < 0 || ty >= map.getHeigth()) {
                         return null;
                     }
-                    return map.getPositions()[y][x];
+
+                    Position ph = map.getPositions()[hy][hx];
+                    Position pt = map.getPositions()[ty][tx];
+                    if (isInvalidNextPosition(ph) || isInvalidNextPosition(pt)) {
+                        return null;
+                    }
+
+                    return ph;
 
                 }).filter(Objects::nonNull).toList();
     }
@@ -260,7 +333,8 @@ public class Ant implements Runnable {
     }
 
     private boolean isInvalidNextPosition(Position p) {
-        return switch (p.getType()) {
+
+        return p == null || switch (p.getType()) {
             case '+', 'A', 'V', '<', '>' -> true;
             default -> false;
         };
