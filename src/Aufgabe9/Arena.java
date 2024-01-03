@@ -63,7 +63,7 @@ public class Arena {
                     .filter(position -> {
                         char h = map.getPositions()[position.getY() - 1][position.getX()].getType();
                         char t = map.getPositions()[position.getY()][position.getX()].getType();
-                        return h != ' ' && t != ' ';
+                        return h == ' ' && t == ' ';
                     }).limit(params.get("ANTS"))
                     .forEach(position -> {
                         int x = position.getX();

@@ -14,8 +14,6 @@ public class Ant implements Runnable {
     private boolean skipNextMove = false;
     private int steps = 0;
 
-    private int pheromoneLevel = 0;
-
     private Head head;
     private Tail tail;
 
@@ -93,17 +91,22 @@ public class Ant implements Runnable {
     }
 
     public void clearPositions(Transaction t) {
-        char oldHead = head.getOldType();
-        char oldTail = tail.getOldType();
+        char headType = head.getOldType();
+        char tailType = tail.getOldType();
 
-        char level = ' ';
-        if (this.pheromoneLevel > 0) {
-            level = String.valueOf(this.pheromoneLevel).charAt(0);
+
+        if (headType != 'O' && headType != 'X') {
+            int headLevel = headType == ' ' ? 0 : Character.getNumericValue(headType);
+            headType = headLevel < 9 ? String.valueOf(headLevel + 1).charAt(0) : ' ';
         }
-        oldHead = oldHead == ' ' ? level : oldHead;
-        oldTail = oldTail == ' ' ? level : oldTail;
-        t.setValueByID(head.getX(), head.getY(), oldHead);
-        t.setValueByID(tail.getX(), tail.getY(), oldTail);
+
+        if (tailType != 'O' && tailType != 'X') {
+            int tailLevel = tailType == ' ' ? 0 : Character.getNumericValue(tailType);
+            tailType = tailLevel < 9 ? String.valueOf(tailLevel + 1).charAt(0) : ' ';
+        }
+
+        t.setValueByID(head.getX(), head.getY(), headType);
+        t.setValueByID(tail.getX(), tail.getY(), tailType);
     }
 
     public void writePositions(Transaction t) {
@@ -113,12 +116,6 @@ public class Ant implements Runnable {
         tail.setOldType(newTail);
         t.setValueByID(head.getX(), head.getY(), head.getHeadDirection());
         t.setValueByID(tail.getX(), tail.getY(), '+');
-    }
-
-
-    private void increasePheromoneLevel() {
-        if (this.pheromoneLevel == 9) return;
-        this.pheromoneLevel++;
     }
 
     @Override
@@ -174,7 +171,7 @@ public class Ant implements Runnable {
                     Transaction t = new Transaction(map);
                     RelativeDirection newRelDir = getRelativeDirection(newPosition);
                     boolean moved = move(newRelDir, t);
-                    this.increasePheromoneLevel();
+                    //this.increasePheromoneLevel();
                     t.commit();
                     //System.out.println("Locks:" + this.map.getLocksCount());
                     if (moved) {
