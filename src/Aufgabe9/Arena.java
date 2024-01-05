@@ -22,7 +22,7 @@ public class Arena {
     public static void main(String[] args) {
         try {
             String[] inputPattern = {"ANTS", "LEAFS", "WIDTH", "HEIGHT", "MIN_WAIT", "MAX_WAIT"};
-            args = new String[]{"3", "10", "50", "40", "5", "50"};
+            //args = new String[]{"3", "10", "50", "40", "5", "50"};
 
             Parameters params = Parameters.getInstance(args, inputPattern);
             params.set("LEAF_MIN_AREA", 1);
@@ -35,18 +35,17 @@ public class Arena {
             params.bound("MIN_WAIT", 5, 10);
             params.bound("MAX_WAIT", 20, 50);
 
-            Path path = Path.of("").toAbsolutePath();
-
             System.out.println("Starting Arena " + hashCode + " with parameters: " + params);
 
             // start Nest Process
 
-            ProcessBuilder builder = new ProcessBuilder("java", "Nest", path.toString(), Integer.toString(hashCode));
-            builder.directory(new File(path + "/out/production/pp/"));
+            ProcessBuilder builder = new ProcessBuilder("java", "Nest", Integer.toString(hashCode));
+            builder.redirectError(new File("test.err"));
+            //builder.directory(new File(path + "/out/production/pp/"));
+            //builder.directory(new File(Test.CURR_DIR + "/" + Test.OUTPUT_DIR));
             nestProcess = builder.start();
 
             Hive hive = new Hive(new ObjectOutputStream(nestProcess.getOutputStream()));
-            hive.receiveFood(new Leaf());
 
             Map map = new Map(params.get("WIDTH"), params.get("HEIGHT"), params.get("LEAFS"), hive);
 
@@ -61,8 +60,12 @@ public class Arena {
 
             Stream.generate(Position::new)
                     .filter(position -> {
-                        char h = map.getPositions()[position.getY() - 1][position.getX()].getType();
-                        char t = map.getPositions()[position.getY()][position.getX()].getType();
+                        // make sure that the tail position is not on the border
+                        if (position.getY() == params.get("HEIGHT") - 1)
+                            return false;
+
+                        char h = map.getPositions()[position.getY()][position.getX()].getType();
+                        char t = map.getPositions()[position.getY() + 1][position.getX()].getType();
                         return h == ' ' && t == ' ';
                     }).limit(params.get("ANTS"))
                     .forEach(position -> {
@@ -90,8 +93,6 @@ public class Arena {
     }
 
     public static void stop() {
-        antList.forEach(a -> System.out.println("Arena " + hashCode + ": " + a.print()));
-
 //        List<String> lines = Arrays.stream(ants).map(Ant::print).toList();
 //
 //        try {
@@ -99,10 +100,12 @@ public class Arena {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-
         System.out.println("Arena "+ hashCode + ": Stopping ants: ");
         for (Thread thread : Arena.threadList) {
             thread.interrupt();
         }
+
+        antList.forEach(a -> System.out.println("Arena " + hashCode + ": " + a.print()));
+
     }
 }

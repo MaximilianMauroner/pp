@@ -11,12 +11,13 @@ import java.util.List;
 public class Nest {
     public static void main(String[] args) {
         try {
-            if (args.length != 2) {
+            if (args.length != 1) {
                 throw new IllegalArgumentException("Invalid number of arguments");
             }
-            Path path = Path.of(args[0] + "/test.out");
 
-            int hashCode = Integer.parseInt(args[1]);
+            Path path = Path.of("test.out");
+
+            int hashCode = Integer.parseInt(args[0]);
             InputStream input = System.in;
             BufferedInputStream bufferedInput = new BufferedInputStream(input);
             ObjectInputStream stream = new ObjectInputStream(bufferedInput);
@@ -45,7 +46,8 @@ public class Nest {
                 } catch (ClassNotFoundException e) {
                     System.out.println("Class not found");
                 } catch (IOException e) {
-                    System.out.println("Stream closed");
+                    e.printStackTrace();
+                    System.out.println("Stream closed: " + e.getMessage());
                     break;
                 }
             }

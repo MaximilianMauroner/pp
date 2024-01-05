@@ -155,7 +155,7 @@ public class Ant implements Runnable {
                         index = distances.indexOf(Collections.min(distances));
 
                         if (positions.get(index).getType() == 'O') {
-                            this.hive.receiveFood(this.leaf);
+                            //this.hive.receiveFood(this.leaf);
                             this.leaf = null;
                         } else if (isInvalidNextPosition(positions.get(index))) {
                             index = -1;

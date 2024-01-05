@@ -7,6 +7,7 @@ public class Hive {
 
     public Hive(ObjectOutputStream stream) {
         this.stream = stream;
+
         Parameters parameters = Parameters.getInstance();
         if (parameters != null) {
             int width = parameters.get("WIDTH");
@@ -31,16 +32,15 @@ public class Hive {
         return hiveY;
     }
 
-    public void receiveFood(Leaf leaf) {
+    public synchronized void receiveFood(Leaf leaf) {
         System.out.println("Arena " + Arena.hashCode + ": Received " + leaf.getArea() + " units of food");
-        synchronized (stream) {
-            try {
-                // send leaf to nest
-                stream.writeObject(leaf);
-                stream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            // send leaf to nest
+            stream.writeObject(leaf);
+            stream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error sending leaf to nest: " + e.getMessage());
         }
     }
 
