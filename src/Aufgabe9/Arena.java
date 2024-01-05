@@ -14,15 +14,14 @@ public class Arena {
 
     static List<Thread> threadList = new ArrayList<>();
     static List<Ant> antList = new ArrayList<>();
-    static Thread[] threads;
-    static Ant[] ants;
     static Process nestProcess;
     static int hashCode = Runtime.getRuntime().hashCode();
+
+    static ThreadGroup group = new ThreadGroup("Ants");
 
     public static void main(String[] args) {
         try {
             String[] inputPattern = {"ANTS", "LEAFS", "WIDTH", "HEIGHT", "MIN_WAIT", "MAX_WAIT"};
-            //args = new String[]{"3", "10", "50", "40", "5", "50"};
 
             Parameters params = Parameters.getInstance(args, inputPattern);
             params.set("LEAF_MIN_AREA", 1);
@@ -41,22 +40,12 @@ public class Arena {
 
             ProcessBuilder builder = new ProcessBuilder("java", "Nest", Integer.toString(hashCode));
             builder.redirectError(new File("test.err"));
-            //builder.directory(new File(path + "/out/production/pp/"));
             //builder.directory(new File(Test.CURR_DIR + "/" + Test.OUTPUT_DIR));
             nestProcess = builder.start();
 
             Hive hive = new Hive(new ObjectOutputStream(nestProcess.getOutputStream()));
 
             Map map = new Map(params.get("WIDTH"), params.get("HEIGHT"), params.get("LEAFS"), hive);
-
-            Arena.ants = new Ant[params.get("ANTS")];
-            Arena.threads = new Thread[ants.length];
-
-//            for (int i = 0; i < ants.length; i++) {
-//                ants[i] = new Ant(map, hive, map.getPositions()[i][i], Direction.WEST, i == ants.length - 1);
-//                threads[i] = new Thread(ants[i]);
-//
-//            }
 
             Stream.generate(Position::new)
                     .filter(position -> {
@@ -74,16 +63,10 @@ public class Arena {
 
                         Ant ant = new Ant(map, hive, map.getPositions()[y][x], Direction.NORTH, antList.isEmpty());
                         antList.add(ant);
-                        threadList.add(new Thread(ant));
+                        threadList.add(new Thread(group, ant, "Ant " + antList.size(), 16000));
                     });
-//            map.print();
 
             threadList.forEach(Thread::start);
-
-//            for (int i = 0; i < ants.length; i++) {
-//                threads[i].start();
-//            }
-
 
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -101,9 +84,7 @@ public class Arena {
 //            e.printStackTrace();
 //        }
         System.out.println("Arena "+ hashCode + ": Stopping ants: ");
-        for (Thread thread : Arena.threadList) {
-            thread.interrupt();
-        }
+        group.interrupt();
 
         antList.forEach(a -> System.out.println("Arena " + hashCode + ": " + a.print()));
 

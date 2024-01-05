@@ -19,7 +19,6 @@ public class Ant implements Runnable {
 
     private Leaf leaf;
 
-
     public Ant(Map map, Hive hive, Position init, Direction direction) {
         this.map = map;
         this.hive = hive;

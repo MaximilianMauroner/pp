@@ -4,7 +4,7 @@ import java.nio.file.Path;
 public class Test {
     public static final String OUTPUT_DIR = "out/production/pp/";
     public static final Path CURR_DIR = Path.of("").toAbsolutePath();
-    public static final Boolean DEBUG = false;
+    public static final Boolean DEBUG = true;
 
 
     public static void main(String[] args) {

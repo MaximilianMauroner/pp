@@ -39,7 +39,6 @@ public class Hive {
             stream.writeObject(leaf);
             stream.flush();
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println("Error sending leaf to nest: " + e.getMessage());
         }
     }

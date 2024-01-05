@@ -46,7 +46,6 @@ public class Nest {
                 } catch (ClassNotFoundException e) {
                     System.out.println("Class not found");
                 } catch (IOException e) {
-                    e.printStackTrace();
                     System.out.println("Stream closed: " + e.getMessage());
                     break;
                 }
