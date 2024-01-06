@@ -4,6 +4,9 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public class SampleFromProbabilties implements Function<List<Double>, Integer> {
+
+    // Pre: probabilities != null
+    // Post: returns a random index from the given list of probabilities
     @Override
     public Integer apply(List<Double> probabilities) {
         List<Double> cumulativeProbabilities = new ArrayList<>();

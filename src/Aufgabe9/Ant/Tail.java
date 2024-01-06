@@ -1,48 +1,32 @@
 package Ant;
 
-public class Tail {
-    private int x;
-    private int y;
-
-    private char oldType = ' ';
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public char getOldType() {
-        return oldType;
-    }
-
-    public void setOldType(char oldType) {
-        this.oldType = oldType;
-    }
-
+public class Tail extends AntPart {
+    // Pre: h != null
+    // Post: creates a new tail with the new coordinates based on the head
     public Tail(Head h) {
         calcNewPos(h);
     }
 
+    // Pre: h != null
+    // Post: calculates the new coordinates based on the head
     public void calcNewPos(Head h) {
+        h.getHeadDirection();
         switch (h.getDirection()) {
             case NORTH -> {
-                x = h.getX();
-                y = h.getY() + 1;
+                setX(h.getX());
+                setY(h.getY() + 1);
             }
             case SOUTH -> {
-                x = h.getX();
-                y = h.getY() - 1;
+                setX(h.getX());
+                setY(h.getY() - 1);
             }
             case EAST -> {
-                x = h.getX() - 1;
-                y = h.getY();
+                setX(h.getX() - 1);
+                setY(h.getY());
             }
             case WEST -> {
-                x = h.getX() + 1;
-                y = h.getY();
+                setX(h.getX() + 1);
+                setY(h.getY());
             }
         }
     }

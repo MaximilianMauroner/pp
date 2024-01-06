@@ -8,19 +8,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 public class Arena {
 
-    static List<Thread> threadList = new ArrayList<>();
-    static List<Ant> antList = new ArrayList<>();
-    static Process nestProcess;
-    static int hashCode = Runtime.getRuntime().hashCode();
+    private static final List<Thread> threadList = new ArrayList<>();
+    private static final List<Ant> antList = new ArrayList<>();
+    public static int hashCode = Runtime.getRuntime().hashCode();
 
-    static ThreadGroup group = new ThreadGroup("Ants");
+    private static final ThreadGroup group = new ThreadGroup("Ants");
 
-    static AtomicBoolean stopInvoked = new AtomicBoolean(false);
+    private static final AtomicBoolean stopInvoked = new AtomicBoolean(false);
 
     public static void main(String[] args) {
         try {
@@ -44,7 +45,7 @@ public class Arena {
             ProcessBuilder builder = new ProcessBuilder("java", "Nest", Integer.toString(hashCode));
             builder.redirectError(new File("test.err"));
             //builder.directory(new File(Test.CURR_DIR + "/" + Test.OUTPUT_DIR));
-            nestProcess = builder.start();
+            Process nestProcess = builder.start();
 
             Hive hive = new Hive(new ObjectOutputStream(nestProcess.getOutputStream()));
 
@@ -71,34 +72,23 @@ public class Arena {
 
             threadList.forEach(Thread::start);
 
-            while (group.activeCount() > 0) {
-                if (stopInvoked.get()) {
-                    stop();
-                }
+            // god forgive me for I have sinned
+            while (group.activeCount() > 0 && !stopInvoked.get()) {
+                Thread.sleep(100);
             }
+
+            System.out.println("Arena "+ hashCode + ": Stopping ants: ");
+            group.interrupt();
+
+            antList.forEach(a -> System.out.println("Arena " + hashCode + ": " + a.print()));
+
+            System.exit(group.activeCount() == 0 ? 0 : 1);
 
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Arena " + hashCode + ": " + e.getMessage());
         }
-    }
-
-    public static void stop() {
-//        List<String> lines = Arrays.stream(ants).map(Ant::print).toList();
-//
-//        try {
-//            Files.write(path, lines, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        System.out.println("Arena "+ hashCode + ": Stopping ants: ");
-        group.interrupt();
-
-        antList.forEach(a -> System.out.println("Arena " + hashCode + ": " + a.print()));
-
-        System.exit(group.activeCount() == 0 ? 0 : 1);
-
     }
 
     public static void invokeStop() {

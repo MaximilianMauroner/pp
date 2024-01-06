@@ -23,6 +23,8 @@ public class Test {
         }
     }
 
+    // Pre: ants >= 1, leafs >= 1, width >= 10, height >= 10, min_wait >= 5, max_wait >= 5
+    // Post: starts a new Arena process with the given parameters
     public static void startTest(int ants, int leafs, int width, int height, int min_wait, int max_wait) {
         long startTime = System.currentTimeMillis();
 

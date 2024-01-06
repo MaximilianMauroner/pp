@@ -19,6 +19,8 @@ public class Ant implements Runnable {
 
     private Leaf leaf;
 
+    // Pre: map != null, hive != null, init != null
+    // Post: creates a new Ant object with the given map, hive, init position and direction
     public Ant(Map map, Hive hive, Position init, Direction direction) {
         this.map = map;
         this.hive = hive;
@@ -30,6 +32,8 @@ public class Ant implements Runnable {
         t.commit();
     }
 
+    // Pre: map != null, hive != null, init != null
+    // Post: creates a new Ant object with the given map, hive, init position and direction
     public Ant(Map map, Hive hive, Position init, Direction direction, boolean isLeadAnt) {
         this.map = map;
         this.hive = hive;
@@ -41,6 +45,8 @@ public class Ant implements Runnable {
         t.commit();
     }
 
+    // Pre: -
+    // Post: returns the number of steps the ant has taken and other useful information
     public String print() {
         return "{Ant: " +
                 this.hashCode() +
@@ -59,6 +65,8 @@ public class Ant implements Runnable {
                 "}";
     }
 
+    // Pre: t != null
+    // Post: moves the ant to the given direction and returns true if the move was successful, otherwise false
     private boolean move(RelativeDirection newRelDir, Transaction t) {
         Head newHead = this.head.move(newRelDir);
         Tail newTail = new Tail(newHead);
@@ -85,10 +93,14 @@ public class Ant implements Runnable {
         return true;
     }
 
+    // Pre: -
+    // Post: returns the position of the head and tail (only for debugging)
     public String getPosition() {
         return head.getX() + " : " + head.getY() + " : " + tail.getX() + " : " + tail.getY();
     }
 
+    // Pre: t != null
+    // Post: clears the positions from the map
     public void clearPositions(Transaction t) {
         char headType = head.getOldType();
         char tailType = tail.getOldType();
@@ -108,6 +120,8 @@ public class Ant implements Runnable {
         t.setValueByID(tail.getX(), tail.getY(), tailType);
     }
 
+    // Pre: t != null
+    // Post: writes the positions to the map
     public void writePositions(Transaction t) {
         char newHead = t.getPositionByID(head.getX(), head.getY()).getType();
         char newTail = t.getPositionByID(tail.getX(), tail.getY()).getType();
@@ -154,7 +168,7 @@ public class Ant implements Runnable {
                         index = distances.indexOf(Collections.min(distances));
 
                         if (positions.get(index).getType() == 'O') {
-                            //this.hive.receiveFood(this.leaf);
+                            this.hive.receiveFood(this.leaf);
                             this.leaf = null;
                         } else if (isInvalidNextPosition(positions.get(index))) {
                             index = -1;
@@ -205,6 +219,8 @@ public class Ant implements Runnable {
         }
     }
 
+    // Pre: -
+    // Post: returns a list of possible positions (not thread-safe)
     private List<Position> getPossiblePositions() {
 
         //int[] aOffsets = new int[]{-2, -1, -1, 0, 0, 1, 1, 2};
@@ -274,6 +290,8 @@ public class Ant implements Runnable {
                 }).filter(Objects::nonNull).toList();
     }
 
+    // Pre: newPosition != null
+    // Post: returns the relative direction of the given position
     private RelativeDirection getRelativeDirection(Position newPosition) {
         int dx = newPosition.getX() - head.getX();
         int dy = newPosition.getY() - head.getY();
@@ -328,6 +346,9 @@ public class Ant implements Runnable {
         return rd;
     }
 
+
+    // Pre: -
+    // Post: returns true if the given position is invalid, otherwise false
     private boolean isInvalidNextPosition(Position p) {
 
         return p == null || switch (p.getType()) {
