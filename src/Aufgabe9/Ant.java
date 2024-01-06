@@ -187,7 +187,7 @@ public class Ant implements Runnable {
                 this.skipNextMove = false;
             }
             if (waitSteps <= 0) {
-                Arena.stop();
+                Arena.invokeStop();
             }
 
 

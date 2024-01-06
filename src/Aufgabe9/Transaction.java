@@ -70,6 +70,13 @@ public class Transaction {
         return map.getPositions()[y][x];
     }
 
+    public Position tryGetPositionByID(int x, int y) {
+        if (tryAttainLock(x, y)) {
+            return map.getPositions()[y][x];
+        }
+        return null;
+    }
+
     void commit() {
         releaseLocks();
     }

@@ -82,7 +82,7 @@ public class Map {
             return null;
         }
 
-        return t.getPositionByID(x, y);
+        return t.tryGetPositionByID(x, y);
     }
 
     public void print() {

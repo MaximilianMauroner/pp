@@ -4,7 +4,7 @@ import java.nio.file.Path;
 public class Test {
     public static final String OUTPUT_DIR = "out/production/pp/";
     public static final Path CURR_DIR = Path.of("").toAbsolutePath();
-    public static final Boolean DEBUG = true;
+    public static final Boolean DEBUG = false;
 
 
     public static void main(String[] args) {
@@ -15,7 +15,7 @@ public class Test {
         }
 
         if (DEBUG) {
-            startTest(25, 10, 50, 40, 5, 50);
+            startTest(5, 10, 50, 40, 5, 50);
         } else {
             startTest(25, 30, 15, 15, 5, 50);
             startTest(5, 10, 10, 10, 5, 50);

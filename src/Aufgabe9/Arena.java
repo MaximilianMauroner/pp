@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 public class Arena {
@@ -18,6 +19,8 @@ public class Arena {
     static int hashCode = Runtime.getRuntime().hashCode();
 
     static ThreadGroup group = new ThreadGroup("Ants");
+
+    static AtomicBoolean stopInvoked = new AtomicBoolean(false);
 
     public static void main(String[] args) {
         try {
@@ -68,6 +71,12 @@ public class Arena {
 
             threadList.forEach(Thread::start);
 
+            while (group.activeCount() > 0) {
+                if (stopInvoked.get()) {
+                    stop();
+                }
+            }
+
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {
@@ -88,5 +97,12 @@ public class Arena {
 
         antList.forEach(a -> System.out.println("Arena " + hashCode + ": " + a.print()));
 
+        System.exit(group.activeCount() == 0 ? 0 : 1);
+
+    }
+
+    public static void invokeStop() {
+        System.out.println("Arena " + hashCode + ": Stop invoked");
+        Arena.stopInvoked.set(true);
     }
 }
