@@ -12,7 +12,7 @@ Christopher Scherling: -
 public class Test {
     public static final String OUTPUT_DIR = "out/production/pp"; // we used "out/" for testing
     public static final Path CURR_DIR = Path.of("").toAbsolutePath();
-    public static final Boolean DEBUG = true;
+    public static final Boolean DEBUG = false;
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
@@ -27,9 +27,10 @@ public class Test {
 
             startTest(5, 10, 50, 40, 5, 50);
         } else {
+            startTest(20, 20, 10, 10, 5, 50);
             startTest(40, 40, 15, 15, 5, 50);
-            startTest(70, 60, 20, 20, 5, 50);
-            startTest(100, 100, 25, 25, 5, 50);
+            startTest(70, 70, 20, 20, 5, 50);
+            //startTest(100, 100, 25, 25, 5, 50);
         }
 
         long endTime = System.currentTimeMillis();
