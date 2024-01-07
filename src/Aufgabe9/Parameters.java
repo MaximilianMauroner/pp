@@ -7,7 +7,7 @@ public class Parameters {
     private static Parameters instance = null; // client-side-history-constraint: call getInstance with args before using instance
     private final ConcurrentHashMap<String, Integer> parameters;
 
-    // Pre: args.length == pattern.length
+    // Pre: -
     // Post: creates a new Parameters object with the given args and pattern
     private Parameters(String[] args, String[] pattern) throws IllegalArgumentException {
         if (args.length != pattern.length) {
@@ -20,7 +20,7 @@ public class Parameters {
                 .collect(ConcurrentHashMap::new, (m, v) -> m.put(v.getKey(), v.getValue()), ConcurrentHashMap::putAll);
     }
 
-    // Pre: args.length == pattern.length
+    // Pre: -
     // Post: returns a new Parameter Instance if not already created, otherwise returns the existing one
     public static Parameters getInstance(String[] args, String[] pattern) throws IllegalArgumentException {
         if (instance == null) {

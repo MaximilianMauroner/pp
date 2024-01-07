@@ -1,5 +1,7 @@
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import Ant.*;
@@ -9,8 +11,11 @@ public class Ant implements Runnable {
     private final Map map;
     private final Hive hive;
     private final boolean isLeadAnt;
+    private final int min_wait = Parameters.getInstance().get("MIN_WAIT");
+    private final int max_wait = Parameters.getInstance().get("MAX_WAIT");
 
     private int waitSteps = Parameters.getInstance().get("WAITSTEPS");
+
     private boolean skipNextMove = false;
     private int steps = 0;
 
@@ -133,36 +138,39 @@ public class Ant implements Runnable {
 
     @Override
     public void run() {
+        SampleFromProbabilties probabilties = new SampleFromProbabilties();
         while (!Thread.currentThread().isInterrupted()) {
 //            TOOD if found leaf increase increasePheromoneLevel
             if (!skipNextMove) {
+
                 if (this.map.isLocked()) {
                     continue;
                 }
+
                 List<Position> positions = getPossiblePositions();
 
                 int index;
 
                 if (this.leaf == null) {
-                    List<Double> probabilities = positions.stream().mapToDouble(p ->
-                            switch (p.getType()) {
-                                case 'X' -> {
-                                    this.leaf = new Leaf();
-                                    yield 1;
-                                }
-                                case 'O' -> 0;
-                                case ' ' -> Math.random() * 0.01;
-                                default -> Character.getNumericValue(p.getType()) / 9;
+                    List<Double> probabilities = positions.stream().parallel().map(Position::getType).mapToDouble(t ->
+                        switch (t) {
+                            case 'X' -> {
+                                this.leaf = new Leaf();
+                                yield 1;
                             }
-                    ).collect(Vector::new, Vector::add, Vector::addAll);
-                    index = new SampleFromProbabilties().apply(probabilities);
+                            case 'O' -> 0;
+                            case ' ' -> ThreadLocalRandom.current().nextDouble(0.01);
+                            default -> Character.getNumericValue(t) / 9.0;
+                        }
+                    ).boxed().toList();
+                    index = probabilties.apply(probabilities);
                 } else {
                     List<Double> distances = positions.stream()
                             .mapToDouble(p -> {
                                 double dx = p.getX() - hive.getX();
                                 double dy = p.getY() - hive.getY();
                                 return Math.sqrt(dx * dx + dy * dy);
-                            }).collect(Vector::new, Vector::add, Vector::addAll);
+                            }).boxed().toList();
 
                     try {
                         index = distances.indexOf(Collections.min(distances));
@@ -179,14 +187,13 @@ public class Ant implements Runnable {
                 }
 
 
+
                 if (index != -1) {
                     Position newPosition = positions.get(index);
                     Transaction t = new Transaction(map);
                     RelativeDirection newRelDir = getRelativeDirection(newPosition);
                     boolean moved = move(newRelDir, t);
-                    //this.increasePheromoneLevel();
                     t.commit();
-                    //System.out.println("Locks:" + this.map.getLocksCount());
                     if (moved) {
                         steps++;
                     } else {
@@ -200,15 +207,14 @@ public class Ant implements Runnable {
             } else {
                 this.skipNextMove = false;
             }
+
             if (waitSteps <= 0) {
                 Arena.invokeStop();
             }
 
-
             try {
-                int min_wait = 5;
-                int max_wait = 50;
-                Thread.sleep((int) (Math.random() * (max_wait - min_wait) + min_wait));
+
+                Thread.sleep(ThreadLocalRandom.current().nextInt(min_wait, max_wait + 1));
                 if (isLeadAnt) {
                     map.print();
                 }
@@ -222,7 +228,6 @@ public class Ant implements Runnable {
     // Pre: -
     // Post: returns a list of possible positions (not thread-safe)
     private List<Position> getPossiblePositions() {
-
         //int[] aOffsets = new int[]{-2, -1, -1, 0, 0, 1, 1, 2};
         //int[] bOffsets = new int[]{0, 0, -1, -1, -2, -1, 0, 0};
         int[] aOffsets = new int[]{-2, -1, 0, 1, 2};
@@ -268,6 +273,7 @@ public class Ant implements Runnable {
         int[] finalYTails = yTails;
 
         return IntStream.range(0, 5)
+                .parallel()
                 .mapToObj(i -> {
                     int hx = head.getX() + finalXHeads[i];
                     int hy = head.getY() + finalYHeads[i];

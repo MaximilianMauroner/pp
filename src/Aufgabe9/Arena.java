@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
@@ -33,8 +35,8 @@ public class Arena {
             params.set("WAITSTEPS", 64);
             params.bound("ANTS", 1, 100);
             params.bound("LEAFS", 1, 100);
-            params.bound("WIDTH", 10, 80);
-            params.bound("HEIGHT", 10, 80);
+            params.bound("WIDTH", 3, 80);
+            params.bound("HEIGHT", 3, 80);
             params.bound("MIN_WAIT", 5, 10);
             params.bound("MAX_WAIT", 20, 50);
 
@@ -61,6 +63,7 @@ public class Arena {
                         char t = map.getPositions()[position.getY() + 1][position.getX()].getType();
                         return h == ' ' && t == ' ';
                     }).limit(params.get("ANTS"))
+                    .parallel()
                     .forEach(position -> {
                         int x = position.getX();
                         int y = position.getY();
@@ -70,10 +73,12 @@ public class Arena {
                         threadList.add(new Thread(group, ant, "Ant " + antList.size(), 16000));
                     });
 
+            long startTime = System.currentTimeMillis();
+
             threadList.forEach(Thread::start);
 
             // god forgive me for I have sinned
-            while (group.activeCount() > 0 && !stopInvoked.get()) {
+            while (!stopInvoked.get()) {
                 Thread.sleep(100);
             }
 
@@ -81,6 +86,9 @@ public class Arena {
             group.interrupt();
 
             antList.forEach(a -> System.out.println("Arena " + hashCode + ": " + a.print()));
+
+            long endTime = System.currentTimeMillis();
+            System.out.println("Arena " + hashCode + ": All ants stopped in " + (endTime - startTime) + "ms");
 
             System.exit(group.activeCount() == 0 ? 0 : 1);
 

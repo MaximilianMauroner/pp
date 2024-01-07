@@ -1,3 +1,5 @@
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Position {
 
     private char type = ' ';
@@ -72,7 +74,7 @@ public class Position {
     // Pre: num > 0
     // Post: returns a random coordinate between 1 and num
     public static double getRandomCoordinate(int num) {
-        return (Math.random() * (num - 1) + 1);
+        return ThreadLocalRandom.current().nextDouble(1, num);
     }
 
     @Override

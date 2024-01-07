@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Leaf implements Serializable {
     private final double area;
@@ -10,7 +11,7 @@ public class Leaf implements Serializable {
         double min = p.get("LEAF_MIN_AREA");
         double max = p.get("LEAF_MAX_AREA");
 
-        area = Math.random() * (max - min) + min;
+        area = ThreadLocalRandom.current().nextDouble(min, max);
     }
 
     // Pre: -

@@ -20,7 +20,7 @@ public class Map {
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                locks[j][i] = new ReentrantLock();
+                locks[j][i] = new ReentrantLock(true);
             }
         }
     }
@@ -109,15 +109,17 @@ public class Map {
     // Post: prints the map (map is locked during printing)
     public void print() {
         this.lockMap();
-        System.out.println("Arena "+ Arena.hashCode +
-                "\n-------------------------");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Arena ").append(Arena.hashCode).append("\n-------------------------\n");
+
         for (Position[] row : positions) {
             for (Position c : row) {
-                System.out.print(c.getType());
+                sb.append(c.getType());
             }
-            System.out.println();
+            sb.append("\n");
         }
-        System.out.println("-------------------------");
+        sb.append("-------------------------\n");
+        System.out.println(sb);
         this.unlockMap();
     }
 

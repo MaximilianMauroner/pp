@@ -1,13 +1,21 @@
 import java.io.*;
 import java.nio.file.Path;
+import java.util.stream.IntStream;
+
+/*
+(just the important parts)
+Maximilian Mauroner: Map, Transaction, Ant
+Lukas Leskovar: Ant, Arena, Hive, Nest
+Christopher Scherling: -
+*/
 
 public class Test {
-    public static final String OUTPUT_DIR = "out/production/pp/";
+    public static final String OUTPUT_DIR = "out/production/pp"; // we used "out/" for testing
     public static final Path CURR_DIR = Path.of("").toAbsolutePath();
-    public static final Boolean DEBUG = false;
-
+    public static final Boolean DEBUG = true;
 
     public static void main(String[] args) {
+        long startTime = System.currentTimeMillis();
         try {
             new FileWriter(CURR_DIR + "/" + OUTPUT_DIR + "/test.out", false).close();
         } catch (IOException e) {
@@ -15,12 +23,17 @@ public class Test {
         }
 
         if (DEBUG) {
+            //startTest(40, 40, 15, 15, 5, 50);
+
             startTest(5, 10, 50, 40, 5, 50);
         } else {
-            startTest(25, 30, 15, 15, 5, 50);
-            startTest(5, 10, 10, 10, 5, 50);
-            startTest(5, 10, 50, 40, 5, 10);
+            startTest(40, 40, 15, 15, 5, 50);
+            startTest(70, 60, 20, 20, 5, 50);
+            startTest(100, 100, 25, 25, 5, 50);
         }
+
+        long endTime = System.currentTimeMillis();
+        System.out.println("All tests finished in " + (endTime - startTime) + "ms");
     }
 
     // Pre: ants >= 1, leafs >= 1, width >= 10, height >= 10, min_wait >= 5, max_wait >= 5
